@@ -25,7 +25,6 @@ app.get('/', (req, res) => {
 
 app.get('/food/:id', (req, res) => {
     console.log(`Fetching food with id: ${req.params.id}...`);
-    connection.connect();
     connection.query(`SELECT * FROM ${foodDataTable} WHERE id = ${req.params.id};`, (err, rows, fields) => {
         if (!err) {
             console.log('Fetched data!!');
