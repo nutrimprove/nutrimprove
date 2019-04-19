@@ -4,7 +4,7 @@ const morgan = require('morgan');
 const app = express();
 const mysql = require('mysql');
 
-const port = 3010;
+const port = 3000;
 const foodDataTable = 'eatwell_fooddata';
 
 const connection =
@@ -18,18 +18,18 @@ const connection =
 
 app.use(morgan('combined'));
 
-app.get('/', (request, response) => {
+app.get('/', (req, res) => {
     console.log(`Responding to root route`);
-    response.send('Hello!!');
+    res.send('Hello!!');
 });
 
-app.get('/food/:id', (request, response) => {
-    console.log(`Fetching food with id: ${request.params.id}...`);
+app.get('/food/:id', (req, res) => {
+    console.log(`Fetching food with id: ${req.params.id}...`);
     connection.connect();
-    connection.query(`SELECT * FROM ${foodDataTable} WHERE id = ${request.params.id};`, (err, rows, fields) => {
+    connection.query(`SELECT * FROM ${foodDataTable} WHERE id = ${req.params.id};`, (err, rows, fields) => {
         if (!err) {
             console.log('Fetched data!!');
-            response.json(rows);
+            res.json(rows);
         }   else {
             console.log(err);
         }
@@ -38,18 +38,18 @@ app.get('/food/:id', (request, response) => {
   // response.end();
 });
 
-app.get('/food', (request, response) => {
+app.get('/food', (req, res) => {
     console.log('Fetching foods...');
     connection.query(`SELECT * FROM ${foodDataTable};`, (err, rows, fields) => {
         if (!err) {
             console.log('Fetched data!!');
-            response.json(rows);
+            res.json(rows);
         } else {
             console.log(err);
         }
     });
 });
 
-app.listen(3010, () => {
+app.listen(port, () => {
   console.log(`Server is up and listening on ${port}`);
 });
