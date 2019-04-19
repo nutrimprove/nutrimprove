@@ -10,10 +10,10 @@ const foodDataTable = 'eatwell_fooddata';
 const connection =
     mysql.createConnection(
         {
-            host: 'geekie.net.mysql',
-            user: 'geekie_net',
-            database: 'geekie_net',
-            password: '307TuyM494f4',
+            host: process.env.RDS_HOSTNAME,
+            user: process.env.RDS_USERNAME,
+            database: process.env.RDS_DB_NAME,
+            password: process.env.RDS_PASSWORD,
         });
 
 app.use(morgan('combined'));
@@ -35,7 +35,7 @@ app.get('/food/:id', (req, res) => {
         }
     });
 
-  // response.end();
+    //res.end();
 });
 
 app.get('/food', (req, res) => {
@@ -48,6 +48,7 @@ app.get('/food', (req, res) => {
             console.log(err);
         }
     });
+    //res.end();
 });
 
 app.listen(port, () => {
