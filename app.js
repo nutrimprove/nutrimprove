@@ -10,10 +10,10 @@ const foodDataTable = 'eatwell_fooddata';
 const connection =
     mysql.createConnection(
         {
-            host: process.env.RDS_HOSTNAME,
-            user: process.env.RDS_USERNAME,
-            database: process.env.RDS_DB_NAME,
-            password: process.env.RDS_PASSWORD,
+            host: process.env.HOST,
+            user: process.env.USER,
+            database: process.env.DATABASE,
+            password: process.env.PASSWORD,
         });
 
 app.use(morgan('combined'));
