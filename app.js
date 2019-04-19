@@ -10,7 +10,7 @@ const foodDataTable = 'eatwell_fooddata';
 const connection =
     mysql.createConnection(
         {
-            host: process.env.HOST,
+            host: 'eat-well.ctzfamvseqqp.eu-west-2.rds.amazonaws.com',
             user: process.env.USER,
             database: process.env.DATABASE,
             password: process.env.PASSWORD,
