@@ -12,17 +12,17 @@ const foodDataTable = 'eatwell_fooddata';
 const connection =
     mysql.createConnection(
         {
-            host: `${process.env.MARIA_HOST}`,
-            user: `${process.env.MARIA_USER}`,
-            database: `${process.env.MARIA_DB}`,
-            password: `${process.env.MARIA_PWD}`,
+            host: `${process.env.HOST}`,
+            user: `${process.env.USER}`,
+            database: `${process.env.DATABASE}`,
+            password: `${process.env.PASSWORD}`,
         });
 
 app.use(morgan('combined'));
 
 app.get('/', (req, res) => {
     console.log(`Responding to root route`);
-    res.send(`${JSON.stringify(process.env)}`);
+    res.send(`Welcome to Eatwell POC :)`);
     res.end();
 });
 
