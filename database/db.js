@@ -2,7 +2,7 @@ const queries = require('./queries');
 const mysql = require('mysql');
 
 const db_config = {
-    connectionLimit: 100,
+    connectionLimit: 5,
     host: `${process.env.HOST}`,
     user: `${process.env.USER}`,
     database: `${process.env.DATABASE}`,
