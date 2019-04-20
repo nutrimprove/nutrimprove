@@ -11,16 +11,16 @@ const connection =
     mysql.createConnection(
         {
             host: 'eat-well.ctzfamvseqqp.eu-west-2.rds.amazonaws.com',
-            user: process.env.USER,
-            database: process.env.DATABASE,
-            password: process.env.PASSWORD,
+            user: 'WhiT3Kr0w',
+            database: 'sdf34^GFDdcxx45',
+            password: 'eatwell',
         });
 
 app.use(morgan('combined'));
 
 app.get('/', (req, res) => {
     console.log(`Responding to root route`);
-    res.send('Hello!!');
+    res.send(`${process.env.HOST}`);
 });
 
 app.get('/food/:id', (req, res) => {
