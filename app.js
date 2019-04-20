@@ -32,11 +32,6 @@ app.get('/api/foods', (req, res) => {
     connection(req, res, queries.foods);
 });
 
-app.get('/api/env', (req, res) => {
-    res.send(process.env);
-    res.end();
-});
-
 app.listen(port, () => {
   console.log(`Server is up and listening on ${port}`);
 });
