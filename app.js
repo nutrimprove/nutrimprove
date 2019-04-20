@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 // Load app server using express
 const express = require('express');
 const morgan = require('morgan');
@@ -10,17 +12,18 @@ const foodDataTable = 'eatwell_fooddata';
 const connection =
     mysql.createConnection(
         {
-            host: 'eat-well.ctzfamvseqqp.eu-west-2.rds.amazonaws.com',
-            user: 'WhiT3Kr0w',
-            database: 'sdf34^GFDdcxx45',
-            password: 'eatwell',
+            host: `${process.env.MARIA_HOST}`,
+            user: `${process.env.MARIA_USER}`,
+            database: `${process.env.MARIA_DB}`,
+            password: `${process.env.MARIA_PWD}`,
         });
 
 app.use(morgan('combined'));
 
 app.get('/', (req, res) => {
     console.log(`Responding to root route`);
-    res.send(`${process.env.HOST}`);
+    res.send(`${JSON.stringify(process.env)}`);
+    res.end();
 });
 
 app.get('/food/:id', (req, res) => {
@@ -29,12 +32,12 @@ app.get('/food/:id', (req, res) => {
         if (!err) {
             console.log('Fetched data!!');
             res.json(rows);
+            res.end();
         }   else {
             console.log(err);
+            res.end();
         }
     });
-
-    //res.end();
 });
 
 app.get('/food', (req, res) => {
