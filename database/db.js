@@ -15,11 +15,12 @@ module.exports.statusCheck = (req, res) => this.connection(req, res);
 
 module.exports.connection = (req, res, query) => mysql_pool.getConnection((err, conn) => {
     if (err) {
-        res.json({ "time": (new Date()).getTime(), "status": "Error connecting to database" });
+        res.json(db_config);
+        // res.json({ "time": timestamp(), "status": "Error connecting to database" });
         return;
     }
 
-    const runQuery = () => conn.query(query, (err2, rows, fields) => {
+    const runQuery = () => conn.query(query, (err2, rows) => {
         const data = { "timestamp": timestamp(), "status": "" };
         if (err2) {
             data["status"] = "Connection failed";
@@ -31,7 +32,7 @@ module.exports.connection = (req, res, query) => mysql_pool.getConnection((err, 
     });
 
     conn.query(queries.statusCheck, (err2, rows) => {
-        const data = { "time": (new Date()).getTime(), "status": "OK" };
+        const data = { "time": timestamp(), "status": "OK" };
         if (err2) {
             data["status"] = "Connection failed";
         } else {
