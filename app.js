@@ -46,11 +46,12 @@ app.get('/food', (req, res) => {
         if (!err) {
             console.log('Fetched data!!');
             res.json(rows);
+            res.end();
         } else {
             console.log(err);
+            res.end();
         }
     });
-    //res.end();
 });
 
 app.listen(port, () => {
