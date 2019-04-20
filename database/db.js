@@ -15,8 +15,8 @@ module.exports.statusCheck = (req, res) => this.connection(req, res);
 
 module.exports.connection = (req, res, query) => mysql_pool.getConnection((err, conn) => {
     if (err) {
-        res.json(err);
-        // res.json({ "time": timestamp(), "status": "Error connecting to database" });
+        console.log(err);
+        res.json({ "time": timestamp(), "status": "Error connecting to database" });
         return;
     }
 
