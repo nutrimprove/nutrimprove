@@ -17,11 +17,6 @@ app.get('/api/status', (req, res) => {
     statusCheck(req, res);
 });
 
-app.get('/', (req, res) => {
-    res.send(`Welcome to Eatwell POC :)`);
-    res.end();
-});
-
 app.get('/api/food/:id', (req, res) => {
     console.log('API CALL: /api/food/{id}');
     connection(req, res, queries.foodById(req.params.id));
@@ -31,6 +26,15 @@ app.get('/api/foods', (req, res) => {
     console.log('API CALL: /api/foods');
     connection(req, res, queries.foods);
 });
+
+app.get('/', (req, res) => {
+    res.send('Welcome to Eat Well POC :)');
+});
+
+app.get('/*', (req, res) => {
+    res.send('Eat Well POC\n\nEndpoint not available');
+});
+
 
 app.listen(port, () => {
   console.log(`Server is up and listening on ${port}`);
