@@ -1,7 +1,8 @@
 require('dotenv').config();
 
 const morgan = require('morgan');
-const app = require('express')();
+const express = require('express');
+const app = express();
 const bodyParser = require('body-parser');
 const port = 3000;
 const { connection, statusCheck } = require('./database/db');
@@ -10,6 +11,7 @@ const queries = require('./database/queries');
 app.use(morgan('combined'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(express.static('static_files'));
 
 
 app.get('/api/status', (req, res) => {
@@ -17,9 +19,25 @@ app.get('/api/status', (req, res) => {
     statusCheck(req, res);
 });
 
-app.get('/api/food/:id', (req, res) => {
-    console.log('API CALL: /api/food/{id}');
+app.get('/api/food/id/:id', (req, res) => {
+    console.log('API CALL: /api/food/id');
     connection(req, res, queries.foodById(req.params.id));
+});
+
+app.get('/api/food/name/:name', (req, res) => {
+    console.log('API CALL: /api/food/name ', queries.foodByName(req.params.name));
+    connection(req, res, queries.foodByName(req.params.name));
+});
+
+app.get('/api/food', (req, res) => {
+    console.log('API CALL: /api/food');
+    if(req.query.id) {
+        connection(req, res, queries.foodById(req.query.id));
+    } else if(req.query.name) {
+        connection(req, res, queries.foodByName(req.query.name));
+    } else {
+        res.send('/api/food endpoint requires one query string parameter (id, name)');
+    }
 });
 
 app.get('/api/foods', (req, res) => {
