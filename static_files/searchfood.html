@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Eat Well - Search Foods</title>
+    <script src="jquery-3.4.0.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(() => {
+            const getData = (data) => {
+                const table = document.getElementById("results");
+                if (data[0]) {
+                    table.innerHTML = '';
+                    console.log(data);
+                    const header = table.insertRow(0);
+                    Object.keys(data[0]).forEach((key, index) => {
+                        const cell = header.insertCell(index);
+                        cell.innerHTML = JSON.stringify(key);
+                    });
+                    Object.keys(data).forEach((n, i) => {
+                        const row = table.insertRow(i + 1);
+                        Object.keys(data[n]).forEach((key, index) => {
+                            const cell = row.insertCell(index);
+                            cell.innerHTML = JSON.stringify(data[i][key]);
+                        });
+                    });
+                } else {
+                    table.innerHTML = 'No foods found!';
+                }
+            };
+            $('#getAllFoodsButton').click(() => {
+                $.ajax({
+                    url: 'api/foods/',
+                    type: 'GET',
+                    dataType: 'json',
+                    success: (data) => getData(data)
+                });
+            });
+            $('#getFoodByIdButton').click(() => {
+                const foodId = 'api/food/id/' + $("#food_id").val();
+                $.ajax({
+                    url: foodId,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: (data) => getData(data)
+                });
+            });
+            $('#getFoodByNameButton').click(() => {
+                const foodName = 'api/food/name/' + $("#food_name").val();
+                $.ajax({
+                    url: foodName,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: (data) => getData(data)
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+    <h1>Eat Well</h1>
+    <h3>Search foods</h3>
+    <div id="search">
+        <div id="by_id">
+            <label for="food_id">Food ID</label>
+            <input id="food_id" type="text"/>
+            <button id="getFoodByIdButton" type="submit">Get food by ID</button>
+        </div>
+        <div>
+            <label for="food_name">Food Name</label>
+            <input id="food_name" type="text"/>
+            <button id="getFoodByNameButton" type="submit">Get food by name</button>
+        </div>
+        <button id="getAllFoodsButton" type="submit">Get all foods</button>
+    </div>
+    <div>
+        <table id="results"></table>
+    </div>
+</body>
+</html>
