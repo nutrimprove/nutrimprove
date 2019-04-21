@@ -1,6 +1,8 @@
-const queries = require('./queries');
-const mysql = require('mysql');
-const { response } = require('./response');
+require('dotenv').config();
+
+import queries from './queries';
+import mysql from 'mysql';
+import { response } from './response';
 
 const db_config = {
     connectionLimit: 50,
@@ -11,7 +13,7 @@ const db_config = {
 };
 const mysql_pool  = mysql.createPool(db_config);
 
-const statusCheck = (req, res) => this.connection(req, res);
+const statusCheck = (req, res) => connection(req, res);
 
 const connection = (req, res, query) => mysql_pool.getConnection((err, conn) => {
     if (err) {

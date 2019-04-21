@@ -1,19 +1,17 @@
-require('dotenv').config();
+import morgan from 'morgan';
+import express from 'express';
+import bodyParser from 'body-parser';
+import { connection, statusCheck } from './database/db';
+import queries from './database/queries';
+import { response } from './database/response';
 
-const morgan = require('morgan');
-const express = require('express');
-const app = express();
-const bodyParser = require('body-parser');
 const port = 3000;
-const { connection, statusCheck } = require('./database/db');
-const queries = require('./database/queries');
-const { response } = require('./database/response');
+const app = express();
 
 app.use(morgan('combined'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(express.static('static_files'));
-
 
 app.get('/api/status', (req, res) => {
     console.log('API CALL: /api/status');
@@ -53,7 +51,6 @@ app.get('/', (req, res) => {
 app.get('/*', (req, res) => {
     response(res, 404, 'Endpoint not found');
 });
-
 
 app.listen(port, () => {
   console.log(`Server is up and listening on ${port}`);
