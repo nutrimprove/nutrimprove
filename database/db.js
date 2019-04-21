@@ -1,5 +1,6 @@
 const queries = require('./queries');
 const mysql = require('mysql');
+const { response } = require('./response');
 
 const db_config = {
     connectionLimit: 50,
@@ -9,40 +10,39 @@ const db_config = {
     password: `${process.env.PASSWORD}`,
 };
 const mysql_pool  = mysql.createPool(db_config);
-const timestamp = () => (new Date()).getTime();
 
-module.exports.statusCheck = (req, res) => this.connection(req, res);
+const statusCheck = (req, res) => this.connection(req, res);
 
-module.exports.connection = (req, res, query) => mysql_pool.getConnection((err, conn) => {
+const connection = (req, res, query) => mysql_pool.getConnection((err, conn) => {
     if (err) {
-        res.json({ "time": timestamp(), "status": "Error connecting to database" });
+        response(res, err, 'Error connecting to database');
         return;
     }
 
     const runQuery = () => conn.query(query, (err2, rows) => {
-        const data = { "timestamp": timestamp(), "status": "" };
         if (err2) {
-            data["status"] = "Connection failed";
-            res.json(data);
+            response(res, err2, 'Connection failed');
         } else {
-            res.json(rows);
+            response(res, err2, rows);
         }
         conn.release();
     });
 
     conn.query(queries.statusCheck, (err2, rows) => {
-        const data = { "time": timestamp(), "status": "OK" };
         if (err2) {
-            data["status"] = "Connection failed";
+            response(res, err2, 'Status check failed');
         } else {
-            const dbretval = rows[0]['val'];
-            if (dbretval === 1 ) {
-                query ? runQuery() : res.json(data);
+            const val = rows[0] ? rows[0]['val'] : '';
+            if (val === 'OK' ) {
+                query ? runQuery() : response(res, err2, 'Status check successful');
             } else {
-                data["status"] = "Not ready";
-                res.json(data);
+                response(res, 500, 'Database not ready');
                 conn.release();
             }
         }
     });
 });
+
+
+module.exports.statusCheck = statusCheck;
+module.exports.connection = connection;

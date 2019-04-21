@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 const port = 3000;
 const { connection, statusCheck } = require('./database/db');
 const queries = require('./database/queries');
+const { response } = require('./database/response');
 
 app.use(morgan('combined'));
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -25,7 +26,7 @@ app.get('/api/food/id/:id', (req, res) => {
 });
 
 app.get('/api/food/name/:name', (req, res) => {
-    console.log('API CALL: /api/food/name ', queries.foodByName(req.params.name));
+    console.log('API CALL: /api/food/name ');
     connection(req, res, queries.foodByName(req.params.name));
 });
 
@@ -36,7 +37,7 @@ app.get('/api/food', (req, res) => {
     } else if(req.query.name) {
         connection(req, res, queries.foodByName(req.query.name));
     } else {
-        res.send('/api/food endpoint requires one query string parameter (id, name)');
+        response(res, 400, '/api/food endpoint requires one query string parameter (id, name)');
     }
 });
 
@@ -46,11 +47,11 @@ app.get('/api/foods', (req, res) => {
 });
 
 app.get('/', (req, res) => {
-    res.send('Welcome to Eat Well POC :)');
+    response(res, 200, 'Welcome to Eat Well API!!');
 });
 
 app.get('/*', (req, res) => {
-    res.send('Eat Well POC\n\nEndpoint not available');
+    response(res, 404, 'Endpoint not found');
 });
 
 
