@@ -1,18 +1,30 @@
 {
   "name": "eatwell_poc",
   "version": "1.0.0",
-  "description": "",
+  "description": "Eat Well app",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "startpm2": "pm2 start app.js"
+    "start": "nodemon --exec babel-node src/app.js",
+    "build": "babel src --out-dir dist",
+    "server": "node dist/app.js",
+    "pm2": "pm2 start src/app.js"
   },
   "author": "Joao Jesus",
-  "license": "Eatwell",
+  "license": "UNLICENSED",
   "dependencies": {
     "dotenv": "^7.0.0",
     "express": "^4.16.4",
     "morgan": "^1.9.1",
-    "mysql": "^2.17.1"
+    "mysql": "^2.17.1",
+    "yarn": "^1.15.2"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.4.3",
+    "@babel/core": "^7.4.3",
+    "@babel/node": "^7.2.2",
+    "@babel/preset-env": "^7.4.3",
+    "body-parser": "^1.18.3",
+    "nodemon": "^1.18.11"
   }
 }
