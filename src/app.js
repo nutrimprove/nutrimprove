@@ -49,7 +49,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/*', (req, res) => {
-    response(res, 404, 'Endpoint not found');
+    response(res, 400, 'Endpoint not found');
 });
 
 app.listen(port, () => {

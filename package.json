@@ -4,7 +4,6 @@
   "description": "Eat Well app",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon --exec babel-node src/app.js",
     "build": "babel src --out-dir dist",
     "server": "node dist/app.js",
