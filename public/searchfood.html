@@ -7,25 +7,27 @@
     <script type="text/javascript">
         $(document).ready(() => {
             const getData = (data) => {
+
                 const table = document.getElementById("results");
-                if (data[0]) {
+
+               if (data.value[0]) {
                     table.innerHTML = '';
                     console.log(data);
                     const header = table.insertRow(0);
-                    Object.keys(data[0]).forEach((key, index) => {
+                    Object.keys(data.value[0]).forEach((key, index) => {
                         const cell = header.insertCell(index);
                         cell.innerHTML = JSON.stringify(key);
                     });
-                    Object.keys(data).forEach((n, i) => {
+                    Object.keys(data.value).forEach((n, i) => {
                         const row = table.insertRow(i + 1);
-                        Object.keys(data[n]).forEach((key, index) => {
+                        Object.keys(data.value[n]).forEach((key, index) => {
                             const cell = row.insertCell(index);
-                            cell.innerHTML = JSON.stringify(data[i][key]);
+                            cell.innerHTML = JSON.stringify(data.value[i][key]);
                         });
                     });
-                } else {
-                    table.innerHTML = 'No foods found!';
-                }
+               } else {
+                   table.innerHTML = 'No foods found!';
+               }
             };
             $('#getAllFoodsButton').click(() => {
                 $.ajax({
