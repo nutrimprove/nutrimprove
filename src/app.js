@@ -3,15 +3,18 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import { connection, statusCheck } from './database/db';
 import queries from './database/queries';
+import favicon from 'serve-favicon';
 import { response } from './database/response';
 
 const port = 3000;
 const app = express();
 
+app.use(express.static('public'));
+app.use(favicon('public/images/favicon.ico'));
 app.use(morgan('combined'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.use(express.static('static_files'));
+
 
 app.get('/api/status', (req, res) => {
     console.log('API CALL: /api/status');
@@ -45,7 +48,7 @@ app.get('/api/foods', (req, res) => {
 });
 
 app.get('/', (req, res) => {
-    response(res, 200, 'Welcome to Eat Well API!!');
+    res.status(200).send('Welcome to Eat Well API!!');
 });
 
 app.get('/*', (req, res) => {
