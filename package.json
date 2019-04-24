@@ -7,7 +7,7 @@
     "start": "nodemon --exec babel-node src/app.js",
     "build": "babel src --out-dir dist",
     "server": "node dist/app.js",
-    "pm2": "pm2 start src/app.js"
+    "pm2": "pm2 start dist/app.js"
   },
   "author": "Joao Jesus",
   "license": "UNLICENSED",
