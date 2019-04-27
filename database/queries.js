@@ -5,4 +5,4 @@ const queries = {
     foodByName: (name) => `SELECT * FROM eatwell_fooddata WHERE foodname LIKE "%${name}%";`,
 };
 
-export default queries;
+module.exports = queries;

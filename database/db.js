@@ -1,8 +1,8 @@
 require('dotenv').config();
 
-import queries from './queries';
-import mysql from 'mysql';
-import { response } from './response';
+const queries = require('./queries');
+const mysql = require('mysql');
+const { response } = require('./response');
 
 const db_config = {
     connectionLimit: 50,
