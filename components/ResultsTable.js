@@ -49,10 +49,10 @@ const ResultsTable = (props) => {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {values.map(value => (
-                                <TableRow key={value.id}>
-                                    {Object.keys(value).map(key => (
-                                        <TableCell key={value[key]} className={classes.cell}>
+                            {values.map((value, vIndex) => (
+                                <TableRow key={vIndex}>
+                                    {Object.keys(value).map((key, kIndex) => (
+                                        <TableCell key={kIndex} className={classes.cell}>
                                             {value[key]}
                                         </TableCell>
                                     ))}
@@ -72,6 +72,7 @@ const ResultsTable = (props) => {
 
 ResultsTable.propTypes = {
     classes: PropTypes.object.isRequired,
+    values: PropTypes.array.isRequired,
 };
 
 export default withStyles(styles)(ResultsTable);
