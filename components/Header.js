@@ -1,8 +1,10 @@
-import Link from 'next/link'
+import PropTypes from 'prop-types';
+import { withStyles, AppBar, Toolbar, Typography, Link } from '@material-ui/core';
 
-const linkStyle = {
-    marginRight: 15,
-    verticalAlign: 'middle',
+const styles = {
+    root: {
+        flexGrow: 1,
+    },
 };
 
 const logo = {
@@ -12,26 +14,32 @@ const logo = {
     fontWeight: 'bold',
     height: 50,
     width: 50,
-    padding: 20
+    padding: 10
 };
 
-const Header = () => (
-    <div id='header'>
-        <div id="logo">
-            <Link href='/'>
-                <img style={logo} src='/images/apple_1280.png'/>
-            </Link>
-        </div>
-        <div id='nav'>
-            <Link href='/'>
-                <a style={linkStyle}>Home</a>
-            </Link>
-            <Link href='/about'>
-                <a style={linkStyle}>About</a>
-            </Link>
+function Header(props) {
+    const { classes } = props;
 
+    return (
+        <div className={classes.root}>
+            <AppBar position="static" color="default">
+                <Toolbar>
+                    <Link href='/'>
+                        <img style={logo} src='/images/apple_1280.png'/>
+                    </Link>
+                    <Typography variant="button" color="inherit">
+                        <Link href='/about'>
+                            About
+                        </Link>
+                    </Typography>
+                </Toolbar>
+            </AppBar>
         </div>
-    </div>
-);
+    );
+}
 
-export default Header
+Header.propTypes = {
+    classes: PropTypes.object.isRequired,
+};
+
+export default withStyles(styles)(Header);
