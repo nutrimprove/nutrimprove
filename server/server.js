@@ -1,3 +1,5 @@
+require('isomorphic-unfetch');
+
 const morgan = require('morgan');
 const express = require('express');
 const next = require('next');
@@ -5,9 +7,11 @@ const bodyParser = require('body-parser');
 const { connection, statusCheck } = require('../database/db');
 const queries = require('../database/queries');
 const favicon = require('serve-favicon');
+require("path");
 const { response } = require('../database/response');
 
 const port = 3000;
+const apiPath = '/api/v1';
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
 const handle = app.getRequestHandler();
@@ -16,41 +20,35 @@ app
     .prepare()
     .then(() => {
         const server = express();
-
+        server.use(express.static('public'));
         server.use(favicon('public/images/favicon.ico'));
-        server.use(morgan('combined'));
+        //server.use(morgan('combined'));
         server.use(bodyParser.urlencoded({ extended: false }));
         server.use(bodyParser.json());
 
-
-        server.get('/api/status', (req, res) => {
-            console.log('API CALL: /api/status');
+        server.get(apiPath + '/status', (req, res) => {
             statusCheck(req, res);
         });
 
-        server.get('/api/food/id/:id', (req, res) => {
-            console.log('API CALL: /api/food/id');
+        server.get(apiPath + '/food/id/:id', (req, res) => {
             connection(req, res, queries.foodById(req.params.id));
         });
 
-        server.get('/api/food/name/:name', (req, res) => {
-            console.log('API CALL: /api/food/name ');
+        server.get(apiPath + '/food/name/:name', (req, res) => {
             connection(req, res, queries.foodByName(req.params.name));
         });
 
-        server.get('/api/food', (req, res) => {
-            console.log('API CALL: /api/food');
+        server.get(apiPath + '/food', (req, res) => {
             if(req.query.id) {
                 connection(req, res, queries.foodById(req.query.id));
             } else if(req.query.name) {
                 connection(req, res, queries.foodByName(req.query.name));
             } else {
-                response(res, 400, '/api/food endpoint requires one query string parameter (id, name)');
+                response(res, 400, apiPath + '/food endpoint requires one query string parameter (id, name)');
             }
         });
 
-        server.get('/api/foods', (req, res) => {
-            console.log('API CALL: /api/foods');
+        server.get(apiPath + '/foods', (req, res) => {
             connection(req, res, queries.foods);
         });
 
