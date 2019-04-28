@@ -52,11 +52,11 @@ class NavBar extends Component {
     updateResults() {
         const {tab, nameInput, idInput} = this.state;
         if (tab === 0 && nameInput !== '') {
-            this.fetchFoods(`http://localhost:3000/api/v1/food/name/${this.state.nameInput}`);
+            this.fetchFoods(`/api/v1/food/name/${this.state.nameInput}`);
         } else if (tab === 1 && idInput !== '') {
-            this.fetchFoods(`http://localhost:3000/api/v1/food/id/${this.state.idInput}`);
+            this.fetchFoods(`/api/v1/food/id/${this.state.idInput}`);
         } else if (tab === 2) {
-            this.fetchFoods('http://localhost:3000/api/v1/foods');
+            this.fetchFoods('/api/v1/foods');
         } else {
             this.setState({values: []});
         }
