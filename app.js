@@ -6,7 +6,7 @@ const favicon = require('serve-favicon');
 
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({dev});
-const port = process.env.PORT;
+const port = 3000;
 const apiPath = '/api/v1';
 const handle = app.getRequestHandler();
 
