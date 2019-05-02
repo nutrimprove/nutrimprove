@@ -1,13 +1,13 @@
 {
-  "name": "eatwell_poc",
+  "foodName": "eatwell_poc",
   "version": "1.0.0",
   "description": "Eat Well app",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon server/server.js",
+    "dev": "nodemon app.js",
     "build": "next build",
-    "start": "cross-env NODE_ENV=production nodemon server/server.js",
-    "pm2": "pm2 start server/server.js"
+    "start": "cross-env NODE_ENV=production nodemon app.js",
+    "pm2": "pm2 start app.js"
   },
   "author": "Joao Jesus",
   "license": "UNLICENSED",
