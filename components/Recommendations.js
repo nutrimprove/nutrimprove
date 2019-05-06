@@ -7,7 +7,7 @@ const buttonStyles = {
    marginLeft: 10,
 };
 
-class TextFields extends React.Component {
+class Recommendations extends React.Component {
    constructor(props) {
       super(props);
       this.state = {
@@ -45,4 +45,4 @@ class TextFields extends React.Component {
    }
 }
 
-export default TextFields;
+export default Recommendations;

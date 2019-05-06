@@ -26,22 +26,6 @@ const styles = theme => ({
    }
 });
 
-const fetchFoods = (endpoint) => {
-   console.log(JSON.stringify(endpoint));
-   return fetch(endpoint)
-      .then(response => response.json())
-      .then(data => {
-         this.setState({values: data.value});
-      });
-};
-
-const updateResults = async () => {
-   const {foodId} = this.state;
-   if (foodId !== '') {
-      await this.fetchFoods(`/api/v1/food/id/${foodId}`);
-   }
-};
-
 const ResultsTable = (props) => {
    const {classes, values} = props;
 
