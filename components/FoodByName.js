@@ -23,7 +23,6 @@ class FoodByName extends Component {
    }
 
    fetchFoods = (endpoint) => {
-      console.log(JSON.stringify(endpoint));
       return fetch(endpoint)
          .then(response => response.json())
          .then(data => {
