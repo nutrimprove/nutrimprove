@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const {connection} = require('../database/db');
-const queries = require('../database/queries');
+const {queries} = require('../database/queries');
 
 const apiPath = '/api/v1';
 

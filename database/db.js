@@ -1,6 +1,6 @@
 require('dotenv').config();
 
-const queries = require('./queries');
+const {queries} = require('./queries');
 const mysql = require('mysql');
 const {response} = require('./response');
 

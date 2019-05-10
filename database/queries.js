@@ -80,5 +80,5 @@ const testFoods =
       }]
    };
 
-module.exports = queries;
-module.exports = testFoods;
+module.exports.queries = queries;
+module.exports.testFoods = testFoods;
