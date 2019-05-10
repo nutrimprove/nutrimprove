@@ -2,6 +2,7 @@ import {Component} from "react";
 import ResultsTable from "./FoodFullResults";
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import {fetchFoodById} from "../connect/api";
 
 const textField = {
    width: 200,
@@ -22,23 +23,14 @@ class FoodById extends Component {
       };
    }
 
-   fetchFoods = (endpoint) => {
-      console.log(JSON.stringify(endpoint));
-      return fetch(endpoint)
-         .then(response => response.json())
-         .then(data => {
-            this.setState({values: data.value});
-         });
-   };
-
    updateId = (foodId) => {
       this.setState({foodId});
    };
 
-   updateResults = async () => {
+   updateResults = () => {
       const {foodId} = this.state;
       if (foodId !== '') {
-         await this.fetchFoods(`/api/v1/food/id/${foodId}`);
+         fetchFoodById(foodId).then((values) => this.setState({values}));
       }
    };
 

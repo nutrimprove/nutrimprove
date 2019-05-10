@@ -6,17 +6,13 @@ import {withStyles} from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Paper from '@material-ui/core/Paper';
 import MenuItem from '@material-ui/core/MenuItem';
+import {fetchFoods} from "../connect/api";
 
 let foods = null;
 
-const fetchFoods = (endpoint) =>
-   fetch(endpoint)
-      .then(response => response.json())
-      .then(data => data.value);
-
 const getFoods = async () => {
    if (!foods) {
-      foods = await fetchFoods(`/api/v1/foods`);
+      foods = await fetchFoods();
    }
 };
 

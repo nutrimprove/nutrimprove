@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Button from "@material-ui/core/Button";
 import RecommendationsResults from "./RecommendationsResults";
+import {fetchRecommendations} from "../connect/api";
 
 const buttonStyles = {
    verticalAlign: 'bottom',
@@ -15,17 +16,8 @@ class Recommendations extends Component {
       };
    }
 
-   fetchFoods = (endpoint) => {
-      console.log(JSON.stringify(endpoint));
-      return fetch(endpoint)
-         .then(response => response.json())
-         .then(data => {
-            this.setState({values: data.value});
-         });
-   };
-
-   updateResults = async () => {
-      await this.fetchFoods(`/api/v1/recommendations`);
+   updateResults = () => {
+      fetchRecommendations().then((values) => this.setState({values}));
    };
 
    render() {
