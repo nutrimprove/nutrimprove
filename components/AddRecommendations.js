@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import AutoCompleteField from './SearchFoodField';
 import Button from "@material-ui/core/Button";
 
-
 const buttonStyles = {
    verticalAlign: 'bottom',
    marginLeft: 10,
