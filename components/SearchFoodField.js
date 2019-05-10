@@ -62,7 +62,7 @@ renderSuggestion.propTypes = {
    index: PropTypes.number,
    itemProps: PropTypes.object,
    selectedItem: PropTypes.string,
-   suggestion: PropTypes.shape({label: PropTypes.string}).isRequired,
+   suggestion: PropTypes.string.isRequired,
 };
 
 const getSuggestions = (value) => {
