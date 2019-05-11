@@ -1,8 +1,8 @@
 require('dotenv').config();
 
-const queries = require('./queries');
+const {queries} = require('./queries');
 const mysql = require('mysql');
-const { response } = require('./response');
+const {response} = require('./response');
 
 const db_config = {
    connectionLimit: 50,
@@ -11,7 +11,7 @@ const db_config = {
    database: `${process.env.DATABASE}`,
    password: `${process.env.PASSWORD}`,
 };
-const mysql_pool  = mysql.createPool(db_config);
+const mysql_pool = mysql.createPool(db_config);
 
 const statusCheck = (req, res) => connection(req, res);
 
@@ -35,7 +35,7 @@ const connection = (req, res, query) => mysql_pool.getConnection((err, conn) => 
          response(res, err2, 'Status check failed');
       } else {
          const val = rows[0] ? rows[0]['val'] : '';
-         if (val === 'OK' ) {
+         if (val === 'OK') {
             query ? runQuery() : response(res, err2, 'Status check successful');
          } else {
             response(res, 500, 'Database not ready');

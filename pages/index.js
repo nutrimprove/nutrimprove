@@ -1,6 +1,6 @@
 import Layout from '../components/Layout';
 import NavBar from "../components/NavBar";
-import { Component } from "react";
+import React, { Component } from "react";
 
 const layoutStyle = {
    margin: 20,

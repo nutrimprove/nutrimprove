@@ -1,7 +1,7 @@
 const morgan = require('morgan');
 const express = require('express');
 const next = require('next');
-const {statusCheck} = require('./database/db');
+const {statusCheck} = require('./connect/db');
 const favicon = require('serve-favicon');
 
 const dev = process.env.NODE_ENV !== 'production';

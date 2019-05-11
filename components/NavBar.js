@@ -4,15 +4,16 @@ import AppBar from '@material-ui/core/AppBar/index';
 import Tabs from '@material-ui/core/Tabs/index';
 import Tab from '@material-ui/core/Tab/index';
 import Typography from '@material-ui/core/Typography/index';
-import { Component } from "react";
-import FoodByName from "./FoodByName";
-import FoodById from "./FoodById";
-import AllFoods from "./AllFoods";
-import Recommendations from "./Recommendations";
+import React, { Component } from 'react';
+import FoodByName from './FoodByName';
+import FoodById from './FoodById';
+import AllFoods from './AllFoods';
+import Recommendations from './Recommendations';
+import AddRecommendations from './AddRecommendations';
 
 function TabContainer(props) {
    return (
-      <Typography component="div" style={{padding: 8 * 3}}>
+      <Typography component='div' style={{padding: 8 * 3}}>
          {props.children}
       </Typography>
    );
@@ -57,12 +58,13 @@ class NavBar extends Component {
 
       return (
          <div className={classes.root}>
-            <AppBar position="static">
+            <AppBar position='static'>
                <Tabs value={tab} onChange={this.tabChange}>
-                  <Tab label="Food by Name"/>
-                  <Tab label="Food by ID"/>
-                  <Tab label="All foods"/>
-                  <Tab label="Recommendations"/>>
+                  <Tab label='Food by Name'/>
+                  <Tab label='Food by ID'/>
+                  <Tab label='All foods'/>
+                  <Tab label='Recommendations'/>
+                  <Tab label='Add Recommendations'/>
                </Tabs>
             </AppBar>
             {tab === 0 && <TabContainer id='foodByName'>
@@ -76,6 +78,9 @@ class NavBar extends Component {
             </TabContainer>}
             {tab === 3 && <TabContainer id='recommendations'>
                <Recommendations/>
+            </TabContainer>}
+            {tab === 4 && <TabContainer id='addRecommendations'>
+               <AddRecommendations/>
             </TabContainer>}
          </div>
       );

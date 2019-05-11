@@ -1,6 +1,7 @@
 import {Component} from "react";
 import ResultsTable from "./FoodFullResults";
 import Button from '@material-ui/core/Button';
+import {fetchFoods} from "../connect/api";
 
 const buttonStyles = {
    verticalAlign: 'bottom',
@@ -15,17 +16,8 @@ class AllFoods extends Component {
       };
    }
 
-   fetchFoods = (endpoint) => {
-      console.log(JSON.stringify(endpoint));
-      return fetch(endpoint)
-         .then(response => response.json())
-         .then(data => {
-            this.setState({values: data.value});
-         });
-   };
-
-   updateResults = async () => {
-      await this.fetchFoods(`/api/v1/foods`);
+   updateResults = () => {
+      fetchFoods().then((values) => this.setState({values}));
    };
 
    render() {
