@@ -1,3 +1,4 @@
+import React from "react";
 import PropTypes from 'prop-types';
 import {withStyles, AppBar, Toolbar, Typography, Link} from '@material-ui/core';
 

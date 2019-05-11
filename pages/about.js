@@ -1,4 +1,5 @@
-import Layout from '../components/Layout'
+import React from "react";
+import Page from '../components/Page'
 
 const layoutStyle = {
    margin: 20,
@@ -10,9 +11,9 @@ const layoutStyle = {
 const About = () => {
    return (
       <div id="about" style={layoutStyle}>
-         <Layout>
+         <Page>
             <p>About Eatwell</p>
-         </Layout>
+         </Page>
       </div>
    )
 };

@@ -1,6 +1,5 @@
-import Layout from '../components/Layout';
-import NavBar from "../components/NavBar";
-import React, { Component } from "react";
+import React from "react";
+import Page from '../components/Page';
 
 const layoutStyle = {
    margin: 20,
@@ -9,15 +8,12 @@ const layoutStyle = {
    minWidth: 800,
 };
 
-class Index extends Component {
-   render() {
+const Index = () => {
       return (
-         <div id='main' style={layoutStyle}>
-            <Layout/>
-            <NavBar />
+         <div id='app' style={layoutStyle}>
+            <Page />
          </div>
       );
-   };
-}
+};
 
 export default Index;

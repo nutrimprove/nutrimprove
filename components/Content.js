@@ -30,7 +30,7 @@ const styles = theme => ({
    },
 });
 
-class NavBar extends Component {
+class Content extends Component {
    constructor(props) {
       super(props);
 
@@ -38,15 +38,6 @@ class NavBar extends Component {
          tab: 0,
       };
    }
-
-   fetchFoods = (endpoint) => {
-      fetch(endpoint)
-         .then(response => response.json())
-         .then(data => {
-            this.setState({values: data.value});
-         });
-      console.log(JSON.stringify(endpoint));
-   };
 
    tabChange = (event, tab) => {
       this.setState({tab});
@@ -87,8 +78,8 @@ class NavBar extends Component {
    }
 }
 
-NavBar.propTypes = {
+Content.propTypes = {
    classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(NavBar);
+export default withStyles(styles)(Content);
