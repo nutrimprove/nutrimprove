@@ -12,9 +12,10 @@ const buttonStyles = {
 const recBoxStyle = {
   float: 'left',
   marginRight: 80,
+  marginBottom: 30,
+  width: 300,
   border: '1px dashed #ddd',
   padding: 20,
-  marginBottom: 30,
 };
 
 const AddRecommendations = () => {
@@ -26,46 +27,39 @@ const AddRecommendations = () => {
   const getRecommendationName = (index) => recommendations[index].foodname;
 
   const addField = () => {
-    const newFoodFields = [];
-    newFoodFields.push(...foodFields);
-
-    const index = newFoodFields.length;
     const uid = uniqid();
-    newFoodFields.push(
-      <Fragment key={uid}>
+    setFoodFields([...foodFields,
+      <div key={uid} style={{display: '-webkit-box'}}>
         <AutoCompleteField set={setFoods} className='foods'/>
-        <Button onClick={(e) => removeField(e, uid)}>-</Button>
-      </Fragment>
-    );
-    setFoodFields(newFoodFields);
+        {foodFields.length > 0 && <Button onClick={() => removeField(uid)}>-</Button>}
+      </div>
+    ]);
   };
 
-   // Index needs to be unique and need to find a way to remove specific element.
+  const removeField = (uid) => {
+    //const newFoodFields = [];
+    //console.log(`===Uid====> ${JSON.stringify(uid)}`);
+    console.log(`====foodFields===> ${JSON.stringify(foodFields.map(field => field.key))}`);
+
+
+    // foodFields.forEach(field => {
+    //   console.log(`====Field===> ${JSON.stringify(field.key)}`);
+    //   if (field.key === uid) {
+    //     console.log(`====ADD===> ${JSON.stringify(field.key)}`);
+    //     newFoodFields.push(field);
+    //   } else {
+    //     console.log(`====REMOVE===> ${JSON.stringify(field.key)}`);
+    //   }
+    // });
+
+    setFoodFields(foodFields);
+    //console.log(`====AFTER_newFoodFields===> ${JSON.stringify(newFoodFields.map((field) => field.key))}`);
+    //console.log(`====AFTER_foodFields===> ${JSON.stringify(foodFields.map((field) => field.key))}`);
+
+  };
 
   const update = () => {
-    console.log(`====PING===> ${JSON.stringify(foodFields.map((field) => field.key))}`);
-  };
-
-  const removeField = (e, uid) => {
-    let newFoodFields = [...foodFields];
-    console.log(`====BEFORE===> ${JSON.stringify(newFoodFields.map((field) => field.key))}`);
-    console.log(`====UID===> ${uid}`);
-
-    const fieldWithUid = newFoodFields.find(field => {
-      console.log(field);
-      if(field.key === uid) {
-        console.log('YES');
-        return field;
-      }
-    });
-    console.log(`====fieldWithUid===> ${fieldWithUid}`);
-    const index = newFoodFields.indexOf(fieldWithUid);
-    console.log(`====INDEX===> ${index}`);
-    if (index !== -1) {
-      newFoodFields.splice(index, 1);
-      setFoodFields(newFoodFields);
-      console.log(`====AFTER===> ${JSON.stringify(newFoodFields.map((field) => field.key))}`);
-    }
+    console.log(`====PING===> ${JSON.stringify(foodFields.map(field => field.key))}`);
   };
 
   useEffect(() => {
@@ -77,7 +71,7 @@ const AddRecommendations = () => {
 
   return (
     <form style={{display: 'flex'}}>
-      <div style={{display: 'block'}}>
+      <div>
         <div style={recBoxStyle}>
           <div style={{marginBottom: 30}}>Choose food(s):</div>
           <div id='foods_input'>
