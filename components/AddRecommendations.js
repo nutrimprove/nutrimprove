@@ -1,77 +1,122 @@
-import React, {Component} from 'react';
+import React, {Fragment, useEffect, useState} from 'react';
+import uniqid from 'uniqid';
+import _ from 'lodash';
 import AutoCompleteField from './SearchFoodField';
-import Button from "@material-ui/core/Button";
+import RemoveIcon from "./RemoveIcon";
+import RemoveIconDisabled from "./RemoveIconDisabled";
+import {fetchFoods} from "../connect/api";
+import AddButton from "./AddButton";
+import AddButtonDisabled from "./AddButtonDisabled";
 
-const buttonStyles = {
-   verticalAlign: 'bottom',
-   marginLeft: 10,
+
+const maxFields = 4;
+
+const styles = {
+  fieldBox: {
+    float: 'left',
+    marginRight: 80,
+    marginBottom: 30,
+    width: 300,
+    border: '1px dashed #ddd',
+    padding: 20,
+  },
+  title: {
+    marginBottom: 30,
+    fontWeight: 'bold',
+  },
 };
 
-const recBoxStyle = {
-   float: 'left',
-   marginRight: 80,
-   border: '1px dashed #ddd',
-   padding: 20,
-   marginBottom: 30,
+const AddRecommendations = () => {
+  const [foodList, setFoodList] = useState();
+  const [recommendations, setRecommendations] = useState([]);
+  const [foods, setFoods] = useState([]);
+
+  const getFoodName = (index) => foodList[index].foodname;
+  const getRecommendationName = (index) => recommendations[index].foodname;
+
+  const addFood = () => {
+    const uid = uniqid();
+    setFoods([
+      ...foods,
+      {
+        key: uid,
+        food: ''
+      }
+    ]);
+  };
+
+  const addRecommendation = () => {
+    const uid = uniqid();
+    setRecommendations([
+      ...recommendations,
+      {
+        key: uid,
+        recommendation: ''
+      }
+    ]);
+  };
+
+  const filter = (items, key) => items.filter(item => item.key !== key);
+
+  const removeField = (item) =>
+    _.has(item, 'food')
+      ? setFoods(filter(foods, item.key))
+      : setRecommendations(filter(recommendations, item.key));
+
+  const isSingle = (item) =>
+    _.has(item, 'food')
+      ? foods.length === 1
+      : recommendations.length === 1;
+
+  const renderField = (item) => {
+    return <div key={item.key} style={{display: '-webkit-box'}}>
+      <AutoCompleteField className='food'/>
+      {isSingle(item)
+        ? <RemoveIconDisabled removeField={removeField} item={item}/>
+        : <RemoveIcon removeField={removeField} item={item}/>}
+    </div>
+  };
+
+  const update = () => {
+    console.log(`====Foods===> ${JSON.stringify(foods.map(field => field.key))}`);
+    console.log(`====Recs===> ${JSON.stringify(recommendations.map(field => field.key))}`);
+  };
+
+  useEffect(() => {
+    fetchFoods().then((values) => {
+      setFoodList(values);
+      addFood();
+      addRecommendation();
+    });
+  }, []);
+
+  return (
+    <Fragment>
+      <div style={{display: 'flex'}}>
+        <div style={styles.fieldBox}>
+          <div className='title' style={styles.title}>Choose food(s):</div>
+          <div id='foods_input'>
+            {foods.map(food => renderField(food))}
+            {foods.length < maxFields
+              ? <AddButton action={addFood} text='Add'/>
+              : <AddButtonDisabled text='Add'/>}
+          </div>
+        </div>
+        <div style={styles.fieldBox}>
+          <div className='title' style={styles.title}>Healthier alternatives(s):</div>
+          <div id='recommendations_input'>
+            {recommendations.map(recommendation => renderField(recommendation))}
+            {recommendations.length < maxFields
+              ? <AddButton action={addRecommendation} text='Add'/>
+              : <AddButtonDisabled text='Add'/>}
+          </div>
+        </div>
+      </div>
+      <div id='submit' style={{marginTop: 20}}>
+        <AddButton action={update} text='Add recommendation(s)'/>
+      </div>
+    </Fragment>
+  )
 };
-
-class AddRecommendations extends Component {
-
-   state = {
-      food_one: 'Apple',
-      food_two: '',
-      food_three: '',
-      rec_one: '',
-      rec_two: '',
-      rec_three: '',
-   };
-
-   fetchFoods = (endpoint) => {
-      return fetch(endpoint)
-         .then(response => response.json())
-         .then(data => {
-            this.setState({values: data.value});
-         });
-   };
-
-   updateResults = async () => {
-      await this.fetchFoods(`/api/v1/recommendations`);
-   };
-
-   setValue = (food) => {
-      this.setState(() => food);
-   };
-
-   render() {
-      return (
-         <form style={{display: 'flex'}}>
-            <div id='input_foods' style={{display: 'block'}}>
-               <div style={recBoxStyle}>
-                  <div style={{marginBottom: 30}}>Choose food(s):</div>
-                  <AutoCompleteField value={this.state.food_one} set={this.setValue} id='food_one'/>
-                  <AutoCompleteField value={this.state.food_two} id='food_two'/>
-                  <AutoCompleteField value={this.state.food_three} id='food_three'/>
-               </div>
-               <div style={recBoxStyle}>
-                  <div style={{marginBottom: 30}}>Recommendation(s) for selected food(s):</div>
-                  <AutoCompleteField value={this.state.rec_one} id='rec_one'/>
-                  <AutoCompleteField value={this.state.rec_two} id='rec_two'/>
-                  <AutoCompleteField value={this.state.rec_three} id='rec_three'/>
-               </div>
-               <div id='submit' style={{marginTop: 20}}>
-                  <Button
-                     style={buttonStyles}
-                     variant="contained"
-                     color="primary"
-                  >
-                     Add recommendation(s)
-                  </Button>
-               </div>
-            </div>
-
-         </form>
-      )
-   }
-}
 
 export default AddRecommendations;

@@ -115,7 +115,7 @@ const styles = theme => ({
 const SearchFoodField = (props) => {
    const {classes} = props;
 
-   getFoods().then(() => console.log(foods));
+   getFoods();
 
    return (
       <div className={classes.root}>

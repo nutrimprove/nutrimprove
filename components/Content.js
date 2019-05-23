@@ -1,10 +1,10 @@
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles/index';
 import AppBar from '@material-ui/core/AppBar/index';
 import Tabs from '@material-ui/core/Tabs/index';
 import Tab from '@material-ui/core/Tab/index';
 import Typography from '@material-ui/core/Typography/index';
-import React, { Component } from 'react';
 import FoodByName from './FoodByName';
 import FoodById from './FoodById';
 import AllFoods from './AllFoods';
@@ -30,53 +30,43 @@ const styles = theme => ({
    },
 });
 
-class Content extends Component {
-   constructor(props) {
-      super(props);
+const Content = (props) => {
+   const {classes} = props;
+   const [tab, setTab] = useState(4);
 
-      this.state = {
-         tab: 0,
-      };
-   }
-
-   tabChange = (event, tab) => {
-      this.setState({tab});
+   const tabChange = (event, tab) => {
+      setTab(tab);
    };
 
-   render() {
-      const {classes} = this.props;
-      const {tab} = this.state;
-
-      return (
-         <div className={classes.root}>
-            <AppBar position='static'>
-               <Tabs value={tab} onChange={this.tabChange}>
-                  <Tab label='Food by Name'/>
-                  <Tab label='Food by ID'/>
-                  <Tab label='All foods'/>
-                  <Tab label='Recommendations'/>
-                  <Tab label='Add Recommendations'/>
-               </Tabs>
-            </AppBar>
-            {tab === 0 && <TabContainer id='foodByName'>
-               <FoodByName/>
-            </TabContainer>}
-            {tab === 1 && <TabContainer id='foodByID'>
-               <FoodById/>
-            </TabContainer>}
-            {tab === 2 && <TabContainer id='allFoods'>
-               <AllFoods/>
-            </TabContainer>}
-            {tab === 3 && <TabContainer id='recommendations'>
-               <Recommendations/>
-            </TabContainer>}
-            {tab === 4 && <TabContainer id='addRecommendations'>
-               <AddRecommendations/>
-            </TabContainer>}
-         </div>
-      );
-   }
-}
+   return (
+      <div className={classes.root}>
+         <AppBar position='static'>
+            <Tabs value={tab} onChange={tabChange}>
+               <Tab label='Food by Name'/>
+               <Tab label='Food by ID'/>
+               <Tab label='All foods'/>
+               <Tab label='Recommendations'/>
+               <Tab label='Add Recommendations'/>
+            </Tabs>
+         </AppBar>
+         {tab === 0 && <TabContainer id='foodByName'>
+            <FoodByName/>
+         </TabContainer>}
+         {tab === 1 && <TabContainer id='foodByID'>
+            <FoodById/>
+         </TabContainer>}
+         {tab === 2 && <TabContainer id='allFoods'>
+            <AllFoods/>
+         </TabContainer>}
+         {tab === 3 && <TabContainer id='recommendations'>
+            <Recommendations/>
+         </TabContainer>}
+         {tab === 4 && <TabContainer id='addRecommendations'>
+            <AddRecommendations/>
+         </TabContainer>}
+      </div>
+   );
+};
 
 Content.propTypes = {
    classes: PropTypes.object.isRequired,
