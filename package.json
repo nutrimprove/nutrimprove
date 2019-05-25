@@ -8,7 +8,7 @@
     "build": "next build",
     "start": "cross-env NODE_ENV=production nodemon app.js",
     "pm2": "pm2 start app.js",
-    "lint": "eslint .",
+    "lint": "eslint . --fix",
     "prettier": "prettier \"**/*.+(js|jsx|json|yml|yaml|css|less|scss|ts|tsx|md|mdx|graphql)\"",
     "format": "yarn prettier -- --write",
     "validate": "yarn lint && yarn prettier -- --list-different"
