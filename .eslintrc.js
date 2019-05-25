@@ -7,6 +7,15 @@ module.exports = {
     browser: true,
     node: true,
   },
+  settings: {
+    react: {
+      version: 'detect',
+    },
+    linkComponents: [
+      // Components used as alternatives to <a> for linking, eg. <Link to={ url } />
+      { name: 'Link', linkAttribute: 'to' },
+    ],
+  },
   plugins: ['jsx-a11y', 'import'],
   extends: [
     'standard',
