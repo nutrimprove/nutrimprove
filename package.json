@@ -9,7 +9,9 @@
     "start": "cross-env NODE_ENV=production nodemon app.js",
     "pm2": "pm2 start app.js",
     "lint": "eslint .",
-    "format": "prettier \"**/*.+(js|jsx|json|yml|yaml|css|less|scss|ts|tsx|md|mdx|graphql|vue)\""
+    "prettier": "prettier \"**/*.+(js|jsx|json|yml|yaml|css|less|scss|ts|tsx|md|mdx|graphql)\"",
+    "format": "yarn prettier -- --write",
+    "validate": "yarn lint && yarn prettier -- --list-different"
   },
   "author": "Joao Jesus",
   "license": "UNLICENSED",
