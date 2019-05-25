@@ -3,6 +3,7 @@
 ## Stack
 - [Next.js](https://nextjs.org/)
 - [Express](https://expressjs.com/)
+- [MariaDB](https://aws.amazon.com/rds/mariadb/)
 
 ## Usage
 - Ensure you have the `.env` file locally on your machine
