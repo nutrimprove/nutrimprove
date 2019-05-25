@@ -8,7 +8,8 @@
     "build": "next build",
     "start": "cross-env NODE_ENV=production nodemon app.js",
     "pm2": "pm2 start app.js",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "format": "prettier \"**/*.+(js|jsx|json|yml|yaml|css|less|scss|ts|tsx|md|mdx|graphql|vue)\""
   },
   "author": "Joao Jesus",
   "license": "UNLICENSED",
@@ -33,6 +34,7 @@
     "body-parser": "^1.18.3",
     "cross-env": "^5.2.0",
     "eslint": "^5.16.0",
+    "eslint-config-prettier": "^4.3.0",
     "eslint-config-standard": "^12.0.0",
     "eslint-plugin-import": "^2.17.3",
     "eslint-plugin-jsx-a11y": "^6.2.1",
@@ -40,6 +42,7 @@
     "eslint-plugin-promise": "^4.1.1",
     "eslint-plugin-react": "^7.13.0",
     "eslint-plugin-standard": "^4.0.0",
-    "nodemon": "^1.18.11"
+    "nodemon": "^1.18.11",
+    "prettier": "^1.17.1"
   }
 }
