@@ -1,4 +1,19 @@
-# eatwell
+# EatWell
+
+## Stack
+- [Next.js](https://nextjs.org/)
+- [Express](https://expressjs.com/)
+- [MariaDB](https://aws.amazon.com/rds/mariadb/)
+
+## Usage
+- Ensure you have the `.env` file locally on your machine
+
+- `git clone https://github.com/whit3kr0w/eatwell`
+- `yarn install`
+
+[TODO - FILL IN DEV COMMANDS]
+
+[TODO - FILL IN DEPLOYMENT INSTRUCTIONS]
 
 ## Processes
 
@@ -12,7 +27,7 @@
   - In Progress - Self-explanatory
   - Done - Self-explanatory
 
-### Git Trunk
+### Git Trunk
 - This project uses the [Git Trunk](https://trunkbaseddevelopment.com/) model for source control
 - Branches should be short and directly related to features with the branch name starting with the issue number
 - There is no dev branch or similar - PRs go straight to master.
