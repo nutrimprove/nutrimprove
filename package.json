@@ -12,9 +12,7 @@
     "lint": "eslint . --fix",
     "prettier": "prettier \"**/*.+(js|jsx|json|yml|yaml|css|less|scss|ts|tsx|md|mdx|graphql)\"",
     "format": "yarn prettier -- --write",
-    "validate": "yarn lint && yarn prettier -- --list-different"
-  },
-  "husky": {
+    "validate": "yarn lint && yarn prettier -- --list-different",
     "precommit": "lint-staged"
   },
   "author": "Joao Jesus",
