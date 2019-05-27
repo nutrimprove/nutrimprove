@@ -12,8 +12,7 @@
     "lint": "eslint . --fix",
     "prettier": "prettier \"**/*.+(js|jsx|json|yml|yaml|css|less|scss|ts|tsx|md|mdx|graphql)\"",
     "format": "yarn prettier -- --write",
-    "validate": "yarn lint && yarn prettier -- --list-different",
-    "precommit": "lint-staged"
+    "validate": "yarn lint && yarn prettier -- --list-different"
   },
   "author": "Joao Jesus",
   "license": "UNLICENSED",
@@ -55,5 +54,10 @@
     "lint-staged": "^8.1.7",
     "nodemon": "^1.18.11",
     "prettier": "^1.17.1"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   }
 }
