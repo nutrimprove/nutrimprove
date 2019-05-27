@@ -7,7 +7,10 @@ function RemoveIcon(props) {
   const { removeField, item } = props;
   return (
     <div>
-      <IconButton aria-label="remove-button" onClick={() => removeField(item)}>
+      <IconButton
+        aria-label='remove-button'
+        onClick={() => removeField(item)}
+      >
         <DeleteIcon />
       </IconButton>
     </div>

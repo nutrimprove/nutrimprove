@@ -1,16 +1,12 @@
-import React, {Fragment} from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import Button from "@material-ui/core/Button";
+import Button from '@material-ui/core/Button';
 
-const AddButtonDisabled = (props) => {
-  const {text} = props;
+const AddButtonDisabled = props => {
+  const { text } = props;
   return (
     <Fragment>
-      <Button
-        variant="contained"
-        color="primary"
-        disabled
-      >
+      <Button variant='contained' color='primary' disabled>
         {text}
       </Button>
     </Fragment>

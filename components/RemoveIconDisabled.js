@@ -5,7 +5,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 function RemoveIcon() {
   return (
     <div>
-      <IconButton aria-label="disabled-remove-button" disabled>
+      <IconButton aria-label='disabled-remove-button' disabled>
         <DeleteIcon />
       </IconButton>
     </div>
