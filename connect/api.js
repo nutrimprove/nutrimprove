@@ -6,7 +6,7 @@ const recommendationsEndpoint = '/api/v1/recommendations';
 const foodByIdEndpoint = '/api/v1/food/id';
 const foodByNameEndpoint = '/api/v1/food/name';
 
-const getString = string =>
+export const getString = string =>
   string
     .toString()
     .trim()
