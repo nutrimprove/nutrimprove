@@ -6,6 +6,7 @@ module.exports = {
   env: {
     browser: true,
     node: true,
+    'jest/globals': true,
   },
   settings: {
     react: {
@@ -16,12 +17,13 @@ module.exports = {
       { name: 'Link', linkAttribute: 'to' },
     ],
   },
-  plugins: ['jsx-a11y', 'import'],
+  plugins: ['jsx-a11y', 'import', 'jest'],
   extends: [
     'standard',
     'plugin:react/recommended',
     'plugin:import/warnings',
     'plugin:jsx-a11y/recommended',
+    'plugin:jest/recommended',
     'eslint-config-prettier', // later plugins override earlier ones so keep this near the bottom
   ],
   rules: {
