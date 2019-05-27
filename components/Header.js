@@ -1,18 +1,18 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import React from 'react';
+import PropTypes from 'prop-types';
 import {
   withStyles,
   AppBar,
   Toolbar,
   Typography,
   Link,
-} from '@material-ui/core'
+} from '@material-ui/core';
 
 const styles = {
   root: {
     flexGrow: 1,
   },
-}
+};
 
 const logo = {
   marginRight: 15,
@@ -22,10 +22,10 @@ const logo = {
   height: 50,
   width: 50,
   padding: 10,
-}
+};
 
 const Header = props => {
-  const { classes } = props
+  const { classes } = props;
 
   return (
     <div className={classes.root}>
@@ -45,11 +45,11 @@ const Header = props => {
         </Toolbar>
       </AppBar>
     </div>
-  )
-}
+  );
+};
 
 Header.propTypes = {
   classes: PropTypes.object.isRequired,
-}
+};
 
-export default withStyles(styles)(Header)
+export default withStyles(styles)(Header);

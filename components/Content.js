@@ -1,42 +1,42 @@
-import React, { useState } from 'react'
-import PropTypes from 'prop-types'
-import { withStyles } from '@material-ui/core/styles/index'
-import AppBar from '@material-ui/core/AppBar/index'
-import Tabs from '@material-ui/core/Tabs/index'
-import Tab from '@material-ui/core/Tab/index'
-import Typography from '@material-ui/core/Typography/index'
-import FoodByName from './FoodByName'
-import FoodById from './FoodById'
-import AllFoods from './AllFoods'
-import Recommendations from './Recommendations'
-import AddRecommendations from './AddRecommendations'
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles/index';
+import AppBar from '@material-ui/core/AppBar/index';
+import Tabs from '@material-ui/core/Tabs/index';
+import Tab from '@material-ui/core/Tab/index';
+import Typography from '@material-ui/core/Typography/index';
+import FoodByName from './FoodByName';
+import FoodById from './FoodById';
+import AllFoods from './AllFoods';
+import Recommendations from './Recommendations';
+import AddRecommendations from './AddRecommendations';
 
 function TabContainer(props) {
   return (
     <Typography component='div' style={{ padding: 8 * 3 }}>
       {props.children}
     </Typography>
-  )
+  );
 }
 
 TabContainer.propTypes = {
   children: PropTypes.node.isRequired,
-}
+};
 
 const styles = theme => ({
   root: {
     flexGrow: 1,
     backgroundColor: theme.palette.background.paper,
   },
-})
+});
 
 const Content = props => {
-  const { classes } = props
-  const [tab, setTab] = useState(4)
+  const { classes } = props;
+  const [tab, setTab] = useState(4);
 
   const tabChange = (event, tab) => {
-    setTab(tab)
-  }
+    setTab(tab);
+  };
 
   return (
     <div className={classes.root}>
@@ -75,11 +75,11 @@ const Content = props => {
         </TabContainer>
       )}
     </div>
-  )
-}
+  );
+};
 
 Content.propTypes = {
   classes: PropTypes.object.isRequired,
-}
+};
 
-export default withStyles(styles)(Content)
+export default withStyles(styles)(Content);

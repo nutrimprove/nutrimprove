@@ -1,23 +1,23 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import deburr from 'lodash/deburr'
-import Downshift from 'downshift'
-import { withStyles } from '@material-ui/core/styles'
-import TextField from '@material-ui/core/TextField'
-import Paper from '@material-ui/core/Paper'
-import MenuItem from '@material-ui/core/MenuItem'
-import { fetchFoods } from '../connect/api'
+import React from 'react';
+import PropTypes from 'prop-types';
+import deburr from 'lodash/deburr';
+import Downshift from 'downshift';
+import { withStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
+import Paper from '@material-ui/core/Paper';
+import MenuItem from '@material-ui/core/MenuItem';
+import { fetchFoods } from '../connect/api';
 
-let foods = null
+let foods = null;
 
 const getFoods = async () => {
   if (!foods) {
-    foods = await fetchFoods()
+    foods = await fetchFoods();
   }
-}
+};
 
 const renderInput = inputProps => {
-  const { InputProps, classes, ref, ...other } = inputProps
+  const { InputProps, classes, ref, ...other } = inputProps;
 
   return (
     <TextField
@@ -31,8 +31,8 @@ const renderInput = inputProps => {
       }}
       {...other}
     />
-  )
-}
+  );
+};
 
 const renderSuggestion = ({
   suggestion,
@@ -41,8 +41,8 @@ const renderSuggestion = ({
   highlightedIndex,
   selectedItem,
 }) => {
-  const isHighlighted = highlightedIndex === index
-  const isSelected = (selectedItem || '').indexOf(suggestion) > -1
+  const isHighlighted = highlightedIndex === index;
+  const isSelected = (selectedItem || '').indexOf(suggestion) > -1;
 
   return (
     <MenuItem
@@ -56,8 +56,8 @@ const renderSuggestion = ({
     >
       {suggestion}
     </MenuItem>
-  )
-}
+  );
+};
 
 renderSuggestion.propTypes = {
   highlightedIndex: PropTypes.number,
@@ -65,13 +65,13 @@ renderSuggestion.propTypes = {
   itemProps: PropTypes.object,
   selectedItem: PropTypes.string,
   suggestion: PropTypes.string.isRequired,
-}
+};
 
 const getSuggestions = value => {
-  const inputValue = deburr(value.trim()).toLowerCase()
-  const inputLength = inputValue.length
+  const inputValue = deburr(value.trim()).toLowerCase();
+  const inputLength = inputValue.length;
 
-  let count = 0
+  let count = 0;
 
   return inputLength < 3
     ? []
@@ -79,15 +79,15 @@ const getSuggestions = value => {
         .map(food => food.foodname)
         .filter(suggestion => {
           const keep =
-            count < 20 && suggestion.toLowerCase().includes(inputValue)
+            count < 20 && suggestion.toLowerCase().includes(inputValue);
 
           if (keep) {
-            count += 1
+            count += 1;
           }
 
-          return keep
-        })
-}
+          return keep;
+        });
+};
 
 const styles = theme => ({
   root: {
@@ -118,12 +118,12 @@ const styles = theme => ({
   divider: {
     height: theme.spacing.unit * 2,
   },
-})
+});
 
 const SearchFoodField = props => {
-  const { classes } = props
+  const { classes } = props;
 
-  getFoods()
+  getFoods();
 
   return (
     <div className={classes.root}>
@@ -165,11 +165,11 @@ const SearchFoodField = props => {
       </Downshift>
       <div className={classes.divider} />
     </div>
-  )
-}
+  );
+};
 
 SearchFoodField.propTypes = {
   classes: PropTypes.object.isRequired,
-}
+};
 
-export default withStyles(styles)(SearchFoodField)
+export default withStyles(styles)(SearchFoodField);

@@ -1,12 +1,12 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import TableHead from '@material-ui/core/TableHead/index'
-import TableRow from '@material-ui/core/TableRow/index'
-import TableCell from '@material-ui/core/TableCell/index'
-import Paper from '@material-ui/core/Paper/index'
-import Table from '@material-ui/core/Table/index'
-import TableBody from '@material-ui/core/TableBody/index'
-import { withStyles } from '@material-ui/core/styles/index'
+import React from 'react';
+import PropTypes from 'prop-types';
+import TableHead from '@material-ui/core/TableHead/index';
+import TableRow from '@material-ui/core/TableRow/index';
+import TableCell from '@material-ui/core/TableCell/index';
+import Paper from '@material-ui/core/Paper/index';
+import Table from '@material-ui/core/Table/index';
+import TableBody from '@material-ui/core/TableBody/index';
+import { withStyles } from '@material-ui/core/styles/index';
 
 const styles = theme => ({
   root: {
@@ -25,10 +25,10 @@ const styles = theme => ({
     minWidth: 100,
     padding: 10,
   },
-})
+});
 
 const ResultsTable = props => {
-  const { classes, values } = props
+  const { classes, values } = props;
 
   if (values && values.length > 0) {
     return (
@@ -69,15 +69,15 @@ const ResultsTable = props => {
           </Table>
         </Paper>
       </div>
-    )
+    );
   } else {
-    return <div id='results' />
+    return <div id='results' />;
   }
-}
+};
 
 ResultsTable.propTypes = {
   classes: PropTypes.object.isRequired,
   values: PropTypes.array.isRequired,
-}
+};
 
-export default withStyles(styles)(ResultsTable)
+export default withStyles(styles)(ResultsTable);

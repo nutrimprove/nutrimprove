@@ -6,7 +6,7 @@ const queries = {
   foodByName: name =>
     `SELECT * FROM eatwell_fooddata WHERE foodname LIKE "%${name}%";`,
   recommendations: `SELECT rec.id, fd.foodname, fd2.foodname as "recommendation", cont.name FROM eatwell_recommendations rec, eatwell_fooddata fd, eatwell_fooddata fd2, eatwell_contributors cont WHERE rec.food_id = fd.id AND rec.foodrec_id=fd2.id AND rec.contributor_id=cont.id;`,
-}
+};
 
 const testFoods = {
   timestamp: '2019-05-10T18:21:35.403Z',
@@ -86,7 +86,7 @@ const testFoods = {
       fibre: 1,
     },
   ],
-}
+};
 
 const testRecommendations = {
   timestamp: '2019-05-10T19:27:54.310Z',
@@ -124,8 +124,8 @@ const testRecommendations = {
       name: 'Joao Jesus',
     },
   ],
-}
+};
 
-module.exports.queries = queries
-module.exports.testFoods = testFoods
-module.exports.testRecommendations = testRecommendations
+module.exports.queries = queries;
+module.exports.testFoods = testFoods;
+module.exports.testRecommendations = testRecommendations;

@@ -1,27 +1,27 @@
-import React, { Component } from 'react'
-import Button from '@material-ui/core/Button'
-import RecommendationsResults from './RecommendationsResults'
-import { fetchRecommendations } from '../connect/api'
+import React, { Component } from 'react';
+import Button from '@material-ui/core/Button';
+import RecommendationsResults from './RecommendationsResults';
+import { fetchRecommendations } from '../connect/api';
 
 const buttonStyles = {
   verticalAlign: 'bottom',
   marginLeft: 10,
-}
+};
 
 class Recommendations extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       values: [],
-    }
+    };
   }
 
   updateResults = () => {
-    fetchRecommendations().then(values => this.setState({ values }))
-  }
+    fetchRecommendations().then(values => this.setState({ values }));
+  };
 
   render() {
-    const { values } = this.state
+    const { values } = this.state;
     return (
       <form>
         <Button
@@ -34,8 +34,8 @@ class Recommendations extends Component {
         </Button>
         <RecommendationsResults values={values} />
       </form>
-    )
+    );
   }
 }
 
-export default Recommendations
+export default Recommendations;

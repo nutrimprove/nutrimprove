@@ -1,14 +1,14 @@
-import React, { Fragment, useEffect, useState } from 'react'
-import uniqid from 'uniqid'
-import _ from 'lodash'
-import AutoCompleteField from './SearchFoodField'
-import RemoveIcon from './RemoveIcon'
-import RemoveIconDisabled from './RemoveIconDisabled'
-import { fetchFoods } from '../connect/api'
-import AddButton from './AddButton'
-import AddButtonDisabled from './AddButtonDisabled'
+import React, { Fragment, useEffect, useState } from 'react';
+import uniqid from 'uniqid';
+import _ from 'lodash';
+import AutoCompleteField from './SearchFoodField';
+import RemoveIcon from './RemoveIcon';
+import RemoveIconDisabled from './RemoveIconDisabled';
+import { fetchFoods } from '../connect/api';
+import AddButton from './AddButton';
+import AddButtonDisabled from './AddButtonDisabled';
 
-const maxFields = 4
+const maxFields = 4;
 
 const styles = {
   fieldBox: {
@@ -23,43 +23,45 @@ const styles = {
     marginBottom: 30,
     fontWeight: 'bold',
   },
-}
+};
 
 const AddRecommendations = () => {
-  const [recommendations, setRecommendations] = useState([])
-  const [foods, setFoods] = useState([])
+  const [recommendations, setRecommendations] = useState([]);
+  const [foods, setFoods] = useState([]);
 
   const addFood = () => {
-    const uid = uniqid()
+    const uid = uniqid();
     setFoods([
       ...foods,
       {
         key: uid,
         food: '',
       },
-    ])
-  }
+    ]);
+  };
 
   const addRecommendation = () => {
-    const uid = uniqid()
+    const uid = uniqid();
     setRecommendations([
       ...recommendations,
       {
         key: uid,
         recommendation: '',
       },
-    ])
-  }
+    ]);
+  };
 
-  const filter = (items, key) => items.filter(item => item.key !== key)
+  const filter = (items, key) => items.filter(item => item.key !== key);
 
   const removeField = item =>
     _.has(item, 'food')
       ? setFoods(filter(foods, item.key))
-      : setRecommendations(filter(recommendations, item.key))
+      : setRecommendations(filter(recommendations, item.key));
 
   const isSingle = item =>
-    _.has(item, 'food') ? foods.length === 1 : recommendations.length === 1
+    _.has(item, 'food')
+      ? foods.length === 1
+      : recommendations.length === 1;
 
   const renderField = item => {
     return (
@@ -71,25 +73,25 @@ const AddRecommendations = () => {
           <RemoveIcon removeField={removeField} item={item} />
         )}
       </div>
-    )
-  }
+    );
+  };
 
   const update = () => {
     console.log(
       `====Foods===> ${JSON.stringify(foods.map(field => field.key))}`
-    )
+    );
     console.log(
       `====Recs===> ${JSON.stringify(
         recommendations.map(field => field.key)
       )}`
-    )
-  }
+    );
+  };
 
   useEffect(() => {
     fetchFoods().then(values => {
-      addRecommendation()
-    })
-  }, [])
+      addRecommendation();
+    });
+  }, []);
 
   return (
     <Fragment>
@@ -127,7 +129,7 @@ const AddRecommendations = () => {
         <AddButton action={update} text='Add recommendation(s)' />
       </div>
     </Fragment>
-  )
-}
+  );
+};
 
-export default AddRecommendations
+export default AddRecommendations;
