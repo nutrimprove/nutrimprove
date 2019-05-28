@@ -13,9 +13,9 @@
     }
   ],
   "env": {
-    "SQL_HOST": "@sql_host",
-    "SQL_USER": "@sql_user",
-    "SQL_PASSWORD": "@sql_password",
-    "SQL_DATABASE": "@sql_database"
+    "DB_HOST": "@db_host",
+    "DB_USER": "@db_user",
+    "DB_PASSWORD": "@db_password",
+    "DB_DATABASE": "@db_database"
   }
 }
