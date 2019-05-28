@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import React, { useState } from 'react';
 import ResultsTable from './FoodFullResults';
 import Button from '@material-ui/core/Button';
 import { fetchFoods } from '../connect/api';
@@ -8,34 +8,27 @@ const buttonStyles = {
   marginLeft: 10,
 };
 
-class AllFoods extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      values: [],
-    };
-  }
+const AllFoods = () => {
+  const [foods, setFoods] = useState([]);
 
-  updateResults = () => {
-    fetchFoods().then(values => this.setState({ values }));
+  const updateResults = async () => {
+    const foods = await fetchFoods();
+    setFoods(foods);
   };
 
-  render() {
-    const { values } = this.state;
-    return (
-      <form>
-        <Button
-          style={buttonStyles}
-          variant='contained'
-          color='primary'
-          onClick={this.updateResults}
-        >
-          Fetch all foods
-        </Button>
-        <ResultsTable values={values} />
-      </form>
-    );
-  }
-}
+  return (
+    <form>
+      <Button
+        style={buttonStyles}
+        variant='contained'
+        color='primary'
+        onClick={updateResults}
+      >
+        Fetch all foods
+      </Button>
+      <ResultsTable values={foods} />
+    </form>
+  );
+};
 
 export default AllFoods;
