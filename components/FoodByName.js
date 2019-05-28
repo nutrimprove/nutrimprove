@@ -2,7 +2,7 @@ import { Component } from 'react';
 import ResultsTable from './FoodFullResults';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import { fetchFoodByName } from '../connect/api';
+import { fetchFoodsByName } from '../connect/api';
 
 const textField = {
   width: 200,
@@ -30,7 +30,7 @@ class FoodByName extends Component {
   updateResults = () => {
     const { foodName } = this.state;
     if (foodName !== '') {
-      fetchFoodByName(foodName).then(values => this.setState({ values }));
+      fetchFoodsByName(foodName).then(values => this.setState({ values }));
     }
   };
 
