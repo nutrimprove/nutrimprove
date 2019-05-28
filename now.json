@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "name": "eatwell-web",
+  "alias": "eatwell.now.sh",
+  "builds": [
+    { "src": "api/**/*.js", "use": "@now/node" },
+    { "src": "next.config.js", "use": "@now/next" }
+  ],
+  "routes": [
+    {
+      "src": "/api/example-route/(?<id>[^/]*)",
+      "dest": "api/example-route/example.js?id=$id"
+    }
+  ],
+  "env": {
+    "SQL_HOST": "@sql_host",
+    "SQL_USER": "@sql_user",
+    "SQL_PASSWORD": "@sql_password",
+    "SQL_DATABASE": "@sql_database"
+  }
+}
