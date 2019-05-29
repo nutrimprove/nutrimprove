@@ -18,10 +18,6 @@ const FoodById = () => {
   const [foodId, setFoodId] = useState('');
   const [foods, setFoods] = useState([]);
 
-  const updateId = id => {
-    setFoodId(id);
-  };
-
   const updateResults = () => {
     if (foodId !== '') {
       fetchFoodById(foodId).then(values => setFoods(values));
@@ -37,7 +33,7 @@ const FoodById = () => {
         value={foodId}
         style={textField}
         margin='normal'
-        onChange={e => updateId(e.target.value)}
+        onChange={e => setFoodId(e.target.value)}
       />
       <Button
         style={buttonStyles}
