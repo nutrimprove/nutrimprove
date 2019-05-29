@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import ResultsTable from './FoodFullResults';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
@@ -14,51 +14,42 @@ const buttonStyles = {
   marginLeft: 10,
 };
 
-class FoodById extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      foodId: '',
-      values: [],
-    };
-  }
+const FoodById = () => {
+  const [foodId, setFoodId] = useState('');
+  const [foods, setFoods] = useState([]);
 
-  updateId = foodId => {
-    this.setState({ foodId });
+  const updateId = id => {
+    setFoodId(id);
   };
 
-  updateResults = () => {
-    const { foodId } = this.state;
+  const updateResults = () => {
     if (foodId !== '') {
-      fetchFoodById(foodId).then(values => this.setState({ values }));
+      fetchFoodById(foodId).then(values => setFoods(values));
     }
   };
 
-  render() {
-    const { foodId, values } = this.state;
-    return (
-      <form>
-        <TextField
-          id='foodId'
-          label='Search food by Id'
-          type='search'
-          value={foodId}
-          style={textField}
-          margin='normal'
-          onChange={e => this.updateId(e.target.value)}
-        />
-        <Button
-          style={buttonStyles}
-          variant='contained'
-          color='primary'
-          onClick={this.updateResults}
-        >
-          Search
-        </Button>
-        <ResultsTable values={values} />
-      </form>
-    );
-  }
-}
+  return (
+    <form>
+      <TextField
+        id='foodId'
+        label='Search food by Id'
+        type='search'
+        value={foodId}
+        style={textField}
+        margin='normal'
+        onChange={e => updateId(e.target.value)}
+      />
+      <Button
+        style={buttonStyles}
+        variant='contained'
+        color='primary'
+        onClick={updateResults}
+      >
+        Search
+      </Button>
+      <ResultsTable values={foods} />
+    </form>
+  );
+};
 
 export default FoodById;
