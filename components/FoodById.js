@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import React, { Component } from 'react';
 import ResultsTable from './FoodFullResults';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
