@@ -3,10 +3,8 @@ import uniqid from 'uniqid';
 import _ from 'lodash';
 import AutoCompleteField from './SearchFoodField';
 import RemoveIcon from './RemoveIcon';
-import RemoveIconDisabled from './RemoveIconDisabled';
 import { fetchFoods } from '../connect/api';
 import AddButton from './AddButton';
-import AddButtonDisabled from './AddButtonDisabled';
 
 const maxFields = 4;
 
@@ -68,7 +66,7 @@ const AddRecommendations = () => {
       <div key={item.key} style={{ display: '-webkit-box' }}>
         <AutoCompleteField className='food' />
         {isSingle(item) ? (
-          <RemoveIconDisabled removeField={removeField} item={item} />
+          <RemoveIcon />
         ) : (
           <RemoveIcon removeField={removeField} item={item} />
         )}
@@ -88,7 +86,7 @@ const AddRecommendations = () => {
   };
 
   useEffect(() => {
-    fetchFoods().then(values => {
+    fetchFoods().then(() => {
       addRecommendation();
     });
   }, []);
@@ -105,7 +103,7 @@ const AddRecommendations = () => {
             {foods.length < maxFields ? (
               <AddButton action={addFood} text='Add' />
             ) : (
-              <AddButtonDisabled text='Add' />
+              <AddButton text='Add' />
             )}
           </div>
         </div>
@@ -120,7 +118,7 @@ const AddRecommendations = () => {
             {recommendations.length < maxFields ? (
               <AddButton action={addRecommendation} text='Add' />
             ) : (
-              <AddButtonDisabled text='Add' />
+              <AddButton text='Add' />
             )}
           </div>
         </div>
