@@ -9,10 +9,10 @@ const buttonStyles = {
 };
 
 const AllFoods = () => {
-  const [values, setValues] = useState([]);
+  const [foods, setFoods] = useState([]);
 
   const updateResults = () => {
-    fetchFoods().then(values => setValues(values));
+    fetchFoods().then(values => setFoods(values));
   };
 
   return (
@@ -25,7 +25,7 @@ const AllFoods = () => {
       >
         Fetch all foods
       </Button>
-      <ResultsTable values={values} />
+      <ResultsTable values={foods} />
     </form>
   );
 };
