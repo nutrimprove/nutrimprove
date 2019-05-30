@@ -32,6 +32,7 @@
     "react-dom": "^16.8.6",
     "serve-favicon": "^2.5.0",
     "serverless-mysql": "^1.4.0",
+    "sql-template-strings": "^2.2.2",
     "uniqid": "^5.0.3"
   },
   "devDependencies": {
