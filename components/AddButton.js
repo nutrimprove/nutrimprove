@@ -1,21 +1,24 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 
-const AddButton = props => {
-  const { action, text } = props;
-  return (
-    <Fragment>
+const AddButton = ({ action, text }) => (
+  <>
+    {action ? (
       <Button variant='contained' color='primary' onClick={action}>
         {text}
       </Button>
-    </Fragment>
-  );
-};
+    ) : (
+      <Button variant='contained' color='primary' disabled>
+        {text}
+      </Button>
+    )}
+  </>
+);
 
 AddButton.propTypes = {
-  action: PropTypes.func.isRequired,
   text: PropTypes.string.isRequired,
+  action: PropTypes.func,
 };
 
 export default AddButton;
