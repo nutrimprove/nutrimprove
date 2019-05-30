@@ -19,7 +19,7 @@ class FoodById extends Component {
     super(props);
     this.state = {
       foodId: '',
-      values: [],
+      food: null,
     };
   }
 
@@ -30,12 +30,13 @@ class FoodById extends Component {
   updateResults = () => {
     const { foodId } = this.state;
     if (foodId !== '') {
-      fetchFood(foodId).then(values => this.setState({ values }));
+      fetchFood(foodId).then(({ food }) => this.setState({ food }));
     }
   };
 
   render() {
-    const { foodId, values } = this.state;
+    const { foodId, food } = this.state;
+    console.log(food);
     return (
       <form>
         <TextField
@@ -55,7 +56,7 @@ class FoodById extends Component {
         >
           Search
         </Button>
-        <ResultsTable values={values} />
+        <ResultsTable values={food ? [food] : []} />
       </form>
     );
   }
