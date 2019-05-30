@@ -1,10 +1,10 @@
-import { testFoods, testRecommendations } from '../connect/queries';
+import { testRecommendations } from '../connect/queries';
 
 const isLive = process.env.API === 'live';
-const foodsEndpoint = '/api/v1/foods';
+const foodApiEndpoint = `https://api.edamam.com/api/food-database/parser`;
+const category = `&category=generic-foods`;
+const apiAuthParams = `&app_key=8a2617ec655417bd43fd2b3df4b85a30&app_id=652bd7d5`;
 const recommendationsEndpoint = '/api/v1/recommendations';
-const foodByIdEndpoint = '/api/v1/food/id';
-const foodByNameEndpoint = '/api/v1/food/name';
 
 export const getString = string =>
   string
@@ -13,38 +13,21 @@ export const getString = string =>
     .toLowerCase();
 
 const fetchValues = endpoint => {
-  fetch(endpoint)
+  console.log(`======endpoint===> ${endpoint}`);
+  return fetch(endpoint)
     .then(response => response.json())
-    .then(data => data.value);
+    .then(data => data.hints);
 };
 
-const fetchFoods = () =>
-  isLive ? fetchValues(foodsEndpoint) : Promise.resolve(testFoods.value);
-
-const fetchFoodById = id =>
-  isLive
-    ? fetchValues(`${foodByIdEndpoint}/${id}`)
-    : Promise.resolve(
-        testFoods.value.filter(
-          food => getString(food.id) === getString(id)
-        )
-      );
-
 const fetchFoodByName = name =>
-  isLive
-    ? fetchValues(`${foodByNameEndpoint}/${name}`)
-    : Promise.resolve(
-        testFoods.value.filter(food =>
-          getString(food.foodname).includes(getString(name))
-        )
-      );
+  fetchValues(
+    `${foodApiEndpoint}?ingr=${name}${apiAuthParams}${category}`
+  );
 
 const fetchRecommendations = () =>
   isLive
     ? fetchValues(recommendationsEndpoint)
     : Promise.resolve(testRecommendations.value);
 
-module.exports.fetchFoods = fetchFoods;
-module.exports.fetchFoodById = fetchFoodById;
 module.exports.fetchFoodByName = fetchFoodByName;
 module.exports.fetchRecommendations = fetchRecommendations;

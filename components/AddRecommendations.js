@@ -1,9 +1,8 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import uniqid from 'uniqid';
 import _ from 'lodash';
 import AutoCompleteField from './SearchFoodField';
 import RemoveIcon from './RemoveIcon';
-import { fetchFoods } from '../connect/api';
 import AddButton from './AddButton';
 
 const maxFields = 4;
@@ -84,12 +83,6 @@ const AddRecommendations = () => {
       )}`
     );
   };
-
-  useEffect(() => {
-    fetchFoods().then(() => {
-      addRecommendation();
-    });
-  }, []);
 
   return (
     <Fragment>
