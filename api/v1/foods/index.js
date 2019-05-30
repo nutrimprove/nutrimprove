@@ -10,7 +10,6 @@ const foodsByNameQuery = name =>
 module.exports = async (req, res) => {
   const reqUrl = new url.URL(`${baseURL}${req.url}`);
   const name = reqUrl.searchParams.get('name');
-  console.log('name', name);
   const foods = name
     ? await db.query(foodsByNameQuery(name))
     : await db.query(foodsQuery);
