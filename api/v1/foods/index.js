@@ -5,7 +5,7 @@ const { baseURL } = require('../../../lib/helpers');
 
 const foodsQuery = escape`SELECT * FROM eatwell_fooddata;`;
 const foodsByNameQuery = name =>
-  `SELECT * FROM eatwell_fooddata WHERE foodname LIKE "%${name}%";`;
+  escape`SELECT * FROM eatwell_fooddata WHERE foodname LIKE "%${name}%";`;
 
 module.exports = async (req, res) => {
   const reqUrl = new url.URL(`${baseURL}${req.url}`);
