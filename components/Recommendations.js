@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
 import RecommendationsResults from './RecommendationsResults';
 import { fetchRecommendations } from '../connect/api';
@@ -8,37 +8,28 @@ const buttonStyles = {
   marginLeft: 10,
 };
 
-class Recommendations extends Component {
-  constructor(props) {
-    super(props);
+const Recommendations = () => {
+  const [recommendations, setRecommendations] = useState([]);
 
-    this.state = {
-      recommendations: [],
-    };
-  }
-
-  updateResults = () => {
+  const updateResults = () => {
     fetchRecommendations().then(({ recommendations }) =>
-      this.setState({ recommendations })
+      setRecommendations(recommendations)
     );
   };
 
-  render() {
-    const { recommendations } = this.state;
-    return (
-      <form>
-        <Button
-          style={buttonStyles}
-          variant='contained'
-          color='primary'
-          onClick={this.updateResults}
-        >
-          Fetch all recommendations
-        </Button>
-        <RecommendationsResults values={recommendations} />
-      </form>
-    );
-  }
-}
+  return (
+    <form>
+      <Button
+        style={buttonStyles}
+        variant='contained'
+        color='primary'
+        onClick={updateResults}
+      >
+        Fetch all recommendations
+      </Button>
+      <RecommendationsResults values={recommendations} />
+    </form>
+  );
+};
 
 export default Recommendations;

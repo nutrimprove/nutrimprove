@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import React, { useState } from 'react';
 import ResultsTable from './FoodFullResults';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
@@ -14,52 +14,38 @@ const buttonStyles = {
   marginLeft: 10,
 };
 
-class FoodById extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      foodId: '',
-      food: null,
-    };
-  }
+const FoodById = () => {
+  const [foodId, setFoodId] = useState('');
+  const [food, setFood] = useState();
 
-  updateId = foodId => {
-    this.setState({ foodId });
-  };
-
-  updateResults = () => {
-    const { foodId } = this.state;
+  const updateResults = () => {
     if (foodId !== '') {
-      fetchFood(foodId).then(({ food }) => this.setState({ food }));
+      fetchFood(foodId).then(({ food }) => setFood(food));
     }
   };
 
-  render() {
-    const { foodId, food } = this.state;
-    console.log(food);
-    return (
-      <form>
-        <TextField
-          id='foodId'
-          label='Search food by Id'
-          type='search'
-          value={foodId}
-          style={textField}
-          margin='normal'
-          onChange={e => this.updateId(e.target.value)}
-        />
-        <Button
-          style={buttonStyles}
-          variant='contained'
-          color='primary'
-          onClick={this.updateResults}
-        >
-          Search
-        </Button>
-        <ResultsTable values={food ? [food] : []} />
-      </form>
-    );
-  }
-}
+  return (
+    <form>
+      <TextField
+        id='foodId'
+        label='Search food by Id'
+        type='search'
+        value={foodId}
+        style={textField}
+        margin='normal'
+        onChange={e => setFoodId(e.target.value)}
+      />
+      <Button
+        style={buttonStyles}
+        variant='contained'
+        color='primary'
+        onClick={updateResults}
+      >
+        Search
+      </Button>
+      <ResultsTable values={food ? [food] : []} />
+    </form>
+  );
+};
 
 export default FoodById;
