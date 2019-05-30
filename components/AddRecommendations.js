@@ -51,7 +51,7 @@ const AddRecommendations = () => {
 
   const filter = (items, key) => items.filter(item => item.key !== key);
 
-  const removeField = item =>
+  const removeField = item => () =>
     _.has(item, 'food')
       ? setFoods(filter(foods, item.key))
       : setRecommendations(filter(recommendations, item.key));
@@ -68,7 +68,7 @@ const AddRecommendations = () => {
         {isSingle(item) ? (
           <RemoveIcon />
         ) : (
-          <RemoveIcon removeField={removeField} item={item} />
+          <RemoveIcon removeField={removeField(item)} />
         )}
       </div>
     );
