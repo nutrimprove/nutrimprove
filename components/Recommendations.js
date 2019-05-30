@@ -11,17 +11,20 @@ const buttonStyles = {
 class Recommendations extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
-      values: [],
+      recommendations: [],
     };
   }
 
   updateResults = () => {
-    fetchRecommendations().then(values => this.setState({ values }));
+    fetchRecommendations().then(({ recommendations }) =>
+      this.setState({ recommendations })
+    );
   };
 
   render() {
-    const { values } = this.state;
+    const { recommendations } = this.state;
     return (
       <form>
         <Button
@@ -32,7 +35,7 @@ class Recommendations extends Component {
         >
           Fetch all recommendations
         </Button>
-        <RecommendationsResults values={values} />
+        <RecommendationsResults values={recommendations} />
       </form>
     );
   }
