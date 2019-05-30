@@ -8,9 +8,7 @@ export const getString = string =>
 
 const fetchValue = async endpoint => {
   const res = await fetch(endpoint);
-  console.log('res', res);
   const data = await res.json();
-  console.log('data', data);
   return data;
 };
 
