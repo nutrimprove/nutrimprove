@@ -8,8 +8,8 @@ export const getString = string =>
 
 const fetchValue = async endpoint => {
   const res = await fetch(endpoint);
-  const { value } = await res.json();
-  return value;
+  const data = await res.json();
+  return data;
 };
 
 const fetchFoods = () => fetchValue(`${apiBase}/foods`);
