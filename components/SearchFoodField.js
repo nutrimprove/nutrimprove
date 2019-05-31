@@ -73,6 +73,9 @@ const styles = theme => ({
     marginTop: theme.spacing.unit,
     left: 0,
     right: 0,
+    width: 'fit-content',
+    height: '-webkit-fill-available',
+    overflow: 'auto',
   },
   chip: {
     margin: `${theme.spacing.unit / 2}px ${theme.spacing.unit / 4}px`,
@@ -95,13 +98,12 @@ const SearchFoodField = ({ classes }) => {
 
   useEffect(() => {
     if (searchTerm.length > 2) {
-      const getFoods = async () => {
+      (async () => {
         const foods = await fetchFoodByName(searchTerm);
         if (foods && foods.length > 0) {
           setSuggestions(foods.map(food => food.food.label));
         }
-      };
-      getFoods();
+      })();
     }
   }, [searchTerm]);
 
