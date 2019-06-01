@@ -13,5 +13,5 @@ module.exports = async (req, res) => {
   const foods = name
     ? await db.query(foodsByNameQuery(name))
     : await db.query(foodsQuery);
-  res.end(JSON.stringify({ foods }));
+  res.end(JSON.stringify({ value: foods }));
 };

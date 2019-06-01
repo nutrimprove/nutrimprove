@@ -7,7 +7,7 @@ const AllFoods = () => {
 
   useEffect(() => {
     (async function fetchAndSetData() {
-      const { foods: fetchedFoods } = await fetchFoods();
+      const fetchedFoods = await fetchFoods();
       setFoods(fetchedFoods);
     })();
   }, []);

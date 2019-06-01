@@ -20,7 +20,7 @@ const FoodById = () => {
 
   const updateResults = () => {
     if (foodId !== '') {
-      fetchFood(foodId).then(({ food }) => setFood(food));
+      fetchFood(foodId).then(fetchedFood => setFood(fetchedFood));
     }
   };
 

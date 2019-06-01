@@ -5,5 +5,5 @@ const recommendationsQuery = escape`SELECT rec.id, fd.foodname, fd2.foodname as 
 
 module.exports = async (req, res) => {
   const recommendations = await db.query(recommendationsQuery);
-  res.end(JSON.stringify({ recommendations }));
+  res.end(JSON.stringify({ value: recommendations }));
 };
