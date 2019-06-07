@@ -7,10 +7,7 @@ const RemoveIcon = ({ removeField }) => {
   if (removeField) {
     return (
       <>
-        <IconButton
-          aria-label='remove-button'
-          onClick={removeField}
-        >
+        <IconButton aria-label='remove-button' onClick={removeField}>
           <DeleteIcon />
         </IconButton>
       </>

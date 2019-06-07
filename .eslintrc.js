@@ -28,5 +28,6 @@ module.exports = {
   ],
   rules: {
     'react/react-in-jsx-scope': 0, // Not needed with Next.js
+    'no-warning-comments': 2, // TODOs should be added as GitHub issues. Also helps you not forget things
   },
 };
