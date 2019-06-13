@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import ResultsTable from './FoodFullResults';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import { fetchFoodById } from '../connect/api';
+import { fetchFood } from '../connect/api';
 
 const textField = {
   width: 200,
@@ -16,11 +16,11 @@ const buttonStyles = {
 
 const FoodById = () => {
   const [foodId, setFoodId] = useState('');
-  const [foods, setFoods] = useState([]);
+  const [food, setFood] = useState();
 
   const updateResults = () => {
     if (foodId !== '') {
-      fetchFoodById(foodId).then(values => setFoods(values));
+      fetchFood(foodId).then(fetchedFood => setFood(fetchedFood));
     }
   };
 
@@ -43,7 +43,7 @@ const FoodById = () => {
       >
         Search
       </Button>
-      <ResultsTable values={foods} />
+      <ResultsTable values={food ? [food] : []} />
     </form>
   );
 };

@@ -1,6 +1,3 @@
-import { testRecommendations } from '../connect/queries';
-
-const isLive = process.env.API === 'live';
 const foodApiEndpoint = `https://api.edamam.com/api/food-database/parser`;
 const category = `&category=generic-foods`;
 const apiAuthParams = `&app_key=8a2617ec655417bd43fd2b3df4b85a30&app_id=652bd7d5`;
@@ -12,22 +9,15 @@ export const getString = string =>
     .trim()
     .toLowerCase();
 
-const fetchValues = endpoint => {
-  console.log(`======endpoint===> ${endpoint}`);
-  return fetch(endpoint)
-    .then(response => response.json())
-    .then(data => data.hints);
+const fetchValue = async endpoint => {
+  const res = await fetch(endpoint);
+  const { value } = await res.json();
+  return value;
 };
 
-const fetchFoodByName = name =>
-  fetchValues(
-    `${foodApiEndpoint}?ingr=${name}${apiAuthParams}${category}`
-  );
+const fetchFood = name =>
+  fetchValue(`${foodApiEndpoint}?ingr=${name}${apiAuthParams}${category}`);
 
-const fetchRecommendations = () =>
-  isLive
-    ? fetchValues(recommendationsEndpoint)
-    : Promise.resolve(testRecommendations.value);
+const fetchRecommendations = () => fetchValue(recommendationsEndpoint);
 
-module.exports.fetchFoodByName = fetchFoodByName;
-module.exports.fetchRecommendations = fetchRecommendations;
+export { fetchFood, fetchRecommendations };

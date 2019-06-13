@@ -12,7 +12,9 @@ const Recommendations = () => {
   const [recommendations, setRecommendations] = useState([]);
 
   const updateResults = () => {
-    fetchRecommendations().then(values => setRecommendations(values));
+    fetchRecommendations().then(fetchedRecommendations =>
+      setRecommendations(fetchedRecommendations)
+    );
   };
 
   return (
