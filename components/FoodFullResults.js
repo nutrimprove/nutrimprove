@@ -37,14 +37,13 @@ const ResultsTable = props => {
           <Table className={classes.table}>
             <TableHead>
               <TableRow>
-                <TableCell className={classes.cell}>id</TableCell>
                 <TableCell className={classes.foodName}>
                   Food name
                 </TableCell>
-                <TableCell className={classes.cell}>Portion (g)</TableCell>
                 <TableCell className={classes.cell}>
-                  Portion (palm)
+                  Calories (kcal)
                 </TableCell>
+                <TableCell className={classes.cell}>Portion</TableCell>
                 <TableCell className={classes.cell}>
                   Carbohydrates
                 </TableCell>
@@ -56,13 +55,29 @@ const ResultsTable = props => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {values.map((value, vIndex) => (
-                <TableRow key={vIndex}>
-                  {Object.keys(value).map((key, kIndex) => (
-                    <TableCell key={kIndex} className={classes.cell}>
-                      {value[key]}
-                    </TableCell>
-                  ))}
+              {values.map(({ food }, key) => (
+                <TableRow key={key}>
+                  <TableCell className={classes.foodName}>
+                    {food.label}
+                  </TableCell>
+                  <TableCell className={classes.cell}>
+                    {food.nutrients.ENERC_KCAL}
+                  </TableCell>
+                  <TableCell className={classes.cell} />
+                  <TableCell className={classes.cell}>
+                    {food.nutrients.CHOCDF}
+                  </TableCell>
+                  <TableCell className={classes.cell}>
+                    {food.nutrients.FAT}
+                  </TableCell>
+                  <TableCell className={classes.cell}>
+                    {food.nutrients.PROCNT}
+                  </TableCell>
+                  <TableCell className={classes.cell} />
+                  <TableCell className={classes.cell} />
+                  <TableCell className={classes.cell}>
+                    {food.nutrients.FIBTG}
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>

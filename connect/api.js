@@ -9,15 +9,14 @@ export const getString = string =>
     .trim()
     .toLowerCase();
 
-const fetchValue = async endpoint => {
-  const res = await fetch(endpoint);
-  const { value } = await res.json();
-  return value;
-};
+const fetchValues = endpoint =>
+  fetch(endpoint).then(res => res.json().then(value => value.hints));
 
 const fetchFood = name =>
-  fetchValue(`${foodApiEndpoint}?ingr=${name}${apiAuthParams}${category}`);
+  fetchValues(
+    `${foodApiEndpoint}?ingr=${name}${apiAuthParams}${category}`
+  );
 
-const fetchRecommendations = () => fetchValue(recommendationsEndpoint);
+const fetchRecommendations = () => fetchValues(recommendationsEndpoint);
 
 export { fetchFood, fetchRecommendations };

@@ -18,9 +18,10 @@ const FoodByName = () => {
   const [foodName, setFoodName] = useState('');
   const [foods, setFoods] = useState([]);
 
-  const updateResults = () => {
+  const updateResults = async () => {
     if (foodName !== '') {
-      fetchFood(foodName).then(fetchedFoods => setFoods(fetchedFoods));
+      const foods = await fetchFood(foodName);
+      setFoods(foods);
     }
   };
 

@@ -2,9 +2,9 @@
   "foodName": "eatwell_poc",
   "version": "1.0.0",
   "description": "Eat Well app",
-  "main": "index.js",
+  "main": "pages/index.js",
   "scripts": {
-    "dev": "nodemon app.js",
+    "dev": "now dev",
     "build": "next build",
     "start": "cross-env NODE_ENV=production nodemon app.js",
     "pm2": "pm2 start app.js",
