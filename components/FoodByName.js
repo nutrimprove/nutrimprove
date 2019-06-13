@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import ResultsTable from './FoodFullResults';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import { fetchFood } from '../connect/api';
+import { fetchFoods } from '../connect/api';
 
 const textField = {
   width: 200,
@@ -20,7 +20,7 @@ const FoodByName = () => {
 
   const updateResults = async () => {
     if (foodName !== '') {
-      const foods = await fetchFood(foodName);
+      const foods = await fetchFoods(foodName);
       setFoods(foods);
     }
   };

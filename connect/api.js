@@ -12,11 +12,11 @@ export const getString = string =>
 const fetchValues = endpoint =>
   fetch(endpoint).then(res => res.json().then(value => value.hints));
 
-const fetchFood = name =>
+const fetchFoods = name =>
   fetchValues(
     `${foodApiEndpoint}?ingr=${name}${apiAuthParams}${category}`
   );
 
 const fetchRecommendations = () => fetchValues(recommendationsEndpoint);
 
-export { fetchFood, fetchRecommendations };
+export { fetchFoods, fetchRecommendations };
