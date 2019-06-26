@@ -85,7 +85,7 @@ const AddRecommendations = () => {
   };
 
   return (
-    <Fragment>
+    <>
       <div style={{ display: 'flex' }}>
         <div style={styles.fieldBox}>
           <div className='title' style={styles.title}>
