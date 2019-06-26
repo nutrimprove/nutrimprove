@@ -61,7 +61,7 @@ const ResultsTable = props => {
                     {food.label}
                   </TableCell>
                   <TableCell className={classes.cell}>
-                    {food.nutrients.ENERC_KCAL}
+                    {nutrients && food.nutrients.ENERC_KCAL}
                   </TableCell>
                   <TableCell className={classes.cell} />
                   <TableCell className={classes.cell}>
