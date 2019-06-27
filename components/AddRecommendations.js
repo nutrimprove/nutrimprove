@@ -119,7 +119,7 @@ const AddRecommendations = () => {
       <div id='submit' style={{ marginTop: 20 }}>
         <AddButton action={update} text='Add recommendation(s)' />
       </div>
-    </Fragment>
+    </>
   );
 };
 

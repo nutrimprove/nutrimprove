@@ -130,7 +130,7 @@ const SearchFoodField = ({ classes }) => {
                 }),
               })}
               <div {...getMenuProps()}>
-                {isOpen ? (
+                {isOpen && (
                   <Paper className={classes.paper} square>
                     {suggestions.map((suggestion, index) =>
                       renderSuggestion({
@@ -142,7 +142,7 @@ const SearchFoodField = ({ classes }) => {
                       })
                     )}
                   </Paper>
-                ) : null}
+                )}
               </div>
             </div>
           );

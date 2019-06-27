@@ -55,28 +55,28 @@ const ResultsTable = props => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {values.map(({ food }, key) => (
-                <TableRow key={key}>
+              {values.map(({ food }) => (
+                <TableRow key={food.foodId}>
                   <TableCell className={classes.foodName}>
                     {food.label}
                   </TableCell>
                   <TableCell className={classes.cell}>
-                    {nutrients && food.nutrients.ENERC_KCAL}
+                    {food.nutrients && food.nutrients.ENERC_KCAL}
                   </TableCell>
                   <TableCell className={classes.cell} />
                   <TableCell className={classes.cell}>
-                    {food.nutrients.CHOCDF}
+                    {food.nutrients && food.nutrients.CHOCDF}
                   </TableCell>
                   <TableCell className={classes.cell}>
-                    {food.nutrients.FAT}
+                    {food.nutrients && food.nutrients.FAT}
                   </TableCell>
                   <TableCell className={classes.cell}>
-                    {food.nutrients.PROCNT}
+                    {food.nutrients && food.nutrients.PROCNT}
                   </TableCell>
                   <TableCell className={classes.cell} />
                   <TableCell className={classes.cell} />
                   <TableCell className={classes.cell}>
-                    {food.nutrients.FIBTG}
+                    {food.nutrients && food.nutrients.FIBTG}
                   </TableCell>
                 </TableRow>
               ))}
