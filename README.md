@@ -10,7 +10,7 @@
 
 - Ensure you have the `.env` file locally on your machine
 
-- `git clone https://github.com/whit3kr0w/eatwell`
+- `git clone https://github.com/eat-well/eatwell-web`
 - `yarn install`
 - `yarn test` to run unit tests. Tests are also checked on each commit via `lint-staged`
 - Use `now dev` to develop. You will need to have the Now CLI/app installed
