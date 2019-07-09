@@ -6,8 +6,6 @@ import Tabs from '@material-ui/core/Tabs/index';
 import Tab from '@material-ui/core/Tab/index';
 import Typography from '@material-ui/core/Typography/index';
 import FoodByName from './FoodByName';
-import FoodById from './FoodById';
-import AllFoods from './AllFoods';
 import Recommendations from './Recommendations';
 import AddRecommendations from './AddRecommendations';
 
@@ -32,7 +30,7 @@ const styles = theme => ({
 
 const Content = props => {
   const { classes } = props;
-  const [tab, setTab] = useState(4);
+  const [tab, setTab] = useState(0);
 
   const tabChange = (event, tab) => {
     setTab(tab);
@@ -43,8 +41,6 @@ const Content = props => {
       <AppBar position='static'>
         <Tabs value={tab} onChange={tabChange}>
           <Tab label='Food by Name' />
-          <Tab label='Food by ID' />
-          <Tab label='All foods' />
           <Tab label='Recommendations' />
           <Tab label='Add Recommendations' />
         </Tabs>
@@ -55,21 +51,11 @@ const Content = props => {
         </TabContainer>
       )}
       {tab === 1 && (
-        <TabContainer id='foodByID'>
-          <FoodById />
-        </TabContainer>
-      )}
-      {tab === 2 && (
-        <TabContainer id='allFoods'>
-          <AllFoods />
-        </TabContainer>
-      )}
-      {tab === 3 && (
         <TabContainer id='recommendations'>
           <Recommendations />
         </TabContainer>
       )}
-      {tab === 4 && (
+      {tab === 2 && (
         <TabContainer id='addRecommendations'>
           <AddRecommendations />
         </TabContainer>

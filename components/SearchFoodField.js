@@ -1,20 +1,11 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import deburr from 'lodash/deburr';
 import Downshift from 'downshift';
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Paper from '@material-ui/core/Paper';
 import MenuItem from '@material-ui/core/MenuItem';
 import { fetchFoods } from '../connect/api';
-
-let foods = null;
-
-const getFoods = async () => {
-  if (!foods) {
-    foods = await fetchFoods();
-  }
-};
 
 const renderInput = inputProps => {
   const { InputProps, classes, ref, ...other } = inputProps;
@@ -67,28 +58,6 @@ renderSuggestion.propTypes = {
   suggestion: PropTypes.string.isRequired,
 };
 
-const getSuggestions = value => {
-  const inputValue = deburr(value.trim()).toLowerCase();
-  const inputLength = inputValue.length;
-
-  let count = 0;
-
-  return inputLength < 3
-    ? []
-    : foods
-        .map(food => food.foodname)
-        .filter(suggestion => {
-          const keep =
-            count < 20 && suggestion.toLowerCase().includes(inputValue);
-
-          if (keep) {
-            count += 1;
-          }
-
-          return keep;
-        });
-};
-
 const styles = theme => ({
   root: {
     flexGrow: 1,
@@ -104,6 +73,9 @@ const styles = theme => ({
     marginTop: theme.spacing.unit,
     left: 0,
     right: 0,
+    width: 'fit-content',
+    height: '-webkit-fill-available',
+    overflow: 'auto',
   },
   chip: {
     margin: `${theme.spacing.unit / 2}px ${theme.spacing.unit / 4}px`,
@@ -120,10 +92,20 @@ const styles = theme => ({
   },
 });
 
-const SearchFoodField = props => {
-  const { classes } = props;
+const SearchFoodField = ({ classes }) => {
+  const [suggestions, setSuggestions] = useState([]);
+  const [searchTerm, setSearchTerm] = useState([]);
 
-  getFoods();
+  useEffect(() => {
+    if (searchTerm.length > 2) {
+      (async () => {
+        const foods = await fetchFoods(searchTerm);
+        if (foods && foods.length > 0) {
+          setSuggestions(foods.map(food => food.food.label));
+        }
+      })();
+    }
+  }, [searchTerm]);
 
   return (
     <div className={classes.root}>
@@ -136,32 +118,35 @@ const SearchFoodField = props => {
           inputValue,
           isOpen,
           selectedItem,
-        }) => (
-          <div className={classes.container}>
-            {renderInput({
-              fullWidth: true,
-              classes,
-              InputProps: getInputProps({
-                placeholder: 'Search for a food',
-              }),
-            })}
-            <div {...getMenuProps()}>
-              {isOpen ? (
-                <Paper className={classes.paper} square>
-                  {getSuggestions(inputValue).map((suggestion, index) =>
-                    renderSuggestion({
-                      suggestion,
-                      index,
-                      itemProps: getItemProps({ item: suggestion }),
-                      highlightedIndex,
-                      selectedItem,
-                    })
-                  )}
-                </Paper>
-              ) : null}
+        }) => {
+          setSearchTerm(inputValue);
+          return (
+            <div className={classes.container}>
+              {renderInput({
+                fullWidth: true,
+                classes,
+                InputProps: getInputProps({
+                  placeholder: 'Search for a food',
+                }),
+              })}
+              <div {...getMenuProps()}>
+                {isOpen && (
+                  <Paper className={classes.paper} square>
+                    {suggestions.map((suggestion, index) =>
+                      renderSuggestion({
+                        suggestion,
+                        index,
+                        itemProps: getItemProps({ item: suggestion }),
+                        highlightedIndex,
+                        selectedItem,
+                      })
+                    )}
+                  </Paper>
+                )}
+              </div>
             </div>
-          </div>
-        )}
+          );
+        }}
       </Downshift>
       <div className={classes.divider} />
     </div>

@@ -25,49 +25,71 @@ const styles = theme => ({
     minWidth: 100,
     padding: 10,
   },
+  count: {
+    color: '#777799',
+    fontSize: '0.9em',
+  },
 });
 
 const ResultsTable = props => {
   const { classes, values } = props;
 
-  if (values && values.length > 0) {
+  if (values) {
     return (
       <div id='food-results'>
-        <Paper className={classes.root}>
-          <Table className={classes.table}>
-            <TableHead>
-              <TableRow>
-                <TableCell className={classes.cell}>id</TableCell>
-                <TableCell className={classes.foodName}>
-                  Food name
-                </TableCell>
-                <TableCell className={classes.cell}>Portion (g)</TableCell>
-                <TableCell className={classes.cell}>
-                  Portion (palm)
-                </TableCell>
-                <TableCell className={classes.cell}>
-                  Carbohydrates
-                </TableCell>
-                <TableCell className={classes.cell}>Fat</TableCell>
-                <TableCell className={classes.cell}>Protein</TableCell>
-                <TableCell className={classes.cell}>Sugar</TableCell>
-                <TableCell className={classes.cell}>Salt</TableCell>
-                <TableCell className={classes.cell}>Fibre</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {values.map((value, vIndex) => (
-                <TableRow key={vIndex}>
-                  {Object.keys(value).map((key, kIndex) => (
-                    <TableCell key={kIndex} className={classes.cell}>
-                      {value[key]}
-                    </TableCell>
-                  ))}
+        <div className={classes.count}>{values.length} foods found!</div>
+        {values.length > 0 && (
+          <Paper className={classes.root}>
+            <Table className={classes.table}>
+              <TableHead>
+                <TableRow>
+                  <TableCell className={classes.foodName}>
+                    Food name
+                  </TableCell>
+                  <TableCell className={classes.cell}>
+                    Calories (kcal)
+                  </TableCell>
+                  <TableCell className={classes.cell}>Portion</TableCell>
+                  <TableCell className={classes.cell}>
+                    Carbohydrates
+                  </TableCell>
+                  <TableCell className={classes.cell}>Fat</TableCell>
+                  <TableCell className={classes.cell}>Protein</TableCell>
+                  <TableCell className={classes.cell}>Sugar</TableCell>
+                  <TableCell className={classes.cell}>Salt</TableCell>
+                  <TableCell className={classes.cell}>Fibre</TableCell>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </Paper>
+              </TableHead>
+              <TableBody>
+                {values.map(({ food }) => (
+                  <TableRow key={food.foodId}>
+                    <TableCell className={classes.foodName}>
+                      {food.label}
+                    </TableCell>
+                    <TableCell className={classes.cell}>
+                      {food.nutrients && food.nutrients.ENERC_KCAL}
+                    </TableCell>
+                    <TableCell className={classes.cell} />
+                    <TableCell className={classes.cell}>
+                      {food.nutrients && food.nutrients.CHOCDF}
+                    </TableCell>
+                    <TableCell className={classes.cell}>
+                      {food.nutrients && food.nutrients.FAT}
+                    </TableCell>
+                    <TableCell className={classes.cell}>
+                      {food.nutrients && food.nutrients.PROCNT}
+                    </TableCell>
+                    <TableCell className={classes.cell} />
+                    <TableCell className={classes.cell} />
+                    <TableCell className={classes.cell}>
+                      {food.nutrients && food.nutrients.FIBTG}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </Paper>
+        )}
       </div>
     );
   } else {
