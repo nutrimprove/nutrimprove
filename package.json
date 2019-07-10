@@ -2,7 +2,7 @@
   "foodName": "eatwell_poc",
   "version": "1.0.0",
   "description": "Eat Well app",
-  "main": "index.js",
+  "main": "pages/index.js",
   "scripts": {
     "dev": "nodemon app.js",
     "build": "next build",
