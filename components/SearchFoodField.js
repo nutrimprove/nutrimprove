@@ -5,7 +5,7 @@ import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Paper from '@material-ui/core/Paper';
 import MenuItem from '@material-ui/core/MenuItem';
-import { fetchFoods } from '../connect/api';
+import { fetchFoods, fetchSearchedTerms } from '../connect/api';
 
 const renderInput = inputProps => {
   const { InputProps, classes, ref, ...other } = inputProps;
@@ -99,9 +99,17 @@ const SearchFoodField = ({ classes }) => {
   useEffect(() => {
     if (searchTerm.length > 2) {
       (async () => {
-        const foods = await fetchFoods(searchTerm);
-        if (foods && foods.length > 0) {
-          setSuggestions(foods.map(food => food.food.label));
+        const searchTerms = await fetchSearchedTerms(searchTerm);
+
+        if (searchTerms[0] && searchTerms[0].results) {
+          setSuggestions(
+            searchTerms[0].results.map(result => result.food_name)
+          );
+        } else {
+          const foods = await fetchFoods(searchTerm);
+          if (foods && foods.length > 0) {
+            setSuggestions(foods.map(food => food.food.label));
+          }
         }
       })();
     }

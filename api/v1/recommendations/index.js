@@ -1,11 +1,8 @@
-import { connectToDatabase } from '../../../lib/db';
+import { getDocuments } from '../../../connect/db';
 
-const getRecommendations = async (req, res) => {
-  const mongodb = await connectToDatabase(process.env.MONGODB_URI);
-  const collection = await mongodb.collection('recommendations');
-  const recommendations = await collection.find({}).toArray();
-
-  return res.status(200).json({ recommendations });
+const getCollectionResults = async (req, res) => {
+  const documents = await getDocuments('recommendations');
+  return res.status(200).json({ documents });
 };
 
-export default getRecommendations;
+export default getCollectionResults;
