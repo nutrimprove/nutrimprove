@@ -13,6 +13,6 @@
     }
   ],
   "env": {
-    "MONGODB_URI": "@mongodb-connection"
+    "MONGODB_URI": "@mongodb-uri"
   }
 }
