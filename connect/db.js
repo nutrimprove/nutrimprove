@@ -19,6 +19,7 @@ async function connectToDatabase(uri) {
 
   // Select the database through the connection,
   // using the database path of the connection string
+  // eslint-disable-next-line node/no-deprecated-api
   const db = await client.db(url.parse(uri).pathname.substr(1));
 
   // Cache the database connection and return the connection
