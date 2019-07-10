@@ -99,12 +99,10 @@ const SearchFoodField = ({ classes }) => {
   useEffect(() => {
     if (searchTerm.length > 2) {
       (async () => {
-        const searchTerms = await fetchSearchedTerms(searchTerm);
+        const search = await fetchSearchedTerms(searchTerm);
 
-        if (searchTerms[0] && searchTerms[0].results) {
-          setSuggestions(
-            searchTerms[0].results.map(result => result.food_name)
-          );
+        if (search && search.matches) {
+          setSuggestions(search.matches.map(match => match.food_name));
         } else {
           const foods = await fetchFoods(searchTerm);
           if (foods && foods.length > 0) {

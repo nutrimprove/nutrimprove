@@ -3,10 +3,11 @@ import { connectToDatabase } from '../../../connect/db';
 const getCollectionResults = async (req, res) => {
   const mongodb = await connectToDatabase(process.env.MONGODB_URI);
   const collection = await mongodb.collection('search_cache');
-  const term = req.query.term ? { search_term: req.query.term } : {};
-  const documents = await collection.find(term).toArray();
+  const result = req.query.term
+    ? await collection.findOne({ search_term: req.query.term })
+    : await collection.find({}).toArray();
 
-  return res.status(200).json({ documents });
+  return res.status(200).json({ result });
 };
 
 export default getCollectionResults;

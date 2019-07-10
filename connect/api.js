@@ -20,7 +20,7 @@ const fetchSearchedTerms = term => {
     : searchTermsEndpoint;
 
   return fetch(endpoint).then(res =>
-    res.json().then(value => value.documents)
+    res.json().then(value => value.result)
   );
 };
 
