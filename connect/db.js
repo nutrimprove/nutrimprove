@@ -1,9 +1,11 @@
 import url from 'url';
 import { MongoClient } from 'mongodb';
 
+const URI = process.env.MONGODB_URI;
+
 let db = null;
 
-export const connectToDatabase = async uri => {
+const connectToDatabase = async uri => {
   // Return db if already cached
   if (db) {
     return db;
@@ -17,8 +19,21 @@ export const connectToDatabase = async uri => {
   return db;
 };
 
-export const getDocuments = async (collectionName, query = {}) => {
-  const mongodb = await connectToDatabase(process.env.MONGODB_URI);
+const getCollection = async collectionName => {
+  const mongodb = await connectToDatabase(URI);
   const collection = await mongodb.collection(collectionName);
+
+  return collection;
+};
+
+const getDocuments = async (collectionName, query = {}) => {
+  const collection = getCollection(collectionName);
   return collection.find(query).toArray();
 };
+
+const insertDocument = async (collectionName, documents) => {
+  const collection = getCollection(collectionName);
+  return collection.insert(documents);
+};
+
+export { connectToDatabase, getDocuments, insertDocument };
