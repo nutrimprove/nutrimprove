@@ -8,8 +8,8 @@
   ],
   "routes": [
     {
-      "src": "/api/v1/foods/(?<id>[^/]+)",
-      "dest": "api/v1/foods/food.js?id=$id"
+      "src": "/api/v1/search/(?<term>[^/]+)",
+      "dest": "api/v1/search/index.js?term=$term"
     }
   ],
   "env": {
