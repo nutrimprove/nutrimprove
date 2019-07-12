@@ -54,9 +54,9 @@ const addSearchTerm = (searchTermObj, res) => {
   if (mongoose.connection.readyState === 0) {
     mongoose.connect(URI, err => {
       if (err) {
-        console.log(`ERROR connecting to: ${URI}. ${err}`);
+        console.error(`ERROR connecting to '${URI}': ${err}`);
       } else {
-        console.log(`Succeeded connected to: ${URI}`);
+        console.log(`Succeeded connecting to '${URI}'`);
       }
     });
   }
@@ -80,7 +80,7 @@ const addSearchTerm = (searchTermObj, res) => {
           console.error(`Error saving '${term}': ${err}`);
           return err;
         }
-        console.log(`Search term cached: '${term}'`);
+        console.log(`Search term '${term}' cached`);
         return res.status(200).json(newSearchTerm);
       });
     }

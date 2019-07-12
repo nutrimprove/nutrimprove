@@ -16,7 +16,7 @@ const getRequest = endpoint =>
     .get(endpoint)
     .then(response => response.data.result)
     .catch(error =>
-      console.error(`ERROR connecting to: ${endpoint}. ${error}`)
+      console.error(`ERROR connecting to '${endpoint}': ${error}`)
     );
 
 const fetchFoods = name =>
@@ -34,7 +34,9 @@ const postSearchTerm = searchTerm => {
       console.log(response);
     })
     .catch(error => {
-      console.log(`ERROR connecting to: ${searchTermsEndpoint}. ${error}`);
+      console.error(
+        `ERROR connecting to '${searchTermsEndpoint}': ${error}`
+      );
     });
 };
 
