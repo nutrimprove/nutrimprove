@@ -3,7 +3,6 @@ import { MongoClient } from 'mongodb';
 import mongoose from 'mongoose';
 
 const URI = process.env.MONGODB_URI;
-
 let db = null;
 
 const connectToDatabase = async uri => {
@@ -53,7 +52,7 @@ const searchTermSchema = new mongoose.Schema(
 const addSearchTerm = (searchTermObj, res) => {
   // Connect to mongoDB using mongoose
   if (mongoose.connection.readyState === 0) {
-    mongoose.connect(URI, function(err, res) {
+    mongoose.connect(URI, err => {
       if (err) {
         console.log(`ERROR connecting to: ${URI}. ${err}`);
       } else {
@@ -63,7 +62,6 @@ const addSearchTerm = (searchTermObj, res) => {
   }
 
   const term = searchTermObj.search_term;
-
   // Set new search term based on a schema
   const SearchTermModel = mongoose.model(
     'SearchTerm',
@@ -79,11 +77,12 @@ const addSearchTerm = (searchTermObj, res) => {
       // Save search term document to DB
       newSearchTerm.save(err => {
         if (err) {
-          console.error(`Error saving '${searchTermObj}'`);
+          console.error(`Error saving '${term}': ${err}`);
+          return err;
         }
+        console.log(`Search term cached: '${term}'`);
         return res.status(200).json(newSearchTerm);
       });
-      console.log(`Search term cached: '${term}'`);
     }
   });
 };

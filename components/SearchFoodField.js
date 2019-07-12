@@ -101,12 +101,14 @@ const formatSearchTerm = (searchTerm, foods) => {
     search_term: searchTerm,
     matches: [],
   };
-  foods.map(food => {
-    searchTermObj.matches.push({
-      food_id: food.food.foodId,
-      food_name: food.food.label,
+  if (foods) {
+    foods.map(food => {
+      searchTermObj.matches.push({
+        food_id: 'CACHED-' + food.food.foodId,
+        food_name: 'CACHED-' + food.food.label,
+      });
     });
-  });
+  }
   return searchTermObj;
 };
 
@@ -123,17 +125,13 @@ const SearchFoodField = ({ classes }) => {
           setSuggestions(search.matches.map(match => match.food_name));
         } else {
           const foods = await fetchFoods(searchTerm);
+          const searchTermObject = await formatSearchTerm(
+            searchTerm,
+            foods
+          );
+          await postSearchTerm(searchTermObject);
           if (foods && foods.length > 0) {
-            const searchTermObject = await formatSearchTerm(
-              searchTerm,
-              foods
-            );
-            postSearchTerm(searchTermObject);
-            setSuggestions(
-              foods.map(food => {
-                return food.food.label;
-              })
-            );
+            setSuggestions(foods.map(food => food.food.label));
           }
         }
       })();

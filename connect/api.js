@@ -14,12 +14,10 @@ export const getString = string =>
 const getRequest = endpoint =>
   axios
     .get(endpoint)
-    .then(response => {
-      console.log(response);
-    })
-    .catch(error => {
-      console.log(`ERROR connecting to: ${endpoint}. ${error}`);
-    });
+    .then(response => response.data.result)
+    .catch(error =>
+      console.error(`ERROR connecting to: ${endpoint}. ${error}`)
+    );
 
 const fetchFoods = name =>
   fetch(`${foodApiEndpoint}?ingr=${name}${apiAuthParams}${category}`).then(
