@@ -5,7 +5,11 @@ import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Paper from '@material-ui/core/Paper';
 import MenuItem from '@material-ui/core/MenuItem';
-import { fetchFoods, fetchSearchedTerms } from '../connect/api';
+import {
+  fetchFoods,
+  getSearchedTerms,
+  postSearchTerm,
+} from '../connect/api';
 
 const renderInput = inputProps => {
   const { InputProps, classes, ref, ...other } = inputProps;
@@ -92,6 +96,20 @@ const styles = theme => ({
   },
 });
 
+const formatSearchTerm = (searchTerm, foods) => {
+  const searchTermObj = {
+    search_term: searchTerm,
+    matches: [],
+  };
+  foods.map(food => {
+    searchTermObj.matches.push({
+      food_id: food.food.foodId,
+      food_name: food.food.label,
+    });
+  });
+  return searchTermObj;
+};
+
 const SearchFoodField = ({ classes }) => {
   const [suggestions, setSuggestions] = useState([]);
   const [searchTerm, setSearchTerm] = useState([]);
@@ -99,14 +117,23 @@ const SearchFoodField = ({ classes }) => {
   useEffect(() => {
     if (searchTerm.length > 2) {
       (async () => {
-        const search = await fetchSearchedTerms(searchTerm);
+        const search = await getSearchedTerms(searchTerm);
 
         if (search && search.matches) {
           setSuggestions(search.matches.map(match => match.food_name));
         } else {
           const foods = await fetchFoods(searchTerm);
           if (foods && foods.length > 0) {
-            setSuggestions(foods.map(food => food.food.label));
+            const searchTermObject = await formatSearchTerm(
+              searchTerm,
+              foods
+            );
+            postSearchTerm(searchTermObject);
+            setSuggestions(
+              foods.map(food => {
+                return food.food.label;
+              })
+            );
           }
         }
       })();
