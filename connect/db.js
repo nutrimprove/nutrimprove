@@ -49,7 +49,7 @@ const searchTermSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const addSearchTerm = (searchTermObj, res) => {
+const addSearchTerm = async searchTermObj => {
   // Connect to mongoDB using mongoose
   if (mongoose.connection.readyState === 0) {
     mongoose.connect(URI, err => {
@@ -68,23 +68,28 @@ const addSearchTerm = (searchTermObj, res) => {
     searchTermSchema,
     'search_cache'
   );
-  SearchTermModel.findOne({ search_term: term }, (err, result) => {
-    if (err) {
-      console.error(`Error when searching for '${term}': ${err}`);
-    }
-    if (!result) {
-      const newSearchTerm = new SearchTermModel(searchTermObj);
-      // Save search term document to DB
-      newSearchTerm.save(err => {
-        if (err) {
-          console.error(`Error saving '${term}': ${err}`);
-          return err;
-        }
-        console.log(`Search term '${term}' cached`);
-        return res.status(200).json(newSearchTerm);
-      });
-    }
-  });
+  return new Promise((resolve, reject) =>
+    SearchTermModel.findOne({ search_term: term }, (err, result) => {
+      if (err) {
+        console.error(`Error when searching for '${term}': ${err}`);
+        mongoose.disconnect();
+        reject(err);
+      }
+      if (!result) {
+        const newSearchTerm = new SearchTermModel(searchTermObj);
+        // Save search term document to DB
+        newSearchTerm.save(err => {
+          if (err) {
+            console.error(`Error saving '${term}': ${err}`);
+            reject(err);
+          }
+          console.log(`Search term '${term}' cached`);
+          mongoose.disconnect();
+          resolve(newSearchTerm);
+        });
+      }
+    })
+  );
 };
 
 export { connectToDatabase, getDocuments, addSearchTerm };

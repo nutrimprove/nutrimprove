@@ -14,15 +14,15 @@ export const getString = string =>
 const getRequest = endpoint =>
   axios
     .get(endpoint)
-    .then(response => response.data.result)
+    .then(response => response.data)
     .catch(error =>
       console.error(`ERROR connecting to '${endpoint}': ${error}`)
     );
 
 const fetchFoods = name =>
-  fetch(`${foodApiEndpoint}?ingr=${name}${apiAuthParams}${category}`).then(
-    res => res.json().then(value => value.hints)
-  );
+  axios
+    .get(`${foodApiEndpoint}?ingr=${name}${apiAuthParams}${category}`)
+    .then(res => res.data.hints);
 
 const getSearchedTerms = searchTerm =>
   getRequest(`${searchTermsEndpoint}/?term=${searchTerm}`);
