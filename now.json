@@ -8,14 +8,15 @@
   ],
   "routes": [
     {
-      "src": "/api/v1/foods/(?<id>[^/]+)",
-      "dest": "api/v1/foods/food.js?id=$id"
+      "src": "/api/v1/search/(?<term>[^/]+)",
+      "dest": "api/v1/search/index.js?term=$term"
+    },
+    {
+      "src": "/api/v1/search",
+      "dest": "api/v1/search/post.js"
     }
   ],
   "env": {
-    "DB_HOST": "@db_host",
-    "DB_USER": "@db_user",
-    "DB_PASSWORD": "@db_password",
-    "DB_DATABASE": "@db_database"
+    "MONGODB_URI": "@mongodb-uri"
   }
 }
