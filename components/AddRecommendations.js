@@ -37,7 +37,7 @@ const AddRecommendations = () => {
     ]);
   };
 
-  const addRecommendation = () => {
+  const addRecommendations = () => {
     const uid = uniqid();
     setRecommendations([
       ...recommendations,
@@ -82,6 +82,10 @@ const AddRecommendations = () => {
         recommendations.map(field => field.key)
       )}`
     );
+    addRecommendations({
+      foodIds: this.foods.map(food => food.id),
+      recommendationsIds: this.recommendations.map(food => food.id),
+    });
   };
 
   return (
@@ -109,7 +113,7 @@ const AddRecommendations = () => {
               renderField(recommendation)
             )}
             {recommendations.length < maxFields ? (
-              <AddButton action={addRecommendation} text='Add' />
+              <AddButton action={addRecommendations} text='Add' />
             ) : (
               <AddButton text='Add' />
             )}
