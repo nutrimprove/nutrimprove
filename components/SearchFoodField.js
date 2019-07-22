@@ -127,7 +127,7 @@ const SearchFoodField = ({ classes }) => {
     setSearchTerm(event.target.value);
   }
 
-  function handleChange(item) {
+  function onInputChange(item) {
     let newSelectedItem = selectedItem;
     if (newSelectedItem.indexOf(item) === -1) {
       newSelectedItem = item;
@@ -141,7 +141,7 @@ const SearchFoodField = ({ classes }) => {
       <Downshift
         id='downshift'
         inputValue={searchTerm}
-        onChange={handleChange}
+        onChange={onInputChange}
         selectedItem={selectedItem}
       >
         {({
