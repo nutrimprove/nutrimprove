@@ -95,6 +95,7 @@ const styles = theme => ({
 const SearchFoodField = ({ classes }) => {
   const [suggestions, setSuggestions] = useState([]);
   const [searchTerm, setSearchTerm] = useState([]);
+  const [selectedItem, setSelectedItem] = useState([]);
 
   useEffect(() => {
     if (searchTerm.length > 2) {
@@ -112,43 +113,87 @@ const SearchFoodField = ({ classes }) => {
     }
   }, [searchTerm]);
 
+  function handleKeyDown(event) {
+    if (
+      selectedItem.length &&
+      !searchTerm.length &&
+      event.key === 'Backspace'
+    ) {
+      setSelectedItem(selectedItem.slice(0, selectedItem.length - 1));
+    }
+  }
+
+  function handleInputChange(event) {
+    setSearchTerm(event.target.value);
+  }
+
+  function handleChange(item) {
+    let newSelectedItem = selectedItem;
+    if (newSelectedItem.indexOf(item) === -1) {
+      newSelectedItem = item;
+    }
+    setSearchTerm(item);
+    setSelectedItem(newSelectedItem);
+  }
+
   return (
     <div className={classes.root}>
-      <Downshift id='downshift-simple'>
+      <Downshift
+        id='downshift'
+        inputValue={searchTerm}
+        onChange={handleChange}
+        selectedItem={selectedItem}
+      >
         {({
           getInputProps,
           getItemProps,
-          getMenuProps,
+          getLabelProps,
           highlightedIndex,
           inputValue,
           isOpen,
           selectedItem,
         }) => {
+          const {
+            onBlur,
+            onChange,
+            onFocus,
+            ...inputProps
+          } = getInputProps({
+            onKeyDown: handleKeyDown,
+            placeholder: 'Type food',
+          });
           setSearchTerm(inputValue);
+
           return (
             <div className={classes.container}>
               {renderInput({
                 fullWidth: true,
                 classes,
-                InputProps: getInputProps({
-                  placeholder: 'Search for a food',
-                }),
+                InputLabelProps: getLabelProps(),
+                InputProps: {
+                  onBlur,
+                  onChange: event => {
+                    handleInputChange(event);
+                    onChange(event);
+                  },
+                  onFocus,
+                },
+                inputProps,
               })}
-              <div {...getMenuProps()}>
-                {isOpen && (
-                  <Paper className={classes.paper} square>
-                    {suggestions.map((suggestion, index) =>
-                      renderSuggestion({
-                        suggestion,
-                        index,
-                        itemProps: getItemProps({ item: suggestion }),
-                        highlightedIndex,
-                        selectedItem,
-                      })
-                    )}
-                  </Paper>
-                )}
-              </div>
+
+              {isOpen && (
+                <Paper className={classes.paper} square>
+                  {suggestions.map((suggestion, index) =>
+                    renderSuggestion({
+                      suggestion,
+                      index,
+                      itemProps: getItemProps({ item: suggestion }),
+                      highlightedIndex,
+                      selectedItem,
+                    })
+                  )}
+                </Paper>
+              )}
             </div>
           );
         }}
