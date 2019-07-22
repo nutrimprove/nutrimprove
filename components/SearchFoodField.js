@@ -123,7 +123,7 @@ const SearchFoodField = ({ classes }) => {
     }
   }
 
-  function handleInputChange(event) {
+  function setInputValue(event) {
     setSearchTerm(event.target.value);
   }
 
@@ -173,7 +173,7 @@ const SearchFoodField = ({ classes }) => {
                 InputProps: {
                   onBlur,
                   onChange: event => {
-                    handleInputChange(event);
+                    setInputValue(event);
                     onChange(event);
                   },
                   onFocus,
