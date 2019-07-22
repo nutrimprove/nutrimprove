@@ -4,6 +4,7 @@ const foodApiEndpoint = 'https://api.edamam.com/api/food-database/parser';
 const category = `&category=generic-foods`;
 const apiAuthParams = `&app_key=8a2617ec655417bd43fd2b3df4b85a30&app_id=652bd7d5`;
 const searchTermsEndpoint = '/api/v1/search';
+const recommendationsEndpoint = '/api/v1/recommendations';
 
 export const getString = string =>
   string
@@ -14,7 +15,7 @@ export const getString = string =>
 const getRequest = endpoint =>
   axios
     .get(endpoint)
-    .then(response => response.data)
+    .then(res => res.data)
     .catch(error =>
       console.error(`ERROR connecting to '${endpoint}': ${error}`)
     );
@@ -27,17 +28,7 @@ const fetchFoods = name =>
 const getSearchedTerms = searchTerm =>
   getRequest(`${searchTermsEndpoint}/?term=${searchTerm}`);
 
-const postSearchTerm = searchTerm => {
-  axios
-    .post(searchTermsEndpoint, searchTerm)
-    .then(response => {
-      console.log(response);
-    })
-    .catch(error => {
-      console.error(
-        `ERROR connecting to '${searchTermsEndpoint}': ${error}`
-      );
-    });
-};
+const addRecommendation = payload =>
+  axios.post(recommendationsEndpoint, payload).then(res => res.data);
 
-export { fetchFoods, postSearchTerm, getSearchedTerms };
+export { addRecommendation, fetchFoods, getSearchedTerms };

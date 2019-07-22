@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import uniqid from 'uniqid';
 import _ from 'lodash';
-import AutoCompleteField from './SearchFoodField';
+import SearchFoodField from './SearchFoodField';
 import RemoveIcon from './RemoveIcon';
 import AddButton from './AddButton';
 
-const maxFields = 4;
+const maxFoodFields = 1;
+const maxRecommendationFields = 5;
 
 const styles = {
   fieldBox: {
@@ -23,8 +24,8 @@ const styles = {
 };
 
 const AddRecommendations = () => {
-  const [recommendations, setRecommendations] = useState([]);
-  const [foods, setFoods] = useState([]);
+  const [foods, setFoods] = useState(['']);
+  const [recommendations, setRecommendations] = useState(['']);
 
   const addFood = () => {
     const uid = uniqid();
@@ -37,7 +38,7 @@ const AddRecommendations = () => {
     ]);
   };
 
-  const addRecommendation = () => {
+  const addRecommendations = () => {
     const uid = uniqid();
     setRecommendations([
       ...recommendations,
@@ -63,7 +64,7 @@ const AddRecommendations = () => {
   const renderField = item => {
     return (
       <div key={item.key} style={{ display: '-webkit-box' }}>
-        <AutoCompleteField className='food' />
+        <SearchFoodField className='food' />
         {isSingle(item) ? (
           <RemoveIcon />
         ) : (
@@ -82,6 +83,10 @@ const AddRecommendations = () => {
         recommendations.map(field => field.key)
       )}`
     );
+    addRecommendations({
+      foodIds: this.foods.map(food => food.id),
+      recommendationsIds: this.recommendations.map(food => food.id),
+    });
   };
 
   return (
@@ -89,11 +94,11 @@ const AddRecommendations = () => {
       <div style={{ display: 'flex' }}>
         <div style={styles.fieldBox}>
           <div className='title' style={styles.title}>
-            Choose food(s):
+            Choose food:
           </div>
           <div id='foods_input'>
             {foods.map(food => renderField(food))}
-            {foods.length < maxFields ? (
+            {foods.length < maxFoodFields && maxFoodFields > 1 ? (
               <AddButton action={addFood} text='Add' />
             ) : (
               <AddButton text='Add' />
@@ -108,8 +113,8 @@ const AddRecommendations = () => {
             {recommendations.map(recommendation =>
               renderField(recommendation)
             )}
-            {recommendations.length < maxFields ? (
-              <AddButton action={addRecommendation} text='Add' />
+            {recommendations.length < maxRecommendationFields ? (
+              <AddButton action={addRecommendations} text='Add' />
             ) : (
               <AddButton text='Add' />
             )}
