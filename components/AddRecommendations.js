@@ -98,10 +98,10 @@ const AddRecommendations = () => {
           </div>
           <div id='foods_input'>
             {foods.map(food => renderField(food))}
-            {foods.length < maxFoodFields && maxFoodFields > 1 ? (
+            {foods.length < maxFoodFields ? (
               <AddButton action={addFood} text='Add' />
             ) : (
-              <AddButton text='Add' />
+              maxFoodFields > 1 && <AddButton text='Add' />
             )}
           </div>
         </div>
