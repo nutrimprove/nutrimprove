@@ -1,6 +1,13 @@
 import { ActionsTypes, removeFood, removeRecommendedFood } from './actions'
 import uniqid from 'uniqid'
 
+/*
+ * FoodItem
+ *  # key {string} - starts with either food_ or recommendedFood_ to denote its purpose
+ *  # name {string} - food name
+ *  # suggestions {string[]} - populates all suggestions there
+ */
+
 export const reducer = (
   state = { recommendedFoods: [], foods: [] },
   action
