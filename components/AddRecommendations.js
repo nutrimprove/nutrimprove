@@ -1,9 +1,13 @@
-import React, { useState } from 'react';
-import uniqid from 'uniqid';
-import _ from 'lodash';
+import React from 'react';
 import AutoCompleteField from './SearchFoodField';
 import RemoveIcon from './RemoveIcon';
 import AddButton from './AddButton';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import {
+  addFood,
+  addRecommendedFood,
+} from '../store/addRecommendation/actions';
 
 const maxFields = 4;
 
@@ -22,52 +26,20 @@ const styles = {
   },
 };
 
-const AddRecommendations = () => {
-  const [recommendations, setRecommendations] = useState([]);
-  const [foods, setFoods] = useState([]);
-
-  const addFood = () => {
-    const uid = uniqid();
-    setFoods([
-      ...foods,
-      {
-        key: uid,
-        food: '',
-      },
-    ]);
-  };
-
-  const addRecommendation = () => {
-    const uid = uniqid();
-    setRecommendations([
-      ...recommendations,
-      {
-        key: uid,
-        recommendation: '',
-      },
-    ]);
-  };
-
-  const filter = (items, key) => items.filter(item => item.key !== key);
-
-  const removeField = item => () =>
-    _.has(item, 'food')
-      ? setFoods(filter(foods, item.key))
-      : setRecommendations(filter(recommendations, item.key));
-
-  const isSingle = item =>
-    _.has(item, 'food')
-      ? foods.length === 1
-      : recommendations.length === 1;
-
-  const renderField = item => {
+const AddRecommendations = ({
+  foods,
+  recommendations,
+  addEmptyRecommendedFood,
+  addEmptyFood,
+}) => {
+  const renderField = (item, items) => {
     return (
       <div key={item.key} style={{ display: '-webkit-box' }}>
-        <AutoCompleteField className='food' />
-        {isSingle(item) ? (
+        <AutoCompleteField className='food' foodItem={item} />
+        {items.length <= 1 ? (
           <RemoveIcon />
         ) : (
-          <RemoveIcon removeField={removeField(item)} />
+          <RemoveIcon foodItem={item} />
         )}
       </div>
     );
@@ -92,9 +64,14 @@ const AddRecommendations = () => {
             Choose food(s):
           </div>
           <div id='foods_input'>
-            {foods.map(food => renderField(food))}
+            {foods.map(food => renderField(food, foods))}
             {foods.length < maxFields ? (
-              <AddButton action={addFood} text='Add' />
+              <AddButton
+                action={() => {
+                  addEmptyFood();
+                }}
+                text='Add'
+              />
             ) : (
               <AddButton text='Add' />
             )}
@@ -106,10 +83,15 @@ const AddRecommendations = () => {
           </div>
           <div id='recommendations_input'>
             {recommendations.map(recommendation =>
-              renderField(recommendation)
+              renderField(recommendation, recommendations)
             )}
             {recommendations.length < maxFields ? (
-              <AddButton action={addRecommendation} text='Add' />
+              <AddButton
+                action={() => {
+                  addEmptyRecommendedFood();
+                }}
+                text='Add'
+              />
             ) : (
               <AddButton text='Add' />
             )}
@@ -122,5 +104,32 @@ const AddRecommendations = () => {
     </>
   );
 };
+AddRecommendations.propTypes = {
+  recommendations: PropTypes.Array,
+  foods: PropTypes.Array,
+  addEmptyFood: PropTypes.function,
+  addEmptyRecommendedFood: PropTypes.function,
+};
 
-export default AddRecommendations;
+const mapStateToProps = (states, ownProps) => {
+  return {
+    recommendations: states.addRecommendationState.recommendedFoods,
+    foods: states.addRecommendationState.foods,
+  };
+};
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    addEmptyRecommendedFood: () => {
+      dispatch(addRecommendedFood(''));
+    },
+    addEmptyFood: () => {
+      dispatch(addFood(''));
+    },
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AddRecommendations);
