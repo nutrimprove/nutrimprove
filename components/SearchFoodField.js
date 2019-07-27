@@ -6,7 +6,7 @@ import { withStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
 import Paper from '@material-ui/core/Paper'
 import MenuItem from '@material-ui/core/MenuItem'
-import { editFoodItemsName } from '../store/addRecommendation/actions'
+import { editFoodItemName } from '../store/addRecommendation/actions'
 
 const renderInput = inputProps => {
   const { InputProps, classes, ref, ...other } = inputProps;
@@ -197,7 +197,7 @@ SearchFoodField.propTypes = {
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     setSearchTerm: (newName) => {
-      dispatch(editFoodItemsName(ownProps.foodItem, newName));
+      dispatch(editFoodItemName(ownProps.foodItem, newName));
     }
   };
 };

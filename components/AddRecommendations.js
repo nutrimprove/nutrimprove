@@ -1,7 +1,5 @@
 import AutoCompleteField from './SearchFoodField';
-import React, { useState } from 'react';
-import uniqid from 'uniqid';
-import _ from 'lodash';
+import React from 'react';
 import RemoveIcon from './RemoveIcon';
 import AddButton from './AddButton';
 import { connect } from 'react-redux';
@@ -11,7 +9,7 @@ import {
   addRecommendedFood,
 } from '../store/addRecommendation/actions';
 
-const maxFoodFields = 1;
+const maxFoodFields = 5;
 const maxRecommendationFields = 5;
 
 const styles = {
@@ -70,9 +68,7 @@ const AddRecommendations = ({
             {foods.map(food => renderField(food, foods))}
             {foods.length < maxFoodFields ? (
               <AddButton
-                action={() => {
-                  addEmptyFood();
-                }}
+                action={addEmptyFood}
                 text='Add'
               />
             ) : (
@@ -88,11 +84,9 @@ const AddRecommendations = ({
             {recommendations.map(recommendation =>
               renderField(recommendation, recommendations)
             )}
-            {recommendations.length < maxFoodFields ? (
+            {recommendations.length < maxRecommendationFields ? (
               <AddButton
-                action={() => {
-                  addEmptyRecommendedFood();
-                }}
+                action={addEmptyRecommendedFood}
                 text='Add'
               />
             ) : (

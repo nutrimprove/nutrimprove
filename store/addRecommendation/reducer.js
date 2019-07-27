@@ -8,59 +8,73 @@ import uniqid from 'uniqid'
  *  # suggestions {string[]} - populates all suggestions there
  */
 
+const editFoodItemArray = (foodItems, foodItemToChange) => {
+  const indexToModify = foodItems.map(f=>f.key).indexOf(foodItemToChange.key)
+  const updateFoodItems = [...foodItems]
+  updateFoodItems.splice(indexToModify, 1, foodItemToChange)
+  return updateFoodItems
+}
+
 export const reducer = (
   state = { recommendedFoods: [], foods: [] },
   action
 ) => {
-  switch (action.type) {
-    case ActionsTypes.ADD_FOOD:
-      return {
-        ...state,
-        foods: [...state.foods, { key: `food_${uniqid()}`, name: action.foodName, suggestions: [] }],
-      }
-    case ActionsTypes.ADD_RECOMMENDED_FOOD:
-      return {
-        ...state,
-        recommendedFoods: [
-          ...state.recommendedFoods,
-          { key: `recommendedFood_${uniqid()}`, name: action.foodName, suggestions: [] },
-        ],
-      }
-    case ActionsTypes.EDIT_FOOD:
-      let indexToModify = state.foods.map(f=>f.key).indexOf(action.foodItem.key)
-      const foods = [...state.foods]
-      foods.splice(indexToModify, 1, action.foodItem)
-      return {
-        ...state,
-        foods,
-      }
-    case ActionsTypes.EDIT_RECOMMENDED_FOOD:
-      indexToModify = state.recommendedFoods.map(f=>f.key).indexOf(action.foodItem.key)
-      const recommendedFoods = [...state.recommendedFoods]
-      recommendedFoods.splice(indexToModify, 1, action.foodItem)
-      return {
-        ...state,
-        recommendedFoods,
-      }
-    case ActionsTypes.REMOVE_FOOD:
-      return {
-        ...state,
-        foods: state.foods.filter(f => f.key !== action.foodItem.key),
-      }
-    case ActionsTypes.REMOVE_RECOMMENDED_FOOD:
-      return {
-        ...state,
-        recommendedFoods: state.recommendedFoods.filter(
-          r => r.key !== action.foodItem.key
-        ),
-      }
-    case ActionsTypes.REMOVE_FOOD_OR_RECOMMENDED_FOOD:
-      if (action.foodItem.key.startsWith("food_")) {
-        return reducer(state, removeFood(action.foodItem))
-      } else {
-        return reducer(state, removeRecommendedFood(action.foodItem))
-      }
-    default:
-      return state
-  }
+  if (action.type === ActionsTypes.ADD_FOOD) {
+    return {
+      ...state,
+      foods: [...state.foods, { key: `food_${uniqid()}`, name: action.foodName, suggestions: [] }],
+    }
+  } else if (action.type === ActionsTypes.ADD_RECOMMENDED_FOOD) {
+    return {
+      ...state,
+      recommendedFoods: [
+        ...state.recommendedFoods,
+        { key: `recommendedFood_${uniqid()}`, name: action.foodName, suggestions: [] },
+      ],
+    }
+  } else if (action.type === ActionsTypes.EDIT_FOOD) {
+    const foods = editFoodItemArray(state.foods, action.foodItem)
+    return {
+      ...state,
+      foods,
+    }
+  } else if (action.type === ActionsTypes.EDIT_RECOMMENDED_FOOD) {
+    const recommendedFoods = editFoodItemArray(state.recommendedFoods, action.foodItem)
+    return {
+      ...state,
+      recommendedFoods,
+    }
+  } else if (action.type === ActionsTypes.EDIT_FOOD_SUGGESTIONS) {
+    const foodToChange = state.foods.find(i=> i.key === action.foodItemKey)
+    const foods = editFoodItemArray(state.foods, { ...foodToChange, suggestions: action.suggestions })
+    return {
+      ...state,
+      foods,
+    }
+  } else if (action.type === ActionsTypes.EDIT_RECOMMENDED_FOOD_SUGGESTIONS) {
+    const foodToChange = state.recommendedFoods.find(i=> i.key === action.foodItemKey)
+    const recommendedFoods = editFoodItemArray(state.recommendedFoods, { ...foodToChange, suggestions: action.suggestions })
+    return {
+      ...state,
+      recommendedFoods,
+    }
+  } else if (action.type === ActionsTypes.REMOVE_FOOD) {
+    return {
+      ...state,
+      foods: state.foods.filter(f => f.key !== action.foodItem.key),
+    }
+  } else if (action.type === ActionsTypes.REMOVE_RECOMMENDED_FOOD) {
+    return {
+      ...state,
+      recommendedFoods: state.recommendedFoods.filter(
+        r => r.key !== action.foodItem.key
+      ),
+    }
+  } else if (action.type === ActionsTypes.REMOVE_FOOD_OR_RECOMMENDED_FOOD) {
+    if (action.foodItem.key.startsWith('food_')) {
+      return reducer(state, removeFood(action.foodItem))
+    } else {
+      return reducer(state, removeRecommendedFood(action.foodItem))
+    }
+  } else {return state}
 }

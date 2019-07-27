@@ -5,6 +5,8 @@ export const ActionsTypes = {
   ADD_RECOMMENDED_FOOD: 'ADD_RECOMMENDED_FOOD',
   EDIT_FOOD: 'EDIT_FOOD',
   EDIT_RECOMMENDED_FOOD: 'EDIT_RECOMMENDED_FOOD',
+  EDIT_FOOD_SUGGESTIONS: 'EDIT_FOOD_SUGGESTIONS',
+  EDIT_RECOMMENDED_FOOD_SUGGESTIONS: 'EDIT_RECOMMENDED_FOOD_SUGGESTIONS',
   REMOVE_FOOD: 'REMOVE_FOOD',
   REMOVE_RECOMMENDED_FOOD: 'REMOVE_RECOMMENDED_FOOD',
   REMOVE_FOOD_OR_RECOMMENDED_FOOD: 'REMOVE_FOOD_OR_RECOMMENDED_FOOD',
@@ -26,6 +28,14 @@ export const editRecommendedFood = (foodItem) => {
   return { type: ActionsTypes.EDIT_RECOMMENDED_FOOD, foodItem }
 }
 
+export const editFoodSuggestions = (foodItemKey, suggestions) => {
+  return { type: ActionsTypes.EDIT_FOOD_SUGGESTIONS, foodItemKey, suggestions }
+}
+
+export const editRecommendedFoodSuggestions = (foodItemKey, suggestions) => {
+  return { type: ActionsTypes.EDIT_RECOMMENDED_FOOD_SUGGESTIONS, foodItemKey, suggestions }
+}
+
 export const removeFood = (foodItem) => {
   return { type: ActionsTypes.REMOVE_FOOD, foodItem }
 }
@@ -38,33 +48,36 @@ export const removeFoodOrRecommendedFood = (foodItem) => {
   return { type: ActionsTypes.REMOVE_FOOD_OR_RECOMMENDED_FOOD, foodItem }
 }
 
-const editFoodItem = (dispatch, foodItem, newName, suggestions) => {
+const editFoodItemNameOnly = (dispatch, foodItem, newName) => {
   if (foodItem.key.startsWith("food_")) {
-    dispatch(editFood({...foodItem, name: newName, suggestions}))
+    dispatch(editFood({...foodItem, name: newName}))
   } else {
-    dispatch(editRecommendedFood({...foodItem, name: newName, suggestions}))
+    dispatch(editRecommendedFood({...foodItem, name: newName}))
+  }
+}
+const setFoodItemSuggestions = (dispatch, foodItemKey, suggestions) => {
+  if (foodItemKey.startsWith("food_")) {
+    dispatch(editFoodSuggestions(foodItemKey, suggestions))
+  } else {
+    dispatch(editRecommendedFoodSuggestions(foodItemKey, suggestions))
   }
 }
 
-export const editFoodItemsName = (foodItem, newName) => {
-  // return (dispatch) => editFoodItem(dispatch, foodItem, newName, []);
+export const editFoodItemName = (foodItem, newName) => {
+  if (newName == null) return;
 
   return async (dispatch, getState) => {
-    return new Promise(async (resolve) => {
-      if (newName.length > 2) {
-        editFoodItem(dispatch, foodItem, newName, ["ASD","ZXC","qwe","rtyt"]);
-        // FIXME: for some reason getSearchTerms fails
-        // const search = await getSearchedTerms(newName);
-        // const suggestions = search.matches.map(
-        //   match => match.food_name
-        // );
-        // if (suggestions) {
-          // editFoodItem(dispatch, foodItem, newName, suggestions);
-        // }
-      } else {
-        editFoodItem(dispatch, foodItem, newName, []);
+    editFoodItemNameOnly(dispatch, foodItem, newName)
+    if (newName.length > 2) {
+      const search = await getSearchedTerms(newName);
+      const suggestions = search.matches.map(
+        match => match.food_name
+      );
+      if (suggestions) {
+        setFoodItemSuggestions(dispatch, foodItem.key, suggestions);
       }
-      resolve()
-    })
+    } else {
+      setFoodItemSuggestions(dispatch, foodItem.key, []);
+    }
   }
 }
