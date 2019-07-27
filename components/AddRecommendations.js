@@ -1,5 +1,7 @@
-import React from 'react';
 import AutoCompleteField from './SearchFoodField';
+import React, { useState } from 'react';
+import uniqid from 'uniqid';
+import _ from 'lodash';
 import RemoveIcon from './RemoveIcon';
 import AddButton from './AddButton';
 import { connect } from 'react-redux';
@@ -9,7 +11,8 @@ import {
   addRecommendedFood,
 } from '../store/addRecommendation/actions';
 
-const maxFields = 4;
+const maxFoodFields = 1;
+const maxRecommendationFields = 5;
 
 const styles = {
   fieldBox: {
@@ -61,11 +64,11 @@ const AddRecommendations = ({
       <div style={{ display: 'flex' }}>
         <div style={styles.fieldBox}>
           <div className='title' style={styles.title}>
-            Choose food(s):
+            Choose food:
           </div>
           <div id='foods_input'>
             {foods.map(food => renderField(food, foods))}
-            {foods.length < maxFields ? (
+            {foods.length < maxFoodFields ? (
               <AddButton
                 action={() => {
                   addEmptyFood();
@@ -85,7 +88,7 @@ const AddRecommendations = ({
             {recommendations.map(recommendation =>
               renderField(recommendation, recommendations)
             )}
-            {recommendations.length < maxFields ? (
+            {recommendations.length < maxFoodFields ? (
               <AddButton
                 action={() => {
                   addEmptyRecommendedFood();
