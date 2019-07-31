@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
-import Downshift from 'downshift';
-import { withStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
-import Paper from '@material-ui/core/Paper';
-import MenuItem from '@material-ui/core/MenuItem';
-import { getSearchedTerms } from '../connect/api';
+import React from 'react'
+import { connect } from 'react-redux'
+import PropTypes from 'prop-types'
+import Downshift from 'downshift'
+import { withStyles } from '@material-ui/core/styles'
+import TextField from '@material-ui/core/TextField'
+import Paper from '@material-ui/core/Paper'
+import MenuItem from '@material-ui/core/MenuItem'
+import { editFoodItemName } from '../store/addRecommendation/actions'
 
 const renderInput = inputProps => {
   const { InputProps, classes, ref, ...other } = inputProps;
@@ -92,31 +93,15 @@ const styles = theme => ({
   },
 });
 
-const SearchFoodField = ({ classes }) => {
-  const [suggestions, setSuggestions] = useState([]);
-  const [searchTerm, setSearchTerm] = useState([]);
-  const [selectedItem, setSelectedItem] = useState([]);
+const SearchFoodField = ({ classes, foodItem, setSearchTerm }) => {
+  const {suggestions} = foodItem;
+  const [selectedItem, setSelectedItem] = React.useState([]); // Not sure what is it doing
 
-  useEffect(() => {
-    if (searchTerm.length > 2) {
-      (async () => {
-        const search = await getSearchedTerms(searchTerm);
-        const listOfSuggestions = search.matches.map(
-          match => match.food_name
-        );
-        if (listOfSuggestions) {
-          setSuggestions(listOfSuggestions);
-        }
-      })();
-    } else {
-      setSuggestions([]);
-    }
-  }, [searchTerm]);
 
   function handleKeyDown(event) {
     if (
       selectedItem.length &&
-      !searchTerm.length &&
+      !foodItem.length &&
       event.key === 'Backspace'
     ) {
       setSelectedItem(selectedItem.slice(0, selectedItem.length - 1));
@@ -140,7 +125,7 @@ const SearchFoodField = ({ classes }) => {
     <div className={classes.root}>
       <Downshift
         id='downshift'
-        inputValue={searchTerm}
+        inputValue={foodItem.name}
         onChange={onInputChange}
         selectedItem={selectedItem}
       >
@@ -162,8 +147,7 @@ const SearchFoodField = ({ classes }) => {
             onKeyDown: handleKeyDown,
             placeholder: 'Type food',
           });
-          setSearchTerm(inputValue);
-
+          // setSearchTerm(inputValue);
           return (
             <div className={classes.container}>
               {renderInput({
@@ -205,6 +189,17 @@ const SearchFoodField = ({ classes }) => {
 
 SearchFoodField.propTypes = {
   classes: PropTypes.object.isRequired,
+  foodItem: PropTypes.object,
+  setSearchTerm: PropTypes.function,
 };
 
-export default withStyles(styles)(SearchFoodField);
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    setSearchTerm: (newName) => {
+      dispatch(editFoodItemName(ownProps.foodItem, newName));
+    }
+  };
+};
+
+export default connect(null, mapDispatchToProps)(withStyles(styles)(SearchFoodField));

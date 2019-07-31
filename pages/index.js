@@ -1,5 +1,5 @@
-import React from 'react';
-import Page from '../components/Page';
+import React from 'react'
+import Content from '../components/Content'
 
 const layoutStyle = {
   margin: 20,
@@ -11,7 +11,7 @@ const layoutStyle = {
 const Index = () => {
   return (
     <div id='app' style={layoutStyle}>
-      <Page />
+      <Content />
     </div>
   );
 };
