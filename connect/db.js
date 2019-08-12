@@ -81,6 +81,7 @@ const addSearchTerm = async searchTermObj => {
         newSearchTerm.save(err => {
           if (err) {
             console.error(`Error saving '${term}': ${err}`);
+            mongoose.disconnect();
             reject(err);
           }
           console.log(`Search term '${term}' cached`);
