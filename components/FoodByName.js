@@ -17,12 +17,14 @@ const buttonStyles = {
 const FoodByName = () => {
   const [foodName, setFoodName] = useState('');
   const [foods, setFoods] = useState([]);
+  const [searched, setSearched] = useState(false);
 
   const updateResults = async () => {
     setFoods([]);
     if (foodName !== '') {
       const foods = await fetchFoods(foodName);
       setFoods(foods);
+      setSearched(true);
     }
   };
 
@@ -45,7 +47,7 @@ const FoodByName = () => {
       >
         Search
       </Button>
-      <ResultsTable values={foods} />
+      {searched && <ResultsTable values={foods} />}
     </form>
   );
 };
