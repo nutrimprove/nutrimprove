@@ -13,6 +13,9 @@
     "format": "yarn prettier -- --write",
     "validate": "yarn lint && yarn prettier -- --list-different"
   },
+  "engines": {
+    "node": "^8 || ^10"
+  },
   "author": "Joao Jesus",
   "license": "UNLICENSED",
   "dependencies": {
