@@ -100,11 +100,13 @@ const SearchFoodField = ({ classes }) => {
     if (searchTerm.length > 2) {
       (async () => {
         const search = await getSearchedTerms(searchTerm);
-        const listOfSuggestions = search.matches.map(
-          match => match.food_name
-        );
-        if (listOfSuggestions) {
-          setSuggestions(listOfSuggestions);
+        if (search) {
+          const listOfSuggestions = search.matches.map(
+            match => match.food_name
+          );
+          if (listOfSuggestions) {
+            setSuggestions(listOfSuggestions);
+          }
         }
       })();
     } else {
