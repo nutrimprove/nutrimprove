@@ -25,10 +25,20 @@ const fetchFoods = name =>
     .get(`${foodApiEndpoint}?ingr=${name}${apiAuthParams}${category}`)
     .then(res => res.data.hints);
 
+const fetchRecommendations = contributor =>
+  axios
+    .get(`${recommendationsEndpoint}?id=${contributor}`)
+    .then(res => res.data.hints);
+
 const getSearchedTerms = searchTerm =>
   getRequest(`${searchTermsEndpoint}/?term=${searchTerm}`);
 
 const addRecommendation = payload =>
   axios.post(recommendationsEndpoint, payload).then(res => res.data);
 
-export { addRecommendation, fetchFoods, getSearchedTerms };
+export {
+  addRecommendation,
+  fetchFoods,
+  fetchRecommendations,
+  getSearchedTerms,
+};
