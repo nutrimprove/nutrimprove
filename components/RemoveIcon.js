@@ -1,13 +1,15 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
+import { removeFoodOrRecommendedFood } from '../store/addRecommendation/actions'
 
-const RemoveIcon = ({ removeField }) => {
-  if (removeField) {
+const RemoveIcon = ({ foodItem, doRemove }) => {
+  if (foodItem != null) {
     return (
       <>
-        <IconButton aria-label='remove-button' onClick={removeField}>
+        <IconButton aria-label='remove-button' onClick={() => doRemove()}>
           <DeleteIcon />
         </IconButton>
       </>
@@ -24,8 +26,14 @@ const RemoveIcon = ({ removeField }) => {
 };
 
 RemoveIcon.propTypes = {
-  removeField: PropTypes.func,
-  item: PropTypes.object,
+  foodItem: PropTypes.object,
+  doRemove: PropTypes.function,
 };
 
-export default RemoveIcon;
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  doRemove: () => {
+    dispatch(removeFoodOrRecommendedFood(ownProps.foodItem))
+  }
+})
+
+export default connect(null, mapDispatchToProps)(RemoveIcon);

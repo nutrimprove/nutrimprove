@@ -31,11 +31,26 @@ const fetchRecommendations = contributor =>
 const getSearchedTerms = searchTerm =>
   getRequest(`${searchTermsEndpoint}/?term=${searchTerm}`);
 
+const postSearchTerm = searchTerm => {
+  axios
+    .post(searchTermsEndpoint, searchTerm)
+    .then(response => {
+      console.log(response);
+    })
+    .catch(error => {
+      console.error(
+        `ERROR connecting to '${searchTermsEndpoint}': ${error}`
+      );
+    });
+};
+
 const addRecommendations = payload =>
   axios.post(recommendationsEndpoint, payload).then(res => res.data);
 
+
 export {
   addRecommendations,
+  postSearchTerm,
   fetchFoods,
   fetchRecommendations,
   getSearchedTerms,

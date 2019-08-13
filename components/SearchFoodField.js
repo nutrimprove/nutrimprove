@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
-import Downshift from 'downshift';
-import { withStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
-import Paper from '@material-ui/core/Paper';
-import MenuItem from '@material-ui/core/MenuItem';
-import { getSearchedTerms } from '../connect/api';
+import React from 'react'
+import { connect } from 'react-redux'
+import PropTypes from 'prop-types'
+import Downshift from 'downshift'
+import { withStyles } from '@material-ui/core/styles'
+import TextField from '@material-ui/core/TextField'
+import Paper from '@material-ui/core/Paper'
+import MenuItem from '@material-ui/core/MenuItem'
+import { editFoodItemName } from '../store/addRecommendation/actions'
 
 const renderInput = inputProps => {
   const { InputProps, classes, ref, ...other } = inputProps;
@@ -92,65 +93,91 @@ const styles = theme => ({
   },
 });
 
-const SearchFoodField = ({ classes }) => {
-  const [suggestions, setSuggestions] = useState([]);
-  const [searchTerm, setSearchTerm] = useState([]);
+const SearchFoodField = ({ classes, foodItem, setSearchTerm }) => {
+  const {suggestions} = foodItem;
+  const [selectedItem, setSelectedItem] = React.useState([]); // Not sure what is it doing
 
-  useEffect(() => {
-    if (searchTerm.length > 2) {
-      (async () => {
-        const search = await getSearchedTerms(searchTerm);
-        if (search) {
-          const listOfSuggestions = search.matches.map(
-            match => match.food_name
-          );
-          if (listOfSuggestions) {
-            setSuggestions(listOfSuggestions);
-          }
-        }
-      })();
-    } else {
-      setSuggestions([]);
+
+  function handleKeyDown(event) {
+    if (
+      selectedItem.length &&
+      !foodItem.length &&
+      event.key === 'Backspace'
+    ) {
+      setSelectedItem(selectedItem.slice(0, selectedItem.length - 1));
     }
-  }, [searchTerm]);
+  }
+
+  function setInputValue(event) {
+    setSearchTerm(event.target.value);
+  }
+
+  function onInputChange(item) {
+    let newSelectedItem = selectedItem;
+    if (newSelectedItem.indexOf(item) === -1) {
+      newSelectedItem = item;
+    }
+    setSearchTerm(item);
+    setSelectedItem(newSelectedItem);
+  }
 
   return (
     <div className={classes.root}>
-      <Downshift id='downshift-simple'>
+      <Downshift
+        id='downshift'
+        inputValue={foodItem.name}
+        onChange={onInputChange}
+        selectedItem={selectedItem}
+      >
         {({
           getInputProps,
           getItemProps,
-          getMenuProps,
+          getLabelProps,
           highlightedIndex,
           inputValue,
           isOpen,
           selectedItem,
         }) => {
-          setSearchTerm(inputValue);
+          const {
+            onBlur,
+            onChange,
+            onFocus,
+            ...inputProps
+          } = getInputProps({
+            onKeyDown: handleKeyDown,
+            placeholder: 'Type food',
+          });
+          // setSearchTerm(inputValue);
           return (
             <div className={classes.container}>
               {renderInput({
                 fullWidth: true,
                 classes,
-                InputProps: getInputProps({
-                  placeholder: 'Search for a food',
-                }),
+                InputLabelProps: getLabelProps(),
+                InputProps: {
+                  onBlur,
+                  onChange: event => {
+                    setInputValue(event);
+                    onChange(event);
+                  },
+                  onFocus,
+                },
+                inputProps,
               })}
-              <div {...getMenuProps()}>
-                {isOpen && (
-                  <Paper className={classes.paper} square>
-                    {suggestions.map((suggestion, index) =>
-                      renderSuggestion({
-                        suggestion,
-                        index,
-                        itemProps: getItemProps({ item: suggestion }),
-                        highlightedIndex,
-                        selectedItem,
-                      })
-                    )}
-                  </Paper>
-                )}
-              </div>
+
+              {isOpen && (
+                <Paper className={classes.paper} square>
+                  {suggestions.map((suggestion, index) =>
+                    renderSuggestion({
+                      suggestion,
+                      index,
+                      itemProps: getItemProps({ item: suggestion }),
+                      highlightedIndex,
+                      selectedItem,
+                    })
+                  )}
+                </Paper>
+              )}
             </div>
           );
         }}
@@ -162,6 +189,17 @@ const SearchFoodField = ({ classes }) => {
 
 SearchFoodField.propTypes = {
   classes: PropTypes.object.isRequired,
+  foodItem: PropTypes.object,
+  setSearchTerm: PropTypes.function,
 };
 
-export default withStyles(styles)(SearchFoodField);
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    setSearchTerm: (newName) => {
+      dispatch(editFoodItemName(ownProps.foodItem, newName));
+    }
+  };
+};
+
+export default connect(null, mapDispatchToProps)(withStyles(styles)(SearchFoodField));
