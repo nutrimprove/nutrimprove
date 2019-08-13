@@ -4,6 +4,7 @@ import _ from 'lodash';
 import AutoCompleteField from './SearchFoodField';
 import RemoveIcon from './RemoveIcon';
 import AddButton from './AddButton';
+import { addRecommendations } from '../connect/api';
 
 const maxFields = 4;
 
@@ -26,7 +27,7 @@ const AddRecommendations = () => {
   const [recommendations, setRecommendations] = useState([]);
   const [foods, setFoods] = useState([]);
 
-  const addFood = () => {
+  const addEmptyFood = () => {
     const uid = uniqid();
     setFoods([
       ...foods,
@@ -37,13 +38,13 @@ const AddRecommendations = () => {
     ]);
   };
 
-  const addRecommendations = () => {
+  const addEmptyRecommendation = () => {
     const uid = uniqid();
     setRecommendations([
       ...recommendations,
       {
         key: uid,
-        recommendation: '',
+        food: '',
       },
     ]);
   };
@@ -74,18 +75,22 @@ const AddRecommendations = () => {
   };
 
   const update = () => {
-    console.log(
-      `====Foods===> ${JSON.stringify(foods.map(field => field.key))}`
-    );
-    console.log(
-      `====Recs===> ${JSON.stringify(
-        recommendations.map(field => field.key)
-      )}`
-    );
-    addRecommendations({
-      foodIds: this.foods.map(food => food.id),
-      recommendationsIds: this.recommendations.map(food => food.id),
+    console.log(`====Foods===> ${JSON.stringify(foods)}`);
+    console.log(`====Recs===> ${JSON.stringify(recommendations)}`);
+
+    const recommendationsPayload = [];
+
+    foods.forEach(food => {
+      recommendations.forEach(recommendation => {
+        recommendationsPayload.push({
+          foodId: food.food,
+          recommendationId: recommendation.food,
+          contributorId: '099',
+        });
+      });
     });
+    console.log('----->' + JSON.stringify(recommendationsPayload));
+    addRecommendations(recommendationsPayload);
   };
 
   return (
@@ -98,7 +103,7 @@ const AddRecommendations = () => {
           <div id='foods_input'>
             {foods.map(food => renderField(food))}
             {foods.length < maxFields ? (
-              <AddButton action={addFood} text='Add' />
+              <AddButton action={addEmptyFood} text='Add' />
             ) : (
               <AddButton text='Add' />
             )}
@@ -113,7 +118,7 @@ const AddRecommendations = () => {
               renderField(recommendation)
             )}
             {recommendations.length < maxFields ? (
-              <AddButton action={addRecommendations} text='Add' />
+              <AddButton action={addEmptyRecommendation} text='Add' />
             ) : (
               <AddButton text='Add' />
             )}

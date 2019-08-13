@@ -49,6 +49,30 @@ const searchTermSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+const recommendationsSchema = new mongoose.Schema(
+  {
+    food_id: {
+      type: String,
+      lowercase: true,
+      trim: true,
+      required: true,
+    },
+    recommendation_id: {
+      type: String,
+      lowercase: true,
+      trim: true,
+      required: true,
+    },
+    contributor_id: {
+      type: String,
+      lowercase: true,
+      trim: true,
+      required: true,
+    },
+  },
+  { timestamps: true }
+);
+
 const addSearchTerm = async searchTermObj => {
   // Connect to mongoDB using mongoose
   if (mongoose.connection.readyState === 0) {
@@ -93,4 +117,68 @@ const addSearchTerm = async searchTermObj => {
   );
 };
 
-export { connectToDatabase, getDocuments, addSearchTerm };
+const addRecommendation = async recommendationObj => {
+  // Connect to mongoDB using mongoose
+  if (mongoose.connection.readyState === 0) {
+    mongoose.connect(URI, err => {
+      if (err) {
+        console.error(`ERROR connecting to '${URI}': ${err}`);
+      } else {
+        console.log(`Succeeded connecting to '${URI}'`);
+      }
+    });
+  }
+
+  const { foodId, recommendationId, contributorId } = recommendationObj;
+
+  console.log(`--------> ${JSON.stringify(recommendationObj)}`);
+
+  // Set new search term based on a schema
+  const AddRecommendationsModel = mongoose.model(
+    'recommendations',
+    recommendationsSchema,
+    'recommendations'
+  );
+
+  return new Promise((resolve, reject) =>
+    AddRecommendationsModel.findOne(
+      {
+        food_id: foodId,
+        recommendation_id: recommendationId,
+        contributor_id: contributorId,
+      },
+      (err, result) => {
+        if (err) {
+          console.error(`Error when checking for recommendation: ${err}`);
+          mongoose.disconnect();
+          reject(err);
+        }
+        if (result) {
+          console.warn('Recommendation already exists!');
+        } else {
+          const newRecommendation = new AddRecommendationsModel(
+            recommendationObj
+          );
+          // Save recommendation document to DB
+          newRecommendation.save(err => {
+            if (err) {
+              console.error(`Error saving recommendation: ${err}`);
+              mongoose.disconnect();
+              reject(err);
+            }
+            console.log(`Recommendation saved.`);
+            mongoose.disconnect();
+            resolve(newRecommendation);
+          });
+        }
+      }
+    )
+  );
+};
+
+export {
+  connectToDatabase,
+  getDocuments,
+  addSearchTerm,
+  addRecommendation,
+};

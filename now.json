@@ -12,8 +12,8 @@
       "dest": "api/v1/search/index.js?term=$term"
     },
     {
-      "src": "/api/v1/search",
-      "dest": "api/v1/search/post.js"
+      "src": "/api/v1/recommendations/(?<cid>[^/]+)",
+      "dest": "api/v1/recommendations/index.js?cid=$cid"
     }
   ],
   "env": {

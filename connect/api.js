@@ -26,18 +26,16 @@ const fetchFoods = name =>
     .then(res => res.data.hints);
 
 const fetchRecommendations = contributor =>
-  axios
-    .get(`${recommendationsEndpoint}?id=${contributor}`)
-    .then(res => res.data.hints);
+  getRequest(`${recommendationsEndpoint}?cid=${contributor}`);
 
 const getSearchedTerms = searchTerm =>
   getRequest(`${searchTermsEndpoint}/?term=${searchTerm}`);
 
-const addRecommendation = payload =>
+const addRecommendations = payload =>
   axios.post(recommendationsEndpoint, payload).then(res => res.data);
 
 export {
-  addRecommendation,
+  addRecommendations,
   fetchFoods,
   fetchRecommendations,
   getSearchedTerms,
