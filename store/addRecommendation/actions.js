@@ -12,82 +12,92 @@ export const ActionsTypes = {
   REMOVE_FOOD_OR_RECOMMENDED_FOOD: 'REMOVE_FOOD_OR_RECOMMENDED_FOOD',
 };
 
-export const addFood = foodName => {
-  return { type: ActionsTypes.ADD_FOOD, foodName };
+export const addFood = food => {
+  return { type: ActionsTypes.ADD_FOOD, food };
 };
 
 export const addRecommendedFood = foodName => {
   return { type: ActionsTypes.ADD_RECOMMENDED_FOOD, foodName };
 };
 
-export const editFood = foodItem => {
-  return { type: ActionsTypes.EDIT_FOOD, foodItem };
+export const editFood = food => {
+  return { type: ActionsTypes.EDIT_FOOD, food };
 };
 
-export const editRecommendedFood = foodItem => {
-  return { type: ActionsTypes.EDIT_RECOMMENDED_FOOD, foodItem };
+export const editRecommendedFood = food => {
+  return { type: ActionsTypes.EDIT_RECOMMENDED_FOOD, food };
 };
 
-export const editFoodSuggestions = (foodItemKey, suggestions) => {
+export const editFoodSuggestions = (foodId, suggestions) => {
   return {
     type: ActionsTypes.EDIT_FOOD_SUGGESTIONS,
-    foodItemKey,
+    foodId,
     suggestions,
   };
 };
 
-export const editRecommendedFoodSuggestions = (
-  foodItemKey,
-  suggestions
-) => {
+export const editRecommendedFoodSuggestions = (foodId, suggestions) => {
   return {
     type: ActionsTypes.EDIT_RECOMMENDED_FOOD_SUGGESTIONS,
-    foodItemKey,
+    foodId,
     suggestions,
   };
 };
 
-export const removeFood = foodItem => {
-  return { type: ActionsTypes.REMOVE_FOOD, foodItem };
+export const removeFood = food => {
+  return { type: ActionsTypes.REMOVE_FOOD, food };
 };
 
-export const removeRecommendedFood = foodItem => {
-  return { type: ActionsTypes.REMOVE_RECOMMENDED_FOOD, foodItem };
+export const removeRecommendedFood = food => {
+  return { type: ActionsTypes.REMOVE_RECOMMENDED_FOOD, food };
 };
 
-export const removeFoodOrRecommendedFood = foodItem => {
-  return { type: ActionsTypes.REMOVE_FOOD_OR_RECOMMENDED_FOOD, foodItem };
+const editFoodName = (dispatch, food, newName) => {
+  dispatch(editFood({ ...food, name: newName }));
 };
 
-const editFoodItemNameOnly = (dispatch, foodItem, newName) => {
-  if (foodItem.key.startsWith('food_')) {
-    dispatch(editFood({ ...foodItem, name: newName }));
-  } else {
-    dispatch(editRecommendedFood({ ...foodItem, name: newName }));
-  }
+const editRecommendedFoodName = (dispatch, food, newName) => {
+  dispatch(editRecommendedFood({ ...food, name: newName }));
 };
 
-const setFoodItemSuggestions = (dispatch, foodItemKey, suggestions) => {
-  if (foodItemKey.startsWith('food_')) {
-    dispatch(editFoodSuggestions(foodItemKey, suggestions));
-  } else {
-    dispatch(editRecommendedFoodSuggestions(foodItemKey, suggestions));
-  }
+const setFoodSuggestions = (dispatch, foodId, suggestions) => {
+  dispatch(editFoodSuggestions(foodId, suggestions));
 };
 
-export const editFoodItemName = (foodItem, newName) => {
+const setRecommendedFoodSuggestions = (dispatch, foodId, suggestions) => {
+  dispatch(editRecommendedFoodSuggestions(foodId, suggestions));
+};
+
+export const changeFoodName = (food, newName) => {
   if (newName == null) return;
 
   return async (dispatch, getState) => {
-    editFoodItemNameOnly(dispatch, foodItem, newName);
+    editFoodName(dispatch, food, newName);
     if (newName.length > 2) {
       const search = await getSearchedTerms(newName);
       const suggestions = search.matches.map(match => match.food_name);
       if (suggestions) {
-        setFoodItemSuggestions(dispatch, foodItem.key, suggestions);
+        setFoodSuggestions(dispatch, food.id, suggestions);
       }
     } else {
-      setFoodItemSuggestions(dispatch, foodItem.key, []);
+      setFoodSuggestions(dispatch, food.id, []);
+    }
+  };
+};
+
+export const changeRecommendedFoodName = (food, newName) => {
+  if (newName == null) return;
+
+  return async (dispatch, getState) => {
+    editRecommendedFoodName(dispatch, food, newName);
+    if (newName.length > 2) {
+      const search = await getSearchedTerms(newName);
+      const suggestions = search.matches.map(match => match.food_name);
+      if (suggestions) {
+        setRecommendedFoodSuggestions(dispatch, food.id, suggestions);
+      }
+    } else {
+      setRecommendedFoodSuggestions(dispatch, food.id, []);
     }
   };
 };
