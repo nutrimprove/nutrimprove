@@ -26,9 +26,10 @@ export const reducer = (
       foods: [
         ...state.foods,
         {
-          id: action.food.foodId,
-          name: action.food.foodName,
+          id: action.food.id,
+          name: action.food.name,
           suggestions: [],
+          isRecommendation: false,
         },
       ],
     };
@@ -38,9 +39,10 @@ export const reducer = (
       recommendedFoods: [
         ...state.recommendedFoods,
         {
-          id: action.food.foodId,
-          name: action.food.foodName,
+          id: action.food.id,
+          name: action.food.name,
           suggestions: [],
+          isRecommendation: true,
         },
       ],
     };
@@ -60,9 +62,7 @@ export const reducer = (
       recommendedFoods,
     };
   } else if (action.type === ActionsTypes.EDIT_FOOD_SUGGESTIONS) {
-    const foodToChange = state.foods.find(
-      food => food.id === action.foodId
-    );
+    const foodToChange = state.foods.find(food => food.id === action.id);
     const foods = editFoodItemArray(state.foods, {
       ...foodToChange,
       suggestions: action.suggestions,
@@ -75,7 +75,7 @@ export const reducer = (
     action.type === ActionsTypes.EDIT_RECOMMENDED_FOOD_SUGGESTIONS
   ) {
     const foodToChange = state.recommendedFoods.find(
-      food => food.id === action.foodId
+      food => food.id === action.id
     );
     const recommendedFoods = editFoodItemArray(state.recommendedFoods, {
       ...foodToChange,

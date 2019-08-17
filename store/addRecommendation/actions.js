@@ -16,8 +16,8 @@ export const addFood = food => {
   return { type: ActionsTypes.ADD_FOOD, food };
 };
 
-export const addRecommendedFood = foodName => {
-  return { type: ActionsTypes.ADD_RECOMMENDED_FOOD, foodName };
+export const addRecommendedFood = food => {
+  return { type: ActionsTypes.ADD_RECOMMENDED_FOOD, food };
 };
 
 export const editFood = food => {
@@ -36,10 +36,10 @@ export const editFoodSuggestions = (foodId, suggestions) => {
   };
 };
 
-export const editRecommendedFoodSuggestions = (foodId, suggestions) => {
+export const editRecommendedFoodSuggestions = (id, suggestions) => {
   return {
     type: ActionsTypes.EDIT_RECOMMENDED_FOOD_SUGGESTIONS,
-    foodId,
+    id,
     suggestions,
   };
 };
@@ -60,12 +60,12 @@ const editRecommendedFoodName = (dispatch, food, newName) => {
   dispatch(editRecommendedFood({ ...food, name: newName }));
 };
 
-const setFoodSuggestions = (dispatch, foodId, suggestions) => {
-  dispatch(editFoodSuggestions(foodId, suggestions));
+const setFoodSuggestions = (dispatch, id, suggestions) => {
+  dispatch(editFoodSuggestions(id, suggestions));
 };
 
-const setRecommendedFoodSuggestions = (dispatch, foodId, suggestions) => {
-  dispatch(editRecommendedFoodSuggestions(foodId, suggestions));
+const setRecommendedFoodSuggestions = (dispatch, id, suggestions) => {
+  dispatch(editRecommendedFoodSuggestions(id, suggestions));
 };
 
 export const changeFoodName = (food, newName) => {
@@ -75,9 +75,11 @@ export const changeFoodName = (food, newName) => {
     editFoodName(dispatch, food, newName);
     if (newName.length > 2) {
       const search = await getSearchedTerms(newName);
-      const suggestions = search.matches.map(match => match.food_name);
-      if (suggestions) {
-        setFoodSuggestions(dispatch, food.id, suggestions);
+      if (search && search.matches) {
+        const suggestions = search.matches.map(match => match.food_name);
+        if (suggestions) {
+          setFoodSuggestions(dispatch, food.id, suggestions);
+        }
       }
     } else {
       setFoodSuggestions(dispatch, food.id, []);
@@ -92,9 +94,11 @@ export const changeRecommendedFoodName = (food, newName) => {
     editRecommendedFoodName(dispatch, food, newName);
     if (newName.length > 2) {
       const search = await getSearchedTerms(newName);
-      const suggestions = search.matches.map(match => match.food_name);
-      if (suggestions) {
-        setRecommendedFoodSuggestions(dispatch, food.id, suggestions);
+      if (search && search.matches) {
+        const suggestions = search.matches.map(match => match.food_name);
+        if (suggestions) {
+          setRecommendedFoodSuggestions(dispatch, food.id, suggestions);
+        }
       }
     } else {
       setRecommendedFoodSuggestions(dispatch, food.id, []);
