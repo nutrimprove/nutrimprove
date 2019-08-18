@@ -18,7 +18,7 @@ const formatSearchTerm = (searchTerm, foods) => {
 };
 
 const getCollectionResults = async (req, res) => {
-  const term = req.query.term;
+  const { term } = req.query;
 
   if (term) {
     const db = await connectToDatabase(process.env.MONGODB_URI);

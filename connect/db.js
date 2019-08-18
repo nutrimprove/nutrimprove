@@ -138,9 +138,8 @@ const addRecommendation = async recommendationObj => {
 
   const { foodId, recommendationId, contributorId } = recommendationObj;
 
-  console.log(`--------> ${JSON.stringify(recommendationObj)}`);
+  console.log('===== ( recommendationObj ) =======>', recommendationObj);
 
-  // Set new search term based on a schema
   const AddRecommendationsModel = mongoose.model(
     'recommendations',
     recommendationsSchema,
@@ -166,7 +165,7 @@ const addRecommendation = async recommendationObj => {
           const newRecommendation = new AddRecommendationsModel(
             recommendationObj
           );
-          // Save recommendation document to DB
+
           newRecommendation.save(err => {
             if (err) {
               console.error(`Error saving recommendation: ${err}`);
