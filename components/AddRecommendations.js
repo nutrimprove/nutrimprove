@@ -9,7 +9,7 @@ import {
   addFoodAction,
   addRecommendedFoodAction,
 } from '../store/addRecommendation/actions';
-import { addRecommendations } from '../connect/api';
+import { postRecommendations } from '../connect/api';
 
 const maxFoodFields = 2;
 const maxRecommendationFields = 5;
@@ -49,9 +49,6 @@ const AddRecommendations = ({
   };
 
   const update = () => {
-    console.log(`====Foods===> ${JSON.stringify(foods)}`);
-    console.log(`====Recs===> ${JSON.stringify(recommendations)}`);
-
     const recommendationsPayload = [];
 
     foods.forEach(food => {
@@ -63,7 +60,12 @@ const AddRecommendations = ({
         });
       });
     });
-    return addRecommendations(recommendationsPayload);
+
+    console.log(
+      '===== ( recommendationsPayload ) =======>',
+      recommendationsPayload
+    );
+    return postRecommendations(recommendationsPayload);
   };
 
   return (

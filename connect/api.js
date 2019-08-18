@@ -44,12 +44,11 @@ const postSearchTerm = searchTerm => {
     });
 };
 
-const addRecommendations = payload =>
+const postRecommendations = payload =>
   axios.post(recommendationsEndpoint, payload).then(res => res.data);
 
-
 export {
-  addRecommendations,
+  postRecommendations,
   postSearchTerm,
   fetchFoods,
   fetchRecommendations,
