@@ -12,96 +12,102 @@ export const ActionsTypes = {
   REMOVE_FOOD_OR_RECOMMENDED_FOOD: 'REMOVE_FOOD_OR_RECOMMENDED_FOOD',
 };
 
-export const addFood = food => {
+export const addFoodAction = food => {
   return { type: ActionsTypes.ADD_FOOD, food };
 };
 
-export const addRecommendedFood = food => {
+export const addRecommendedFoodAction = food => {
   return { type: ActionsTypes.ADD_RECOMMENDED_FOOD, food };
 };
 
-export const editFood = food => {
+export const editFoodAction = food => {
   return { type: ActionsTypes.EDIT_FOOD, food };
 };
 
-export const editRecommendedFood = food => {
+export const editRecommendedFoodAction = food => {
   return { type: ActionsTypes.EDIT_RECOMMENDED_FOOD, food };
 };
 
-export const editFoodSuggestions = (foodId, suggestions) => {
-  return {
-    type: ActionsTypes.EDIT_FOOD_SUGGESTIONS,
-    foodId,
-    suggestions,
-  };
-};
-
-export const editRecommendedFoodSuggestions = (id, suggestions) => {
-  return {
-    type: ActionsTypes.EDIT_RECOMMENDED_FOOD_SUGGESTIONS,
-    id,
-    suggestions,
-  };
-};
-
-export const removeFood = food => {
+export const removeFoodAction = food => {
   return { type: ActionsTypes.REMOVE_FOOD, food };
 };
 
-export const removeRecommendedFood = food => {
+export const removeRecommendedFoodAction = food => {
   return { type: ActionsTypes.REMOVE_RECOMMENDED_FOOD, food };
 };
 
-const editFoodName = (dispatch, food, newName) => {
-  dispatch(editFood({ ...food, name: newName }));
-};
-
-const editRecommendedFoodName = (dispatch, food, newName) => {
-  dispatch(editRecommendedFood({ ...food, name: newName }));
-};
-
-const setFoodSuggestions = (dispatch, id, suggestions) => {
-  dispatch(editFoodSuggestions(id, suggestions));
-};
-
-const setRecommendedFoodSuggestions = (dispatch, id, suggestions) => {
-  dispatch(editRecommendedFoodSuggestions(id, suggestions));
-};
-
-export const changeFoodName = (food, newName) => {
-  if (newName == null) return;
+export const editFood = (food, foodName) => {
+  if (foodName == null) return;
 
   return async (dispatch, getState) => {
-    editFoodName(dispatch, food, newName);
-    if (newName.length > 2) {
-      const search = await getSearchedTerms(newName);
+    dispatch(editFoodAction({ ...food, name: foodName }));
+    if (foodName.length > 2) {
+      const search = await getSearchedTerms(foodName);
       if (search && search.matches) {
-        const suggestions = search.matches.map(match => match.food_name);
-        if (suggestions) {
-          setFoodSuggestions(dispatch, food.id, suggestions);
+        const suggestions = search.matches.map(match => ({
+          food_name: match.food_name,
+          food_id: match.food_id,
+        }));
+
+        // Sets Edamam food_id in the food object
+        const selectedSuggestion = suggestions.find(
+          suggestion => suggestion.food_name === foodName
+        );
+        if (selectedSuggestion && selectedSuggestion.food_id !== food.id) {
+          dispatch(
+            editFoodAction({
+              ...food,
+              name: foodName,
+              id: selectedSuggestion.food_id,
+              suggestions,
+            })
+          );
+        } else if (suggestions.length) {
+          dispatch(
+            editFoodAction({ ...food, name: foodName, suggestions })
+          );
         }
       }
-    } else {
-      setFoodSuggestions(dispatch, food.id, []);
     }
   };
 };
 
-export const changeRecommendedFoodName = (food, newName) => {
-  if (newName == null) return;
+export const editRecommendedFood = (food, foodName) => {
+  if (foodName == null) return;
 
   return async (dispatch, getState) => {
-    editRecommendedFoodName(dispatch, food, newName);
-    if (newName.length > 2) {
-      const search = await getSearchedTerms(newName);
+    dispatch(editRecommendedFoodAction({ ...food, name: foodName }));
+    if (foodName.length > 2) {
+      const search = await getSearchedTerms(foodName);
       if (search && search.matches) {
-        const suggestions = search.matches.map(match => match.food_name);
-        if (suggestions) {
-          setRecommendedFoodSuggestions(dispatch, food.id, suggestions);
+        const suggestions = search.matches.map(match => ({
+          food_name: match.food_name,
+          food_id: match.food_id,
+        }));
+
+        // Sets Edamam food_id in the food object
+        const selectedSuggestion = suggestions.find(
+          suggestion => suggestion.food_name === foodName
+        );
+        if (selectedSuggestion && selectedSuggestion.food_id !== food.id) {
+          dispatch(
+            editRecommendedFoodAction({
+              ...food,
+              name: foodName,
+              id: selectedSuggestion.food_id,
+              suggestions,
+            })
+          );
+        } else if (suggestions.length) {
+          dispatch(
+            editRecommendedFoodAction({
+              ...food,
+              name: foodName,
+              suggestions,
+            })
+          );
         }
       }
-    } else {
-      setRecommendedFoodSuggestions(dispatch, food.id, []);
     }
   };
 };

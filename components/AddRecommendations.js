@@ -6,8 +6,8 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import uniqid from 'uniqid';
 import {
-  addFood,
-  addRecommendedFood,
+  addFoodAction,
+  addRecommendedFoodAction,
 } from '../store/addRecommendation/actions';
 import { addRecommendations } from '../connect/api';
 
@@ -118,13 +118,22 @@ const mapStateToProps = (states, ownProps) => {
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => {
+  const addEmptyField = action =>
+    dispatch(
+      action({
+        key: uniqid(),
+        id: '',
+        name: '',
+        suggestions: [],
+      })
+    );
+
+  addEmptyField(addRecommendedFoodAction);
+  addEmptyField(addFoodAction);
+
   return {
-    addEmptyRecommendedFood: () => {
-      dispatch(addRecommendedFood({ id: uniqid('rec-'), name: '' }));
-    },
-    addEmptyFood: () => {
-      dispatch(addFood({ id: uniqid(), name: '' }));
-    },
+    addEmptyRecommendedFood: () => addEmptyField(addRecommendedFoodAction),
+    addEmptyFood: () => addEmptyField(addFoodAction),
   };
 };
 

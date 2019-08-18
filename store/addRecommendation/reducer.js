@@ -9,11 +9,12 @@ import { ActionsTypes } from './actions';
 
 const editFoodItemArray = (foods, foodToChange) => {
   const indexToModify = foods
-    .map(food => food.id)
-    .indexOf(foodToChange.id);
-  const updateFoods = [...foods];
-  updateFoods.splice(indexToModify, 1, foodToChange);
-  return updateFoods;
+    .map(food => food.key)
+    .indexOf(foodToChange.key);
+  const updatedFoods = [...foods];
+  updatedFoods.splice(indexToModify, 1, foodToChange);
+
+  return updatedFoods;
 };
 
 export const reducer = (
@@ -26,9 +27,10 @@ export const reducer = (
       foods: [
         ...state.foods,
         {
+          key: action.food.key,
           id: action.food.id,
           name: action.food.name,
-          suggestions: [],
+          suggestions: action.food.suggestions,
           isRecommendation: false,
         },
       ],
@@ -39,9 +41,10 @@ export const reducer = (
       recommendedFoods: [
         ...state.recommendedFoods,
         {
+          key: action.food.key,
           id: action.food.id,
           name: action.food.name,
-          suggestions: [],
+          suggestions: action.food.suggestions,
           isRecommendation: true,
         },
       ],
@@ -61,40 +64,16 @@ export const reducer = (
       ...state,
       recommendedFoods,
     };
-  } else if (action.type === ActionsTypes.EDIT_FOOD_SUGGESTIONS) {
-    const foodToChange = state.foods.find(food => food.id === action.id);
-    const foods = editFoodItemArray(state.foods, {
-      ...foodToChange,
-      suggestions: action.suggestions,
-    });
-    return {
-      ...state,
-      foods,
-    };
-  } else if (
-    action.type === ActionsTypes.EDIT_RECOMMENDED_FOOD_SUGGESTIONS
-  ) {
-    const foodToChange = state.recommendedFoods.find(
-      food => food.id === action.id
-    );
-    const recommendedFoods = editFoodItemArray(state.recommendedFoods, {
-      ...foodToChange,
-      suggestions: action.suggestions,
-    });
-    return {
-      ...state,
-      recommendedFoods,
-    };
   } else if (action.type === ActionsTypes.REMOVE_FOOD) {
     return {
       ...state,
-      foods: state.foods.filter(food => food.id !== action.food.id),
+      foods: state.foods.filter(food => food.key !== action.food.key),
     };
   } else if (action.type === ActionsTypes.REMOVE_RECOMMENDED_FOOD) {
     return {
       ...state,
       recommendedFoods: state.recommendedFoods.filter(
-        food => food.id !== action.food.id
+        food => food.key !== action.food.key
       ),
     };
   } else {

@@ -7,8 +7,8 @@ import TextField from '@material-ui/core/TextField';
 import Paper from '@material-ui/core/Paper';
 import MenuItem from '@material-ui/core/MenuItem';
 import {
-  changeFoodName,
-  changeRecommendedFoodName,
+  editFood,
+  editRecommendedFood,
 } from '../store/addRecommendation/actions';
 
 const renderInput = inputProps => {
@@ -98,25 +98,13 @@ const styles = theme => ({
 
 const SearchFoodField = ({ classes, food, setSearchTerm }) => {
   const { suggestions } = food;
-  const [selectedItem, setSelectedItem] = React.useState([]); // Not sure what is it doing
-
-  function handleKeyDown(event) {
-    if (selectedItem.length && !food.length && event.key === 'Backspace') {
-      setSelectedItem(selectedItem.slice(0, selectedItem.length - 1));
-    }
-  }
 
   function setInputValue(event) {
     setSearchTerm(event.target.value);
   }
 
   function onInputChange(item) {
-    let newSelectedItem = selectedItem;
-    if (newSelectedItem.indexOf(item) === -1) {
-      newSelectedItem = item;
-    }
     setSearchTerm(item);
-    setSelectedItem(newSelectedItem);
   }
 
   return (
@@ -125,7 +113,6 @@ const SearchFoodField = ({ classes, food, setSearchTerm }) => {
         id='downshift'
         inputValue={food.name}
         onChange={onInputChange}
-        selectedItem={selectedItem}
       >
         {({
           getInputProps,
@@ -142,10 +129,8 @@ const SearchFoodField = ({ classes, food, setSearchTerm }) => {
             onFocus,
             ...inputProps
           } = getInputProps({
-            onKeyDown: handleKeyDown,
             placeholder: 'Type food',
           });
-          // setSearchTerm(inputValue);
           return (
             <div className={classes.container}>
               {renderInput({
@@ -164,15 +149,17 @@ const SearchFoodField = ({ classes, food, setSearchTerm }) => {
               })}
               {suggestions && isOpen && (
                 <Paper className={classes.paper} square>
-                  {suggestions.map((suggestion, index) =>
-                    renderSuggestion({
-                      suggestion,
-                      index,
-                      itemProps: getItemProps({ item: suggestion }),
-                      highlightedIndex,
-                      selectedItem,
-                    })
-                  )}
+                  {suggestions
+                    .map(suggestion => suggestion.food_name)
+                    .map((suggestion, index) =>
+                      renderSuggestion({
+                        suggestion,
+                        index,
+                        itemProps: getItemProps({ item: suggestion }),
+                        highlightedIndex,
+                        selectedItem,
+                      })
+                    )}
                 </Paper>
               )}
             </div>
@@ -192,10 +179,10 @@ SearchFoodField.propTypes = {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    setSearchTerm: newName => {
+    setSearchTerm: name => {
       ownProps.food.isRecommendation
-        ? dispatch(changeRecommendedFoodName(ownProps.food, newName))
-        : dispatch(changeFoodName(ownProps.food, newName));
+        ? dispatch(editRecommendedFood(ownProps.food, name))
+        : dispatch(editFood(ownProps.food, name));
     },
   };
 };

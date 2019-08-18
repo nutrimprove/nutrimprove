@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import {
-  removeFood,
-  removeRecommendedFood,
+  removeFoodAction,
+  removeRecommendedFoodAction,
 } from '../store/addRecommendation/actions';
 
 const RemoveIcon = ({ foodItem, doRemove }) => {
@@ -36,8 +36,8 @@ RemoveIcon.propTypes = {
 const mapDispatchToProps = (dispatch, ownProps) => ({
   doRemove: () => {
     ownProps.foodItem.isRecommendation
-      ? dispatch(removeRecommendedFood(ownProps.foodItem))
-      : dispatch(removeFood(ownProps.foodItem));
+      ? dispatch(removeRecommendedFoodAction(ownProps.foodItem))
+      : dispatch(removeFoodAction(ownProps.foodItem));
   },
 });
 
