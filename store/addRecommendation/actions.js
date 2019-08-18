@@ -49,7 +49,6 @@ export const editFood = (food, foodName) => {
           food_id: match.food_id,
         }));
 
-        // Sets Edamam food_id in the food object
         const selectedSuggestion = suggestions.find(
           suggestion => suggestion.food_name === foodName
         );
@@ -85,7 +84,6 @@ export const editRecommendedFood = (food, foodName) => {
           food_id: match.food_id,
         }));
 
-        // Sets Edamam food_id in the food object
         const selectedSuggestion = suggestions.find(
           suggestion => suggestion.food_name === foodName
         );
