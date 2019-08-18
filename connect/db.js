@@ -19,10 +19,17 @@ const connectToDatabase = async uri => {
   return db;
 };
 
-const getDocuments = async (collectionName, query = {}) => {
+const getDocuments = async (
+  collectionName,
+  query = {},
+  projection = {}
+) => {
   const mongodb = await connectToDatabase(URI);
   const collection = await mongodb.collection(collectionName);
-  return collection.find(query).toArray();
+  return collection
+    .find(query)
+    .project(projection)
+    .toArray();
 };
 
 const searchTermSchema = new mongoose.Schema(
