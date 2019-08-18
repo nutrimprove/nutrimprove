@@ -26,7 +26,7 @@ const fetchFoods = name =>
     .then(res => res.data.hints);
 
 const fetchRecommendations = contributor =>
-  getRequest(`${recommendationsEndpoint}?cid=${contributor}`);
+  getRequest(`${recommendationsEndpoint}/?cid=${contributor}`);
 
 const getSearchedTerms = searchTerm =>
   getRequest(`${searchTermsEndpoint}/?term=${searchTerm}`);
