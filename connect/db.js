@@ -1,6 +1,10 @@
 import url from 'url';
 import { MongoClient } from 'mongodb';
 import mongoose from 'mongoose';
+import {
+  recommendationsSchema,
+  searchTermSchema,
+} from './schemas/mongoDBSchemas';
 
 const URI = process.env.MONGODB_URI;
 let db = null;
@@ -32,58 +36,10 @@ const getDocuments = async (
     .toArray();
 };
 
-const searchTermSchema = new mongoose.Schema(
-  {
-    search_term: {
-      type: String,
-      lowercase: true,
-      trim: true,
-      required: true,
-    },
-    matches: [
-      {
-        food_name: {
-          type: String,
-          required: true,
-        },
-        food_id: {
-          type: String,
-          required: true,
-        },
-      },
-    ],
-  },
-  { timestamps: true }
-);
-
-const recommendationsSchema = new mongoose.Schema(
-  {
-    food_id: {
-      type: String,
-      lowercase: true,
-      trim: true,
-      required: true,
-    },
-    recommendation_id: {
-      type: String,
-      lowercase: true,
-      trim: true,
-      required: true,
-    },
-    contributor_id: {
-      type: String,
-      lowercase: true,
-      trim: true,
-      required: true,
-    },
-  },
-  { timestamps: true }
-);
-
 const addSearchTerm = async searchTermObj => {
   // Connect to mongoDB using mongoose
   if (mongoose.connection.readyState === 0) {
-    mongoose.connect(URI, err => {
+    mongoose.connect(URI, { useNewUrlParser: true }, err => {
       if (err) {
         console.error(`ERROR connecting to '${URI}': ${err}`);
       } else {
@@ -124,7 +80,7 @@ const addSearchTerm = async searchTermObj => {
   );
 };
 
-const addRecommendation = async recommendationObj => {
+const addRecommendation = recommendationObj => {
   // Connect to mongoDB using mongoose
   if (mongoose.connection.readyState === 0) {
     mongoose.connect(URI, err => {
@@ -136,49 +92,44 @@ const addRecommendation = async recommendationObj => {
     });
   }
 
-  const { foodId, recommendationId, contributorId } = recommendationObj;
-
-  console.log('===== ( recommendationObj ) =======>', recommendationObj);
-
   const AddRecommendationsModel = mongoose.model(
     'recommendations',
     recommendationsSchema,
     'recommendations'
   );
 
-  return new Promise((resolve, reject) =>
-    AddRecommendationsModel.findOne(
-      {
-        food_id: foodId,
-        recommendation_id: recommendationId,
-        contributor_id: contributorId,
-      },
-      (err, result) => {
-        if (err) {
-          console.error(`Error when checking for recommendation: ${err}`);
-          mongoose.disconnect();
-          reject(err);
-        }
-        if (result) {
-          console.warn('Recommendation already exists!');
-        } else {
-          const newRecommendation = new AddRecommendationsModel(
-            recommendationObj
-          );
+  const recommendations = {
+    food_id: recommendationObj.foodId,
+    recommendation_id: recommendationObj.recommendationId,
+    contributor_id: recommendationObj.contributorId,
+  };
 
-          newRecommendation.save(err => {
-            if (err) {
-              console.error(`Error saving recommendation: ${err}`);
-              mongoose.disconnect();
-              reject(err);
-            }
-            console.log(`Recommendation saved.`);
+  return new Promise((resolve, reject) =>
+    AddRecommendationsModel.findOne(recommendations, (err, result) => {
+      if (err) {
+        console.error(`Error when checking for recommendation: ${err}`);
+        mongoose.disconnect();
+        reject(err);
+      }
+      if (result) {
+        console.warn('Recommendation already exists!');
+      } else {
+        const newRecommendation = new AddRecommendationsModel(
+          recommendations
+        );
+
+        newRecommendation.save(err => {
+          if (err) {
+            console.error(`Error saving recommendation: ${err}`);
+            mongoose.disconnect();
+            reject(err);
+          } else {
             mongoose.disconnect();
             resolve(newRecommendation);
-          });
-        }
+          }
+        });
       }
-    )
+    })
   );
 };
 

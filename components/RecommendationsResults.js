@@ -37,7 +37,6 @@ const ResultsTable = props => {
           <Table className={classes.table}>
             <TableHead>
               <TableRow>
-                <TableCell className={classes.cell}>id</TableCell>
                 <TableCell className={classes.cell}>Food</TableCell>
                 <TableCell className={classes.cell}>
                   Recommendation
