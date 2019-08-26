@@ -24,7 +24,7 @@ const connect = (description, schema, collection) => {
   if (mongoose.connection.readyState === 0) {
     mongoose.connect(URI, { useNewUrlParser: true }, err => {
       if (err) {
-        console.error(`ERROR connecting to '${URI}': ${err}`);
+        console.error(`ERROR connecting to '${URI}'`, err);
       } else {
         console.log(`Succeeded connecting to '${URI}'`);
       }
@@ -49,7 +49,7 @@ const getDocuments = async (
 
 const addSearchTerm = async searchTermObj => {
   const term = searchTermObj.search_term;
-  const SearchTermConnection = connect(
+  const SearchTermConnection = await connect(
     'SearchTerm',
     searchTermSchema,
     'search_cache'
@@ -58,69 +58,66 @@ const addSearchTerm = async searchTermObj => {
   return new Promise((resolve, reject) =>
     SearchTermConnection.findOne({ search_term: term }, (err, result) => {
       if (err) {
-        console.error(`Error when searching for '${term}': ${err}`);
+        console.error(`Error when searching for '${term}'`, err);
         mongoose.connection.close();
         reject(err);
       }
       if (!result) {
         const newSearchTerm = new SearchTermConnection(searchTermObj);
-        // Save search term document to DB
         newSearchTerm.save(err => {
-          if (err) {
-            console.error(`Error saving '${term}': ${err}`);
-            mongoose.connection.close();
-            reject(err);
-          }
-          console.log(`Search term '${term}' cached`);
           mongoose.connection.close();
-          resolve(newSearchTerm);
+          if (err) {
+            console.error(`Error saving '${term}'`, err);
+            reject(err);
+          } else {
+            console.log('Search term cached!', term);
+            resolve(newSearchTerm);
+          }
         });
       }
     })
   );
 };
 
-const addRecommendation = recommendationObj => {
-  const recommendations = {
+const addRecommendation = async recommendationObj => {
+  const recommendation = {
     food_id: recommendationObj.foodId,
     recommendation_id: recommendationObj.recommendationId,
     contributor_id: recommendationObj.contributorId,
   };
-  const AddRecommendationsConnection = connect(
+  const AddRecommendationsConnection = await connect(
     'recommendations',
     recommendationsSchema,
     'recommendations'
   );
 
   return new Promise((resolve, reject) =>
-    AddRecommendationsConnection.findOne(
-      recommendations,
-      (err, result) => {
-        if (err) {
-          console.error(`Error when checking for recommendation: ${err}`);
-          mongoose.connection.close();
-          reject(err);
-        }
-        if (result) {
-          console.warn('Recommendation already exists!');
-        } else {
-          const newRecommendation = new AddRecommendationsConnection(
-            recommendations
-          );
-
-          newRecommendation.save(err => {
-            if (err) {
-              console.error(`Error saving recommendation: ${err}`);
-              mongoose.connection.close();
-              reject(err);
-            } else {
-              mongoose.connection.close();
-              resolve(newRecommendation);
-            }
-          });
-        }
+    AddRecommendationsConnection.findOne(recommendation, (err, result) => {
+      if (err) {
+        console.error('Error when checking for recommendation!', err);
+        mongoose.connection.close();
+        reject(err);
       }
-    )
+      if (result) {
+        console.warn('Recommendation already exists!', recommendation);
+        mongoose.connection.close();
+      } else {
+        const newRecommendation = new AddRecommendationsConnection(
+          recommendation
+        );
+
+        newRecommendation.save(err => {
+          mongoose.connection.close();
+          if (err) {
+            console.error('Error saving recommendation!', err);
+            reject(err);
+          } else {
+            console.log('Recommendation saved!', recommendation);
+            resolve(newRecommendation);
+          }
+        });
+      }
+    })
   );
 };
 

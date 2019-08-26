@@ -27,9 +27,10 @@ const getCollectionResults = async (req, res) => {
         contributorId: recommendation.contributorId,
       });
 
-      console.log('===== ( addResult ) =======>', addResult);
       result.push(addResult);
     });
+
+    return res.status(200).json(result);
   }
 };
 
