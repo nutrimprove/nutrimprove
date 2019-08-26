@@ -29,9 +29,8 @@ const getCollectionResults = async (req, res) => {
 
       result.push(addResult);
     });
-
-    return res.status(200).json(result);
   }
+  return res.status(200).json(result);
 };
 
 export default getCollectionResults;
