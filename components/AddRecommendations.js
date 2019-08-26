@@ -61,10 +61,6 @@ const AddRecommendations = ({
       });
     });
 
-    console.log(
-      '===== ( recommendationsPayload ) =======>',
-      recommendationsPayload
-    );
     return postRecommendations(recommendationsPayload);
   };
 

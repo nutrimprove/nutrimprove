@@ -26,6 +26,8 @@ const getCollectionResults = async (req, res) => {
         recommendationId: recommendation.recommendationId,
         contributorId: recommendation.contributorId,
       });
+
+      console.log('===== ( addResult ) =======>', addResult);
       result.push(addResult);
     });
   }

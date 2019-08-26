@@ -1,10 +1,7 @@
 import url from 'url';
 import { MongoClient } from 'mongodb';
 import mongoose from 'mongoose';
-import {
-  recommendationsSchema,
-  searchTermSchema,
-} from './schemas/mongoDBSchemas';
+import { recommendationsSchema, searchTermSchema } from './mongoDBSchemas';
 
 const URI = process.env.MONGODB_URI;
 let db = null;
@@ -23,6 +20,20 @@ const connectToDatabase = async uri => {
   return db;
 };
 
+const connect = (description, schema, collection) => {
+  if (mongoose.connection.readyState === 0) {
+    mongoose.connect(URI, { useNewUrlParser: true }, err => {
+      if (err) {
+        console.error(`ERROR connecting to '${URI}': ${err}`);
+      } else {
+        console.log(`Succeeded connecting to '${URI}'`);
+      }
+    });
+  }
+
+  return mongoose.model(description, schema, collection);
+};
+
 const getDocuments = async (
   collectionName,
   query = {},
@@ -37,42 +48,31 @@ const getDocuments = async (
 };
 
 const addSearchTerm = async searchTermObj => {
-  // Connect to mongoDB using mongoose
-  if (mongoose.connection.readyState === 0) {
-    mongoose.connect(URI, { useNewUrlParser: true }, err => {
-      if (err) {
-        console.error(`ERROR connecting to '${URI}': ${err}`);
-      } else {
-        console.log(`Succeeded connecting to '${URI}'`);
-      }
-    });
-  }
-
   const term = searchTermObj.search_term;
-  // Set new search term based on a schema
-  const SearchTermModel = mongoose.model(
+  const SearchTermConnection = connect(
     'SearchTerm',
     searchTermSchema,
     'search_cache'
   );
+
   return new Promise((resolve, reject) =>
-    SearchTermModel.findOne({ search_term: term }, (err, result) => {
+    SearchTermConnection.findOne({ search_term: term }, (err, result) => {
       if (err) {
         console.error(`Error when searching for '${term}': ${err}`);
-        mongoose.disconnect();
+        mongoose.connection.close();
         reject(err);
       }
       if (!result) {
-        const newSearchTerm = new SearchTermModel(searchTermObj);
+        const newSearchTerm = new SearchTermConnection(searchTermObj);
         // Save search term document to DB
         newSearchTerm.save(err => {
           if (err) {
             console.error(`Error saving '${term}': ${err}`);
-            mongoose.disconnect();
+            mongoose.connection.close();
             reject(err);
           }
           console.log(`Search term '${term}' cached`);
-          mongoose.disconnect();
+          mongoose.connection.close();
           resolve(newSearchTerm);
         });
       }
@@ -81,55 +81,46 @@ const addSearchTerm = async searchTermObj => {
 };
 
 const addRecommendation = recommendationObj => {
-  // Connect to mongoDB using mongoose
-  if (mongoose.connection.readyState === 0) {
-    mongoose.connect(URI, err => {
-      if (err) {
-        console.error(`ERROR connecting to '${URI}': ${err}`);
-      } else {
-        console.log(`Succeeded connecting to '${URI}'`);
-      }
-    });
-  }
-
-  const AddRecommendationsModel = mongoose.model(
-    'recommendations',
-    recommendationsSchema,
-    'recommendations'
-  );
-
   const recommendations = {
     food_id: recommendationObj.foodId,
     recommendation_id: recommendationObj.recommendationId,
     contributor_id: recommendationObj.contributorId,
   };
+  const AddRecommendationsConnection = connect(
+    'recommendations',
+    recommendationsSchema,
+    'recommendations'
+  );
 
   return new Promise((resolve, reject) =>
-    AddRecommendationsModel.findOne(recommendations, (err, result) => {
-      if (err) {
-        console.error(`Error when checking for recommendation: ${err}`);
-        mongoose.disconnect();
-        reject(err);
-      }
-      if (result) {
-        console.warn('Recommendation already exists!');
-      } else {
-        const newRecommendation = new AddRecommendationsModel(
-          recommendations
-        );
+    AddRecommendationsConnection.findOne(
+      recommendations,
+      (err, result) => {
+        if (err) {
+          console.error(`Error when checking for recommendation: ${err}`);
+          mongoose.connection.close();
+          reject(err);
+        }
+        if (result) {
+          console.warn('Recommendation already exists!');
+        } else {
+          const newRecommendation = new AddRecommendationsConnection(
+            recommendations
+          );
 
-        newRecommendation.save(err => {
-          if (err) {
-            console.error(`Error saving recommendation: ${err}`);
-            mongoose.disconnect();
-            reject(err);
-          } else {
-            mongoose.disconnect();
-            resolve(newRecommendation);
-          }
-        });
+          newRecommendation.save(err => {
+            if (err) {
+              console.error(`Error saving recommendation: ${err}`);
+              mongoose.connection.close();
+              reject(err);
+            } else {
+              mongoose.connection.close();
+              resolve(newRecommendation);
+            }
+          });
+        }
       }
-    })
+    )
   );
 };
 
