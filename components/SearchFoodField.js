@@ -6,10 +6,7 @@ import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Paper from '@material-ui/core/Paper';
 import MenuItem from '@material-ui/core/MenuItem';
-import {
-  editFood,
-  editRecommendedFood,
-} from '../store/addRecommendation/actions';
+import { editFood } from '../store/addRecommendation/actions';
 
 const renderInput = inputProps => {
   const { InputProps, classes, ref, ...other } = inputProps;
@@ -99,10 +96,6 @@ const styles = theme => ({
 const SearchFoodField = ({ classes, food, setSearchTerm }) => {
   const { suggestions } = food;
 
-  function setInputValue(event) {
-    setSearchTerm(event.target.value);
-  }
-
   function onInputChange(item) {
     setSearchTerm(item);
   }
@@ -140,14 +133,14 @@ const SearchFoodField = ({ classes, food, setSearchTerm }) => {
                 InputProps: {
                   onBlur,
                   onChange: event => {
-                    setInputValue(event);
+                    onInputChange(event.target.value);
                     onChange(event);
                   },
                   onFocus,
                 },
                 inputProps,
               })}
-              {suggestions && isOpen && (
+              {isOpen && (
                 <Paper className={classes.paper} square>
                   {suggestions
                     .map(suggestion => suggestion.food_name)
@@ -180,9 +173,9 @@ SearchFoodField.propTypes = {
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     setSearchTerm: name => {
-      ownProps.food.isRecommendation
-        ? dispatch(editRecommendedFood(ownProps.food, name))
-        : dispatch(editFood(ownProps.food, name));
+      dispatch(
+        editFood(ownProps.food, name, ownProps.food.isRecommendation)
+      );
     },
   };
 };
