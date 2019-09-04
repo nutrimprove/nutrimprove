@@ -56,7 +56,7 @@ const AddRecommendations = ({
         recommendationsPayload.push({
           foodId: food.id,
           recommendationId: recommendation.id,
-          contributorId: '099',
+          contributorId: '099', // Requires authentication to populate this value dynamically
         });
       });
     });
