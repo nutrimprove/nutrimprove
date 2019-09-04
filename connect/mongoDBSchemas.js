@@ -24,30 +24,31 @@ const searchTermSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const recommendationsSchema = new mongoose.Schema(
-  [
-    {
-      food_id: {
-        type: String,
-        lowercase: true,
-        trim: true,
-        required: true,
-      },
-      recommendation_id: {
-        type: String,
-        lowercase: true,
-        trim: true,
-        required: true,
-      },
-      contributor_id: {
-        type: String,
-        lowercase: true,
-        trim: true,
-        required: true,
-      },
+const recommendationsSchema = new mongoose.Schema([
+  {
+    food_id: {
+      type: String,
+      lowercase: true,
+      trim: true,
+      required: true,
     },
-  ],
-  { timestamps: true }
-);
+    recommendation_id: {
+      type: String,
+      lowercase: true,
+      trim: true,
+      required: true,
+    },
+    contributor_id: {
+      type: String,
+      lowercase: true,
+      trim: true,
+      required: true,
+    },
+    timestamp: {
+      type: Number,
+      required: true,
+    },
+  },
+]);
 
 export { searchTermSchema, recommendationsSchema };

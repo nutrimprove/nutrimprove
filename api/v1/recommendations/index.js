@@ -1,4 +1,4 @@
-import { addRecommendation, getDocuments } from '../../../connect/db';
+import { addRecommendations, getDocuments } from '../../../connect/db';
 
 const getCollectionResults = async (req, res) => {
   const { cid } = req.query;
@@ -19,17 +19,11 @@ const getCollectionResults = async (req, res) => {
       }
     );
   } else if (req.method === 'POST') {
-    result = [];
-    req.body.forEach(async recommendation => {
-      const addResult = await addRecommendation({
-        foodId: recommendation.foodId,
-        recommendationId: recommendation.recommendationId,
-        contributorId: recommendation.contributorId,
-      });
-
-      result.push(addResult);
-    });
+    req.body.length
+      ? (result = await addRecommendations(req.body))
+      : console.warn('No recommendations payload!', req.body);
   }
+
   return res.status(200).json(result);
 };
 

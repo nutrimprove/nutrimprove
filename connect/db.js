@@ -30,7 +30,6 @@ const connect = (description, schema, collection) => {
       }
     });
   }
-
   return mongoose.model(description, schema, collection);
 };
 
@@ -79,51 +78,40 @@ const addSearchTerm = async searchTermObj => {
   );
 };
 
-const addRecommendation = async recommendationObj => {
-  const recommendation = {
-    food_id: recommendationObj.foodId,
-    recommendation_id: recommendationObj.recommendationId,
-    contributor_id: recommendationObj.contributorId,
-  };
+const addRecommendations = async recommendationsObj => {
+  const recommendations = recommendationsObj.map(recommendation => ({
+    food_id: recommendation.foodId,
+    recommendation_id: recommendation.recommendationId,
+    contributor_id: recommendation.contributorId,
+    timestamp: new Date().getTime(),
+  }));
+
   const AddRecommendationsConnection = await connect(
     'recommendations',
     recommendationsSchema,
     'recommendations'
   );
 
-  return new Promise((resolve, reject) =>
-    AddRecommendationsConnection.findOne(recommendation, (err, result) => {
-      if (err) {
-        console.error('Error when checking for recommendation!', err);
+  return new Promise((resolve, reject) => {
+    AddRecommendationsConnection.collection.insertMany(
+      recommendations,
+      (err, docs) => {
         mongoose.connection.close();
-        reject(err);
+        if (err) {
+          console.error('Error inserting recommendations!', err);
+          reject(err);
+        } else {
+          console.log('Recommendations inserted!', docs);
+          resolve(docs);
+        }
       }
-      if (result) {
-        console.warn('Recommendation already exists!', recommendation);
-        mongoose.connection.close();
-      } else {
-        const newRecommendation = new AddRecommendationsConnection(
-          recommendation
-        );
-
-        newRecommendation.save(err => {
-          mongoose.connection.close();
-          if (err) {
-            console.error('Error saving recommendation!', err);
-            reject(err);
-          } else {
-            console.log('Recommendation saved!', recommendation);
-            resolve(newRecommendation);
-          }
-        });
-      }
-    })
-  );
+    );
+  });
 };
 
 export {
   connectToDatabase,
   getDocuments,
   addSearchTerm,
-  addRecommendation,
+  addRecommendations,
 };
