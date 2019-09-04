@@ -10,7 +10,7 @@ const layoutStyle = {
 const About = () => {
   return (
     <div id='about' style={layoutStyle}>
-        <p>About Eatwell</p>
+      <p>About Eatwell</p>
     </div>
   );
 };
