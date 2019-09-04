@@ -9,7 +9,10 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { editFood } from '../store/addRecommendation/actions';
 
 const renderInput = inputProps => {
-  const { InputProps, classes, ref, ...other } = inputProps;
+  const { InputProps, classes, ref, valid, ...other } = inputProps;
+  const inputStyle = valid
+    ? classes.inputInput
+    : classes.invalidInputInput;
 
   return (
     <TextField
@@ -17,7 +20,7 @@ const renderInput = inputProps => {
         inputRef: ref,
         classes: {
           root: classes.inputRoot,
-          input: classes.inputInput,
+          input: inputStyle,
         },
         ...InputProps,
       }}
@@ -87,17 +90,31 @@ const styles = theme => ({
   inputInput: {
     width: 'auto',
     flexGrow: 1,
+    backgroundColor: '#ffffff',
+    color: '#000000',
+  },
+  invalidInputInput: {
+    width: 'auto',
+    flexGrow: 1,
+    backgroundColor: '#ffdddd',
+    color: '#770000',
   },
   divider: {
     height: theme.spacing.unit * 2,
   },
 });
 
-const SearchFoodField = ({ classes, food, setSearchTerm }) => {
+const SearchFoodField = ({ classes, food, setSearchTerm, validation }) => {
   const { suggestions } = food;
 
   function onInputChange(item) {
     setSearchTerm(item);
+  }
+
+  function isValid(food, inputValue) {
+    return validation
+      ? food && food.id.length > 0 && inputValue.length > 0
+      : true;
   }
 
   return (
@@ -129,6 +146,7 @@ const SearchFoodField = ({ classes, food, setSearchTerm }) => {
               {renderInput({
                 fullWidth: true,
                 classes,
+                valid: isValid(food, inputValue),
                 InputLabelProps: getLabelProps(),
                 InputProps: {
                   onBlur,
@@ -169,6 +187,7 @@ SearchFoodField.propTypes = {
   classes: PropTypes.object.isRequired,
   food: PropTypes.object,
   setSearchTerm: PropTypes.function,
+  validation: PropTypes.bool,
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => {

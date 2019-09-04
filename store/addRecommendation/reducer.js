@@ -76,6 +76,13 @@ export const reducer = (
         food => food.key !== action.food.key
       ),
     };
+  } else if (
+    action.type === ActionsTypes.REMOVE_ALL_FOODS_AND_RECOMMENDATIONS
+  ) {
+    return {
+      recommendedFoods: [],
+      foods: [],
+    };
   } else {
     return state;
   }
