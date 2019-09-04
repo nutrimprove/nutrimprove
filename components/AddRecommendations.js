@@ -11,8 +11,8 @@ import {
 } from '../store/addRecommendation/actions';
 import { postRecommendations } from '../connect/api';
 
-const maxFoodFields = 2;
-const maxRecommendationFields = 5;
+const maxFoodFields = 4;
+const maxRecommendationFields = 4;
 
 const styles = {
   fieldBox: {
@@ -37,7 +37,7 @@ const AddRecommendations = ({
 }) => {
   const renderField = foods => {
     return foods.map(food => (
-      <div key={food.id} style={{ display: '-webkit-box' }}>
+      <div key={food.key} style={{ display: '-webkit-box' }}>
         <SearchFoodField className='food' food={food} />
         {foods.length <= 1 ? (
           <RemoveIcon />
@@ -100,7 +100,6 @@ const AddRecommendations = ({
     </>
   );
 };
-
 AddRecommendations.propTypes = {
   recommendations: PropTypes.Array,
   foods: PropTypes.Array,
