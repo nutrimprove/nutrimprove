@@ -18,9 +18,11 @@ const formatSearchTerm = (searchTerm, foods) => {
 };
 
 const getCollectionResults = async (req, res) => {
-  const { term } = req.query;
+  let { term } = req.query;
 
   if (term) {
+    term = term.toLowerCase();
+
     const db = await connectToDatabase(process.env.MONGODB_URI);
     const collection = await db.collection('search_cache');
 
