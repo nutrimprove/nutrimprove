@@ -142,17 +142,18 @@ const SearchFoodField = ({ classes, food, setSearchTerm }) => {
               })}
               {isOpen && (
                 <Paper className={classes.paper} square>
-                  {suggestions
-                    .map(suggestion => suggestion.food_name)
-                    .map((suggestion, index) =>
-                      renderSuggestion({
-                        suggestion,
-                        index,
-                        itemProps: getItemProps({ item: suggestion }),
-                        highlightedIndex,
-                        selectedItem,
-                      })
-                    )}
+                  {suggestions &&
+                    suggestions
+                      .map(suggestion => suggestion.food_name)
+                      .map((suggestion, index) =>
+                        renderSuggestion({
+                          suggestion,
+                          index,
+                          itemProps: getItemProps({ item: suggestion }),
+                          highlightedIndex,
+                          selectedItem,
+                        })
+                      )}
                 </Paper>
               )}
             </div>
