@@ -19,7 +19,7 @@ const getCollectionResults = async (req, res) => {
       }
     );
   } else if (req.method === 'POST') {
-    result = [req.body[0]];
+    result = [];
     req.body.forEach(async recommendation => {
       const addResult = await addRecommendation({
         foodId: recommendation.foodId,
