@@ -115,8 +115,14 @@ const AddRecommendations = ({
     for (const food of foods) {
       for (const recommendation of recommendations) {
         recommendationsPayload.push({
-          foodId: food.id,
-          recommendationId: recommendation.id,
+          food: {
+            id: food.id,
+            name: food.name,
+          },
+          recommendation: {
+            id: recommendation.id,
+            name: recommendation.name,
+          },
           contributorId: '099', // Requires authentication to populate this value dynamically
         });
       }
