@@ -14,6 +14,7 @@ export const ActionsTypes = {
   REMOVE_FOOD_OR_RECOMMENDED_FOOD: 'REMOVE_FOOD_OR_RECOMMENDED_FOOD',
   REMOVE_ALL_FOODS_AND_RECOMMENDATIONS:
     'REMOVE_ALL_FOODS_AND_RECOMMENDATIONS',
+  IS_SAVING: 'IS_SAVING',
 };
 
 export const addFoodAction = food => {
@@ -44,6 +45,10 @@ export const removeAllFoodsAndRecommendationsAction = () => {
   return { type: ActionsTypes.REMOVE_ALL_FOODS_AND_RECOMMENDATIONS };
 };
 
+export const setSavingAction = isSaving => {
+  return { type: ActionsTypes.IS_SAVING, isSaving };
+};
+
 export const editFood = (food, foodName, isRecommendation) => {
   if (foodName == null) return;
 
@@ -52,13 +57,13 @@ export const editFood = (food, foodName, isRecommendation) => {
       ? editRecommendedFoodAction
       : editFoodAction;
 
-    dispatch(action({ ...food, name: foodName }));
+    dispatch(action({ ...food, id: '', name: foodName, suggestions: [] }));
 
-    // Fetches search results if more than 2 characters are typed
-    if (foodName.length > 2) {
-      clearTimeout(timeout);
-      // Timeout to control fetching of data while typing
-      timeout = setTimeout(async () => {
+    clearTimeout(timeout);
+    // Timeout to control fetching of data while typing
+    timeout = setTimeout(async () => {
+      // Fetches search results if more than 2 characters are typed
+      if (foodName.length > 2) {
         const search = await getSearchedTerms(foodName);
         if (search && search.matches) {
           const suggestions = search.matches.map(match => ({
@@ -69,7 +74,6 @@ export const editFood = (food, foodName, isRecommendation) => {
           const selectedSuggestion = suggestions.find(
             suggestion => suggestion.food_name === foodName
           );
-
           if (
             selectedSuggestion &&
             selectedSuggestion.food_id !== food.id
@@ -82,11 +86,11 @@ export const editFood = (food, foodName, isRecommendation) => {
                 suggestions,
               })
             );
-          } else if (suggestions.length) {
+          } else if (suggestions.length > 0) {
             dispatch(action({ ...food, name: foodName, suggestions }));
           }
         }
-      }, 500);
-    }
+      }
+    }, 500);
   };
 };

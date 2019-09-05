@@ -40,7 +40,7 @@ const Content = props => {
     <div className={classes.root}>
       <AppBar position='static'>
         <Tabs value={tab} onChange={tabChange}>
-          <Tab label='Food by Name' />
+          <Tab label='Search Food' />
           <Tab label='Recommendations' />
           <Tab label='Add Recommendations' />
         </Tabs>

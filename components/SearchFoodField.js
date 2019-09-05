@@ -62,6 +62,85 @@ renderSuggestion.propTypes = {
   suggestion: PropTypes.string.isRequired,
 };
 
+const SearchFoodField = ({ classes, food, setSearchTerm, isValid }) => {
+  const { suggestions } = food;
+
+  function onInputChange(item) {
+    setSearchTerm(item);
+  }
+
+  return (
+    <div className={classes.root}>
+      <Downshift
+        id='downshift'
+        inputValue={food.name}
+        onChange={onInputChange}
+      >
+        {({
+          getInputProps,
+          getItemProps,
+          getLabelProps,
+          highlightedIndex,
+          inputValue,
+          isOpen,
+          selectedItem,
+        }) => {
+          const {
+            onBlur,
+            onChange,
+            onFocus,
+            ...inputProps
+          } = getInputProps({
+            placeholder: 'Type food name',
+          });
+          return (
+            <div className={classes.container}>
+              {renderInput({
+                fullWidth: true,
+                classes,
+                valid: isValid(food),
+                InputLabelProps: getLabelProps(),
+                InputProps: {
+                  onBlur,
+                  onChange: event => {
+                    onInputChange(event.target.value);
+                    onChange(event);
+                  },
+                  onFocus,
+                },
+                inputProps,
+              })}
+              {isOpen && (
+                <Paper className={classes.paper} square>
+                  {suggestions
+                    .map(suggestion => suggestion.food_name)
+                    .map((suggestion, index) =>
+                      renderSuggestion({
+                        suggestion,
+                        index,
+                        itemProps: getItemProps({ item: suggestion }),
+                        highlightedIndex,
+                        selectedItem,
+                      })
+                    )}
+                </Paper>
+              )}
+            </div>
+          );
+        }}
+      </Downshift>
+      <div className={classes.divider} />
+    </div>
+  );
+};
+
+SearchFoodField.propTypes = {
+  classes: PropTypes.object.isRequired,
+  food: PropTypes.object,
+  setSearchTerm: PropTypes.function,
+  isValid: PropTypes.function,
+};
+
 const styles = theme => ({
   root: {
     flexGrow: 1,
@@ -103,92 +182,6 @@ const styles = theme => ({
     height: theme.spacing.unit * 2,
   },
 });
-
-const SearchFoodField = ({ classes, food, setSearchTerm, validation }) => {
-  const { suggestions } = food;
-
-  function onInputChange(item) {
-    setSearchTerm(item);
-  }
-
-  function isValid(food, inputValue) {
-    return validation
-      ? food && food.id.length > 0 && inputValue.length > 0
-      : true;
-  }
-
-  return (
-    <div className={classes.root}>
-      <Downshift
-        id='downshift'
-        inputValue={food.name}
-        onChange={onInputChange}
-      >
-        {({
-          getInputProps,
-          getItemProps,
-          getLabelProps,
-          highlightedIndex,
-          inputValue,
-          isOpen,
-          selectedItem,
-        }) => {
-          const {
-            onBlur,
-            onChange,
-            onFocus,
-            ...inputProps
-          } = getInputProps({
-            placeholder: 'Type food',
-          });
-          return (
-            <div className={classes.container}>
-              {renderInput({
-                fullWidth: true,
-                classes,
-                valid: isValid(food, inputValue),
-                InputLabelProps: getLabelProps(),
-                InputProps: {
-                  onBlur,
-                  onChange: event => {
-                    onInputChange(event.target.value);
-                    onChange(event);
-                  },
-                  onFocus,
-                },
-                inputProps,
-              })}
-              {isOpen && (
-                <Paper className={classes.paper} square>
-                  {suggestions &&
-                    suggestions
-                      .map(suggestion => suggestion.food_name)
-                      .map((suggestion, index) =>
-                        renderSuggestion({
-                          suggestion,
-                          index,
-                          itemProps: getItemProps({ item: suggestion }),
-                          highlightedIndex,
-                          selectedItem,
-                        })
-                      )}
-                </Paper>
-              )}
-            </div>
-          );
-        }}
-      </Downshift>
-      <div className={classes.divider} />
-    </div>
-  );
-};
-
-SearchFoodField.propTypes = {
-  classes: PropTypes.object.isRequired,
-  food: PropTypes.object,
-  setSearchTerm: PropTypes.function,
-  validation: PropTypes.bool,
-};
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {

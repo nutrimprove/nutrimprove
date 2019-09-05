@@ -3,9 +3,23 @@ import Button from '@material-ui/core/Button';
 import RecommendationsResults from './RecommendationsResults';
 import { fetchRecommendations } from '../connect/api';
 
-const buttonStyles = {
-  verticalAlign: 'bottom',
-  marginLeft: 10,
+const title = 'View Recommendations';
+const subtitle = 'Fetch the list of recommendations you have provided';
+
+const styles = {
+  header: {
+    marginBottom: '30px',
+  },
+  subtitle: {
+    fontSize: '0.8em',
+  },
+  title: {
+    fontSize: '1.4em',
+  },
+  fetchButton: {
+    verticalAlign: 'bottom',
+    marginLeft: 10,
+  },
 };
 
 const Recommendations = () => {
@@ -19,8 +33,16 @@ const Recommendations = () => {
 
   return (
     <form>
+      <div id='header' style={styles.header}>
+        <div id='title' style={styles.title}>
+          {title}
+        </div>
+        <div id='subtitle' style={styles.subtitle}>
+          {subtitle}
+        </div>
+      </div>
       <Button
-        style={buttonStyles}
+        style={styles.fetchButton}
         variant='contained'
         color='primary'
         onClick={updateResults}

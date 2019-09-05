@@ -18,7 +18,7 @@ const editFoodItemArray = (foods, foodToChange) => {
 };
 
 export const reducer = (
-  state = { recommendedFoods: [], foods: [] },
+  state = { recommendedFoods: [], foods: [], isSaving: false },
   action
 ) => {
   if (action.type === ActionsTypes.ADD_FOOD) {
@@ -80,8 +80,14 @@ export const reducer = (
     action.type === ActionsTypes.REMOVE_ALL_FOODS_AND_RECOMMENDATIONS
   ) {
     return {
+      ...state,
       recommendedFoods: [],
       foods: [],
+    };
+  } else if (action.type === ActionsTypes.IS_SAVING) {
+    return {
+      ...state,
+      isSaving: action.isSaving,
     };
   } else {
     return state;

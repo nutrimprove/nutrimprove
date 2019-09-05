@@ -3,6 +3,10 @@ import ResultsTable from './FoodFullResults';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { fetchFoods } from '../connect/api';
+import SectionHeader from './SectionHeader';
+
+const title = 'Search food by name';
+const subtitle = 'Search for a food in the general food database';
 
 const textField = {
   width: 200,
@@ -30,9 +34,10 @@ const FoodByName = () => {
 
   return (
     <form>
+      <SectionHeader title={title} subtitle={subtitle} />
       <TextField
         id='foodName'
-        label='Search food by name'
+        label='Type food name'
         type='search'
         value={foodName}
         style={textField}
