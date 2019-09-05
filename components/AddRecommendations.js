@@ -42,7 +42,6 @@ const styles = {
   },
   fieldtitle: {
     marginBottom: 30,
-    fontWeight: 'bold',
   },
 };
 
