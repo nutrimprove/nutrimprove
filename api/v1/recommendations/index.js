@@ -12,8 +12,8 @@ const getCollectionResults = async (req, res) => {
         contributor_id: cid,
       },
       {
-        food_id: 1,
-        recommendation_id: 1,
+        food: 1,
+        recommendation: 1,
         contributor_id: 1,
         _id: 0,
       }
