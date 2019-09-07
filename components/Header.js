@@ -12,16 +12,15 @@ const styles = {
   root: {
     flexGrow: 1,
   },
-};
-
-const logo = {
-  marginRight: 15,
-  textDecoration: 'none',
-  fontSize: 20,
-  fontWeight: 'bold',
-  height: 50,
-  width: 50,
-  padding: 10,
+  logo: {
+    marginRight: 15,
+    textDecoration: 'none',
+    fontSize: 20,
+    fontWeight: 'bold',
+    height: 50,
+    width: 50,
+    padding: 10,
+  },
 };
 
 const Header = props => {
@@ -33,10 +32,9 @@ const Header = props => {
         <Toolbar>
           <Link href='/'>
             <img
-              style={logo}
-              src='/images/apple_1280.png'
-              alt=''
-              role='presentation'
+              className={classes.logo}
+              src='/images/apple_50.png'
+              alt='Go to main page'
             />
           </Link>
           <Typography variant='button' color='inherit'>
