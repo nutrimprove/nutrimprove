@@ -47,11 +47,15 @@ const ResultsTable = props => {
             <TableBody>
               {values.map((value, vIndex) => (
                 <TableRow key={vIndex}>
-                  {Object.keys(value).map((key, kIndex) => (
-                    <TableCell key={kIndex} className={classes.cell}>
-                      {value[key]}
-                    </TableCell>
-                  ))}
+                  <TableCell className={classes.cell}>
+                    {value.food.name}
+                  </TableCell>
+                  <TableCell className={classes.cell}>
+                    {value.recommendation.name}
+                  </TableCell>
+                  <TableCell className={classes.cell}>
+                    {value.contributor_id}
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>

@@ -80,8 +80,14 @@ const addSearchTerm = async searchTermObj => {
 
 const addRecommendations = async recommendationsObj => {
   const recommendations = recommendationsObj.map(recommendation => ({
-    food_id: recommendation.foodId,
-    recommendation_id: recommendation.recommendationId,
+    food: {
+      id: recommendation.food.id,
+      name: recommendation.food.name,
+    },
+    recommendation: {
+      id: recommendation.recommendation.id,
+      name: recommendation.recommendation.name,
+    },
     contributor_id: recommendation.contributorId,
     timestamp: new Date().getTime(),
   }));
