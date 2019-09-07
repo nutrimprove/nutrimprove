@@ -15,7 +15,6 @@ import { postRecommendations } from '../connect/api';
 import * as _ from 'lodash';
 import SectionHeader from './SectionHeader';
 
-let timeout = null;
 const maxFoodFields = 4;
 const maxRecommendationFields = 4;
 const defaultAddRecsButtonText = 'Add recommendation(s)';
@@ -99,15 +98,6 @@ const AddRecommendations = ({
     return true;
   };
 
-  const displaysStatusMessage = message => {
-    setStatus(message);
-    clearTimeout(timeout);
-    // Timeout to control fetching of data while typing
-    timeout = setTimeout(async () => {
-      setStatus('');
-    }, 15000);
-  };
-
   const validateFields = () => {
     const allFoods = foods.concat(recommendations);
     const emptyFields = allFoods.filter(food => food.id.length === 0);
@@ -124,7 +114,7 @@ const AddRecommendations = ({
 
     if (!validateFields()) {
       setValidation(true);
-      displaysStatusMessage(
+      setStatus(
         'No duplicate nor empty fields are allowed when inserting recommendations!'
       );
       return;
@@ -154,11 +144,11 @@ const AddRecommendations = ({
     if (result.insertedCount === recommendationsPayload.length) {
       removeAllFoods();
       setValidation(false);
-      displaysStatusMessage(
+      setStatus(
         `Recommendations inserted into the database! (#${recommendationsPayload.length})`
       );
     } else {
-      displaysStatusMessage(
+      setStatus(
         'Something went wrong when saving records to database.\nPlease refresh and try again. If it persists please contact us!'
       );
       console.error('Something went wrong!');
