@@ -7,6 +7,9 @@ import {
   Typography,
   Link,
 } from '@material-ui/core';
+import Auth from '../lib/Auth';
+
+const auth = new Auth();
 
 const styles = {
   root: {
@@ -26,6 +29,14 @@ const styles = {
 const Header = props => {
   const { classes } = props;
 
+  function handleLogin() {
+    auth.login();
+  }
+
+  function handleLogout() {
+    auth.logout();
+  }
+
   return (
     <div className={classes.root}>
       <AppBar position='static' color='default'>
@@ -33,12 +44,22 @@ const Header = props => {
           <Link href='/'>
             <img
               className={classes.logo}
-              src='/images/apple_50.png'
+              src='/static/apple_50.png'
               alt='Go to main page'
             />
           </Link>
           <Typography variant='button' color='inherit'>
             <Link href='/about'>About</Link>
+          </Typography>
+          <Typography variant='button' color='inherit'>
+            <Link href='#' onClick={() => handleLogin()}>
+              Login
+            </Link>
+          </Typography>
+          <Typography variant='button' color='inherit'>
+            <Link href='#' onClick={() => handleLogout()}>
+              Logout
+            </Link>
           </Typography>
         </Toolbar>
       </AppBar>

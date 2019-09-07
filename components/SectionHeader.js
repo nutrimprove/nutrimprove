@@ -6,7 +6,7 @@ const styles = {
     marginBottom: '30px',
   },
   subtitle: {
-    fontSize: '0.8em',
+    fontSize: '0.9em',
   },
   title: {
     fontSize: '1.4em',

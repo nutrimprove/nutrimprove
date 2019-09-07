@@ -14,11 +14,9 @@ const layoutStyle = {
 
 const About = () => {
   return (
-    <form>
-      <div id='about' style={layoutStyle}>
-        <SectionHeader title={title} subtitle={subtitle} />
-      </div>
-    </form>
+    <div id='about' style={layoutStyle}>
+      <SectionHeader title={title} subtitle={subtitle} />
+    </div>
   );
 };
 
