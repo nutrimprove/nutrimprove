@@ -43,6 +43,11 @@ const styles = {
   fieldtitle: {
     marginBottom: 30,
   },
+  status: {
+    marginTop: 30,
+    fontSize: '0.9em',
+    backgroundColor: '#ffc',
+  },
 };
 
 const AddRecommendations = ({
@@ -55,6 +60,7 @@ const AddRecommendations = ({
   setSaving,
 }) => {
   const [validation, setValidation] = useState(false);
+  const [status, setStatus] = useState('');
 
   if (foods.length === 0) {
     addEmptyFood();
@@ -108,6 +114,9 @@ const AddRecommendations = ({
 
     if (!validateFields()) {
       setValidation(true);
+      setStatus(
+        'No duplicate nor empty fields are allowed when inserting recommendations!'
+      );
       return;
     }
 
@@ -135,7 +144,13 @@ const AddRecommendations = ({
     if (result.insertedCount === recommendationsPayload.length) {
       removeAllFoods();
       setValidation(false);
+      setStatus(
+        `Recommendations inserted into the database! (#${recommendationsPayload.length})`
+      );
     } else {
+      setStatus(
+        'Something went wrong when saving records to database.\nPlease refresh and try again. If it persists please contact us!'
+      );
       console.error('Something went wrong!');
       console.error(
         `Recommendations records: ${recommendationsPayload.length}, inserted into DB: ${result.insertedCount}`
@@ -184,6 +199,9 @@ const AddRecommendations = ({
             text={defaultAddRecsButtonText}
           />
         )}
+      </div>
+      <div id='status' style={styles.status}>
+        {status}
       </div>
     </>
   );
