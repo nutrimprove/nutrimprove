@@ -25,10 +25,32 @@ const fetchFoods = name =>
     .get(`${foodApiEndpoint}?ingr=${name}${apiAuthParams}${category}`)
     .then(res => res.data.hints);
 
+const fetchRecommendations = contributor =>
+  getRequest(`${recommendationsEndpoint}/?cid=${contributor}`);
+
 const getSearchedTerms = searchTerm =>
   getRequest(`${searchTermsEndpoint}/?term=${searchTerm}`);
 
-const addRecommendation = payload =>
+const postSearchTerm = searchTerm => {
+  axios
+    .post(searchTermsEndpoint, searchTerm)
+    .then(response => {
+      console.log(response);
+    })
+    .catch(error => {
+      console.error(
+        `ERROR connecting to '${searchTermsEndpoint}': ${error}`
+      );
+    });
+};
+
+const postRecommendations = payload =>
   axios.post(recommendationsEndpoint, payload).then(res => res.data);
 
-export { addRecommendation, fetchFoods, getSearchedTerms };
+export {
+  postRecommendations,
+  postSearchTerm,
+  fetchFoods,
+  fetchRecommendations,
+  getSearchedTerms,
+};

@@ -1,15 +1,18 @@
-import React from 'react'
-import { connect } from 'react-redux'
-import PropTypes from 'prop-types'
-import Downshift from 'downshift'
-import { withStyles } from '@material-ui/core/styles'
-import TextField from '@material-ui/core/TextField'
-import Paper from '@material-ui/core/Paper'
-import MenuItem from '@material-ui/core/MenuItem'
-import { editFoodItemName } from '../store/addRecommendation/actions'
+import React from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import Downshift from 'downshift';
+import { withStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
+import Paper from '@material-ui/core/Paper';
+import MenuItem from '@material-ui/core/MenuItem';
+import { editFood } from '../store/addRecommendation/actions';
 
 const renderInput = inputProps => {
-  const { InputProps, classes, ref, ...other } = inputProps;
+  const { InputProps, classes, ref, valid, ...other } = inputProps;
+  const inputStyle = valid
+    ? classes.inputInput
+    : classes.invalidInputInput;
 
   return (
     <TextField
@@ -17,7 +20,7 @@ const renderInput = inputProps => {
         inputRef: ref,
         classes: {
           root: classes.inputRoot,
-          input: classes.inputInput,
+          input: inputStyle,
         },
         ...InputProps,
       }}
@@ -59,6 +62,85 @@ renderSuggestion.propTypes = {
   suggestion: PropTypes.string.isRequired,
 };
 
+const SearchFoodField = ({ classes, food, setSearchTerm, isValid }) => {
+  const { suggestions } = food;
+
+  function onInputChange(item) {
+    setSearchTerm(item);
+  }
+
+  return (
+    <div className={classes.root}>
+      <Downshift
+        id='downshift'
+        inputValue={food.name}
+        onChange={onInputChange}
+      >
+        {({
+          getInputProps,
+          getItemProps,
+          getLabelProps,
+          highlightedIndex,
+          inputValue,
+          isOpen,
+          selectedItem,
+        }) => {
+          const {
+            onBlur,
+            onChange,
+            onFocus,
+            ...inputProps
+          } = getInputProps({
+            placeholder: 'Type food name',
+          });
+          return (
+            <div className={classes.container}>
+              {renderInput({
+                fullWidth: true,
+                classes,
+                valid: isValid(food),
+                InputLabelProps: getLabelProps(),
+                InputProps: {
+                  onBlur,
+                  onChange: event => {
+                    onInputChange(event.target.value);
+                    onChange(event);
+                  },
+                  onFocus,
+                },
+                inputProps,
+              })}
+              {isOpen && (
+                <Paper className={classes.paper} square>
+                  {suggestions
+                    .map(suggestion => suggestion.food_name)
+                    .map((suggestion, index) =>
+                      renderSuggestion({
+                        suggestion,
+                        index,
+                        itemProps: getItemProps({ item: suggestion }),
+                        highlightedIndex,
+                        selectedItem,
+                      })
+                    )}
+                </Paper>
+              )}
+            </div>
+          );
+        }}
+      </Downshift>
+      <div className={classes.divider} />
+    </div>
+  );
+};
+
+SearchFoodField.propTypes = {
+  classes: PropTypes.object.isRequired,
+  food: PropTypes.object,
+  setSearchTerm: PropTypes.function,
+  isValid: PropTypes.function,
+};
+
 const styles = theme => ({
   root: {
     flexGrow: 1,
@@ -87,119 +169,31 @@ const styles = theme => ({
   inputInput: {
     width: 'auto',
     flexGrow: 1,
+    backgroundColor: '#ffffff',
+    color: '#000000',
+  },
+  invalidInputInput: {
+    width: 'auto',
+    flexGrow: 1,
+    backgroundColor: '#ffdddd',
+    color: '#770000',
   },
   divider: {
     height: theme.spacing.unit * 2,
   },
 });
 
-const SearchFoodField = ({ classes, foodItem, setSearchTerm }) => {
-  const {suggestions} = foodItem;
-  const [selectedItem, setSelectedItem] = React.useState([]); // Not sure what is it doing
-
-
-  function handleKeyDown(event) {
-    if (
-      selectedItem.length &&
-      !foodItem.length &&
-      event.key === 'Backspace'
-    ) {
-      setSelectedItem(selectedItem.slice(0, selectedItem.length - 1));
-    }
-  }
-
-  function setInputValue(event) {
-    setSearchTerm(event.target.value);
-  }
-
-  function onInputChange(item) {
-    let newSelectedItem = selectedItem;
-    if (newSelectedItem.indexOf(item) === -1) {
-      newSelectedItem = item;
-    }
-    setSearchTerm(item);
-    setSelectedItem(newSelectedItem);
-  }
-
-  return (
-    <div className={classes.root}>
-      <Downshift
-        id='downshift'
-        inputValue={foodItem.name}
-        onChange={onInputChange}
-        selectedItem={selectedItem}
-      >
-        {({
-          getInputProps,
-          getItemProps,
-          getLabelProps,
-          highlightedIndex,
-          inputValue,
-          isOpen,
-          selectedItem,
-        }) => {
-          const {
-            onBlur,
-            onChange,
-            onFocus,
-            ...inputProps
-          } = getInputProps({
-            onKeyDown: handleKeyDown,
-            placeholder: 'Type food',
-          });
-          // setSearchTerm(inputValue);
-          return (
-            <div className={classes.container}>
-              {renderInput({
-                fullWidth: true,
-                classes,
-                InputLabelProps: getLabelProps(),
-                InputProps: {
-                  onBlur,
-                  onChange: event => {
-                    setInputValue(event);
-                    onChange(event);
-                  },
-                  onFocus,
-                },
-                inputProps,
-              })}
-
-              {isOpen && (
-                <Paper className={classes.paper} square>
-                  {suggestions.map((suggestion, index) =>
-                    renderSuggestion({
-                      suggestion,
-                      index,
-                      itemProps: getItemProps({ item: suggestion }),
-                      highlightedIndex,
-                      selectedItem,
-                    })
-                  )}
-                </Paper>
-              )}
-            </div>
-          );
-        }}
-      </Downshift>
-      <div className={classes.divider} />
-    </div>
-  );
-};
-
-SearchFoodField.propTypes = {
-  classes: PropTypes.object.isRequired,
-  foodItem: PropTypes.object,
-  setSearchTerm: PropTypes.function,
-};
-
-
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    setSearchTerm: (newName) => {
-      dispatch(editFoodItemName(ownProps.foodItem, newName));
-    }
+    setSearchTerm: name => {
+      dispatch(
+        editFood(ownProps.food, name, ownProps.food.isRecommendation)
+      );
+    },
   };
 };
 
-export default connect(null, mapDispatchToProps)(withStyles(styles)(SearchFoodField));
+export default connect(
+  null,
+  mapDispatchToProps
+)(withStyles(styles)(SearchFoodField));

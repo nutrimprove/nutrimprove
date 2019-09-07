@@ -1,4 +1,9 @@
 import React from 'react';
+import SectionHeader from '../components/SectionHeader';
+
+const title = 'About Eatwell';
+const subtitle =
+  'This page will show some information about the Eatwell project';
 
 const layoutStyle = {
   margin: 20,
@@ -9,9 +14,11 @@ const layoutStyle = {
 
 const About = () => {
   return (
-    <div id='about' style={layoutStyle}>
-        <p>About Eatwell</p>
-    </div>
+    <form>
+      <div id='about' style={layoutStyle}>
+        <SectionHeader title={title} subtitle={subtitle} />
+      </div>
+    </form>
   );
 };
 

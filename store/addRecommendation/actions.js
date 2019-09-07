@@ -1,4 +1,6 @@
-import { getSearchedTerms } from '../../connect/api'
+import { getSearchedTerms } from '../../connect/api';
+
+let timeout = null;
 
 export const ActionsTypes = {
   ADD_FOOD: 'ADD_FOOD',
@@ -10,74 +12,85 @@ export const ActionsTypes = {
   REMOVE_FOOD: 'REMOVE_FOOD',
   REMOVE_RECOMMENDED_FOOD: 'REMOVE_RECOMMENDED_FOOD',
   REMOVE_FOOD_OR_RECOMMENDED_FOOD: 'REMOVE_FOOD_OR_RECOMMENDED_FOOD',
-}
+  REMOVE_ALL_FOODS_AND_RECOMMENDATIONS:
+    'REMOVE_ALL_FOODS_AND_RECOMMENDATIONS',
+  IS_SAVING: 'IS_SAVING',
+};
 
-export const addFood = (foodName) => {
-  return { type: ActionsTypes.ADD_FOOD, foodName }
-}
+export const addFoodAction = food => {
+  return { type: ActionsTypes.ADD_FOOD, food };
+};
 
-export const addRecommendedFood = (foodName) => {
-  return { type: ActionsTypes.ADD_RECOMMENDED_FOOD, foodName }
-}
+export const addRecommendedFoodAction = food => {
+  return { type: ActionsTypes.ADD_RECOMMENDED_FOOD, food };
+};
 
-export const editFood = (foodItem) => {
-  return { type: ActionsTypes.EDIT_FOOD, foodItem }
-}
+export const editFoodAction = food => {
+  return { type: ActionsTypes.EDIT_FOOD, food };
+};
 
-export const editRecommendedFood = (foodItem) => {
-  return { type: ActionsTypes.EDIT_RECOMMENDED_FOOD, foodItem }
-}
+export const editRecommendedFoodAction = food => {
+  return { type: ActionsTypes.EDIT_RECOMMENDED_FOOD, food };
+};
 
-export const editFoodSuggestions = (foodItemKey, suggestions) => {
-  return { type: ActionsTypes.EDIT_FOOD_SUGGESTIONS, foodItemKey, suggestions }
-}
+export const removeFoodAction = food => {
+  return { type: ActionsTypes.REMOVE_FOOD, food };
+};
 
-export const editRecommendedFoodSuggestions = (foodItemKey, suggestions) => {
-  return { type: ActionsTypes.EDIT_RECOMMENDED_FOOD_SUGGESTIONS, foodItemKey, suggestions }
-}
+export const removeRecommendedFoodAction = food => {
+  return { type: ActionsTypes.REMOVE_RECOMMENDED_FOOD, food };
+};
 
-export const removeFood = (foodItem) => {
-  return { type: ActionsTypes.REMOVE_FOOD, foodItem }
-}
+export const removeAllFoodsAndRecommendationsAction = () => {
+  return { type: ActionsTypes.REMOVE_ALL_FOODS_AND_RECOMMENDATIONS };
+};
 
-export const removeRecommendedFood = (foodItem) => {
-  return { type: ActionsTypes.REMOVE_RECOMMENDED_FOOD, foodItem }
-}
+export const setSavingAction = isSaving => {
+  return { type: ActionsTypes.IS_SAVING, isSaving };
+};
 
-export const removeFoodOrRecommendedFood = (foodItem) => {
-  return { type: ActionsTypes.REMOVE_FOOD_OR_RECOMMENDED_FOOD, foodItem }
-}
-
-const editFoodItemNameOnly = (dispatch, foodItem, newName) => {
-  if (foodItem.key.startsWith("food_")) {
-    dispatch(editFood({...foodItem, name: newName}))
-  } else {
-    dispatch(editRecommendedFood({...foodItem, name: newName}))
-  }
-}
-const setFoodItemSuggestions = (dispatch, foodItemKey, suggestions) => {
-  if (foodItemKey.startsWith("food_")) {
-    dispatch(editFoodSuggestions(foodItemKey, suggestions))
-  } else {
-    dispatch(editRecommendedFoodSuggestions(foodItemKey, suggestions))
-  }
-}
-
-export const editFoodItemName = (foodItem, newName) => {
-  if (newName == null) return;
+export const editFood = (food, foodName, isRecommendation) => {
+  if (foodName == null) return;
 
   return async (dispatch, getState) => {
-    editFoodItemNameOnly(dispatch, foodItem, newName)
-    if (newName.length > 2) {
-      const search = await getSearchedTerms(newName);
-      const suggestions = search.matches.map(
-        match => match.food_name
-      );
-      if (suggestions) {
-        setFoodItemSuggestions(dispatch, foodItem.key, suggestions);
+    const action = isRecommendation
+      ? editRecommendedFoodAction
+      : editFoodAction;
+
+    dispatch(action({ ...food, id: '', name: foodName, suggestions: [] }));
+
+    clearTimeout(timeout);
+    // Timeout to control fetching of data while typing
+    timeout = setTimeout(async () => {
+      // Fetches search results if more than 2 characters are typed
+      if (foodName.length > 2) {
+        const search = await getSearchedTerms(foodName);
+        if (search && search.matches) {
+          const suggestions = search.matches.map(match => ({
+            food_name: match.food_name,
+            food_id: match.food_id,
+          }));
+
+          const selectedSuggestion = suggestions.find(
+            suggestion => suggestion.food_name === foodName
+          );
+          if (
+            selectedSuggestion &&
+            selectedSuggestion.food_id !== food.id
+          ) {
+            dispatch(
+              action({
+                ...food,
+                name: foodName,
+                id: selectedSuggestion.food_id,
+                suggestions,
+              })
+            );
+          } else if (suggestions.length > 0) {
+            dispatch(action({ ...food, name: foodName, suggestions }));
+          }
+        }
       }
-    } else {
-      setFoodItemSuggestions(dispatch, foodItem.key, []);
-    }
-  }
-}
+    }, 500);
+  };
+};
