@@ -11,6 +11,69 @@ import Auth from '../lib/Auth';
 
 const auth = new Auth();
 
+const Header = ({ classes }) => {
+  function handleLogin() {
+    auth.login();
+  }
+
+  function handleLogout() {
+    auth.logout();
+  }
+
+  function username() {
+    const info = auth.getUserInfo();
+    return info && info.nickname ? info.nickname : 'Not logged in';
+  }
+
+  function userImage() {
+    const info = auth.getUserInfo();
+    return info && info.picture ? (
+      <img id='usericon' src={info.picture} alt='' />
+    ) : (
+      <img id='usericon' alt='' />
+    );
+  }
+
+  return (
+    <div className={classes.root}>
+      <AppBar position='static' color='default'>
+        <Toolbar className={classes.toolbar}>
+          <Link href='/'>
+            <img
+              className={classes.logo}
+              src='/static/apple_50.png'
+              alt='Go to main page'
+            />
+          </Link>
+          <Typography variant='button' color='inherit'>
+            <Link href='/about'>About</Link>
+          </Typography>
+          {/* {auth.isAuthenticated() */}
+          <Typography variant='button' color='inherit'>
+            <Link href='#' onClick={() => handleLogout()}>
+              Logout
+            </Link>
+          </Typography>
+          <Typography variant='button' color='inherit'>
+            <Link href='#' onClick={() => handleLogin()}>
+              Login
+            </Link>
+          </Typography>
+          {/* } */}
+          <div id='user' className={classes.userinfo}>
+            <span>{username()}</span>
+            {userImage()}
+          </div>
+        </Toolbar>
+      </AppBar>
+    </div>
+  );
+};
+
+Header.propTypes = {
+  classes: PropTypes.object.isRequired,
+};
+
 const styles = {
   root: {
     flexGrow: 1,
@@ -24,51 +87,19 @@ const styles = {
     width: 50,
     padding: 10,
   },
-};
-
-const Header = props => {
-  const { classes } = props;
-
-  function handleLogin() {
-    auth.login();
-  }
-
-  function handleLogout() {
-    auth.logout();
-  }
-
-  return (
-    <div className={classes.root}>
-      <AppBar position='static' color='default'>
-        <Toolbar>
-          <Link href='/'>
-            <img
-              className={classes.logo}
-              src='/static/apple_50.png'
-              alt='Go to main page'
-            />
-          </Link>
-          <Typography variant='button' color='inherit'>
-            <Link href='/about'>About</Link>
-          </Typography>
-          <Typography variant='button' color='inherit'>
-            <Link href='#' onClick={() => handleLogin()}>
-              Login
-            </Link>
-          </Typography>
-          <Typography variant='button' color='inherit'>
-            <Link href='#' onClick={() => handleLogout()}>
-              Logout
-            </Link>
-          </Typography>
-        </Toolbar>
-      </AppBar>
-    </div>
-  );
-};
-
-Header.propTypes = {
-  classes: PropTypes.object.isRequired,
+  toolbar: {
+    '& span, & a': {
+      marginRight: 20,
+    },
+  },
+  userinfo: {
+    position: 'absolute',
+    right: 20,
+    '& img': {
+      maxWidth: 45,
+      maxHeight: 45,
+    },
+  },
 };
 
 export default withStyles(styles)(Header);

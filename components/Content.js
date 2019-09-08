@@ -21,15 +21,7 @@ TabContainer.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
-const styles = theme => ({
-  root: {
-    flexGrow: 1,
-    backgroundColor: theme.palette.background.paper,
-  },
-});
-
-const Content = props => {
-  const { classes } = props;
+const Content = ({ classes }) => {
   const [tab, setTab] = useState(0);
 
   const tabChange = (event, tab) => {
@@ -67,5 +59,12 @@ const Content = props => {
 Content.propTypes = {
   classes: PropTypes.object.isRequired,
 };
+
+const styles = theme => ({
+  root: {
+    flexGrow: 1,
+    backgroundColor: theme.palette.background.paper,
+  },
+});
 
 export default withStyles(styles)(Content);

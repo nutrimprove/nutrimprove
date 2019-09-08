@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import withStyles from '@material-ui/core/styles/withStyles';
 
 const styles = {
   header: {
@@ -17,13 +18,13 @@ const styles = {
   },
 };
 
-const SectionHeader = ({ title, subtitle }) => {
+const SectionHeader = ({ title, subtitle, classes }) => {
   return (
-    <div id='header' style={styles.header}>
-      <div id='title' style={styles.title}>
+    <div id='header' className={classes.header}>
+      <div id='title' className={classes.title}>
         {title}
       </div>
-      <div id='subtitle' style={styles.subtitle}>
+      <div id='subtitle' className={classes.subtitle}>
         {subtitle}
       </div>
     </div>
@@ -33,6 +34,7 @@ const SectionHeader = ({ title, subtitle }) => {
 SectionHeader.propTypes = {
   title: PropTypes.string.isRequired,
   subtitle: PropTypes.string,
+  classes: PropTypes.object.isRequired,
 };
 
-export default SectionHeader;
+export default withStyles(styles)(SectionHeader);
