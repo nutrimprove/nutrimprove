@@ -26,7 +26,7 @@ const Header = ({ classes }) => {
   }
 
   return (
-    <div className={classes.root}>
+    <div className={classes.header}>
       <AppBar position='static' color='default'>
         <Toolbar className={classes.toolbar}>
           <Link href='/'>
@@ -36,24 +36,26 @@ const Header = ({ classes }) => {
               alt='Go to main page'
             />
           </Link>
-          <Typography variant='button' color='inherit'>
-            <Link href='/about'>About</Link>
-          </Typography>
-          {auth.isAuthenticated() ? (
+          <div id='links'>
             <Typography variant='button' color='inherit'>
-              <Link href='#' onClick={() => handleLogout()}>
-                Logout
-              </Link>
+              <Link href='/about'>About</Link>
             </Typography>
-          ) : (
-            <Typography variant='button' color='inherit'>
-              <Link href='#' onClick={() => handleLogin()}>
-                Login
-              </Link>
-            </Typography>
-          )}
+            {auth.isAuthenticated() ? (
+              <Typography variant='button' color='inherit'>
+                <Link href='#' onClick={() => handleLogout()}>
+                  Logout
+                </Link>
+              </Typography>
+            ) : (
+              <Typography variant='button' color='inherit'>
+                <Link href='#' onClick={() => handleLogin()}>
+                  Login
+                </Link>
+              </Typography>
+            )}
+          </div>
           <div id='user' className={classes.userinfo}>
-            <span>{username()}</span>
+            {username()}
           </div>
         </Toolbar>
       </AppBar>
@@ -66,26 +68,22 @@ Header.propTypes = {
 };
 
 const styles = {
-  root: {
+  header: {
     flexGrow: 1,
   },
   logo: {
-    marginRight: 15,
-    textDecoration: 'none',
-    fontSize: 20,
-    fontWeight: 'bold',
-    height: 50,
     width: 50,
-    padding: 10,
+    marginRight: 10,
   },
   toolbar: {
-    '& span, & a': {
-      marginRight: 20,
+    height: 60,
+    '& a': {
+      marginLeft: '20px',
     },
   },
   userinfo: {
     position: 'absolute',
-    right: 20,
+    right: 30,
     '& img': {
       maxWidth: 45,
       maxHeight: 45,

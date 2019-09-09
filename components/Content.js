@@ -11,9 +11,7 @@ import AddRecommendations from './AddRecommendations';
 
 function TabContainer(props) {
   return (
-    <Typography component='div' style={{ padding: 8 * 3 }}>
-      {props.children}
-    </Typography>
+    <Typography style={{ padding: 8 * 3 }}>{props.children}</Typography>
   );
 }
 

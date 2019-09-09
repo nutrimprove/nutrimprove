@@ -14,6 +14,7 @@ import {
 import { postRecommendations } from '../connect/api';
 import * as _ from 'lodash';
 import SectionHeader from './SectionHeader';
+import withStyles from '@material-ui/core/styles/withStyles';
 
 const maxFoodFields = 4;
 const maxRecommendationFields = 4;
@@ -21,34 +22,6 @@ const defaultAddRecsButtonText = 'Add recommendation(s)';
 const title = 'Add Recommendations';
 const subtitle =
   'Choose the foods and the recommendations you would like to provide';
-
-const styles = {
-  fieldBox: {
-    float: 'left',
-    marginRight: 80,
-    marginBottom: 30,
-    width: 300,
-    border: '1px dashed #ddd',
-    padding: 20,
-  },
-  header: {
-    marginBottom: '30px',
-  },
-  title: {
-    fontSize: '1.4em',
-  },
-  subtitle: {
-    fontSize: '0.8em',
-  },
-  fieldtitle: {
-    marginBottom: 30,
-  },
-  status: {
-    marginTop: 30,
-    fontSize: '0.9em',
-    backgroundColor: '#ffc',
-  },
-};
 
 const AddRecommendations = ({
   foods,
@@ -58,6 +31,7 @@ const AddRecommendations = ({
   addEmptyFood,
   removeAllFoods,
   setSaving,
+  classes,
 }) => {
   const [validation, setValidation] = useState(false);
   const [status, setStatus] = useState('');
@@ -72,8 +46,8 @@ const AddRecommendations = ({
 
   const renderField = foods =>
     foods.map(food => (
-      <div key={food.key} style={{ display: '-webkit-box' }}>
-        <SearchFoodField className='food' food={food} isValid={isValid} />
+      <div key={food.key} className={classes.searchfood}>
+        <SearchFoodField food={food} isValid={isValid} />
         {foods.length <= 1 ? (
           <RemoveIcon />
         ) : (
@@ -162,11 +136,9 @@ const AddRecommendations = ({
   return (
     <>
       <SectionHeader title={title} subtitle={subtitle} />
-      <div style={{ display: 'flex' }}>
-        <div style={styles.fieldBox}>
-          <div className='title' style={styles.fieldtitle}>
-            Choose food(s):
-          </div>
+      <div className={classes.main}>
+        <div className={classes.fieldBox}>
+          <div className={classes.fieldtitle}>Choose food(s):</div>
           <div id='foods_input'>
             {renderField(foods)}
             {foods.length < maxFoodFields ? (
@@ -176,8 +148,8 @@ const AddRecommendations = ({
             )}
           </div>
         </div>
-        <div style={styles.fieldBox}>
-          <div className='title' style={styles.fieldtitle}>
+        <div className={classes.fieldBox}>
+          <div className={classes.fieldtitle}>
             Healthier alternative(s):
           </div>
           <div id='recommendations_input'>
@@ -190,7 +162,7 @@ const AddRecommendations = ({
           </div>
         </div>
       </div>
-      <div id='submit' style={{ marginTop: 20 }}>
+      <div className={classes.submit}>
         {isSaving ? (
           <AddButton text='Saving...' />
         ) : (
@@ -200,9 +172,7 @@ const AddRecommendations = ({
           />
         )}
       </div>
-      <div id='status' style={styles.status}>
-        {status}
-      </div>
+      <div className={classes.status}>{status}</div>
     </>
   );
 };
@@ -215,6 +185,41 @@ AddRecommendations.propTypes = {
   addEmptyRecommendedFood: PropTypes.function,
   removeAllFoods: PropTypes.function,
   setSaving: PropTypes.function,
+  classes: PropTypes.object.isRequired,
+};
+
+const styles = {
+  fieldBox: {
+    float: 'left',
+    marginRight: 80,
+    marginBottom: 30,
+    width: 300,
+    border: '1px dashed #ddd',
+    padding: 20,
+  },
+  title: {
+    fontSize: '1.4em',
+  },
+  subtitle: {
+    fontSize: '0.8em',
+  },
+  fieldtitle: {
+    marginBottom: 30,
+  },
+  status: {
+    marginTop: 30,
+    fontSize: '0.9em',
+    backgroundColor: '#ffc',
+  },
+  searchfood: {
+    display: '-webkit-box',
+  },
+  main: {
+    display: 'flex',
+  },
+  submit: {
+    marginTop: 20,
+  },
 };
 
 const mapStateToProps = (states, ownProps) => {
@@ -236,7 +241,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       })
     );
   };
-
   return {
     addEmptyRecommendedFood: () => addEmptyField(addRecommendedFoodAction),
     addEmptyFood: () => addEmptyField(addFoodAction),
@@ -249,4 +253,4 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(AddRecommendations);
+)(withStyles(styles)(AddRecommendations));
