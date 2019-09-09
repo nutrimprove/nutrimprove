@@ -9,8 +9,8 @@ import {
   addFoodAction,
   addRecommendedFoodAction,
   removeAllFoodsAndRecommendationsAction,
-  setSavingAction,
 } from '../store/addRecommendation/actions';
+import { setSavingAction } from '../store/global/actions';
 import { postRecommendations } from '../connect/api';
 import * as _ from 'lodash';
 import SectionHeader from './SectionHeader';
@@ -31,6 +31,7 @@ const AddRecommendations = ({
   addEmptyFood,
   removeAllFoods,
   setSaving,
+  userDetails,
   classes,
 }) => {
   const [validation, setValidation] = useState(false);
@@ -105,7 +106,7 @@ const AddRecommendations = ({
             id: recommendation.id,
             name: recommendation.name,
           },
-          contributorId: '099', // Requires authentication to populate this value dynamically
+          contributorId: userDetails.email,
         });
       }
     }
@@ -185,6 +186,7 @@ AddRecommendations.propTypes = {
   addEmptyRecommendedFood: PropTypes.function,
   removeAllFoods: PropTypes.function,
   setSaving: PropTypes.function,
+  userDetails: PropTypes.object,
   classes: PropTypes.object.isRequired,
 };
 
@@ -226,7 +228,8 @@ const mapStateToProps = (states, ownProps) => {
   return {
     recommendations: states.addRecommendationState.recommendedFoods,
     foods: states.addRecommendationState.foods,
-    isSaving: states.addRecommendationState.isSaving,
+    isSaving: states.globalState.isSaving,
+    userDetails: states.globalState.userDetails,
   };
 };
 

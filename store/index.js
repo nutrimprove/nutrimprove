@@ -1,7 +1,8 @@
 import { applyMiddleware, combineReducers, createStore } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
-import thunk from 'redux-thunk'
-import * as addRecommendation from './addRecommendation/reducer'
+import thunk from 'redux-thunk';
+import * as addRecommendation from './addRecommendation/reducer';
+import * as global from './global/reducer';
 
 const getMiddleware = () => {
   const middleware = [];
@@ -11,7 +12,7 @@ const getMiddleware = () => {
     middleware.push(logger);
   }
 
-  middleware.push(thunk)
+  middleware.push(thunk);
 
   return middleware;
 };
@@ -19,6 +20,7 @@ const getMiddleware = () => {
 export const createRootReducer = () => {
   return combineReducers({
     addRecommendationState: addRecommendation.reducer,
+    globalState: global.reducer,
   });
 };
 
@@ -34,7 +36,7 @@ function configureStore(initialState) {
   return createStore(rootReducer, initialState, appliedMiddleware);
 }
 
-export const makeRootStore = (initialState) => {
+export const makeRootStore = initialState => {
   console.log('this is initial state', initialState.testReducer);
   return configureStore(initialState);
 };

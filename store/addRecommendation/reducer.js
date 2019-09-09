@@ -1,12 +1,5 @@
 import { ActionsTypes } from './actions';
 
-/*
- * FoodItem
- *  # key {string} - starts with either food_ or recommendedFood_ to denote its purpose
- *  # name {string} - food name
- *  # suggestions {string[]} - populates all suggestions there
- */
-
 const editFoodItemArray = (foods, foodToChange) => {
   const indexToModify = foods
     .map(food => food.key)
@@ -18,7 +11,7 @@ const editFoodItemArray = (foods, foodToChange) => {
 };
 
 export const reducer = (
-  state = { recommendedFoods: [], foods: [], isSaving: false },
+  state = { recommendedFoods: [], foods: [] },
   action
 ) => {
   if (action.type === ActionsTypes.ADD_FOOD) {
@@ -83,11 +76,6 @@ export const reducer = (
       ...state,
       recommendedFoods: [],
       foods: [],
-    };
-  } else if (action.type === ActionsTypes.IS_SAVING) {
-    return {
-      ...state,
-      isSaving: action.isSaving,
     };
   } else {
     return state;
