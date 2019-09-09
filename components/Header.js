@@ -22,16 +22,7 @@ const Header = ({ classes }) => {
 
   function username() {
     const info = auth.getUserInfo();
-    return info && info.nickname ? info.nickname : 'Not logged in';
-  }
-
-  function userImage() {
-    const info = auth.getUserInfo();
-    return info && info.picture ? (
-      <img id='usericon' src={info.picture} alt='' />
-    ) : (
-      <img id='usericon' alt='' />
-    );
+    return info && info.name ? info.name : 'Not logged in';
   }
 
   return (
@@ -48,21 +39,21 @@ const Header = ({ classes }) => {
           <Typography variant='button' color='inherit'>
             <Link href='/about'>About</Link>
           </Typography>
-          {/* {auth.isAuthenticated() */}
-          <Typography variant='button' color='inherit'>
-            <Link href='#' onClick={() => handleLogout()}>
-              Logout
-            </Link>
-          </Typography>
-          <Typography variant='button' color='inherit'>
-            <Link href='#' onClick={() => handleLogin()}>
-              Login
-            </Link>
-          </Typography>
-          {/* } */}
+          {auth.isAuthenticated() ? (
+            <Typography variant='button' color='inherit'>
+              <Link href='#' onClick={() => handleLogout()}>
+                Logout
+              </Link>
+            </Typography>
+          ) : (
+            <Typography variant='button' color='inherit'>
+              <Link href='#' onClick={() => handleLogin()}>
+                Login
+              </Link>
+            </Typography>
+          )}
           <div id='user' className={classes.userinfo}>
             <span>{username()}</span>
-            {userImage()}
           </div>
         </Toolbar>
       </AppBar>
