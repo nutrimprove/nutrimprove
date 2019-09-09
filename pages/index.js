@@ -1,15 +1,19 @@
 import React from 'react';
 import PleaseLoginMessage from '../components/PleaseLoginMessage';
 import Content from '../components/Content';
+import withStyles from '@material-ui/core/styles/withStyles';
+import PropTypes from 'prop-types';
 
-const layoutStyle = {
-  margin: 20,
-  padding: 20,
-  border: '1px solid #DDD',
-  minWidth: 800,
+const styles = {
+  content: {
+    margin: 20,
+    padding: 20,
+    border: '1px solid #DDD',
+    minWidth: 800,
+  },
 };
 
-const Index = () => {
+const Index = ({ classes }) => {
   let userData;
   let isLoggedIn;
 
@@ -19,10 +23,14 @@ const Index = () => {
   }
 
   return (
-    <div id='app' style={layoutStyle}>
+    <div className={classes.content}>
       {isLoggedIn && userData ? <Content /> : <PleaseLoginMessage />}
     </div>
   );
 };
 
-export default Index;
+Index.propTypes = {
+  classes: PropTypes.object.isRequired,
+};
+
+export default withStyles(styles)(Index);
