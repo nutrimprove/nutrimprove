@@ -14,6 +14,7 @@ const styles = {
   textField: {
     width: 200,
     marginBottom: 0,
+    marginTop: 0,
   },
   buttonStyles: {
     verticalAlign: 'bottom',

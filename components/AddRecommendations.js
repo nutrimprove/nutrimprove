@@ -218,7 +218,7 @@ const styles = {
     display: 'flex',
   },
   submit: {
-    marginTop: 20,
+    marginTop: 10,
   },
 };
 
