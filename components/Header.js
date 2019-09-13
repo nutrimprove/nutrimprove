@@ -32,7 +32,7 @@ const Header = ({ classes, userDetails, setUserDetails }) => {
   }
 
   function username() {
-    if (userDetails && userDetails.name) return userDetails.name;
+    if (userDetails && userDetails.email) return userDetails.email;
   }
 
   return (

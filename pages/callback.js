@@ -5,6 +5,7 @@ import { setUserDetails } from '../store/global/actions';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import SectionHeader from '../components/SectionHeader';
+import extractUser from '../lib/extractUser';
 const auth = new Auth();
 const title = `Redirection Page!!`;
 
@@ -14,7 +15,7 @@ const Callback = ({ setUserDetails }) => {
       const userDetails = auth.extractInfoFromHash();
       auth.handleAuthentication().then(res => {
         if (res) {
-          setUserDetails(userDetails.user_details);
+          setUserDetails(extractUser(userDetails.user_details));
         }
         Router.push('/');
       });
