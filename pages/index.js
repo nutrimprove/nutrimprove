@@ -3,6 +3,7 @@ import PleaseLoginMessage from '../components/PleaseLoginMessage';
 import Content from '../components/Content';
 import withStyles from '@material-ui/core/styles/withStyles';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 const styles = {
   content: {
@@ -13,24 +14,28 @@ const styles = {
   },
 };
 
-const Index = ({ classes }) => {
-  let userData;
-  let isLoggedIn;
-
-  if (typeof window !== 'undefined') {
-    userData = localStorage.getItem('user_details');
-    isLoggedIn = localStorage.getItem('isLoggedIn');
-  }
-
-  return (
-    <div className={classes.content}>
-      {isLoggedIn && userData ? <Content /> : <PleaseLoginMessage />}
-    </div>
-  );
-};
+const Index = ({ classes, userDetails }) => (
+  <div className={classes.content}>
+    {userDetails && userDetails.email ? (
+      <Content />
+    ) : (
+      <PleaseLoginMessage />
+    )}
+  </div>
+);
 
 Index.propTypes = {
   classes: PropTypes.object.isRequired,
+  userDetails: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(Index);
+const mapStateToProps = (states, ownProps) => {
+  return {
+    userDetails: states.globalState.userDetails,
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  null
+)(withStyles(styles)(Index));

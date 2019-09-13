@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
   withStyles,
@@ -8,10 +8,21 @@ import {
   Link,
 } from '@material-ui/core';
 import Auth from '../lib/Auth';
+import { setUserDetails } from '../store/global/actions';
+import { connect } from 'react-redux';
 
 const auth = new Auth();
 
-const Header = ({ classes }) => {
+const Header = ({ classes, userDetails, setUserDetails }) => {
+  useEffect(() => {
+    const userInfo = auth.getUserInfo();
+    if (userInfo) {
+      setUserDetails(userInfo);
+    } else {
+      setUserDetails({});
+    }
+  }, []);
+
   function handleLogin() {
     auth.login();
   }
@@ -21,8 +32,7 @@ const Header = ({ classes }) => {
   }
 
   function username() {
-    const info = auth.getUserInfo();
-    return info && info.name ? info.name : 'Not logged in';
+    if (userDetails && userDetails.name) return userDetails.name;
   }
 
   return (
@@ -42,13 +52,13 @@ const Header = ({ classes }) => {
             </Typography>
             {auth.isAuthenticated() ? (
               <Typography variant='button' color='inherit'>
-                <Link href='#' onClick={() => handleLogout()}>
+                <Link href='#' onClick={handleLogout}>
                   Logout
                 </Link>
               </Typography>
             ) : (
               <Typography variant='button' color='inherit'>
-                <Link href='#' onClick={() => handleLogin()}>
+                <Link href='#' onClick={handleLogin}>
                   Login
                 </Link>
               </Typography>
@@ -65,6 +75,8 @@ const Header = ({ classes }) => {
 
 Header.propTypes = {
   classes: PropTypes.object.isRequired,
+  userDetails: PropTypes.object.isRequired,
+  setUserDetails: PropTypes.func.isRequired,
 };
 
 const styles = {
@@ -91,4 +103,19 @@ const styles = {
   },
 };
 
-export default withStyles(styles)(Header);
+const mapStateToProps = (states, ownProps) => {
+  return {
+    userDetails: states.globalState.userDetails,
+  };
+};
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    setUserDetails: details => dispatch(setUserDetails(details)),
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(styles)(Header));
