@@ -48,7 +48,7 @@ const Recommendations = ({ userDetails }) => {
         color='primary'
         onClick={updateResults}
       >
-        Fetch all recommendations
+        Fetch inserted recommendations
       </Button>
       <RecommendationsResults values={recommendations} />
     </>

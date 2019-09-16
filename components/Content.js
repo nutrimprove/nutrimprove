@@ -20,7 +20,7 @@ TabContainer.propTypes = {
 };
 
 const Content = ({ classes }) => {
-  const [tab, setTab] = useState(0);
+  const [tab, setTab] = useState(2);
 
   const tabChange = (event, tab) => {
     setTab(tab);
