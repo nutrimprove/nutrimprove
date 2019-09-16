@@ -31,7 +31,7 @@ const Content = ({ classes }) => {
       <AppBar position='static'>
         <Tabs value={tab} onChange={tabChange}>
           <Tab label='Search Food' />
-          <Tab label='Recommendations' />
+          <Tab label='View Recommendations' />
           <Tab label='Add Recommendations' />
         </Tabs>
       </AppBar>
