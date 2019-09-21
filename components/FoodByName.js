@@ -7,8 +7,10 @@ import SectionHeader from './SectionHeader';
 import withStyles from '@material-ui/core/styles/withStyles';
 import PropTypes from 'prop-types';
 
-const title = 'Search food by name';
-const subtitle = 'Search for a food in the general food database';
+const sectionHeader = {
+  title: 'Search food by name',
+  subtitle: 'Search for a food in the general food database',
+};
 
 const styles = {
   textField: {
@@ -38,7 +40,7 @@ const FoodByName = ({ classes }) => {
 
   return (
     <>
-      <SectionHeader title={title} subtitle={subtitle} />
+      <SectionHeader content={sectionHeader} />
       <TextField
         id='foodName'
         label='Type food name'

@@ -1,5 +1,5 @@
 import React from 'react';
-import PleaseLoginMessage from '../components/PleaseLoginMessage';
+import NoAccess from '../components/NoAccess';
 import Content from '../components/Content';
 import withStyles from '@material-ui/core/styles/withStyles';
 import PropTypes from 'prop-types';
@@ -16,10 +16,10 @@ const styles = {
 
 const Index = ({ classes, userDetails }) => (
   <div className={classes.content}>
-    {userDetails && userDetails.email ? (
+    {userDetails && userDetails.email && userDetails.email_verified ? (
       <Content />
     ) : (
-      <PleaseLoginMessage />
+      <NoAccess user={userDetails} />
     )}
   </div>
 );

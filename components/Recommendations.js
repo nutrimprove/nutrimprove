@@ -6,8 +6,10 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import SectionHeader from './SectionHeader';
 
-const title = 'View Recommendations';
-const subtitle = 'Fetch the list of recommendations you have provided';
+const sectionHeader = {
+  title: 'View Recommendations',
+  subtitle: 'Fetch the list of recommendations you have provided',
+};
 
 const styles = {
   header: {
@@ -41,7 +43,7 @@ const Recommendations = ({ userDetails }) => {
 
   return (
     <>
-      <SectionHeader title={title} subtitle={subtitle} />
+      <SectionHeader content={sectionHeader} />
       <Button
         style={styles.fetchButton}
         variant='contained'
