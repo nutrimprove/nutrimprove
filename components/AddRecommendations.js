@@ -19,9 +19,12 @@ import withStyles from '@material-ui/core/styles/withStyles';
 const maxFoodFields = 4;
 const maxRecommendationFields = 4;
 const defaultAddRecsButtonText = 'Add recommendation(s)';
-const title = 'Add Recommendations';
-const subtitle =
-  'Choose the foods and the recommendations you would like to provide';
+
+const sectionHeader = {
+  title: 'Add Recommendations',
+  subtitle:
+    'Choose the foods and the recommendations you would like to provide',
+};
 
 const AddRecommendations = ({
   foods,
@@ -136,7 +139,7 @@ const AddRecommendations = ({
 
   return (
     <>
-      <SectionHeader title={title} subtitle={subtitle} />
+      <SectionHeader content={sectionHeader} />
       <div className={classes.main}>
         <div className={classes.fieldBox}>
           <div className={classes.fieldtitle}>Choose food(s):</div>
