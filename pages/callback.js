@@ -16,6 +16,12 @@ const Callback = ({ setUserDetails }) => {
       auth.handleAuthentication().then(res => {
         if (res) {
           setUserDetails(userDetails.user_details);
+          if (typeof window !== 'undefined') {
+            localStorage.setItem(
+              'token',
+              JSON.stringify(userDetails.token)
+            );
+          }
         }
         Router.push('/');
       });

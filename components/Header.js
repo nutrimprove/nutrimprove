@@ -14,12 +14,10 @@ import { connect } from 'react-redux';
 const auth = new Auth();
 
 const Header = ({ classes, userDetails, setUserDetails }) => {
-  useEffect(() => {
-    const userInfo = auth.getUserInfo();
+  useEffect(async () => {
+    const userInfo = auth.extractUserFromToken();
     if (userInfo) {
       setUserDetails(userInfo);
-    } else {
-      setUserDetails({});
     }
   }, []);
 
@@ -32,7 +30,9 @@ const Header = ({ classes, userDetails, setUserDetails }) => {
   }
 
   function username() {
-    if (userDetails && userDetails.email) return userDetails.email;
+    if (userDetails && userDetails.email) {
+      return userDetails.email;
+    }
   }
 
   return (
@@ -50,7 +50,7 @@ const Header = ({ classes, userDetails, setUserDetails }) => {
             <Typography variant='button' color='inherit'>
               <Link href='/about'>About</Link>
             </Typography>
-            {auth.isAuthenticated() ? (
+            {username() ? (
               <Typography variant='button' color='inherit'>
                 <Link href='#' onClick={handleLogout}>
                   Logout
