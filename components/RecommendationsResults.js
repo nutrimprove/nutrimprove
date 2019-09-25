@@ -48,10 +48,10 @@ const ResultsTable = props => {
               {values.map((value, vIndex) => (
                 <TableRow key={vIndex}>
                   <TableCell className={classes.cell}>
-                    {value.food.name}
+                    {`${value.food.brand} ${value.food.name}`}
                   </TableCell>
                   <TableCell className={classes.cell}>
-                    {value.recommendation.name}
+                    {`${value.recommendation.brand} ${value.recommendation.name}`}
                   </TableCell>
                   <TableCell className={classes.cell}>
                     {value.contributor_id}

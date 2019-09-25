@@ -11,6 +11,7 @@ const formatSearchTerm = (searchTerm, foods) => {
       searchTermObj.matches.push({
         food_id: food.food.foodId,
         food_name: food.food.label,
+        food_brand: food.food.brand,
       });
     });
   }

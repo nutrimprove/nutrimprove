@@ -66,7 +66,9 @@ const ResultsTable = props => {
                     {food.nutrients && (
                       <TableRow key={food.foodId}>
                         <TableCell className={classes.foodName}>
-                          {food.label}
+                          {food.brand
+                            ? `${food.brand} ${food.label}`
+                            : food.label}
                         </TableCell>
                         <TableCell className={classes.cell}>
                           {Number(food.nutrients.ENERC_KCAL).toFixed(0)}
