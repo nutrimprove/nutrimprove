@@ -10,8 +10,7 @@ const formatSearchTerm = (searchTerm, foods) => {
     foods.map(food => {
       searchTermObj.matches.push({
         food_id: food.food.foodId,
-        food_name: food.food.label,
-        food_brand: food.food.brand,
+        food_name: `${food.food.brand} ${food.food.label}`,
       });
     });
   }

@@ -83,12 +83,10 @@ const addRecommendations = async recommendationsObj => {
     food: {
       id: recommendation.food.id,
       name: recommendation.food.name,
-      brand: recommendation.food.brand,
     },
     recommendation: {
       id: recommendation.recommendation.id,
       name: recommendation.recommendation.name,
-      brand: recommendation.recommendation.brand,
     },
     contributor_id: recommendation.contributorId,
     timestamp: new Date().getTime(),

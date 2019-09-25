@@ -14,10 +14,6 @@ const searchTermSchema = new mongoose.Schema(
           type: String,
           required: true,
         },
-        food_brand: {
-          type: String,
-          required: false,
-        },
         food_id: {
           type: String,
           required: true,
@@ -43,10 +39,6 @@ const recommendationsSchema = new mongoose.Schema([
         trim: true,
         required: true,
       },
-      brand: {
-        type: String,
-        required: false,
-      },
     },
     recommendation: {
       id: {
@@ -60,10 +52,6 @@ const recommendationsSchema = new mongoose.Schema([
         lowercase: true,
         trim: true,
         required: true,
-      },
-      brand: {
-        type: String,
-        required: false,
       },
     },
     contributor_id: {
