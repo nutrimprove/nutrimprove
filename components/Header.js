@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
   withStyles,
@@ -7,39 +7,66 @@ import {
   Typography,
   Link,
 } from '@material-ui/core';
+import Auth from '../auth/Auth';
+import { setUserDetails } from '../store/global/actions';
+import { connect } from 'react-redux';
 
-const styles = {
-  root: {
-    flexGrow: 1,
-  },
-  logo: {
-    marginRight: 15,
-    textDecoration: 'none',
-    fontSize: 20,
-    fontWeight: 'bold',
-    height: 50,
-    width: 50,
-    padding: 10,
-  },
-};
+const auth = new Auth();
 
-const Header = props => {
-  const { classes } = props;
+const Header = ({ classes, userDetails, setUserDetails }) => {
+  useEffect(async () => {
+    const userInfo = auth.extractUserFromToken();
+    if (userInfo) {
+      setUserDetails(userInfo);
+    }
+  }, []);
+
+  function handleLogin() {
+    auth.login();
+  }
+
+  function handleLogout() {
+    auth.logout();
+  }
+
+  function username() {
+    if (userDetails && userDetails.email) {
+      return userDetails.email;
+    }
+  }
 
   return (
-    <div className={classes.root}>
+    <div className={classes.header}>
       <AppBar position='static' color='default'>
-        <Toolbar>
+        <Toolbar className={classes.toolbar}>
           <Link href='/'>
             <img
               className={classes.logo}
-              src='/images/apple_50.png'
+              src='/static/apple_50.png'
               alt='Go to main page'
             />
           </Link>
-          <Typography variant='button' color='inherit'>
-            <Link href='/about'>About</Link>
-          </Typography>
+          <div id='links'>
+            <Typography variant='button' color='inherit'>
+              <Link href='/about'>About</Link>
+            </Typography>
+            {username() ? (
+              <Typography variant='button' color='inherit'>
+                <Link href='#' onClick={handleLogout}>
+                  Logout
+                </Link>
+              </Typography>
+            ) : (
+              <Typography variant='button' color='inherit'>
+                <Link href='#' onClick={handleLogin}>
+                  Login
+                </Link>
+              </Typography>
+            )}
+          </div>
+          <div id='user' className={classes.userinfo}>
+            {username()}
+          </div>
         </Toolbar>
       </AppBar>
     </div>
@@ -48,6 +75,47 @@ const Header = props => {
 
 Header.propTypes = {
   classes: PropTypes.object.isRequired,
+  userDetails: PropTypes.object.isRequired,
+  setUserDetails: PropTypes.func.isRequired,
 };
 
-export default withStyles(styles)(Header);
+const styles = {
+  header: {
+    flexGrow: 1,
+  },
+  logo: {
+    width: 50,
+    marginRight: 10,
+  },
+  toolbar: {
+    height: 60,
+    '& a': {
+      marginLeft: '20px',
+    },
+  },
+  userinfo: {
+    position: 'absolute',
+    right: 30,
+    '& img': {
+      maxWidth: 45,
+      maxHeight: 45,
+    },
+  },
+};
+
+const mapStateToProps = (states, ownProps) => {
+  return {
+    userDetails: states.globalState.userDetails,
+  };
+};
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    setUserDetails: details => dispatch(setUserDetails(details)),
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStyles(styles)(Header));

@@ -2,9 +2,14 @@ import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
 import RecommendationsResults from './RecommendationsResults';
 import { fetchRecommendations } from '../connect/api';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import SectionHeader from './SectionHeader';
 
-const title = 'View Recommendations';
-const subtitle = 'Fetch the list of recommendations you have provided';
+const sectionHeader = {
+  title: 'View Recommendations',
+  subtitle: 'Fetch the list of recommendations you have provided',
+};
 
 const styles = {
   header: {
@@ -22,36 +27,47 @@ const styles = {
   },
 };
 
-const Recommendations = () => {
+const Recommendations = ({ userDetails }) => {
   const [recommendations, setRecommendations] = useState([]);
 
   const updateResults = () => {
-    fetchRecommendations('099').then(fetchedRecommendations =>
-      setRecommendations(fetchedRecommendations)
-    );
+    if (userDetails) {
+      fetchRecommendations(userDetails.email).then(
+        fetchedRecommendations =>
+          setRecommendations(fetchedRecommendations)
+      );
+    } else {
+      console.error('User details not found!', userDetails);
+    }
   };
 
   return (
-    <form>
-      <div id='header' style={styles.header}>
-        <div id='title' style={styles.title}>
-          {title}
-        </div>
-        <div id='subtitle' style={styles.subtitle}>
-          {subtitle}
-        </div>
-      </div>
+    <>
+      <SectionHeader content={sectionHeader} />
       <Button
         style={styles.fetchButton}
         variant='contained'
         color='primary'
         onClick={updateResults}
       >
-        Fetch all recommendations
+        Fetch inserted recommendations
       </Button>
       <RecommendationsResults values={recommendations} />
-    </form>
+    </>
   );
 };
 
-export default Recommendations;
+Recommendations.propTypes = {
+  userDetails: PropTypes.object,
+};
+
+const mapStateToProps = (states, ownProps) => {
+  return {
+    userDetails: states.globalState.userDetails,
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  null
+)(Recommendations);

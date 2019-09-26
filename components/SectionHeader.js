@@ -1,15 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import withStyles from '@material-ui/core/styles/withStyles';
+import uniqid from 'uniqid';
 
 const styles = {
   header: {
     marginBottom: '30px',
   },
-  subtitle: {
-    fontSize: '0.8em',
-  },
   title: {
-    fontSize: '1.4em',
+    fontSize: '1.6em',
+    marginBottom: 10,
+  },
+  subtitle: {
+    fontSize: '1.2em',
+  },
+  messages: {
+    fontSize: '1em',
+    marginTop: 10,
   },
   fetchButton: {
     verticalAlign: 'bottom',
@@ -17,22 +24,25 @@ const styles = {
   },
 };
 
-const SectionHeader = ({ title, subtitle }) => {
+const SectionHeader = ({ content, classes }) => {
   return (
-    <div id='header' style={styles.header}>
-      <div id='title' style={styles.title}>
-        {title}
-      </div>
-      <div id='subtitle' style={styles.subtitle}>
-        {subtitle}
+    <div className={classes.header}>
+      <div className={classes.title}>{content && content.title}</div>
+      <div className={classes.subtitle}>{content && content.subtitle}</div>
+      <div className={classes.messages}>
+        {content &&
+          content.messages &&
+          content.messages.map(message => (
+            <div key={uniqid()}>{message}</div>
+          ))}
       </div>
     </div>
   );
 };
 
 SectionHeader.propTypes = {
-  title: PropTypes.string.isRequired,
-  subtitle: PropTypes.string,
+  content: PropTypes.string.isRequired,
+  classes: PropTypes.object.isRequired,
 };
 
-export default SectionHeader;
+export default withStyles(styles)(SectionHeader);

@@ -4,21 +4,27 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { fetchFoods } from '../connect/api';
 import SectionHeader from './SectionHeader';
+import withStyles from '@material-ui/core/styles/withStyles';
+import PropTypes from 'prop-types';
 
-const title = 'Search food by name';
-const subtitle = 'Search for a food in the general food database';
-
-const textField = {
-  width: 200,
-  marginBottom: 0,
+const sectionHeader = {
+  title: 'Search food by name',
+  subtitle: 'Search for a food in the general food database',
 };
 
-const buttonStyles = {
-  verticalAlign: 'bottom',
-  marginLeft: 10,
+const styles = {
+  textField: {
+    width: 200,
+    marginBottom: 0,
+    marginTop: 0,
+  },
+  buttonStyles: {
+    verticalAlign: 'bottom',
+    marginLeft: 10,
+  },
 };
 
-const FoodByName = () => {
+const FoodByName = ({ classes }) => {
   const [foodName, setFoodName] = useState('');
   const [foods, setFoods] = useState([]);
   const [searched, setSearched] = useState(false);
@@ -33,19 +39,19 @@ const FoodByName = () => {
   };
 
   return (
-    <form>
-      <SectionHeader title={title} subtitle={subtitle} />
+    <>
+      <SectionHeader content={sectionHeader} />
       <TextField
         id='foodName'
         label='Type food name'
         type='search'
         value={foodName}
-        style={textField}
+        className={classes.textField}
         margin='normal'
         onChange={e => setFoodName(e.target.value)}
       />
       <Button
-        style={buttonStyles}
+        className={classes.buttonStyles}
         variant='contained'
         color='primary'
         onClick={updateResults}
@@ -53,8 +59,12 @@ const FoodByName = () => {
         Search
       </Button>
       {searched && <ResultsTable values={foods} />}
-    </form>
+    </>
   );
 };
 
-export default FoodByName;
+FoodByName.propTypes = {
+  classes: PropTypes.object.isRequired,
+};
+
+export default withStyles(styles)(FoodByName);

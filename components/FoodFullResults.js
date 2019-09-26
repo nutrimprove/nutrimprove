@@ -62,29 +62,33 @@ const ResultsTable = props => {
               </TableHead>
               <TableBody>
                 {values.map(({ food }) => (
-                  <TableRow key={food.foodId}>
-                    <TableCell className={classes.foodName}>
-                      {food.label}
-                    </TableCell>
-                    <TableCell className={classes.cell}>
-                      {food.nutrients && food.nutrients.ENERC_KCAL}
-                    </TableCell>
-                    <TableCell className={classes.cell} />
-                    <TableCell className={classes.cell}>
-                      {food.nutrients && food.nutrients.CHOCDF}
-                    </TableCell>
-                    <TableCell className={classes.cell}>
-                      {food.nutrients && food.nutrients.FAT}
-                    </TableCell>
-                    <TableCell className={classes.cell}>
-                      {food.nutrients && food.nutrients.PROCNT}
-                    </TableCell>
-                    <TableCell className={classes.cell} />
-                    <TableCell className={classes.cell} />
-                    <TableCell className={classes.cell}>
-                      {food.nutrients && food.nutrients.FIBTG}
-                    </TableCell>
-                  </TableRow>
+                  <>
+                    {food.nutrients && (
+                      <TableRow key={food.foodId}>
+                        <TableCell className={classes.foodName}>
+                          {food.label}
+                        </TableCell>
+                        <TableCell className={classes.cell}>
+                          {Number(food.nutrients.ENERC_KCAL).toFixed(0)}
+                        </TableCell>
+                        <TableCell className={classes.cell} />
+                        <TableCell className={classes.cell}>
+                          {Number(food.nutrients.CHOCDF).toFixed(0)}
+                        </TableCell>
+                        <TableCell className={classes.cell}>
+                          {Number(food.nutrients.FAT).toFixed(0)}
+                        </TableCell>
+                        <TableCell className={classes.cell}>
+                          {Number(food.nutrients.PROCNT).toFixed(0)}
+                        </TableCell>
+                        <TableCell className={classes.cell} />
+                        <TableCell className={classes.cell} />
+                        <TableCell className={classes.cell}>
+                          {Number(food.nutrients.FIBTG).toFixed(0)}
+                        </TableCell>
+                      </TableRow>
+                    )}
+                  </>
                 ))}
               </TableBody>
             </Table>

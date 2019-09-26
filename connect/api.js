@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const foodApiEndpoint = 'https://api.edamam.com/api/food-database/parser';
-const category = `&category=generic-foods`;
+const category = ``;
 const apiAuthParams = `&app_key=8a2617ec655417bd43fd2b3df4b85a30&app_id=652bd7d5`;
 const searchTermsEndpoint = '/api/v1/search';
 const recommendationsEndpoint = '/api/v1/recommendations';

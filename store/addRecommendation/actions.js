@@ -14,7 +14,6 @@ export const ActionsTypes = {
   REMOVE_FOOD_OR_RECOMMENDED_FOOD: 'REMOVE_FOOD_OR_RECOMMENDED_FOOD',
   REMOVE_ALL_FOODS_AND_RECOMMENDATIONS:
     'REMOVE_ALL_FOODS_AND_RECOMMENDATIONS',
-  IS_SAVING: 'IS_SAVING',
 };
 
 export const addFoodAction = food => {
@@ -43,10 +42,6 @@ export const removeRecommendedFoodAction = food => {
 
 export const removeAllFoodsAndRecommendationsAction = () => {
   return { type: ActionsTypes.REMOVE_ALL_FOODS_AND_RECOMMENDATIONS };
-};
-
-export const setSavingAction = isSaving => {
-  return { type: ActionsTypes.IS_SAVING, isSaving };
 };
 
 export const editFood = (food, foodName, isRecommendation) => {

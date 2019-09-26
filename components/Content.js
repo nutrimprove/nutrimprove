@@ -11,9 +11,7 @@ import AddRecommendations from './AddRecommendations';
 
 function TabContainer(props) {
   return (
-    <Typography component='div' style={{ padding: 8 * 3 }}>
-      {props.children}
-    </Typography>
+    <Typography style={{ padding: 8 * 3 }}>{props.children}</Typography>
   );
 }
 
@@ -21,16 +19,8 @@ TabContainer.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
-const styles = theme => ({
-  root: {
-    flexGrow: 1,
-    backgroundColor: theme.palette.background.paper,
-  },
-});
-
-const Content = props => {
-  const { classes } = props;
-  const [tab, setTab] = useState(0);
+const Content = ({ classes }) => {
+  const [tab, setTab] = useState(2);
 
   const tabChange = (event, tab) => {
     setTab(tab);
@@ -41,7 +31,7 @@ const Content = props => {
       <AppBar position='static'>
         <Tabs value={tab} onChange={tabChange}>
           <Tab label='Search Food' />
-          <Tab label='Recommendations' />
+          <Tab label='View Recommendations' />
           <Tab label='Add Recommendations' />
         </Tabs>
       </AppBar>
@@ -67,5 +57,12 @@ const Content = props => {
 Content.propTypes = {
   classes: PropTypes.object.isRequired,
 };
+
+const styles = theme => ({
+  root: {
+    flexGrow: 1,
+    backgroundColor: theme.palette.background.paper,
+  },
+});
 
 export default withStyles(styles)(Content);
