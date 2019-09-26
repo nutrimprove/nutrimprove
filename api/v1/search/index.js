@@ -8,9 +8,12 @@ const formatSearchTerm = (searchTerm, foods) => {
   };
   if (foods) {
     foods.map(food => {
+      const foodName = food.food.brand
+        ? `${food.food.brand} ${food.food.label}`
+        : food.food.label;
       searchTermObj.matches.push({
         food_id: food.food.foodId,
-        food_name: food.food.label,
+        food_name: foodName,
       });
     });
   }

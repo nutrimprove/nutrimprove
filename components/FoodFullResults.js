@@ -37,7 +37,9 @@ const ResultsTable = props => {
   if (values) {
     return (
       <div id='food-results'>
-        <div className={classes.count}>{values.length} foods found!</div>
+        <div className={classes.count}>
+          Top {values.length} matches returned!
+        </div>
         {values.length > 0 && (
           <Paper className={classes.root}>
             <Table className={classes.table}>
@@ -66,7 +68,9 @@ const ResultsTable = props => {
                     {food.nutrients && (
                       <TableRow key={food.foodId}>
                         <TableCell className={classes.foodName}>
-                          {food.label}
+                          {food.brand
+                            ? `${food.brand} ${food.label}`
+                            : food.label}
                         </TableCell>
                         <TableCell className={classes.cell}>
                           {Number(food.nutrients.ENERC_KCAL).toFixed(0)}
