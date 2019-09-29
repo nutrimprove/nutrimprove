@@ -18,16 +18,6 @@ const Header = ({ classes, userDetails, setUserDetails }) => {
   useEffect(() => {
     const userInfo = auth.extractUserFromToken();
     setUserDetailsWithRole(setUserDetails, userInfo);
-    // if (userInfo) {
-    //   const user = await getUser(userInfo.email);
-    //   const role = user && user[0] ? user[0].role : '';
-    //   const userDetails = { ...userInfo, role };
-    //   setUserDetails(userDetails);
-    //   console.log('===== ( userDetails ) =======>', userDetails);
-    // } else {
-    //   setUserDetails(userInfo);
-    //   console.log('===== ( userInfo ) =======>', userInfo);
-    // }
   }, []);
 
   function handleLogin() {
