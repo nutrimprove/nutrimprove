@@ -24,7 +24,7 @@ const getCollectionResults = async (req, res) => {
       result = await getDocuments('users', {}, projection);
     }
   } else if (req.method === 'POST') {
-    req.body.length
+    req.body
       ? (result = await addUser(req.body))
       : console.warn('No users payload!', req.body);
   }
