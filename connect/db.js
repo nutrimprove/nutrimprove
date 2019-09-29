@@ -1,7 +1,11 @@
 import url from 'url';
 import { MongoClient } from 'mongodb';
 import mongoose from 'mongoose';
-import { recommendationsSchema, searchTermSchema } from './mongoDBSchemas';
+import {
+  recommendationsSchema,
+  searchTermSchema,
+  userSchema,
+} from './mongoDBSchemas';
 
 const URI = process.env.MONGODB_URI;
 let db = null;
@@ -81,7 +85,7 @@ const addSearchTerm = async searchTermObj => {
 const addUser = async userObj => {
   const AddUserConnection = await connect(
     'users',
-    'usersSchema',
+    userSchema,
     'users'
   );
 
