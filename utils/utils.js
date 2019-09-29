@@ -1,17 +1,17 @@
-import { getUser } from '../connect/api';
+import { addUser, getUser } from '../connect/api';
 
 export const setUserDetailsWithRole = async (setUserDetails, userInfo) => {
   if (userInfo) {
     const user = await getUser(userInfo.email);
-    if (user) {
-      const role = user && user[0] ? user[0].role : '';
-      if (role) {
-        setUserDetails({ ...userInfo, role });
-      } else {
-        setUserDetails(userInfo);
-      }
+    if (user && user[0]) {
+      const { role, approved } = user[0];
+      setUserDetails({ ...userInfo, role, approved });
     } else {
-      console.warn('User not found', userInfo.email);
+      await addUser({
+        user: userInfo.email,
+        role: 'contributor',
+        approved: false,
+      });
     }
   } else {
     console.warn('No userInfo!!');
