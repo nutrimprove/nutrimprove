@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
-import RecommendationsResults from './RecommendationsResults';
+import ResultsTable from './ResultsTable';
 import { fetchRecommendations } from '../connect/api';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -9,22 +9,6 @@ import SectionHeader from './SectionHeader';
 const sectionHeader = {
   title: 'View Recommendations',
   subtitle: 'Fetch the list of recommendations you have provided',
-};
-
-const styles = {
-  header: {
-    marginBottom: '30px',
-  },
-  subtitle: {
-    fontSize: '0.8em',
-  },
-  title: {
-    fontSize: '1.4em',
-  },
-  fetchButton: {
-    verticalAlign: 'bottom',
-    marginLeft: 10,
-  },
 };
 
 const Recommendations = ({ userDetails }) => {
@@ -41,6 +25,13 @@ const Recommendations = ({ userDetails }) => {
     }
   };
 
+  const formattedRecommendations = () =>
+    recommendations.map(recommendation => ({
+      food: recommendation.food.name,
+      recommendation: recommendation.recommendation.name,
+      contributor: recommendation.contributor_id,
+    }));
+
   return (
     <>
       <SectionHeader content={sectionHeader} />
@@ -52,13 +43,29 @@ const Recommendations = ({ userDetails }) => {
       >
         Fetch inserted recommendations
       </Button>
-      <RecommendationsResults values={recommendations} />
+      <ResultsTable values={formattedRecommendations()} />
     </>
   );
 };
 
 Recommendations.propTypes = {
   userDetails: PropTypes.object,
+};
+
+const styles = {
+  header: {
+    marginBottom: '30px',
+  },
+  subtitle: {
+    fontSize: '0.8em',
+  },
+  title: {
+    fontSize: '1.4em',
+  },
+  fetchButton: {
+    verticalAlign: 'bottom',
+    marginLeft: 10,
+  },
 };
 
 const mapStateToProps = (states, ownProps) => {

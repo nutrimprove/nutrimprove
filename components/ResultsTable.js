@@ -27,35 +27,30 @@ const styles = theme => ({
   },
 });
 
-const ResultsTable = props => {
-  const { classes, values } = props;
-
+const ResultsTable = ({ classes, values, columnNames }) => {
   if (values && values.length > 0) {
+    const columns = columnNames || Object.keys(values[0]);
     return (
-      <div id='recommendations-results'>
+      <div className='results'>
         <Paper className={classes.root}>
           <Table className={classes.table}>
             <TableHead>
               <TableRow>
-                <TableCell className={classes.cell}>Food</TableCell>
-                <TableCell className={classes.cell}>
-                  Recommendation
-                </TableCell>
-                <TableCell className={classes.cell}>Contributor</TableCell>
+                {columns.map((name, index) => (
+                  <TableCell key={index} className={classes.cell}>
+                    {name}
+                  </TableCell>
+                ))}
               </TableRow>
             </TableHead>
             <TableBody>
-              {values.map((value, vIndex) => (
-                <TableRow key={vIndex}>
-                  <TableCell className={classes.cell}>
-                    {value.food.name}
-                  </TableCell>
-                  <TableCell className={classes.cell}>
-                    {value.recommendation.name}
-                  </TableCell>
-                  <TableCell className={classes.cell}>
-                    {value.contributor_id}
-                  </TableCell>
+              {values.map((row, index) => (
+                <TableRow key={index}>
+                  {Object.values(row).map((value, vIndex) => (
+                    <TableCell key={vIndex} className={classes.cell}>
+                      {value}
+                    </TableCell>
+                  ))}
                 </TableRow>
               ))}
             </TableBody>
@@ -64,7 +59,7 @@ const ResultsTable = props => {
       </div>
     );
   } else {
-    return <div id='results' />;
+    return <div className='results' />;
   }
 };
 

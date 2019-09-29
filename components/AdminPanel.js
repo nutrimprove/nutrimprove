@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
 import SectionHeader from './SectionHeader';
 import withStyles from '@material-ui/core/styles/withStyles';
 import PropTypes from 'prop-types';
 import { getUsers } from '../connect/api';
 import { connect } from 'react-redux';
+import ResultsTable from './ResultsTable';
 
 const sectionHeader = {
   title: 'Administration page',
@@ -24,9 +25,11 @@ const styles = {
 };
 
 const AdminPanel = ({ classes }) => {
+  const [users, setUsers] = useState([]);
+
   const updateResults = async () => {
     const users = await getUsers();
-    return users;
+    setUsers(users);
   };
 
   return (
@@ -40,6 +43,7 @@ const AdminPanel = ({ classes }) => {
       >
         Search
       </Button>
+      <ResultsTable values={users} />
     </>
   );
 };
