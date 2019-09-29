@@ -15,7 +15,7 @@ import { postRecommendations } from '../connect/api';
 import * as _ from 'lodash';
 import SectionHeader from './SectionHeader';
 import withStyles from '@material-ui/core/styles/withStyles';
-import { trackPromise, usePromiseTracker } from 'react-promise-tracker';
+import { usePromiseTracker } from 'react-promise-tracker';
 import LoadingSpinner from './LoadingSpinner';
 
 const maxFoodFields = 4;
@@ -31,7 +31,6 @@ const sectionHeader = {
 const AddRecommendations = ({
   foods,
   recommendations,
-  loading,
   addEmptyRecommendedFood,
   addEmptyFood,
   removeAllFoods,
@@ -124,10 +123,7 @@ const AddRecommendations = ({
     }
 
     setLoading(true);
-    const result = trackPromise(
-      await postRecommendations(recommendationsPayload),
-      'addRecommendations'
-    );
+    const result = await postRecommendations(recommendationsPayload);
     setLoading(false);
 
     // Reset fields if all combinations were stored successfully
