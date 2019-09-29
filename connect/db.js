@@ -78,6 +78,37 @@ const addSearchTerm = async searchTermObj => {
   );
 };
 
+const addUser = async userObj => {
+  const AddUserConnection = await connect(
+    'users',
+    'usersSchema',
+    'users'
+  );
+
+  return new Promise((resolve, reject) =>
+    AddUserConnection.findOne({ email: userObj.email }, (err, result) => {
+      if (err) {
+        console.error(`Error when searching for '${userObj.email}'`, err);
+        mongoose.connection.close();
+        reject(err);
+      }
+      if (!result) {
+        const newUser = new AddUserConnection(userObj);
+        newUser.save(err => {
+          mongoose.connection.close();
+          if (err) {
+            console.error(`Error saving '${userObj.email}'`, err);
+            reject(err);
+          } else {
+            console.log('User stored!', userObj.email);
+            resolve(newUser);
+          }
+        });
+      }
+    })
+  );
+};
+
 const addRecommendations = async recommendationsObj => {
   const recommendations = recommendationsObj.map(recommendation => ({
     food: {
@@ -120,4 +151,5 @@ export {
   getDocuments,
   addSearchTerm,
   addRecommendations,
+  addUser,
 };

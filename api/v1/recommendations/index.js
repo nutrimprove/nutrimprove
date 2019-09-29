@@ -1,15 +1,15 @@
 import { addRecommendations, getDocuments } from '../../../connect/db';
 
 const getCollectionResults = async (req, res) => {
-  const { cid } = req.query;
+  const { user } = req.query;
 
   let result;
 
-  if (cid) {
+  if (user) {
     result = await getDocuments(
       'recommendations',
       {
-        contributor_id: cid,
+        contributor_id: user,
       },
       {
         food: 1,

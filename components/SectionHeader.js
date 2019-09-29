@@ -41,7 +41,7 @@ const SectionHeader = ({ content, classes }) => {
 };
 
 SectionHeader.propTypes = {
-  content: PropTypes.string.isRequired,
+  content: PropTypes.object.isRequired,
   classes: PropTypes.object.isRequired,
 };
 

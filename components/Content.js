@@ -8,6 +8,8 @@ import Typography from '@material-ui/core/Typography/index';
 import FoodByName from './FoodByName';
 import Recommendations from './Recommendations';
 import AddRecommendations from './AddRecommendations';
+import AdminPanel from './AdminPanel';
+import { connect } from 'react-redux';
 
 function TabContainer(props) {
   return (
@@ -19,7 +21,7 @@ TabContainer.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
-const Content = ({ classes }) => {
+const Content = ({ classes, userDetails }) => {
   const [tab, setTab] = useState(2);
 
   const tabChange = (event, tab) => {
@@ -33,6 +35,9 @@ const Content = ({ classes }) => {
           <Tab label='Search Food' />
           <Tab label='View Recommendations' />
           <Tab label='Add Recommendations' />
+          {['owner', 'admin'].includes(userDetails.role) && (
+            <Tab label='Admin Panel' />
+          )}
         </Tabs>
       </AppBar>
       {tab === 0 && (
@@ -50,12 +55,18 @@ const Content = ({ classes }) => {
           <AddRecommendations />
         </TabContainer>
       )}
+      {tab === 3 && (
+        <TabContainer id='adminPanel'>
+          <AdminPanel />
+        </TabContainer>
+      )}
     </div>
   );
 };
 
 Content.propTypes = {
   classes: PropTypes.object.isRequired,
+  userDetails: PropTypes.object.isRequired,
 };
 
 const styles = theme => ({
@@ -65,4 +76,13 @@ const styles = theme => ({
   },
 });
 
-export default withStyles(styles)(Content);
+const mapStateToProps = (states, ownProps) => {
+  return {
+    userDetails: states.globalState.userDetails,
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  null
+)(withStyles(styles)(Content));
