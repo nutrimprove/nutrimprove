@@ -15,6 +15,10 @@ const styles = theme => ({
     overflowX: 'auto',
     minWidth: 700,
   },
+  head: {
+    backgroundColor: '#E7E7E7',
+    fontSize: '1em',
+  },
   table: {
     minWidth: 700,
   },
@@ -34,11 +38,11 @@ const ResultsTable = ({ classes, values, columnNames }) => {
       <div className='results'>
         <Paper className={classes.root}>
           <Table className={classes.table}>
-            <TableHead>
+            <TableHead className={classes.head}>
               <TableRow>
                 {columns.map((name, index) => (
                   <TableCell key={index} className={classes.cell}>
-                    {name}
+                    {name.toString()}
                   </TableCell>
                 ))}
               </TableRow>
@@ -48,7 +52,7 @@ const ResultsTable = ({ classes, values, columnNames }) => {
                 <TableRow key={index}>
                   {Object.values(row).map((value, vIndex) => (
                     <TableCell key={vIndex} className={classes.cell}>
-                      {value}
+                      {value.toString()}
                     </TableCell>
                   ))}
                 </TableRow>

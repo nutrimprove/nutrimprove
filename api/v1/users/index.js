@@ -3,6 +3,7 @@ import { addUser, getDocuments } from '../../../connect/db';
 const projection = {
   email: 1,
   role: 1,
+  approved: 1,
   _id: 0,
 };
 
