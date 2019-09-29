@@ -40,6 +40,9 @@ const AddRecommendations = ({
 }) => {
   const [validation, setValidation] = useState(false);
   const [status, setStatus] = useState('');
+  const { promiseInProgress: savingRecommendations } = usePromiseTracker({
+    area: 'postRecommendations',
+  });
   const { promiseInProgress: loadingRecs } = usePromiseTracker({
     area: 'getSearchTerms-rec',
   });
@@ -176,7 +179,11 @@ const AddRecommendations = ({
       </div>
       <div className={classes.submit}>
         <PrimaryButton
-          action={loadingSearchTerms ? null : addRecommendations}
+          action={
+            loadingSearchTerms || savingRecommendations
+              ? null
+              : addRecommendations
+          }
           text={defaultAddRecsButtonText}
         >
           <LoadingSpinner context='postRecommendations' colour='white' />
