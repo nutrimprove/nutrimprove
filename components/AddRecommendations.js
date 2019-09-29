@@ -10,7 +10,6 @@ import {
   addRecommendedFoodAction,
   removeAllFoodsAndRecommendationsAction,
 } from '../store/addRecommendation/actions';
-import { setLoadingAction } from '../store/global/actions';
 import { postRecommendations } from '../connect/api';
 import * as _ from 'lodash';
 import SectionHeader from './SectionHeader';
@@ -34,7 +33,6 @@ const AddRecommendations = ({
   addEmptyRecommendedFood,
   addEmptyFood,
   removeAllFoods,
-  setLoading,
   userDetails,
   classes,
 }) => {
@@ -125,9 +123,7 @@ const AddRecommendations = ({
       }
     }
 
-    setLoading(true);
     const result = await postRecommendations(recommendationsPayload);
-    setLoading(false);
 
     // Reset fields if all combinations were stored successfully
     if (result.insertedCount === recommendationsPayload.length) {
@@ -197,11 +193,9 @@ const AddRecommendations = ({
 AddRecommendations.propTypes = {
   recommendations: PropTypes.Array,
   foods: PropTypes.Array,
-  loading: PropTypes.bool,
   addEmptyFood: PropTypes.function,
   addEmptyRecommendedFood: PropTypes.function,
   removeAllFoods: PropTypes.function,
-  setLoading: PropTypes.function,
   userDetails: PropTypes.object,
   classes: PropTypes.object.isRequired,
 };
@@ -244,7 +238,6 @@ const mapStateToProps = (states, ownProps) => {
   return {
     recommendations: states.addRecommendationState.recommendedFoods,
     foods: states.addRecommendationState.foods,
-    loading: states.globalState.waiting,
     userDetails: states.globalState.userDetails,
   };
 };
@@ -265,7 +258,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     addEmptyFood: () => addEmptyField(addFoodAction),
     removeAllFoods: () =>
       dispatch(removeAllFoodsAndRecommendationsAction()),
-    setLoading: value => dispatch(setLoadingAction(value)),
   };
 };
 
