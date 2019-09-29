@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { trackPromise } from 'react-promise-tracker';
 
 const foodApiEndpoint = 'https://api.edamam.com/api/food-database/parser';
 const category = ``;
@@ -21,31 +22,43 @@ const getRequest = endpoint =>
     );
 
 const fetchFoods = name =>
-  axios
-    .get(`${foodApiEndpoint}?ingr=${name}${apiAuthParams}${category}`)
-    .then(res => res.data.hints);
+  trackPromise(
+    axios
+      .get(`${foodApiEndpoint}?ingr=${name}${apiAuthParams}${category}`)
+      .then(res => res.data.hints),
+    'fetchFoods'
+  );
 
 const fetchRecommendations = contributor =>
-  getRequest(`${recommendationsEndpoint}/?cid=${contributor}`);
+  trackPromise(
+    getRequest(`${recommendationsEndpoint}/?cid=${contributor}`),
+    'fetchRecommendations'
+  );
 
 const getSearchedTerms = searchTerm =>
   getRequest(`${searchTermsEndpoint}/?term=${searchTerm}`);
 
 const postSearchTerm = searchTerm => {
-  axios
-    .post(searchTermsEndpoint, searchTerm)
-    .then(response => {
-      console.log(response);
-    })
-    .catch(error => {
-      console.error(
-        `ERROR connecting to '${searchTermsEndpoint}': ${error}`
-      );
-    });
+  trackPromise(
+    axios
+      .post(searchTermsEndpoint, searchTerm)
+      .then(response => {
+        console.log(response);
+      })
+      .catch(error => {
+        console.error(
+          `ERROR connecting to '${searchTermsEndpoint}': ${error}`
+        );
+      }),
+    'saveSearchTerm'
+  );
 };
 
 const postRecommendations = payload =>
-  axios.post(recommendationsEndpoint, payload).then(res => res.data);
+  trackPromise(
+    axios.post(recommendationsEndpoint, payload).then(res => res.data),
+    'postRecommendations'
+  );
 
 export {
   postRecommendations,

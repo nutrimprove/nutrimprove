@@ -8,6 +8,7 @@ import TextField from '@material-ui/core/TextField';
 import Paper from '@material-ui/core/Paper';
 import MenuItem from '@material-ui/core/MenuItem';
 import { editFood } from '../store/addRecommendation/actions';
+import LoadingSpinner from './LoadingSpinner';
 
 const renderInput = inputProps => {
   const { InputProps, classes, ref, valid, ...other } = inputProps;
@@ -68,6 +69,7 @@ renderSuggestion.propTypes = {
 
 const SearchFoodField = ({ classes, food, setSearchTerm, isValid }) => {
   const { suggestions } = food;
+  const type = food.isRecommendation ? 'rec' : 'food';
 
   function onInputChange(item) {
     setSearchTerm(item);
@@ -116,6 +118,9 @@ const SearchFoodField = ({ classes, food, setSearchTerm, isValid }) => {
                     onInputChange(event.target.value);
                     onChange(event);
                   },
+                  endAdornment: (
+                    <LoadingSpinner context={`getSearchTerms-${type}`} />
+                  ),
                 },
                 inputProps,
               })}

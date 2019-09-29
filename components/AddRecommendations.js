@@ -1,7 +1,7 @@
 import SearchFoodField from './SearchFoodField';
 import React, { useState } from 'react';
 import RemoveIcon from './RemoveIcon';
-import AddButton from './AddButton';
+import PrimaryButton from './PrimaryButton';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import uniqid from 'uniqid';
@@ -10,11 +10,13 @@ import {
   addRecommendedFoodAction,
   removeAllFoodsAndRecommendationsAction,
 } from '../store/addRecommendation/actions';
-import { setSavingAction } from '../store/global/actions';
+import { setLoadingAction } from '../store/global/actions';
 import { postRecommendations } from '../connect/api';
 import * as _ from 'lodash';
 import SectionHeader from './SectionHeader';
 import withStyles from '@material-ui/core/styles/withStyles';
+import { trackPromise, usePromiseTracker } from 'react-promise-tracker';
+import LoadingSpinner from './LoadingSpinner';
 
 const maxFoodFields = 4;
 const maxRecommendationFields = 4;
@@ -29,16 +31,23 @@ const sectionHeader = {
 const AddRecommendations = ({
   foods,
   recommendations,
-  isSaving,
+  loading,
   addEmptyRecommendedFood,
   addEmptyFood,
   removeAllFoods,
-  setSaving,
+  setLoading,
   userDetails,
   classes,
 }) => {
   const [validation, setValidation] = useState(false);
   const [status, setStatus] = useState('');
+  const { promiseInProgress: loadingRecs } = usePromiseTracker({
+    area: 'getSearchTerms-rec',
+  });
+  const { promiseInProgress: loadingFoods } = usePromiseTracker({
+    area: 'getSearchTerms-food',
+  });
+  const loadingSearchTerms = loadingRecs || loadingFoods;
 
   if (foods.length === 0) {
     addEmptyFood();
@@ -114,9 +123,12 @@ const AddRecommendations = ({
       }
     }
 
-    setSaving(true);
-    const result = await postRecommendations(recommendationsPayload);
-    setSaving(false);
+    setLoading(true);
+    const result = trackPromise(
+      await postRecommendations(recommendationsPayload),
+      'addRecommendations'
+    );
+    setLoading(false);
 
     // Reset fields if all combinations were stored successfully
     if (result.insertedCount === recommendationsPayload.length) {
@@ -146,9 +158,9 @@ const AddRecommendations = ({
           <div id='foods_input'>
             {renderField(foods)}
             {foods.length < maxFoodFields ? (
-              <AddButton action={addEmptyFood} text='Add' />
+              <PrimaryButton action={addEmptyFood} text='Add' />
             ) : (
-              <AddButton text='Add' />
+              <PrimaryButton text='Add' />
             )}
           </div>
         </div>
@@ -159,22 +171,20 @@ const AddRecommendations = ({
           <div id='recommendations_input'>
             {renderField(recommendations)}
             {recommendations.length < maxRecommendationFields ? (
-              <AddButton action={addEmptyRecommendedFood} text='Add' />
+              <PrimaryButton action={addEmptyRecommendedFood} text='Add' />
             ) : (
-              <AddButton text='Add' />
+              <PrimaryButton text='Add' />
             )}
           </div>
         </div>
       </div>
       <div className={classes.submit}>
-        {isSaving ? (
-          <AddButton text='Saving...' />
-        ) : (
-          <AddButton
-            action={addRecommendations}
-            text={defaultAddRecsButtonText}
-          />
-        )}
+        <PrimaryButton
+          action={loadingSearchTerms ? null : addRecommendations}
+          text={defaultAddRecsButtonText}
+        >
+          <LoadingSpinner context='postRecommendations' colour='white' />
+        </PrimaryButton>
       </div>
       <div className={classes.status}>{status}</div>
     </>
@@ -184,11 +194,11 @@ const AddRecommendations = ({
 AddRecommendations.propTypes = {
   recommendations: PropTypes.Array,
   foods: PropTypes.Array,
-  isSaving: PropTypes.bool,
+  loading: PropTypes.bool,
   addEmptyFood: PropTypes.function,
   addEmptyRecommendedFood: PropTypes.function,
   removeAllFoods: PropTypes.function,
-  setSaving: PropTypes.function,
+  setLoading: PropTypes.function,
   userDetails: PropTypes.object,
   classes: PropTypes.object.isRequired,
 };
@@ -231,7 +241,7 @@ const mapStateToProps = (states, ownProps) => {
   return {
     recommendations: states.addRecommendationState.recommendedFoods,
     foods: states.addRecommendationState.foods,
-    isSaving: states.globalState.isSaving,
+    loading: states.globalState.waiting,
     userDetails: states.globalState.userDetails,
   };
 };
@@ -252,7 +262,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     addEmptyFood: () => addEmptyField(addFoodAction),
     removeAllFoods: () =>
       dispatch(removeAllFoodsAndRecommendationsAction()),
-    setSaving: value => dispatch(setSavingAction(value)),
+    setLoading: value => dispatch(setLoadingAction(value)),
   };
 };
 
