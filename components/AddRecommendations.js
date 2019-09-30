@@ -48,6 +48,8 @@ const AddRecommendations = ({
     area: 'getSearchTerms-food',
   });
   const loadingSearchTerms = loadingRecs || loadingFoods;
+  const addRecommendationsDisabled =
+    loadingSearchTerms || savingRecommendations;
 
   if (foods.length === 0) {
     addEmptyFood();
@@ -177,11 +179,8 @@ const AddRecommendations = ({
       </div>
       <div className={classes.submit}>
         <PrimaryButton
-          action={
-            loadingSearchTerms || savingRecommendations
-              ? null
-              : addRecommendations
-          }
+          action={addRecommendations}
+          disabled={addRecommendationsDisabled}
         >
           {defaultAddRecsButtonText}
           <LoadingSpinner context='postRecommendations' colour='white' />

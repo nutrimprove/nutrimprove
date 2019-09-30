@@ -1,41 +1,26 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
-import { usePromiseTracker } from 'react-promise-tracker';
 import withStyles from '@material-ui/core/styles/withStyles';
 
-const PrimaryButton = ({ classes, action, children }) => {
-  const { searchingTerms } = usePromiseTracker({ area: 'getSearchTerms' });
-
-  return (
-    <>
-      {action && !searchingTerms ? (
-        <Button
-          className={classes.button}
-          variant='contained'
-          color='primary'
-          onClick={action}
-        >
-          {children}
-        </Button>
-      ) : (
-        <Button
-          className={classes.button}
-          variant='contained'
-          color='primary'
-          disabled
-        >
-          {children}
-        </Button>
-      )}
-    </>
-  );
-};
+const PrimaryButton = ({ classes, action, disabled, children }) => (
+  <>
+    <Button
+      className={classes.button}
+      variant='contained'
+      color='primary'
+      onClick={action}
+      disabled={disabled}
+    >
+      {children}
+    </Button>
+  </>
+);
 
 PrimaryButton.propTypes = {
   action: PropTypes.func,
+  disabled: PropTypes.bool,
   children: PropTypes.object,
-  disableOn: PropTypes.string,
   classes: PropTypes.object.isRequired,
 };
 
