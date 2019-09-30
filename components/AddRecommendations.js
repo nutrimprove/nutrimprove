@@ -48,6 +48,9 @@ const AddRecommendations = ({
     area: 'getSearchTerms-food',
   });
   const loadingSearchTerms = loadingRecs || loadingFoods;
+  const addRecommendationDisabled =
+    recommendations.length >= maxRecommendationFields;
+  const addFoodDisabled = foods.length >= maxFoodFields;
   const addRecommendationsDisabled =
     loadingSearchTerms || savingRecommendations;
 
@@ -154,11 +157,12 @@ const AddRecommendations = ({
           <div className={classes.fieldtitle}>Choose food(s):</div>
           <div id='foods_input'>
             {renderField(foods)}
-            {foods.length < maxFoodFields ? (
-              <PrimaryButton action={addEmptyFood}>Add</PrimaryButton>
-            ) : (
-              <PrimaryButton>Add</PrimaryButton>
-            )}
+            <PrimaryButton
+              action={addEmptyFood}
+              disabled={addFoodDisabled}
+            >
+              Add
+            </PrimaryButton>
           </div>
         </div>
         <div className={classes.fieldBox}>
@@ -167,13 +171,16 @@ const AddRecommendations = ({
           </div>
           <div id='recommendations_input'>
             {renderField(recommendations)}
-            {recommendations.length < maxRecommendationFields ? (
-              <PrimaryButton action={addEmptyRecommendedFood}>
-                Add
-              </PrimaryButton>
-            ) : (
-              <PrimaryButton>Add</PrimaryButton>
+            {console.log(
+              '===== ( addRecommendationDisabled ) =======>',
+              addRecommendationDisabled
             )}
+            <PrimaryButton
+              action={addEmptyRecommendedFood}
+              disabled={addRecommendationDisabled}
+            >
+              Add
+            </PrimaryButton>
           </div>
         </div>
       </div>
