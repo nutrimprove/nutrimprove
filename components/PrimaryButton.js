@@ -4,7 +4,7 @@ import Button from '@material-ui/core/Button';
 import { usePromiseTracker } from 'react-promise-tracker';
 import withStyles from '@material-ui/core/styles/withStyles';
 
-const PrimaryButton = ({ classes, action, text, children }) => {
+const PrimaryButton = ({ classes, action, children }) => {
   const { searchingTerms } = usePromiseTracker({ area: 'getSearchTerms' });
 
   return (
@@ -16,7 +16,6 @@ const PrimaryButton = ({ classes, action, text, children }) => {
           color='primary'
           onClick={action}
         >
-          {text}
           {children}
         </Button>
       ) : (
@@ -26,7 +25,6 @@ const PrimaryButton = ({ classes, action, text, children }) => {
           color='primary'
           disabled
         >
-          {text}
           {children}
         </Button>
       )}
@@ -35,7 +33,6 @@ const PrimaryButton = ({ classes, action, text, children }) => {
 };
 
 PrimaryButton.propTypes = {
-  text: PropTypes.string.isRequired,
   action: PropTypes.func,
   children: PropTypes.object,
   disableOn: PropTypes.string,

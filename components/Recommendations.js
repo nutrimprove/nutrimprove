@@ -29,10 +29,8 @@ const Recommendations = ({ userDetails }) => {
   return (
     <>
       <SectionHeader content={sectionHeader} />
-      <PrimaryButton
-        action={updateResults}
-        text='Fetch inserted recommendations'
-      >
+      <PrimaryButton action={updateResults}>
+        {sectionHeader.title}
         <LoadingSpinner context='fetchRecommendations' colour='white' />
       </PrimaryButton>
       <RecommendationsResults values={recommendations} />

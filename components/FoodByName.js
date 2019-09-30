@@ -46,7 +46,8 @@ const FoodByName = ({ classes }) => {
         margin='normal'
         onChange={e => setFoodName(e.target.value)}
       />
-      <PrimaryButton action={updateResults} text='Search'>
+      <PrimaryButton action={updateResults}>
+        Search
         <LoadingSpinner context='fetchFoods' colour='white' />
       </PrimaryButton>
       {searched && <ResultsTable values={foods} />}

@@ -153,9 +153,9 @@ const AddRecommendations = ({
           <div id='foods_input'>
             {renderField(foods)}
             {foods.length < maxFoodFields ? (
-              <PrimaryButton action={addEmptyFood} text='Add' />
+              <PrimaryButton action={addEmptyFood}>Add</PrimaryButton>
             ) : (
-              <PrimaryButton text='Add' />
+              <PrimaryButton>Add</PrimaryButton>
             )}
           </div>
         </div>
@@ -166,9 +166,11 @@ const AddRecommendations = ({
           <div id='recommendations_input'>
             {renderField(recommendations)}
             {recommendations.length < maxRecommendationFields ? (
-              <PrimaryButton action={addEmptyRecommendedFood} text='Add' />
+              <PrimaryButton action={addEmptyRecommendedFood}>
+                Add
+              </PrimaryButton>
             ) : (
-              <PrimaryButton text='Add' />
+              <PrimaryButton>Add</PrimaryButton>
             )}
           </div>
         </div>
@@ -180,8 +182,8 @@ const AddRecommendations = ({
               ? null
               : addRecommendations
           }
-          text={defaultAddRecsButtonText}
         >
+          {defaultAddRecsButtonText}
           <LoadingSpinner context='postRecommendations' colour='white' />
         </PrimaryButton>
       </div>
