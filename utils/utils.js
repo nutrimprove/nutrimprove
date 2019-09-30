@@ -16,6 +16,6 @@ export const setUserDetailsWithRole = async (setUserDetails, userInfo) => {
       setUserDetails({ ...userInfo, userDetails });
     }
   } else {
-    console.warn('No userInfo!!');
+    console.warn('No user found!');
   }
 };

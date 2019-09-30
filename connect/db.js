@@ -9,6 +9,7 @@ import {
 
 const URI = process.env.MONGODB_URI;
 let db = null;
+const mongoOptions = { useUnifiedTopology: true, useNewUrlParser: true };
 
 const connectToDatabase = async uri => {
   // Return db if already cached
@@ -17,7 +18,7 @@ const connectToDatabase = async uri => {
   }
 
   // Create new MongoDB connection
-  const client = await MongoClient.connect(uri, { useNewUrlParser: true });
+  const client = await MongoClient.connect(uri, mongoOptions);
 
   // eslint-disable-next-line node/no-deprecated-api
   db = await client.db(url.parse(uri).pathname.substr(1));
@@ -26,7 +27,7 @@ const connectToDatabase = async uri => {
 
 const connect = (description, schema, collection) => {
   if (mongoose.connection.readyState === 0) {
-    mongoose.connect(URI, { useNewUrlParser: true }, err => {
+    mongoose.connect(URI, mongoOptions, err => {
       if (err) {
         console.error(`ERROR connecting to '${URI}'`, err);
       } else {
@@ -99,7 +100,6 @@ const addUser = async userObj => {
       if (!result) {
         const newUser = new AddUserConnection(userObj);
         newUser.save(err => {
-          mongoose.connection.close();
           if (err) {
             console.error(`Error saving '${userObj.email}'`, err);
             reject(err);
@@ -108,6 +108,9 @@ const addUser = async userObj => {
             resolve(newUser);
           }
         });
+      } else {
+        console.log('User fetched!', userObj.email);
+        resolve(userObj);
       }
     })
   );

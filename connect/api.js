@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const foodApiEndpoint = 'https://api.edamam.com/api/food-database/parser';
-const category = ``;
+const category = ``; // Edamam category filter
 const apiAuthParams = `&app_key=8a2617ec655417bd43fd2b3df4b85a30&app_id=652bd7d5`;
 const searchTermsEndpoint = '/api/v1/search';
 const recommendationsEndpoint = '/api/v1/recommendations';
@@ -26,26 +26,37 @@ const postRequest = (endpoint, payload) => {
 
 const fetchFoods = name =>
   getRequest(
-    `${foodApiEndpoint}?ingr=${name}${apiAuthParams}${category}`
+    `${foodApiEndpoint}?ingr=${encodeURIComponent(
+      name
+    )}${apiAuthParams}${category}`
   ).then(res => res.hints);
 
 const fetchRecommendations = user =>
-  getRequest(`${recommendationsEndpoint}/?user=${user}`);
+  getRequest(
+    `${recommendationsEndpoint}/?user=${encodeURIComponent(user)}`
+  );
 
-const getUser = user => getRequest(`${usersEndpoint}/?user=${user}`);
+const getUser = user =>
+  getRequest(`${usersEndpoint}/?user=${encodeURIComponent(user)}`);
 
 const getUsers = () => getRequest(usersEndpoint);
 
-const addUser = user => postRequest(usersEndpoint, user);
+const addUser = user =>
+  postRequest(usersEndpoint, encodeURIComponent(user));
 
 const getSearchedTerms = searchTerm =>
-  getRequest(`${searchTermsEndpoint}/?term=${searchTerm}`);
+  getRequest(
+    `${searchTermsEndpoint}/?term=${encodeURIComponent(searchTerm)}`
+  );
 
 const postSearchTerm = searchTerm =>
-  postRequest(searchTermsEndpoint, searchTerm);
+  postRequest(searchTermsEndpoint, encodeURIComponent(searchTerm));
 
 const postRecommendations = recommendations =>
-  postRequest(recommendationsEndpoint, recommendations);
+  postRequest(
+    recommendationsEndpoint,
+    encodeURIComponent(recommendations)
+  );
 
 export {
   postRecommendations,
