@@ -39,19 +39,16 @@ const getSearchedTerms = searchTerm =>
   getRequest(`${searchTermsEndpoint}/?term=${searchTerm}`);
 
 const postSearchTerm = searchTerm => {
-  trackPromise(
-    axios
-      .post(searchTermsEndpoint, searchTerm)
-      .then(response => {
-        console.log(response);
-      })
-      .catch(error => {
-        console.error(
-          `ERROR connecting to '${searchTermsEndpoint}': ${error}`
-        );
-      }),
-    'saveSearchTerm'
-  );
+  axios
+    .post(searchTermsEndpoint, searchTerm)
+    .then(response => {
+      console.log(response);
+    })
+    .catch(error => {
+      console.error(
+        `ERROR connecting to '${searchTermsEndpoint}': ${error}`
+      );
+    });
 };
 
 const postRecommendations = payload =>
