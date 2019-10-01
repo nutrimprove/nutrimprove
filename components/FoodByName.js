@@ -5,8 +5,7 @@ import { fetchFoods } from '../connect/api';
 import SectionHeader from './SectionHeader';
 import withStyles from '@material-ui/core/styles/withStyles';
 import PropTypes from 'prop-types';
-import LoadingSpinner from './LoadingSpinner';
-import PrimaryButton from './PrimaryButton';
+import ButtonWithSpinner from './ButtonWithSpinner';
 
 const sectionHeader = {
   title: 'Search food by name',
@@ -46,10 +45,9 @@ const FoodByName = ({ classes }) => {
         margin='normal'
         onChange={e => setFoodName(e.target.value)}
       />
-      <PrimaryButton action={updateResults}>
+      <ButtonWithSpinner action={updateResults} context='fetchFoods'>
         Search
-        <LoadingSpinner context='fetchFoods' colour='white' />
-      </PrimaryButton>
+      </ButtonWithSpinner>
       {searched && <ResultsTable values={foods} />}
     </>
   );

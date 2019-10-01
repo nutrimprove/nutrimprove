@@ -15,7 +15,7 @@ import * as _ from 'lodash';
 import SectionHeader from './SectionHeader';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { usePromiseTracker } from 'react-promise-tracker';
-import LoadingSpinner from './LoadingSpinner';
+import ButtonWithSpinner from './ButtonWithSpinner';
 
 const maxFoodFields = 4;
 const maxRecommendationFields = 4;
@@ -171,10 +171,6 @@ const AddRecommendations = ({
           </div>
           <div id='recommendations_input'>
             {renderField(recommendations)}
-            {console.log(
-              '===== ( addRecommendationDisabled ) =======>',
-              addRecommendationDisabled
-            )}
             <PrimaryButton
               action={addEmptyRecommendedFood}
               disabled={addRecommendationDisabled}
@@ -185,13 +181,13 @@ const AddRecommendations = ({
         </div>
       </div>
       <div className={classes.submit}>
-        <PrimaryButton
+        <ButtonWithSpinner
           action={addRecommendations}
           disabled={addRecommendationsDisabled}
+          context='postRecommendations'
         >
           {defaultAddRecsButtonText}
-          <LoadingSpinner context='postRecommendations' colour='white' />
-        </PrimaryButton>
+        </ButtonWithSpinner>
       </div>
       <div className={classes.status}>{status}</div>
     </>

@@ -4,8 +4,7 @@ import { fetchRecommendations } from '../connect/api';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import SectionHeader from './SectionHeader';
-import LoadingSpinner from './LoadingSpinner';
-import PrimaryButton from './PrimaryButton';
+import ButtonWithSpinner from './ButtonWithSpinner';
 
 const sectionHeader = {
   title: 'View Recommendations',
@@ -29,10 +28,12 @@ const Recommendations = ({ userDetails }) => {
   return (
     <>
       <SectionHeader content={sectionHeader} />
-      <PrimaryButton action={updateResults}>
+      <ButtonWithSpinner
+        action={updateResults}
+        context='fetchRecommendations'
+      >
         {sectionHeader.title}
-        <LoadingSpinner context='fetchRecommendations' colour='white' />
-      </PrimaryButton>
+      </ButtonWithSpinner>
       <RecommendationsResults values={recommendations} />
     </>
   );
