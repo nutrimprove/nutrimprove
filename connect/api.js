@@ -58,10 +58,10 @@ const getSearchedTerms = searchTerm =>
 const postSearchTerm = searchTerm =>
   postRequest(searchTermsEndpoint, encodeURIComponent(searchTerm));
 
-const postRecommendations = recommendations =>
-  postRequest(
-    recommendationsEndpoint,
-    encodeURIComponent(recommendations)
+const postRecommendations = payload =>
+  trackPromise(
+    postRequest(recommendationsEndpoint, payload),
+    'postRecommendations'
   );
 
 export {

@@ -1,5 +1,4 @@
 import { addRecommendations, getDocuments } from '../../../connect/db';
-import { trackPromise } from 'react-promise-tracker';
 
 const getCollectionResults = async (req, res) => {
   const { user } = req.query;
@@ -21,10 +20,7 @@ const getCollectionResults = async (req, res) => {
     );
   } else if (req.method === 'POST') {
     req.body.length
-      ? (result = await trackPromise(
-          addRecommendations(req.body),
-          'addRecommendations'
-        ))
+      ? (result = await addRecommendations(req.body))
       : console.warn('No recommendations payload!', req.body);
   }
 

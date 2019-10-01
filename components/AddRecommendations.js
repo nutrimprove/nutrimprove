@@ -39,7 +39,7 @@ const AddRecommendations = ({
   const [validation, setValidation] = useState(false);
   const [status, setStatus] = useState('');
   const { promiseInProgress: savingRecommendations } = usePromiseTracker({
-    area: 'addRecommendations',
+    area: 'postRecommendations',
   });
   const { promiseInProgress: loadingRecs } = usePromiseTracker({
     area: 'getSearchTerms-rec',
