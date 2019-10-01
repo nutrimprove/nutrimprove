@@ -1,4 +1,5 @@
 import { getSearchedTerms } from '../../connect/api';
+import { trackPromise } from 'react-promise-tracker';
 
 let timeout = null;
 
@@ -52,6 +53,8 @@ export const editFood = (food, foodName, isRecommendation) => {
       ? editRecommendedFoodAction
       : editFoodAction;
 
+    const type = isRecommendation ? 'rec' : 'food';
+
     dispatch(action({ ...food, id: '', name: foodName, suggestions: [] }));
 
     clearTimeout(timeout);
@@ -59,7 +62,10 @@ export const editFood = (food, foodName, isRecommendation) => {
     timeout = setTimeout(async () => {
       // Fetches search results if more than 2 characters are typed
       if (foodName.length > 2) {
-        const search = await getSearchedTerms(foodName);
+        const search = await trackPromise(
+          getSearchedTerms(foodName, isRecommendation),
+          `getSearchTerms-${type}`
+        );
         if (search && search.matches) {
           const suggestions = search.matches.map(match => ({
             food_name: match.food_name,

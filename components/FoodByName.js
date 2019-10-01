@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import ResultsTable from './FoodFullResults';
 import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
 import { fetchFoods } from '../connect/api';
 import SectionHeader from './SectionHeader';
 import withStyles from '@material-ui/core/styles/withStyles';
 import PropTypes from 'prop-types';
+import ButtonWithSpinner from './ButtonWithSpinner';
 
 const sectionHeader = {
   title: 'Search food by name',
@@ -15,12 +15,7 @@ const sectionHeader = {
 const styles = {
   textField: {
     width: 200,
-    marginBottom: 0,
-    marginTop: 0,
-  },
-  buttonStyles: {
-    verticalAlign: 'bottom',
-    marginLeft: 10,
+    margin: '-10px 10px 10px 0',
   },
 };
 
@@ -50,14 +45,9 @@ const FoodByName = ({ classes }) => {
         margin='normal'
         onChange={e => setFoodName(e.target.value)}
       />
-      <Button
-        className={classes.buttonStyles}
-        variant='contained'
-        color='primary'
-        onClick={updateResults}
-      >
+      <ButtonWithSpinner action={updateResults} context='fetchFoods'>
         Search
-      </Button>
+      </ButtonWithSpinner>
       {searched && <ResultsTable values={foods} />}
     </>
   );

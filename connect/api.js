@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { trackPromise } from 'react-promise-tracker';
 
 const foodApiEndpoint = 'https://api.edamam.com/api/food-database/parser';
 const category = ``; // Edamam category filter
@@ -15,25 +16,30 @@ const getRequest = endpoint =>
       console.error(`ERROR connecting to '${endpoint}': ${error}`)
     );
 
-const postRequest = (endpoint, payload) => {
+const postRequest = (endpoint, payload) =>
   axios
     .post(endpoint, payload)
     .then(res => res.data)
     .catch(error =>
       console.error(`ERROR connecting to '${endpoint}': ${error}`)
     );
-};
 
 const fetchFoods = name =>
-  getRequest(
-    `${foodApiEndpoint}?ingr=${encodeURIComponent(
-      name
-    )}${apiAuthParams}${category}`
-  ).then(res => res.hints);
+  trackPromise(
+    getRequest(
+      `${foodApiEndpoint}?ingr=${encodeURIComponent(
+        name
+      )}${apiAuthParams}${category}`
+    ).then(res => res.hints),
+    'fetchFoods'
+  );
 
 const fetchRecommendations = user =>
-  getRequest(
-    `${recommendationsEndpoint}/?user=${encodeURIComponent(user)}`
+  trackPromise(
+    getRequest(
+      `${recommendationsEndpoint}/?user=${encodeURIComponent(user)}`
+    ),
+    'fetchRecommendations'
   );
 
 const getUser = user =>

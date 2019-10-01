@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import Button from '@material-ui/core/Button';
 import ResultsTable from './ResultsTable';
 import { fetchRecommendations } from '../connect/api';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import SectionHeader from './SectionHeader';
+import ButtonWithSpinner from './ButtonWithSpinner';
 
 const sectionHeader = {
   title: 'View Recommendations',
@@ -35,14 +35,12 @@ const Recommendations = ({ userDetails }) => {
   return (
     <>
       <SectionHeader content={sectionHeader} />
-      <Button
-        style={styles.fetchButton}
-        variant='contained'
-        color='primary'
-        onClick={updateResults}
+      <ButtonWithSpinner
+        action={updateResults}
+        context='fetchRecommendations'
       >
-        Fetch inserted recommendations
-      </Button>
+        {sectionHeader.title}
+      </ButtonWithSpinner>
       <ResultsTable values={formattedRecommendations()} />
     </>
   );
@@ -50,22 +48,6 @@ const Recommendations = ({ userDetails }) => {
 
 Recommendations.propTypes = {
   userDetails: PropTypes.object,
-};
-
-const styles = {
-  header: {
-    marginBottom: '30px',
-  },
-  subtitle: {
-    fontSize: '0.8em',
-  },
-  title: {
-    fontSize: '1.4em',
-  },
-  fetchButton: {
-    verticalAlign: 'bottom',
-    marginLeft: 10,
-  },
 };
 
 const mapStateToProps = (states, ownProps) => {

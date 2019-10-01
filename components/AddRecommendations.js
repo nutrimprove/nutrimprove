@@ -1,7 +1,7 @@
 import SearchFoodField from './SearchFoodField';
 import React, { useState } from 'react';
 import RemoveIcon from './RemoveIcon';
-import AddButton from './AddButton';
+import PrimaryButton from './PrimaryButton';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import uniqid from 'uniqid';
@@ -10,11 +10,12 @@ import {
   addRecommendedFoodAction,
   removeAllFoodsAndRecommendationsAction,
 } from '../store/addRecommendation/actions';
-import { setSavingAction } from '../store/global/actions';
 import { postRecommendations } from '../connect/api';
 import * as _ from 'lodash';
 import SectionHeader from './SectionHeader';
 import withStyles from '@material-ui/core/styles/withStyles';
+import { usePromiseTracker } from 'react-promise-tracker';
+import ButtonWithSpinner from './ButtonWithSpinner';
 
 const maxFoodFields = 4;
 const maxRecommendationFields = 4;
@@ -29,16 +30,29 @@ const sectionHeader = {
 const AddRecommendations = ({
   foods,
   recommendations,
-  isSaving,
   addEmptyRecommendedFood,
   addEmptyFood,
   removeAllFoods,
-  setSaving,
   userDetails,
   classes,
 }) => {
   const [validation, setValidation] = useState(false);
   const [status, setStatus] = useState('');
+  const { promiseInProgress: savingRecommendations } = usePromiseTracker({
+    area: 'addRecommendations',
+  });
+  const { promiseInProgress: loadingRecs } = usePromiseTracker({
+    area: 'getSearchTerms-rec',
+  });
+  const { promiseInProgress: loadingFoods } = usePromiseTracker({
+    area: 'getSearchTerms-food',
+  });
+  const loadingSearchTerms = loadingRecs || loadingFoods;
+  const addRecommendationDisabled =
+    recommendations.length >= maxRecommendationFields;
+  const addFoodDisabled = foods.length >= maxFoodFields;
+  const addRecommendationsDisabled =
+    loadingSearchTerms || savingRecommendations;
 
   if (foods.length === 0) {
     addEmptyFood();
@@ -114,9 +128,7 @@ const AddRecommendations = ({
       }
     }
 
-    setSaving(true);
     const result = await postRecommendations(recommendationsPayload);
-    setSaving(false);
 
     // Reset fields if all combinations were stored successfully
     if (result.insertedCount === recommendationsPayload.length) {
@@ -145,11 +157,12 @@ const AddRecommendations = ({
           <div className={classes.fieldtitle}>Choose food(s):</div>
           <div id='foods_input'>
             {renderField(foods)}
-            {foods.length < maxFoodFields ? (
-              <AddButton action={addEmptyFood} text='Add' />
-            ) : (
-              <AddButton text='Add' />
-            )}
+            <PrimaryButton
+              action={addEmptyFood}
+              disabled={addFoodDisabled}
+            >
+              Add
+            </PrimaryButton>
           </div>
         </div>
         <div className={classes.fieldBox}>
@@ -158,23 +171,23 @@ const AddRecommendations = ({
           </div>
           <div id='recommendations_input'>
             {renderField(recommendations)}
-            {recommendations.length < maxRecommendationFields ? (
-              <AddButton action={addEmptyRecommendedFood} text='Add' />
-            ) : (
-              <AddButton text='Add' />
-            )}
+            <PrimaryButton
+              action={addEmptyRecommendedFood}
+              disabled={addRecommendationDisabled}
+            >
+              Add
+            </PrimaryButton>
           </div>
         </div>
       </div>
       <div className={classes.submit}>
-        {isSaving ? (
-          <AddButton text='Saving...' />
-        ) : (
-          <AddButton
-            action={addRecommendations}
-            text={defaultAddRecsButtonText}
-          />
-        )}
+        <ButtonWithSpinner
+          action={addRecommendations}
+          disabled={addRecommendationsDisabled}
+          context='postRecommendations'
+        >
+          {defaultAddRecsButtonText}
+        </ButtonWithSpinner>
       </div>
       <div className={classes.status}>{status}</div>
     </>
@@ -184,11 +197,9 @@ const AddRecommendations = ({
 AddRecommendations.propTypes = {
   recommendations: PropTypes.Array,
   foods: PropTypes.Array,
-  isSaving: PropTypes.bool,
   addEmptyFood: PropTypes.function,
   addEmptyRecommendedFood: PropTypes.function,
   removeAllFoods: PropTypes.function,
-  setSaving: PropTypes.function,
   userDetails: PropTypes.object,
   classes: PropTypes.object.isRequired,
 };
@@ -231,7 +242,6 @@ const mapStateToProps = (states, ownProps) => {
   return {
     recommendations: states.addRecommendationState.recommendedFoods,
     foods: states.addRecommendationState.foods,
-    isSaving: states.globalState.isSaving,
     userDetails: states.globalState.userDetails,
   };
 };
@@ -252,7 +262,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     addEmptyFood: () => addEmptyField(addFoodAction),
     removeAllFoods: () =>
       dispatch(removeAllFoodsAndRecommendationsAction()),
-    setSaving: value => dispatch(setSavingAction(value)),
   };
 };
 
