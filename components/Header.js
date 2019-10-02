@@ -11,6 +11,7 @@ import Auth from '../auth/Auth';
 import { setUserDetails } from '../store/global/actions';
 import { connect } from 'react-redux';
 import { addUser, getUser } from '../connect/api';
+import HeaderLink from './HeaderLink';
 
 const auth = new Auth();
 
@@ -70,17 +71,9 @@ const Header = ({ classes, userDetails, setUserDetails }) => {
               <Link href='/about'>About</Link>
             </Typography>
             {username() ? (
-              <Typography variant='button' color='inherit'>
-                <Link href='#' onClick={handleLogout}>
-                  Logout
-                </Link>
-              </Typography>
+              <HeaderLink action={handleLogout}>Logout</HeaderLink>
             ) : (
-              <Typography variant='button' color='inherit'>
-                <Link href='#' onClick={handleLogin}>
-                  Login
-                </Link>
-              </Typography>
+              <HeaderLink action={handleLogin}>Login</HeaderLink>
             )}
           </div>
           <div id='user' className={classes.userinfo}>
