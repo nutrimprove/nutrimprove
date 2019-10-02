@@ -35,9 +35,8 @@ const Content = ({ classes, userDetails }) => {
           <Tab label='Search Food' />
           <Tab label='View Recommendations' />
           <Tab label='Add Recommendations' />
-          {['owner', 'admin'].includes(userDetails.role) && (
-            <Tab label='Admin Panel' />
-          )}
+          {['owner', 'admin'].includes(userDetails.role) &&
+            userDetails.approved && <Tab label='Admin Panel' />}
         </Tabs>
       </AppBar>
       {tab === 0 && (

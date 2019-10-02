@@ -45,7 +45,7 @@ const fetchRecommendations = user =>
 const getUser = user =>
   getRequest(`${usersEndpoint}/?user=${encodeURIComponent(user)}`);
 
-const getUsers = () => getRequest(usersEndpoint);
+const getUsers = () => trackPromise(getRequest(usersEndpoint), 'getUsers');
 
 const addUser = user =>
   postRequest(usersEndpoint, encodeURIComponent(user));

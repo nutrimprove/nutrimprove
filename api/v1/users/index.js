@@ -1,32 +1,15 @@
-import { addUser, getDocuments } from '../../../connect/db';
-
-const projection = {
-  email: 1,
-  role: 1,
-  approved: 1,
-  _id: 0,
-};
+import { getUser, getUsers } from '../../../connect/db';
 
 const getCollectionResults = async (req, res) => {
   let result;
 
   if (req.method === 'GET') {
     const { user } = req.query;
-    if (user && user.length > 0) {
-      result = await getDocuments(
-        'users',
-        {
-          email: user,
-        },
-        projection
-      );
+    if (user) {
+      result = await getUser(user);
     } else {
-      result = await getDocuments('users', {}, projection);
+      result = await getUsers();
     }
-  } else if (req.method === 'POST') {
-    req.body
-      ? (result = await addUser(req.body))
-      : console.warn('No users payload!', req.body);
   }
   return res.status(200).json(result);
 };

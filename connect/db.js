@@ -83,7 +83,7 @@ const addSearchTerm = async searchTermObj => {
   );
 };
 
-const addUser = async userObj => {
+const getUser = async user => {
   const AddUserConnection = await connect(
     'users',
     userSchema,
@@ -91,27 +91,50 @@ const addUser = async userObj => {
   );
 
   return new Promise((resolve, reject) =>
-    AddUserConnection.findOne({ email: userObj.email }, (err, result) => {
+    AddUserConnection.findOne({ email: user }, (err, result) => {
       if (err) {
-        console.error(`Error when searching for '${userObj.email}'`, err);
+        console.error(`Error when searching for '${user}'`, err);
         mongoose.connection.close();
         reject(err);
       }
       if (!result) {
-        const newUser = new AddUserConnection(userObj);
+        const newUser = new AddUserConnection({
+          email: user,
+          role: '',
+          approved: false,
+        });
         newUser.save(err => {
           if (err) {
-            console.error(`Error saving '${userObj.email}'`, err);
+            console.error(`Error saving '${user}'`, err);
             reject(err);
           } else {
-            console.log('User stored!', userObj.email);
+            console.log('User stored!', user);
             resolve(newUser);
           }
         });
       } else {
-        console.log('User fetched!', userObj.email);
-        resolve(userObj);
+        console.log('User fetched!', user);
+        resolve(result);
       }
+    })
+  );
+};
+
+const getUsers = async () => {
+  const AddUserConnection = await connect(
+    'users',
+    userSchema,
+    'users'
+  );
+
+  return new Promise((resolve, reject) =>
+    AddUserConnection.find({}, (err, result) => {
+      if (err) {
+        console.error('Error when searching for users', err);
+        mongoose.connection.close();
+        reject(err);
+      }
+      resolve(result);
     })
   );
 };
@@ -158,5 +181,6 @@ export {
   getDocuments,
   addSearchTerm,
   addRecommendations,
-  addUser,
+  getUser,
+  getUsers,
 };

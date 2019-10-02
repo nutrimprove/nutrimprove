@@ -1,64 +1,51 @@
 import React, { useState } from 'react';
-import Button from '@material-ui/core/Button';
 import SectionHeader from './SectionHeader';
-import withStyles from '@material-ui/core/styles/withStyles';
-import PropTypes from 'prop-types';
 import { getUsers } from '../connect/api';
-import { connect } from 'react-redux';
 import ResultsTable from './ResultsTable';
+import ButtonWithSpinner from './ButtonWithSpinner';
+import PrimaryButton from './PrimaryButton';
 
 const sectionHeader = {
   title: 'Administration page',
   subtitle: `Verify and revoke users' access to the app`,
 };
 
-const styles = {
-  textField: {
-    width: 200,
-    marginBottom: 0,
-    marginTop: 0,
-  },
-  buttonStyles: {
-    verticalAlign: 'bottom',
-    marginLeft: 10,
-  },
+const revokeButton = () => <PrimaryButton>Revoke</PrimaryButton>;
+
+const approveButton = () => <PrimaryButton>Approve</PrimaryButton>;
+
+const formatUsers = users => {
+  if (users) {
+    const newUsersObj = [];
+    users.map(user => {
+      newUsersObj.push({
+        email: user.email,
+        role: user.role,
+        approved: user.approved,
+        action: user.approved ? revokeButton() : approveButton(),
+      });
+    });
+    return newUsersObj;
+  }
 };
 
-const AdminPanel = ({ classes }) => {
+const AdminPanel = () => {
   const [users, setUsers] = useState([]);
 
   const updateResults = async () => {
     const users = await getUsers();
-    setUsers(users);
+    setUsers(formatUsers(users));
   };
 
   return (
     <>
       <SectionHeader content={sectionHeader} />
-      <Button
-        className={classes.buttonStyles}
-        variant='contained'
-        color='primary'
-        onClick={updateResults}
-      >
-        Search
-      </Button>
+      <ButtonWithSpinner action={updateResults} context='getUsers'>
+        List Users
+      </ButtonWithSpinner>
       <ResultsTable values={users} />
     </>
   );
 };
 
-AdminPanel.propTypes = {
-  classes: PropTypes.object.isRequired,
-};
-
-const mapStateToProps = (states, ownProps) => {
-  return {
-    userDetails: states.globalState.userDetails,
-  };
-};
-
-export default connect(
-  mapStateToProps,
-  null
-)(withStyles(styles)(AdminPanel));
+export default AdminPanel;

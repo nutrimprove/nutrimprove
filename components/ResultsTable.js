@@ -8,6 +8,49 @@ import Table from '@material-ui/core/Table/index';
 import TableBody from '@material-ui/core/TableBody/index';
 import { withStyles } from '@material-ui/core/styles/index';
 
+const ResultsTable = ({ classes, values, columnNames }) => {
+  if (values && values.length > 0) {
+    const columns = columnNames || Object.keys(values[0]);
+    return (
+      <div className='results'>
+        <Paper className={classes.root}>
+          <Table className={classes.table}>
+            <TableHead className={classes.head}>
+              <TableRow>
+                {columns.map((name, index) => (
+                  <TableCell key={index} className={classes.cell}>
+                    {name}
+                  </TableCell>
+                ))}
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {values.map((row, index) => (
+                <TableRow key={index}>
+                  {Object.values(row).map((value, vIndex) => (
+                    <TableCell key={vIndex} className={classes.cell}>
+                      {typeof value === 'boolean'
+                        ? value.toString()
+                        : value}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </Paper>
+      </div>
+    );
+  } else {
+    return <div className='results' />;
+  }
+};
+
+ResultsTable.propTypes = {
+  classes: PropTypes.object.isRequired,
+  values: PropTypes.array.isRequired,
+};
+
 const styles = theme => ({
   root: {
     width: '100%',
@@ -30,46 +73,5 @@ const styles = theme => ({
     padding: 10,
   },
 });
-
-const ResultsTable = ({ classes, values, columnNames }) => {
-  if (values && values.length > 0) {
-    const columns = columnNames || Object.keys(values[0]);
-    return (
-      <div className='results'>
-        <Paper className={classes.root}>
-          <Table className={classes.table}>
-            <TableHead className={classes.head}>
-              <TableRow>
-                {columns.map((name, index) => (
-                  <TableCell key={index} className={classes.cell}>
-                    {name.toString()}
-                  </TableCell>
-                ))}
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {values.map((row, index) => (
-                <TableRow key={index}>
-                  {Object.values(row).map((value, vIndex) => (
-                    <TableCell key={vIndex} className={classes.cell}>
-                      {value.toString()}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </Paper>
-      </div>
-    );
-  } else {
-    return <div className='results' />;
-  }
-};
-
-ResultsTable.propTypes = {
-  classes: PropTypes.object.isRequired,
-  values: PropTypes.array.isRequired,
-};
 
 export default withStyles(styles)(ResultsTable);
