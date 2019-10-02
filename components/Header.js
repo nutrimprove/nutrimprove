@@ -10,30 +10,10 @@ import {
 import Auth from '../auth/Auth';
 import { setUserDetails } from '../store/global/actions';
 import { connect } from 'react-redux';
-import { addUser, getUser } from '../connect/api';
 import HeaderLink from './HeaderLink';
+import { setUserDetailsWithRole } from '../utils/utils';
 
 const auth = new Auth();
-
-export const setUserDetailsWithRole = async (setUserDetails, userInfo) => {
-  if (userInfo) {
-    const user = await getUser(userInfo.email);
-    if (user && user[0]) {
-      const { role, approved } = user[0];
-      setUserDetails({ ...userInfo, role, approved });
-    } else {
-      const userDetails = {
-        email: userInfo.email,
-        role: 'contributor',
-        approved: false,
-      };
-      await addUser(userDetails);
-      setUserDetails({ ...userInfo, userDetails });
-    }
-  } else {
-    console.warn('No user found!');
-  }
-};
 
 const Header = ({ classes, userDetails, setUserDetails }) => {
   useEffect(() => {

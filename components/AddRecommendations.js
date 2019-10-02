@@ -135,13 +135,16 @@ const AddRecommendations = ({
     }
 
     const result = await postRecommendations(recommendationsPayload);
+    const recCount = recommendationsPayload.length;
 
     // Reset fields if all combinations were stored successfully
-    if (result.insertedCount === recommendationsPayload.length) {
+    if (result.insertedCount === recCount) {
       removeAllFoods();
       setValidation(false);
+      const recommendationString =
+        recCount === 1 ? 'recommendation' : 'recommendations';
       updateStatus(
-        `Recommendations inserted into the database! (#${recommendationsPayload.length})`
+        `${recCount} ${recommendationString} added to the database!`
       );
     } else {
       updateStatus(
