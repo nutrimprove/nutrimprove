@@ -3,9 +3,11 @@ import SectionHeader from '../components/SectionHeader';
 import withStyles from '@material-ui/core/styles/withStyles';
 import PropTypes from 'prop-types';
 
-const title = 'About Eatwell';
-const subtitle =
-  'This page will show some information about the Eatwell project';
+const content = {
+  title: 'About NutrImprove',
+  subtitle:
+    'This page will show some information about the NutrImprove project',
+};
 
 const styles = {
   about: {
@@ -19,7 +21,7 @@ const styles = {
 const About = ({ classes }) => {
   return (
     <div className={classes.about}>
-      <SectionHeader title={title} subtitle={subtitle} />
+      <SectionHeader content={content} />
     </div>
   );
 };
