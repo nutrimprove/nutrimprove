@@ -1,40 +1,87 @@
 import React, { useState } from 'react';
 import SectionHeader from './SectionHeader';
-import { getUsers } from '../connect/api';
+import { approveUser, getUsers, revokeUser } from '../connect/api';
 import ResultsTable from './ResultsTable';
 import ButtonWithSpinner from './ButtonWithSpinner';
-import PrimaryButton from './PrimaryButton';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 const sectionHeader = {
   title: 'Administration page',
   subtitle: `Verify and revoke users' access to the app`,
 };
 
-const revokeButton = () => <PrimaryButton>Revoke</PrimaryButton>;
-
-const approveButton = () => <PrimaryButton>Approve</PrimaryButton>;
-
-const formatUsers = users => {
-  if (users) {
-    const newUsersObj = [];
-    users.map(user => {
-      newUsersObj.push({
-        email: user.email,
-        role: user.role,
-        approved: user.approved,
-        action: user.approved ? revokeButton() : approveButton(),
-      });
-    });
-    return newUsersObj;
-  }
+const approveButton = (user, update, disabled) => {
+  return (
+    <ButtonWithSpinner
+      action={async () => {
+        await approveUser(user);
+        update();
+      }}
+      context={`approveUser-${user}`}
+      disabled={disabled}
+    >
+      Approve
+    </ButtonWithSpinner>
+  );
 };
 
-const AdminPanel = () => {
+const revokeButton = (user, update, disabled) => {
+  return (
+    <ButtonWithSpinner
+      action={async () => {
+        await revokeUser(user);
+        update();
+      }}
+      context={`revokeUser-${user}`}
+      disabled={disabled}
+    >
+      Revoke
+    </ButtonWithSpinner>
+  );
+};
+
+const userRoleToString = userRole => {
+  let role;
+  switch (userRole) {
+    case 0:
+      role = 'Owner';
+      break;
+    case 5:
+      role = 'Admin';
+      break;
+    case 100:
+      role = 'Contributor';
+      break;
+    default:
+      role = 'Other';
+  }
+  return role;
+};
+
+const AdminPanel = ({ userDetails }) => {
   const [users, setUsers] = useState([]);
+
+  const renderActionButton = user => {
+    const hasPermissions = userDetails.role < user.role;
+    const button = user.approved === false ? approveButton : revokeButton;
+    return button(user.email, updateResults, !hasPermissions);
+  };
 
   const updateResults = async () => {
     const users = await getUsers();
-    setUsers(formatUsers(users));
+    const newUsersObj = [];
+    if (users) {
+      users.map(user => {
+        newUsersObj.push({
+          email: user.email,
+          role: userRoleToString(user.role),
+          approved: user.approved,
+          action: renderActionButton(user),
+        });
+      });
+    }
+    setUsers(newUsersObj);
   };
 
   return (
@@ -43,9 +90,22 @@ const AdminPanel = () => {
       <ButtonWithSpinner action={updateResults} context='getUsers'>
         List Users
       </ButtonWithSpinner>
-      <ResultsTable values={users} />
+      <ResultsTable values={users} updateResults={updateResults} />
     </>
   );
 };
 
-export default AdminPanel;
+AdminPanel.propTypes = {
+  userDetails: PropTypes.object.isRequired,
+};
+
+const mapStateToProps = (states, ownProps) => {
+  return {
+    userDetails: states.globalState.userDetails,
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  null
+)(AdminPanel);

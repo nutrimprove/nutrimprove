@@ -50,6 +50,18 @@ const getUsers = () => trackPromise(getRequest(usersEndpoint), 'getUsers');
 const addUser = user =>
   postRequest(usersEndpoint, encodeURIComponent(user));
 
+const approveUser = user =>
+  trackPromise(
+    postRequest(usersEndpoint, { user, approval: true }),
+    `approveUser-${user}`
+  );
+
+const revokeUser = user =>
+  trackPromise(
+    postRequest(usersEndpoint, { user, approval: false }),
+    `revokeUser-${user}`
+  );
+
 const getSearchedTerms = searchTerm =>
   getRequest(
     `${searchTermsEndpoint}/?term=${encodeURIComponent(searchTerm)}`
@@ -73,4 +85,6 @@ export {
   getUser,
   getUsers,
   getSearchedTerms,
+  approveUser,
+  revokeUser,
 };

@@ -83,24 +83,27 @@ const addSearchTerm = async searchTermObj => {
   );
 };
 
-const getUser = async user => {
-  const AddUserConnection = await connect(
+const getUserConnection = () =>
+  connect(
     'users',
     userSchema,
     'users'
   );
 
+const getUser = async user => {
+  const UserConnection = await getUserConnection();
+
   return new Promise((resolve, reject) =>
-    AddUserConnection.findOne({ email: user }, (err, result) => {
+    UserConnection.findOne({ email: user }, (err, result) => {
       if (err) {
         console.error(`Error when searching for '${user}'`, err);
         mongoose.connection.close();
         reject(err);
       }
       if (!result) {
-        const newUser = new AddUserConnection({
+        const newUser = new UserConnection({
           email: user,
-          role: '',
+          role: 100,
           approved: false,
         });
         newUser.save(err => {
@@ -120,23 +123,17 @@ const getUser = async user => {
   );
 };
 
-const getUsers = async () => {
-  const AddUserConnection = await connect(
-    'users',
-    userSchema,
-    'users'
+const setUserApproval = async (user, approval) => {
+  const UserConnection = await getUserConnection();
+  return UserConnection.findOneAndUpdate(
+    { email: user },
+    { approved: approval }
   );
+};
 
-  return new Promise((resolve, reject) =>
-    AddUserConnection.find({}, (err, result) => {
-      if (err) {
-        console.error('Error when searching for users', err);
-        mongoose.connection.close();
-        reject(err);
-      }
-      resolve(result);
-    })
-  );
+const getUsers = async () => {
+  const UserConnection = await getUserConnection();
+  return UserConnection.find({});
 };
 
 const addRecommendations = async recommendationsObj => {
@@ -183,4 +180,5 @@ export {
   addRecommendations,
   getUser,
   getUsers,
+  setUserApproval,
 };

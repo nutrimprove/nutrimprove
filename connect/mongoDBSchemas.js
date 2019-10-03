@@ -76,9 +76,7 @@ const userSchema = new mongoose.Schema(
       required: true,
     },
     role: {
-      type: String,
-      lowercase: true,
-      trim: true,
+      type: Number,
       required: true,
     },
     approved: {
