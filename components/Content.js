@@ -30,7 +30,7 @@ const Content = ({ classes, userDetails }) => {
 
   return (
     <div className={classes.root}>
-      <AppBar position='static'>
+      <AppBar position='static' className={classes.tabs}>
         <Tabs value={tab} onChange={tabChange}>
           <Tab label='Search Food' />
           <Tab label='View Recommendations' />
@@ -73,6 +73,10 @@ const styles = theme => ({
   root: {
     flexGrow: 1,
     backgroundColor: theme.palette.background.paper,
+  },
+  tabs: {
+    backgroundColor: '#3f51b5',
+    color: 'white',
   },
 });
 
