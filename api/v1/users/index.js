@@ -1,4 +1,10 @@
-import { getUser, getUsers, setUserApproval } from '../../../connect/db';
+import {
+  getUser,
+  getAllUsers,
+  getApprovedUsers,
+  getNotApprovedUsers,
+  setUserApproval,
+} from '../../../connect/db';
 
 const getCollectionResults = async (req, res) => {
   let result;
@@ -6,9 +12,19 @@ const getCollectionResults = async (req, res) => {
   if (req.method === 'GET') {
     const { user } = req.query;
     if (user) {
-      result = await getUser(user);
-    } else {
-      result = await getUsers();
+      switch (user) {
+        case 'approved':
+          result = await getApprovedUsers();
+          break;
+        case 'notapproved':
+          result = await getNotApprovedUsers();
+          break;
+        case 'getall':
+          result = await getAllUsers();
+          break;
+        default:
+          result = await getUser(user);
+      }
     }
   } else if (req.method === 'POST') {
     const user = req.body.user;

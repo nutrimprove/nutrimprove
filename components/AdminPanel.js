@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import SectionHeader from './SectionHeader';
 import { approveUser, getUsers, revokeUser } from '../connect/api';
 import ResultsTable from './ResultsTable';
@@ -9,36 +9,6 @@ import PropTypes from 'prop-types';
 const sectionHeader = {
   title: 'Administration page',
   subtitle: `Verify and revoke users' access to the app`,
-};
-
-const approveButton = (user, update, disabled) => {
-  return (
-    <ButtonWithSpinner
-      action={async () => {
-        await approveUser(user);
-        update();
-      }}
-      context={`approveUser-${user}`}
-      disabled={disabled}
-    >
-      Approve
-    </ButtonWithSpinner>
-  );
-};
-
-const revokeButton = (user, update, disabled) => {
-  return (
-    <ButtonWithSpinner
-      action={async () => {
-        await revokeUser(user);
-        update();
-      }}
-      context={`revokeUser-${user}`}
-      disabled={disabled}
-    >
-      Revoke
-    </ButtonWithSpinner>
-  );
 };
 
 const userRoleToString = userRole => {
@@ -61,36 +31,80 @@ const userRoleToString = userRole => {
 
 const AdminPanel = ({ userDetails }) => {
   const [users, setUsers] = useState([]);
+  const [userQuery, setUserQuery] = useState();
+
+  useEffect(() => {
+    updateResults();
+  }, [userQuery]);
+
+  const approvalButton = (user, disabled, action) => {
+    return (
+      <ButtonWithSpinner
+        action={async () => {
+          if (action === 'approve') {
+            await approveUser(user);
+          } else {
+            await revokeUser(user);
+          }
+          updateResults();
+        }}
+        context={`${action}User-${user}`}
+        disabled={disabled}
+      >
+        {action}
+      </ButtonWithSpinner>
+    );
+  };
 
   const renderActionButton = user => {
     const hasPermissions = userDetails.role < user.role;
-    const button = user.approved === false ? approveButton : revokeButton;
-    return button(user.email, updateResults, !hasPermissions);
+    const action = user.approved === false ? 'approve' : 'revoke';
+    return approvalButton(user.email, !hasPermissions, action);
   };
 
   const updateResults = async () => {
-    const users = await getUsers();
-    const newUsersObj = [];
-    if (users) {
-      users.map(user => {
-        newUsersObj.push({
-          email: user.email,
-          role: userRoleToString(user.role),
-          approved: user.approved,
-          action: renderActionButton(user),
+    if (userQuery) {
+      const users = await getUsers(userQuery);
+      const newUsersObj = [];
+      if (users) {
+        users.map(user => {
+          newUsersObj.push({
+            email: user.email,
+            role: userRoleToString(user.role),
+            approved: user.approved,
+            action: renderActionButton(user),
+          });
         });
-      });
+      }
+      setUsers(newUsersObj);
     }
-    setUsers(newUsersObj);
   };
+
+  const listAllUsers = () => setUserQuery('getall');
+
+  const listApprovedUsers = () => setUserQuery('approved');
+
+  const listNotApprovedUsers = () => setUserQuery('notapproved');
 
   return (
     <>
       <SectionHeader content={sectionHeader} />
-      <ButtonWithSpinner action={updateResults} context='getUsers'>
-        List Users
+      <ButtonWithSpinner action={listAllUsers} context='users-getall'>
+        All Users
       </ButtonWithSpinner>
-      <ResultsTable values={users} updateResults={updateResults} />
+      <ButtonWithSpinner
+        action={listNotApprovedUsers}
+        context='users-notapproved'
+      >
+        Users Needing Approval
+      </ButtonWithSpinner>
+      <ButtonWithSpinner
+        action={listApprovedUsers}
+        context='users-approved'
+      >
+        Approved Users
+      </ButtonWithSpinner>
+      <ResultsTable values={users} />
     </>
   );
 };

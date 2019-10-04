@@ -1,8 +1,8 @@
-import { getUser } from '../connect/api';
+import { getUsers } from '../connect/api';
 
 export const setUserDetailsWithRole = async (setUserDetails, userInfo) => {
   if (userInfo && userInfo.email) {
-    const user = await getUser(userInfo.email);
+    const user = await getUsers(userInfo.email);
     if (user) {
       const { role, approved } = user;
       setUserDetails({ ...userInfo, role, approved });

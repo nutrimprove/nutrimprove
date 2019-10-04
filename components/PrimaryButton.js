@@ -29,6 +29,7 @@ const styles = {
     padding: '6px 16px',
     height: 40,
     lineHeight: 'normal',
+    marginRight: 40,
   },
 };
 

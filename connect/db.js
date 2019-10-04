@@ -131,9 +131,19 @@ const setUserApproval = async (user, approval) => {
   );
 };
 
-const getUsers = async () => {
+const getAllUsers = async () => {
   const UserConnection = await getUserConnection();
   return UserConnection.find({});
+};
+
+const getApprovedUsers = async () => {
+  const UserConnection = await getUserConnection();
+  return UserConnection.find({ approved: true });
+};
+
+const getNotApprovedUsers = async () => {
+  const UserConnection = await getUserConnection();
+  return UserConnection.find({ approved: false });
 };
 
 const addRecommendations = async recommendationsObj => {
@@ -179,6 +189,8 @@ export {
   addSearchTerm,
   addRecommendations,
   getUser,
-  getUsers,
+  getAllUsers,
+  getApprovedUsers,
+  getNotApprovedUsers,
   setUserApproval,
 };

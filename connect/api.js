@@ -42,10 +42,11 @@ const fetchRecommendations = user =>
     'fetchRecommendations'
   );
 
-const getUser = user =>
-  getRequest(`${usersEndpoint}/?user=${encodeURIComponent(user)}`);
-
-const getUsers = () => trackPromise(getRequest(usersEndpoint), 'getUsers');
+const getUsers = user =>
+  trackPromise(
+    getRequest(`${usersEndpoint}/?user=${encodeURIComponent(user)}`),
+    `users-${user}`
+  );
 
 const addUser = user =>
   postRequest(usersEndpoint, encodeURIComponent(user));
@@ -82,7 +83,6 @@ export {
   addUser,
   fetchFoods,
   fetchRecommendations,
-  getUser,
   getUsers,
   getSearchedTerms,
   approveUser,
