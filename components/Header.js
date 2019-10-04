@@ -22,7 +22,7 @@ const Header = ({ classes, userDetails, setUserDetails }) => {
   }, []);
 
   function handleLogin() {
-    auth.login();
+    auth.login(true);
   }
 
   function handleLogout() {

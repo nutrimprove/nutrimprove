@@ -40,8 +40,10 @@ class Auth {
     this.renewSession = this.renewSession.bind(this);
   }
 
-  login() {
-    this.auth0.authorize({ prompt: 'login' });
+  login(force) {
+    force
+      ? this.auth0.authorize({ prompt: 'login' })
+      : this.auth0.authorize();
   }
 
   extractInfoFromHash = () => {

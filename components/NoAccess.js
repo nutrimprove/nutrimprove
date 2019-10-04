@@ -2,6 +2,7 @@ import React from 'react';
 import SectionHeader from './SectionHeader';
 import PropTypes from 'prop-types';
 import { PROJECT_NAME } from '../helpers/constants';
+import { connect } from 'react-redux';
 
 const content = {
   title: PROJECT_NAME,
@@ -9,14 +10,24 @@ const content = {
   message: '',
 };
 
-const NoAccess = ({ user }) => {
-  if (user && user.email && !user.email_verified) {
-    content.subtitle = 'Your account has not yet been verified.';
-    content.messages = [
-      'Thank you for registering.',
-      'An admin will need to verify your account so that you can access the functionality of the site. ',
-      'Please try again later!',
-    ];
+const NoAccess = ({ userDetails }) => {
+  if (userDetails.email) {
+    if (!userDetails.email_verified) {
+      content.subtitle = 'Please verify your email account';
+      content.messages = [
+        'Thank you for registering.',
+        'Please follow the link provided in the verification email we sent you to verify your email address.',
+      ];
+    } else if (
+      'approved' in userDetails &&
+      userDetails.approved === false
+    ) {
+      content.subtitle = 'Waiting for an Admin Approval';
+      content.messages = [
+        'An admin will need to verify your account so that you can access the functionality of the site.',
+        'Please try again later!',
+      ];
+    }
   }
 
   return (
@@ -27,7 +38,16 @@ const NoAccess = ({ user }) => {
 };
 
 NoAccess.propTypes = {
-  user: PropTypes.object,
+  userDetails: PropTypes.object.isRequired,
 };
 
-export default NoAccess;
+const mapStateToProps = (states, ownProps) => {
+  return {
+    userDetails: states.globalState.userDetails,
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  null
+)(NoAccess);

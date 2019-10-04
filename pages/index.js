@@ -16,7 +16,7 @@ const styles = {
 
 const Index = ({ classes, userDetails }) => (
   <div className={classes.content}>
-    {userDetails && userDetails.email && userDetails.email_verified ? (
+    {userDetails && userDetails.email_verified && userDetails.approved ? (
       <Content />
     ) : (
       <NoAccess user={userDetails} />
