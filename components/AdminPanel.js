@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import SectionHeader from './SectionHeader';
 import { approveUser, getUsers, revokeUser } from '../connect/api';
 import ResultsTable from './ResultsTable';
 import ButtonWithSpinner from './ButtonWithSpinner';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import PrimaryButton from './PrimaryButton';
 
 const sectionHeader = {
   title: 'Administration page',
@@ -89,21 +90,13 @@ const AdminPanel = ({ userDetails }) => {
   return (
     <>
       <SectionHeader content={sectionHeader} />
-      <ButtonWithSpinner action={listAllUsers} context='users-getall'>
-        All Users
-      </ButtonWithSpinner>
-      <ButtonWithSpinner
-        action={listNotApprovedUsers}
-        context='users-notapproved'
-      >
+      <PrimaryButton action={listAllUsers}>All Users</PrimaryButton>
+      <PrimaryButton action={listNotApprovedUsers}>
         Users Needing Approval
-      </ButtonWithSpinner>
-      <ButtonWithSpinner
-        action={listApprovedUsers}
-        context='users-approved'
-      >
+      </PrimaryButton>
+      <PrimaryButton action={listApprovedUsers}>
         Approved Users
-      </ButtonWithSpinner>
+      </PrimaryButton>
       <ResultsTable values={users} />
     </>
   );
