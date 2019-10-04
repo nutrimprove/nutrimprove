@@ -8,7 +8,7 @@ const DeleteUserButton = ({ user, action }) => {
   const [confirm, setConfirm] = useState(false);
   const [disabled, setDisabled] = useState(false);
 
-  const actions = async () => {
+  const confirmButtonActions = async () => {
     setDisabled(true);
     await deleteUser(user);
     action();
@@ -21,24 +21,22 @@ const DeleteUserButton = ({ user, action }) => {
     }, 5000);
   };
 
-  if (!confirm) {
-    return (
-      <PrimaryButton action={setTempConfirmation}>
-        Delete User
-      </PrimaryButton>
-    );
-  } else {
-    return (
-      <PrimaryButton
-        action={actions}
-        colour={'secondary'}
-        disabled={disabled}
-      >
-        Confirm Deletion
-        <LoadingSpinner context={`deleteUser-${user}`} />
-      </PrimaryButton>
-    );
-  }
+  const defaultButton = () => (
+    <PrimaryButton action={setTempConfirmation}>Delete User</PrimaryButton>
+  );
+
+  const confirmButton = () => (
+    <PrimaryButton
+      action={confirmButtonActions}
+      colour={'secondary'}
+      disabled={disabled}
+    >
+      Confirm Deletion
+      <LoadingSpinner context={`deleteUser-${user}`} />
+    </PrimaryButton>
+  );
+
+  return confirm ? confirmButton() : defaultButton();
 };
 
 DeleteUserButton.propTypes = {
