@@ -3,12 +3,18 @@ import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import withStyles from '@material-ui/core/styles/withStyles';
 
-const PrimaryButton = ({ classes, action, disabled, children }) => (
+const PrimaryButton = ({
+  classes,
+  action,
+  disabled,
+  colour = 'primary',
+  children,
+}) => (
   <>
     <Button
       className={classes.button}
       variant='contained'
-      color='primary'
+      color={colour}
       onClick={action}
       disabled={disabled}
     >
@@ -22,6 +28,7 @@ PrimaryButton.propTypes = {
   disabled: PropTypes.bool,
   children: PropTypes.object,
   classes: PropTypes.object.isRequired,
+  colour: PropTypes.string,
 };
 
 const styles = {
@@ -29,7 +36,7 @@ const styles = {
     padding: '6px 16px',
     height: 40,
     lineHeight: 'normal',
-    marginRight: 40,
+    marginRight: 20,
   },
 };
 

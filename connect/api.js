@@ -60,6 +60,12 @@ const revokeUser = user =>
     `revokeUser-${user}`
   );
 
+const deleteUser = user =>
+  trackPromise(
+    postRequest(usersEndpoint, { user, deleteuser: true }),
+    `deleteUser-${user}`
+  );
+
 const getSearchedTerms = searchTerm =>
   getRequest(
     `${searchTermsEndpoint}/?term=${encodeURIComponent(searchTerm)}`
@@ -84,4 +90,5 @@ export {
   getSearchedTerms,
   approveUser,
   revokeUser,
+  deleteUser,
 };

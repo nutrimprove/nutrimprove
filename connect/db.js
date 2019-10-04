@@ -131,6 +131,11 @@ const setUserApproval = async (user, approval) => {
   );
 };
 
+const deleteUser = async user => {
+  const UserConnection = await getUserConnection();
+  return UserConnection.deleteOne({ email: user });
+};
+
 const getAllUsers = async () => {
   const UserConnection = await getUserConnection();
   return UserConnection.find({});
@@ -138,7 +143,9 @@ const getAllUsers = async () => {
 
 const getApprovedUsers = async () => {
   const UserConnection = await getUserConnection();
-  return UserConnection.find({ approved: true });
+  const result = UserConnection.find({ approved: true });
+  console.log('===== ( result ) =======>', result);
+  return result;
 };
 
 const getNotApprovedUsers = async () => {
@@ -193,4 +200,5 @@ export {
   getApprovedUsers,
   getNotApprovedUsers,
   setUserApproval,
+  deleteUser,
 };

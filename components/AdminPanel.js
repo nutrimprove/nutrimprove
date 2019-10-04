@@ -6,6 +6,7 @@ import ButtonWithSpinner from './ButtonWithSpinner';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import PrimaryButton from './PrimaryButton';
+import DeleteUserButton from './DeleteUserButton';
 
 const sectionHeader = {
   title: 'Administration page',
@@ -38,30 +39,37 @@ const AdminPanel = ({ userDetails }) => {
     updateResults();
   }, [userQuery]);
 
-  const approvalButton = (user, disabled, action) => {
-    return (
-      <ButtonWithSpinner
-        action={async () => {
-          if (action === 'approve') {
-            await approveUser(user);
-          } else {
-            await revokeUser(user);
-          }
-          updateResults();
-        }}
-        context={`${action}User-${user}`}
-        disabled={disabled}
-      >
-        {action}
-      </ButtonWithSpinner>
-    );
-  };
+  const approvalButton = (user, disabled, action) => (
+    <ButtonWithSpinner
+      action={async () => {
+        if (action === 'approve') {
+          await approveUser(user);
+        } else {
+          await revokeUser(user);
+        }
+        updateResults();
+      }}
+      context={`${action}User-${user}`}
+      disabled={disabled}
+    >
+      {action}
+    </ButtonWithSpinner>
+  );
 
-  const renderActionButton = user => {
+  const renderApprovalButton = user => {
     const hasPermissions = userDetails.role < user.role;
     const action = user.approved === false ? 'approve' : 'revoke';
     return approvalButton(user.email, !hasPermissions, action);
   };
+
+  const renderActionButtons = user => (
+    <>
+      {renderApprovalButton(user)}
+      {userDetails.role === 0 && (
+        <DeleteUserButton action={updateResults} user={user.email} />
+      )}
+    </>
+  );
 
   const updateResults = async () => {
     if (userQuery) {
@@ -73,7 +81,7 @@ const AdminPanel = ({ userDetails }) => {
             email: user.email,
             role: userRoleToString(user.role),
             approved: user.approved,
-            action: renderActionButton(user),
+            action: renderActionButtons(user),
           });
         });
       }
@@ -92,7 +100,7 @@ const AdminPanel = ({ userDetails }) => {
       <SectionHeader content={sectionHeader} />
       <PrimaryButton action={listAllUsers}>All Users</PrimaryButton>
       <PrimaryButton action={listNotApprovedUsers}>
-        Users Needing Approval
+        Waiting Approval
       </PrimaryButton>
       <PrimaryButton action={listApprovedUsers}>
         Approved Users

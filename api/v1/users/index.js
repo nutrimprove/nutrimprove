@@ -4,6 +4,7 @@ import {
   getApprovedUsers,
   getNotApprovedUsers,
   setUserApproval,
+  deleteUser,
 } from '../../../connect/db';
 
 const getCollectionResults = async (req, res) => {
@@ -27,11 +28,17 @@ const getCollectionResults = async (req, res) => {
       }
     }
   } else if (req.method === 'POST') {
-    const user = req.body.user;
-    const approval = req.body.approval;
-    user && 'approval' in req.body
-      ? (result = await setUserApproval(user, approval))
-      : console.warn('No user payload!', req.body);
+    const { user, approval, deleteuser } = req.body;
+    if (user) {
+      if ('approval' in req.body) {
+        result = await setUserApproval(user, approval);
+      } else if (deleteuser === true) {
+        result = await deleteUser(user);
+        console.log('===== ( result ) =======>', result);
+      }
+    } else {
+      console.warn('No user payload!', req.body);
+    }
   }
   if (result) {
     return res.status(200).json(result);
