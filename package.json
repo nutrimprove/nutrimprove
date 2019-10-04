@@ -1,7 +1,7 @@
 {
-  "foodName": "eatwell_poc",
+  "name": "NutrImprove",
   "version": "1.0.0",
-  "description": "Eat Well app",
+  "description": "NutrImprove app",
   "main": "pages/index.js",
   "scripts": {
     "build": "next build",

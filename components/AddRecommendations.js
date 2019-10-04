@@ -5,7 +5,7 @@ import PrimaryButton from './PrimaryButton';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import uniqid from 'uniqid';
-import { getTime } from '../utils/utils';
+import { getTime } from '../helpers/utils';
 import {
   addFoodAction,
   addRecommendedFoodAction,

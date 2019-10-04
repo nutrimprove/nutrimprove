@@ -5,7 +5,7 @@ import { setUserDetails } from '../store/global/actions';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import SectionHeader from '../components/SectionHeader';
-import { setUserDetailsWithRole } from '../utils/utils';
+import { setUserDetailsWithRole } from '../helpers/utils';
 
 const auth = new Auth();
 const title = `Redirection Page!!`;

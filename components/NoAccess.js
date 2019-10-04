@@ -1,9 +1,10 @@
 import React from 'react';
 import SectionHeader from './SectionHeader';
 import PropTypes from 'prop-types';
+import { PROJECT_NAME } from '../helpers/constants';
 
 const content = {
-  title: 'Eatwell',
+  title: PROJECT_NAME,
   subtitle: 'Please login to be able to use the website!',
   message: '',
 };
