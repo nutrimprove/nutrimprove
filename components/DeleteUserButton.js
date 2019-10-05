@@ -3,14 +3,15 @@ import PrimaryButton from './PrimaryButton';
 import LoadingSpinner from './LoadingSpinner';
 import { deleteUser } from '../connect/api';
 import { useState } from 'react';
+import { isAdmin } from '../helpers/userUtils';
 
 const DeleteUserButton = ({ user, action }) => {
   const [confirm, setConfirm] = useState(false);
-  const [disabled, setDisabled] = useState(user.isAdmin); // Admin users not deletable
+  const [disabled, setDisabled] = useState(isAdmin(user)); // Admin users not deletable
 
   const confirmButtonActions = async () => {
     setDisabled(true);
-    await deleteUser(user);
+    await deleteUser(user.email);
     action();
   };
 
@@ -34,7 +35,7 @@ const DeleteUserButton = ({ user, action }) => {
       disabled={disabled}
     >
       Confirm Deletion
-      <LoadingSpinner context={`deleteUser-${user}`} />
+      <LoadingSpinner context={`deleteUser-${user.email}`} />
     </PrimaryButton>
   );
 
@@ -42,7 +43,7 @@ const DeleteUserButton = ({ user, action }) => {
 };
 
 DeleteUserButton.propTypes = {
-  user: PropTypes.string.isRequired,
+  user: PropTypes.object.isRequired,
   action: PropTypes.object,
 };
 

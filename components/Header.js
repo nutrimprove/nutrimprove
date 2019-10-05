@@ -11,7 +11,7 @@ import Auth from '../auth/Auth';
 import { setUserDetails } from '../store/global/actions';
 import { connect } from 'react-redux';
 import HeaderLink from './HeaderLink';
-import { setUserDetailsWithRole } from '../helpers/utils';
+import { setUserDetailsWithRole } from '../helpers/userUtils';
 
 const auth = new Auth();
 

@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import PrimaryButton from './PrimaryButton';
 import DeleteUserButton from './DeleteUserButton';
-import { userRoleToString } from '../helpers/utils';
+import { isAdmin, userRoleToString } from '../helpers/userUtils';
 import { ROLES } from '../helpers/constants';
 
 const sectionHeader = {
@@ -15,8 +15,14 @@ const sectionHeader = {
   subtitle: `Verify and revoke users' access to the app`,
 };
 
+const queries = {
+  GET_ALL: 'getall',
+  APPROVED: 'approved',
+  NOT_APPROVED: 'notapproved',
+};
+
 const AdminPanel = ({ userDetails }) => {
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState();
   const [userQuery, setUserQuery] = useState();
 
   useEffect(() => {
@@ -25,7 +31,7 @@ const AdminPanel = ({ userDetails }) => {
 
   const approvalButton = user => {
     const hasPermissions =
-      userDetails.isAdmin && userDetails.role < user.role;
+      isAdmin(userDetails) && userDetails.role < user.role;
     const action = user.approved === false ? 'approve' : 'revoke';
     return (
       <ButtonWithSpinner
@@ -45,7 +51,7 @@ const AdminPanel = ({ userDetails }) => {
 
   const deleteButton = user => {
     if (userDetails.role === ROLES.OWNER) {
-      return <DeleteUserButton action={updateResults} user={user.email} />;
+      return <DeleteUserButton action={updateResults} user={user} />;
     }
   };
 
@@ -74,23 +80,32 @@ const AdminPanel = ({ userDetails }) => {
     }
   };
 
-  const listAllUsers = () => setUserQuery('getall');
-
-  const listApprovedUsers = () => setUserQuery('approved');
-
-  const listNotApprovedUsers = () => setUserQuery('notapproved');
+  const listAllUsers = () => setUserQuery(queries.GET_ALL);
+  const listApprovedUsers = () => setUserQuery(queries.APPROVED);
+  const listNotApprovedUsers = () => setUserQuery(queries.NOT_APPROVED);
 
   return (
     <>
       <SectionHeader content={sectionHeader} />
-      <PrimaryButton action={listAllUsers}>All Users</PrimaryButton>
-      <PrimaryButton action={listNotApprovedUsers}>
+      <PrimaryButton
+        action={listAllUsers}
+        disabled={userQuery === queries.GET_ALL}
+      >
+        All Users
+      </PrimaryButton>
+      <PrimaryButton
+        action={listNotApprovedUsers}
+        disabled={userQuery === queries.NOT_APPROVED}
+      >
         Waiting Approval
       </PrimaryButton>
-      <PrimaryButton action={listApprovedUsers}>
+      <PrimaryButton
+        action={listApprovedUsers}
+        disabled={userQuery === queries.APPROVED}
+      >
         Approved Users
       </PrimaryButton>
-      <ResultsTable values={users} />
+      {users && <ResultsTable values={users} />}
     </>
   );
 };

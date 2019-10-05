@@ -10,6 +10,7 @@ import Recommendations from './Recommendations';
 import AddRecommendations from './AddRecommendations';
 import AdminPanel from './AdminPanel';
 import { connect } from 'react-redux';
+import { isAdmin } from '../helpers/userUtils';
 
 function TabContainer(props) {
   return (
@@ -35,7 +36,7 @@ const Content = ({ classes, userDetails }) => {
           <Tab label='Search Food' />
           <Tab label='View Recommendations' />
           <Tab label='Add Recommendations' />
-          {userDetails.approved && userDetails.isAdmin && (
+          {userDetails.approved && isAdmin(userDetails) && (
             <Tab label='Admin Panel' />
           )}
         </Tabs>
