@@ -7,28 +7,12 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import PrimaryButton from './PrimaryButton';
 import DeleteUserButton from './DeleteUserButton';
+import { userRoleToString } from '../helpers/utils';
+import { ROLES } from '../helpers/constants';
 
 const sectionHeader = {
   title: 'Administration page',
   subtitle: `Verify and revoke users' access to the app`,
-};
-
-const userRoleToString = userRole => {
-  let role;
-  switch (userRole) {
-    case 0:
-      role = 'Owner';
-      break;
-    case 5:
-      role = 'Admin';
-      break;
-    case 100:
-      role = 'Contributor';
-      break;
-    default:
-      role = 'Other';
-  }
-  return role;
 };
 
 const AdminPanel = ({ userDetails }) => {
@@ -39,35 +23,36 @@ const AdminPanel = ({ userDetails }) => {
     updateResults();
   }, [userQuery]);
 
-  const approvalButton = (user, disabled, action) => (
-    <ButtonWithSpinner
-      action={async () => {
-        if (action === 'approve') {
-          await approveUser(user);
-        } else {
-          await revokeUser(user);
-        }
-        updateResults();
-      }}
-      context={`${action}User-${user}`}
-      disabled={disabled}
-    >
-      {action}
-    </ButtonWithSpinner>
-  );
-
-  const renderApprovalButton = user => {
-    const hasPermissions = userDetails.role < user.role;
+  const approvalButton = user => {
+    const hasPermissions =
+      userDetails.isAdmin && userDetails.role < user.role;
     const action = user.approved === false ? 'approve' : 'revoke';
-    return approvalButton(user.email, !hasPermissions, action);
+    return (
+      <ButtonWithSpinner
+        action={async () => {
+          action === 'approve'
+            ? await approveUser(user.email)
+            : await revokeUser(user.email);
+          updateResults();
+        }}
+        context={`${action}User-${user.email}`}
+        disabled={!hasPermissions}
+      >
+        {action}
+      </ButtonWithSpinner>
+    );
+  };
+
+  const deleteButton = user => {
+    if (userDetails.role === ROLES.OWNER) {
+      return <DeleteUserButton action={updateResults} user={user.email} />;
+    }
   };
 
   const renderActionButtons = user => (
     <>
-      {renderApprovalButton(user)}
-      {userDetails.role === 0 && (
-        <DeleteUserButton action={updateResults} user={user.email} />
-      )}
+      {approvalButton(user)}
+      {deleteButton(user)}
     </>
   );
 

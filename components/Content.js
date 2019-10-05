@@ -35,7 +35,7 @@ const Content = ({ classes, userDetails }) => {
           <Tab label='Search Food' />
           <Tab label='View Recommendations' />
           <Tab label='Add Recommendations' />
-          {userDetails.approved && userDetails.role <= 5 && (
+          {userDetails.approved && userDetails.isAdmin && (
             <Tab label='Admin Panel' />
           )}
         </Tabs>

@@ -1,11 +1,17 @@
 import { getUsers } from '../connect/api';
+import { ROLES } from './constants';
+
+export const userRoleToString = userRole => {
+  return Object.keys(ROLES).find(key => ROLES[key] === userRole);
+};
 
 export const setUserDetailsWithRole = async (setUserDetails, userInfo) => {
   if (userInfo && userInfo.email) {
     const user = await getUsers(userInfo.email);
     if (user) {
       const { role, approved } = user;
-      setUserDetails({ ...userInfo, role, approved });
+      const isAdmin = role === ROLES.OWNER || role === ROLES.ADMIN;
+      setUserDetails({ ...userInfo, role, approved, isAdmin });
     } else {
       console.error('User not found!', userInfo.email);
     }

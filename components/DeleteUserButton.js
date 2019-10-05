@@ -6,7 +6,7 @@ import { useState } from 'react';
 
 const DeleteUserButton = ({ user, action }) => {
   const [confirm, setConfirm] = useState(false);
-  const [disabled, setDisabled] = useState(false);
+  const [disabled, setDisabled] = useState(user.isAdmin); // Admin users not deletable
 
   const confirmButtonActions = async () => {
     setDisabled(true);
