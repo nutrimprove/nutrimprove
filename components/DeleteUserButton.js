@@ -22,7 +22,9 @@ const DeleteUserButton = ({ user, action }) => {
   };
 
   const defaultButton = () => (
-    <PrimaryButton action={setTempConfirmation}>Delete User</PrimaryButton>
+    <PrimaryButton action={setTempConfirmation} disabled={disabled}>
+      Delete User
+    </PrimaryButton>
   );
 
   const confirmButton = () => (
