@@ -18,10 +18,7 @@ const NoAccess = ({ userDetails }) => {
         'Thank you for registering.',
         'Please follow the link provided in the verification email we sent you to verify your email address.',
       ];
-    } else if (
-      'approved' in userDetails &&
-      userDetails.approved === false
-    ) {
+    } else if (!userDetails.approved) {
       content.subtitle = 'Waiting for an Admin Approval';
       content.messages = [
         'An admin will need to verify your account so that you can access the functionality of the site.',
