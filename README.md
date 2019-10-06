@@ -1,10 +1,10 @@
-# EatWell
+# NutrImprove
 
 ## Stack
 
 - [Next.js](https://nextjs.org/)
-- [Express](https://expressjs.com/)
-- [MariaDB](https://aws.amazon.com/rds/mariadb/)
+- [Zeit Now](https://zeit.co/)
+- [MongoDB](https://www.mongodb.com)
 
 ## Usage
 
@@ -28,7 +28,7 @@
 
 ### Project Management
 
-- This repo is managed using GitHub's project management system on a simple Kanban-style board ([LINK](https://github.com/WhiT3Kr0w/eatwell/projects/1))
+- This repo is managed using GitHub's project management system on a simple Kanban-style board ([LINK](https://github.com/eat-well/eatwell-web/projects/1))
 - Please assign yourself to an issue if you are working on it and unassign yourself once done
 - Please add tasks as issues as this allows better linking to PRs, labelling and discussion if necessary
 - Column Explanation

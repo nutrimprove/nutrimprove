@@ -67,4 +67,24 @@ const recommendationsSchema = new mongoose.Schema([
   },
 ]);
 
-export { searchTermSchema, recommendationsSchema };
+const userSchema = new mongoose.Schema(
+  {
+    email: {
+      type: String,
+      lowercase: true,
+      trim: true,
+      required: true,
+    },
+    role: {
+      type: Number,
+      required: true,
+    },
+    approved: {
+      type: Boolean,
+      required: true,
+    },
+  },
+  { timestamps: true }
+);
+
+export { searchTermSchema, recommendationsSchema, userSchema };

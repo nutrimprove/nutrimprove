@@ -8,6 +8,9 @@ import Typography from '@material-ui/core/Typography/index';
 import FoodByName from './FoodByName';
 import Recommendations from './Recommendations';
 import AddRecommendations from './AddRecommendations';
+import AdminPanel from './AdminPanel';
+import { connect } from 'react-redux';
+import { isAdmin } from '../helpers/userUtils';
 
 function TabContainer(props) {
   return (
@@ -19,7 +22,7 @@ TabContainer.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
-const Content = ({ classes }) => {
+const Content = ({ classes, userDetails }) => {
   const [tab, setTab] = useState(2);
 
   const tabChange = (event, tab) => {
@@ -28,11 +31,14 @@ const Content = ({ classes }) => {
 
   return (
     <div className={classes.root}>
-      <AppBar position='static'>
+      <AppBar position='static' className={classes.tabs}>
         <Tabs value={tab} onChange={tabChange}>
           <Tab label='Search Food' />
           <Tab label='View Recommendations' />
           <Tab label='Add Recommendations' />
+          {userDetails.approved && isAdmin(userDetails) && (
+            <Tab label='Admin Panel' />
+          )}
         </Tabs>
       </AppBar>
       {tab === 0 && (
@@ -50,12 +56,18 @@ const Content = ({ classes }) => {
           <AddRecommendations />
         </TabContainer>
       )}
+      {tab === 3 && (
+        <TabContainer id='adminPanel'>
+          <AdminPanel />
+        </TabContainer>
+      )}
     </div>
   );
 };
 
 Content.propTypes = {
   classes: PropTypes.object.isRequired,
+  userDetails: PropTypes.object.isRequired,
 };
 
 const styles = theme => ({
@@ -63,6 +75,19 @@ const styles = theme => ({
     flexGrow: 1,
     backgroundColor: theme.palette.background.paper,
   },
+  tabs: {
+    backgroundColor: '#3f51b5',
+    color: 'white',
+  },
 });
 
-export default withStyles(styles)(Content);
+const mapStateToProps = (states, ownProps) => {
+  return {
+    userDetails: states.globalState.userDetails,
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  null
+)(withStyles(styles)(Content));

@@ -28,12 +28,6 @@ const getCollectionResults = async (req, res) => {
 
     const db = await connectToDatabase(process.env.MONGODB_URI);
     const collection = await db.collection('search_cache');
-
-    if (term === '*') {
-      // for testing
-      return res.status(200).json(await collection.find({}).toArray());
-    }
-
     let result = await collection.findOne({ search_term: term });
 
     if (!result) {

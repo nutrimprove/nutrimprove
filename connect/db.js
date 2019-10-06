@@ -1,10 +1,15 @@
 import url from 'url';
 import { MongoClient } from 'mongodb';
 import mongoose from 'mongoose';
-import { recommendationsSchema, searchTermSchema } from './mongoDBSchemas';
+import {
+  recommendationsSchema,
+  searchTermSchema,
+  userSchema,
+} from './mongoDBSchemas';
 
 const URI = process.env.MONGODB_URI;
 let db = null;
+const mongoOptions = { useUnifiedTopology: true, useNewUrlParser: true };
 
 const connectToDatabase = async uri => {
   // Return db if already cached
@@ -13,7 +18,7 @@ const connectToDatabase = async uri => {
   }
 
   // Create new MongoDB connection
-  const client = await MongoClient.connect(uri, { useNewUrlParser: true });
+  const client = await MongoClient.connect(uri, mongoOptions);
 
   // eslint-disable-next-line node/no-deprecated-api
   db = await client.db(url.parse(uri).pathname.substr(1));
@@ -22,7 +27,7 @@ const connectToDatabase = async uri => {
 
 const connect = (description, schema, collection) => {
   if (mongoose.connection.readyState === 0) {
-    mongoose.connect(URI, { useNewUrlParser: true }, err => {
+    mongoose.connect(URI, mongoOptions, err => {
       if (err) {
         console.error(`ERROR connecting to '${URI}'`, err);
       } else {
@@ -78,6 +83,76 @@ const addSearchTerm = async searchTermObj => {
   );
 };
 
+const getUserConnection = () =>
+  connect(
+    'users',
+    userSchema,
+    'users'
+  );
+
+const getUser = async user => {
+  const UserConnection = await getUserConnection();
+
+  return new Promise((resolve, reject) =>
+    UserConnection.findOne({ email: user }, (err, result) => {
+      if (err) {
+        console.error(`Error when searching for '${user}'`, err);
+        mongoose.connection.close();
+        reject(err);
+      }
+      if (!result) {
+        const newUser = new UserConnection({
+          email: user,
+          role: 100,
+          approved: false,
+        });
+        newUser.save(err => {
+          if (err) {
+            console.error(`Error saving '${user}'`, err);
+            reject(err);
+          } else {
+            console.log('User stored!', user);
+            resolve(newUser);
+          }
+        });
+      } else {
+        console.log('User fetched!', user);
+        resolve(result);
+      }
+    })
+  );
+};
+
+const setUserApproval = async (user, approval) => {
+  const UserConnection = await getUserConnection();
+  return UserConnection.findOneAndUpdate(
+    { email: user },
+    { approved: approval }
+  );
+};
+
+const deleteUser = async user => {
+  const UserConnection = await getUserConnection();
+  return UserConnection.deleteOne({ email: user });
+};
+
+const getAllUsers = async () => {
+  const UserConnection = await getUserConnection();
+  return UserConnection.find({});
+};
+
+const getApprovedUsers = async () => {
+  const UserConnection = await getUserConnection();
+  const result = UserConnection.find({ approved: true });
+  console.log('===== ( result ) =======>', result);
+  return result;
+};
+
+const getNotApprovedUsers = async () => {
+  const UserConnection = await getUserConnection();
+  return UserConnection.find({ approved: false });
+};
+
 const addRecommendations = async recommendationsObj => {
   const recommendations = recommendationsObj.map(recommendation => ({
     food: {
@@ -120,4 +195,10 @@ export {
   getDocuments,
   addSearchTerm,
   addRecommendations,
+  getUser,
+  getAllUsers,
+  getApprovedUsers,
+  getNotApprovedUsers,
+  setUserApproval,
+  deleteUser,
 };

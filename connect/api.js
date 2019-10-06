@@ -2,16 +2,11 @@ import axios from 'axios';
 import { trackPromise } from 'react-promise-tracker';
 
 const foodApiEndpoint = 'https://api.edamam.com/api/food-database/parser';
-const category = ``;
+const category = ``; // Edamam category filter
 const apiAuthParams = `&app_key=8a2617ec655417bd43fd2b3df4b85a30&app_id=652bd7d5`;
 const searchTermsEndpoint = '/api/v1/search';
 const recommendationsEndpoint = '/api/v1/recommendations';
-
-export const getString = string =>
-  string
-    .toString()
-    .trim()
-    .toLowerCase();
+const usersEndpoint = '/api/v1/users';
 
 const getRequest = endpoint =>
   axios
@@ -21,46 +16,79 @@ const getRequest = endpoint =>
       console.error(`ERROR connecting to '${endpoint}': ${error}`)
     );
 
+const postRequest = (endpoint, payload) =>
+  axios
+    .post(endpoint, payload)
+    .then(res => res.data)
+    .catch(error =>
+      console.error(`ERROR connecting to '${endpoint}': ${error}`)
+    );
+
 const fetchFoods = name =>
   trackPromise(
-    axios
-      .get(`${foodApiEndpoint}?ingr=${name}${apiAuthParams}${category}`)
-      .then(res => res.data.hints),
+    getRequest(
+      `${foodApiEndpoint}?ingr=${encodeURIComponent(
+        name
+      )}${apiAuthParams}${category}`
+    ).then(res => res.hints),
     'fetchFoods'
   );
 
-const fetchRecommendations = contributor =>
+const fetchRecommendations = user =>
   trackPromise(
-    getRequest(`${recommendationsEndpoint}/?cid=${contributor}`),
+    getRequest(
+      `${recommendationsEndpoint}/?user=${encodeURIComponent(user)}`
+    ),
     'fetchRecommendations'
   );
 
-const getSearchedTerms = searchTerm =>
-  getRequest(`${searchTermsEndpoint}/?term=${searchTerm}`);
+const getUsers = user =>
+  getRequest(`${usersEndpoint}/?user=${encodeURIComponent(user)}`);
 
-const postSearchTerm = searchTerm => {
-  axios
-    .post(searchTermsEndpoint, searchTerm)
-    .then(response => {
-      console.log(response);
-    })
-    .catch(error => {
-      console.error(
-        `ERROR connecting to '${searchTermsEndpoint}': ${error}`
-      );
-    });
-};
+const addUser = user =>
+  postRequest(usersEndpoint, encodeURIComponent(user));
+
+const approveUser = user =>
+  trackPromise(
+    postRequest(usersEndpoint, { user, approval: true }),
+    `approveUser-${user}`
+  );
+
+const revokeUser = user =>
+  trackPromise(
+    postRequest(usersEndpoint, { user, approval: false }),
+    `revokeUser-${user}`
+  );
+
+const deleteUser = user =>
+  trackPromise(
+    postRequest(usersEndpoint, { user, deleteuser: true }),
+    `deleteUser-${user}`
+  );
+
+const getSearchedTerms = searchTerm =>
+  getRequest(
+    `${searchTermsEndpoint}/?term=${encodeURIComponent(searchTerm)}`
+  );
+
+const postSearchTerm = searchTerm =>
+  postRequest(searchTermsEndpoint, encodeURIComponent(searchTerm));
 
 const postRecommendations = payload =>
   trackPromise(
-    axios.post(recommendationsEndpoint, payload).then(res => res.data),
+    postRequest(recommendationsEndpoint, payload),
     'postRecommendations'
   );
 
 export {
   postRecommendations,
   postSearchTerm,
+  addUser,
   fetchFoods,
   fetchRecommendations,
+  getUsers,
   getSearchedTerms,
+  approveUser,
+  revokeUser,
+  deleteUser,
 };

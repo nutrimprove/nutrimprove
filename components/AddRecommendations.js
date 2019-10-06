@@ -5,6 +5,7 @@ import PrimaryButton from './PrimaryButton';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import uniqid from 'uniqid';
+import { getTime } from '../helpers/utils';
 import {
   addFoodAction,
   addRecommendedFoodAction,
@@ -16,6 +17,7 @@ import SectionHeader from './SectionHeader';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { usePromiseTracker } from 'react-promise-tracker';
 import ButtonWithSpinner from './ButtonWithSpinner';
+import Status from './Status';
 
 const maxFoodFields = 4;
 const maxRecommendationFields = 4;
@@ -37,7 +39,7 @@ const AddRecommendations = ({
   classes,
 }) => {
   const [validation, setValidation] = useState(false);
-  const [status, setStatus] = useState('');
+  const [status, setStatus] = useState([]);
   const { promiseInProgress: savingRecommendations } = usePromiseTracker({
     area: 'postRecommendations',
   });
@@ -101,12 +103,16 @@ const AddRecommendations = ({
     return duplicatedFoods.length === 0 && emptyFields.length === 0;
   };
 
+  const updateStatus = newStatus => {
+    setStatus([`${getTime()} - ${newStatus}`, ...status]);
+  };
+
   const addRecommendations = async () => {
     const recommendationsPayload = [];
 
     if (!validateFields()) {
       setValidation(true);
-      setStatus(
+      updateStatus(
         'No duplicate nor empty fields are allowed when inserting recommendations!'
       );
       return;
@@ -129,16 +135,19 @@ const AddRecommendations = ({
     }
 
     const result = await postRecommendations(recommendationsPayload);
+    const recCount = recommendationsPayload.length;
 
     // Reset fields if all combinations were stored successfully
-    if (result.insertedCount === recommendationsPayload.length) {
+    if (result.insertedCount === recCount) {
       removeAllFoods();
       setValidation(false);
-      setStatus(
-        `Recommendations inserted into the database! (#${recommendationsPayload.length})`
+      const recommendationString =
+        recCount === 1 ? 'recommendation' : 'recommendations';
+      updateStatus(
+        `${recCount} ${recommendationString} added to the database!`
       );
     } else {
-      setStatus(
+      updateStatus(
         'Something went wrong when saving records to database.\nPlease refresh and try again. If it persists please contact us!'
       );
       console.error('Something went wrong!');
@@ -189,7 +198,7 @@ const AddRecommendations = ({
           {defaultAddRecsButtonText}
         </ButtonWithSpinner>
       </div>
-      <div className={classes.status}>{status}</div>
+      {status.length > 0 ? <Status status={status} /> : null}
     </>
   );
 };
@@ -221,11 +230,6 @@ const styles = {
   },
   fieldtitle: {
     marginBottom: 30,
-  },
-  status: {
-    marginTop: 30,
-    fontSize: '0.9em',
-    backgroundColor: '#ffc',
   },
   searchfood: {
     display: '-webkit-box',

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import RecommendationsResults from './RecommendationsResults';
+import ResultsTable from './ResultsTable';
 import { fetchRecommendations } from '../connect/api';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -25,6 +25,13 @@ const Recommendations = ({ userDetails }) => {
     }
   };
 
+  const formattedRecommendations = () =>
+    recommendations.map(recommendation => ({
+      food: recommendation.food.name,
+      recommendation: recommendation.recommendation.name,
+      contributor: recommendation.contributor_id,
+    }));
+
   return (
     <>
       <SectionHeader content={sectionHeader} />
@@ -34,7 +41,7 @@ const Recommendations = ({ userDetails }) => {
       >
         {sectionHeader.title}
       </ButtonWithSpinner>
-      <RecommendationsResults values={recommendations} />
+      <ResultsTable values={formattedRecommendations()} />
     </>
   );
 };
