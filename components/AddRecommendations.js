@@ -104,7 +104,17 @@ const AddRecommendations = ({
   };
 
   const updateStatus = newStatus => {
-    setStatus([`${getTime()} - ${newStatus}`, ...status]);
+    if (Array.isArray(newStatus)) {
+      const statusToAppend = [];
+      newStatus.map((statusLine, index) => {
+        index === 0
+          ? statusToAppend.push(`${getTime()} - ${statusLine}`)
+          : statusToAppend.push(statusLine);
+      });
+      setStatus([...statusToAppend, '', ...status]);
+    } else {
+      setStatus([`${getTime()} - ${newStatus}`, '', ...status]);
+    }
   };
 
   const addRecommendations = async () => {
@@ -135,25 +145,38 @@ const AddRecommendations = ({
     }
 
     const result = await postRecommendations(recommendationsPayload);
-    const recCount = recommendationsPayload.length;
 
-    // Reset fields if all combinations were stored successfully
-    if (result.insertedCount === recCount) {
-      removeAllFoods();
-      setValidation(false);
-      const recommendationString =
-        recCount === 1 ? 'recommendation' : 'recommendations';
-      updateStatus(
-        `${recCount} ${recommendationString} added to the database!`
-      );
+    if (result) {
+      const recCount = recommendationsPayload.length;
+
+      // Reset fields if all combinations were stored successfully
+      if (result.length === recCount) {
+        removeAllFoods();
+        setValidation(false);
+        const recommendationString =
+          recCount === 1 ? 'recommendation' : 'recommendations';
+        updateStatus(
+          `${recCount} ${recommendationString} added to the database!`
+        );
+      } else {
+        if (result.duplicates) {
+          const duplicatesList = result.duplicates.map(
+            (dup, index) => `${dup.food} -> ${dup.recommendation}`
+          );
+          updateStatus([
+            'Some recommendations are already present in the database!',
+            'Please remove these before submitting again:',
+            ...duplicatesList,
+          ]);
+        } else {
+          updateStatus([
+            'Something went wrong when saving records to database.',
+            'Please refresh and try again. If it persists please contact us!',
+          ]);
+        }
+      }
     } else {
-      updateStatus(
-        'Something went wrong when saving records to database.\nPlease refresh and try again. If it persists please contact us!'
-      );
-      console.error('Something went wrong!');
-      console.error(
-        `Recommendations records: ${recommendationsPayload.length}, inserted into DB: ${result.insertedCount}`
-      );
+      updateStatus(`Something went wrong. No results.`);
     }
     return result;
   };

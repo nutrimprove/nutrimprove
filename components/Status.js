@@ -6,6 +6,9 @@ const Status = ({ classes, status }) => (
   <>
     <div className={classes.status}>
       {status.map((line, index) => {
+        if (line === '') {
+          line = <br />;
+        }
         return index === 0 ? (
           <ul key={index} className={classes.first}>
             * {line}
@@ -29,7 +32,7 @@ const styles = {
   status: {
     marginTop: 30,
     backgroundColor: '#ffe',
-    maxHeight: 120,
+    maxHeight: 150,
     minHeight: 40,
     overflow: 'auto',
     border: '1px solid lightgrey',
@@ -38,10 +41,12 @@ const styles = {
   first: {
     fontSize: '0.9em',
     fontWeight: 'bold',
+    marginBottom: 5,
   },
   line: {
     fontSize: '0.8em',
     fontWeight: 'normal',
+    margin: 0,
   },
 };
 
