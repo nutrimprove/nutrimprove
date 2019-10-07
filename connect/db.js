@@ -41,7 +41,7 @@ const connect = (description, schema, collection) => {
 const getDocuments = async (
   collectionName,
   query = {},
-  projection = {},
+  projection = {}
 ) => {
   const mongodb = await connectToDatabase(URI);
   const collection = await mongodb.collection(collectionName);
@@ -56,7 +56,7 @@ const addSearchTerm = async searchTermObj => {
   const SearchTermConnection = await connect(
     'SearchTerm',
     searchTermSchema,
-    'search_cache',
+    'search_cache'
   );
 
   return new Promise((resolve, reject) =>
@@ -79,7 +79,7 @@ const addSearchTerm = async searchTermObj => {
           }
         });
       }
-    }),
+    })
   );
 };
 
@@ -87,7 +87,7 @@ const getUserConnection = () =>
   connect(
     'users',
     userSchema,
-    'users',
+    'users'
   );
 
 const getUser = async user => {
@@ -119,7 +119,7 @@ const getUser = async user => {
         console.log('User fetched!', user);
         resolve(result);
       }
-    }),
+    })
   );
 };
 
@@ -127,7 +127,7 @@ const setUserApproval = async (user, approval) => {
   const UserConnection = await getUserConnection();
   return UserConnection.findOneAndUpdate(
     { email: user },
-    { approved: approval },
+    { approved: approval }
   );
 };
 
@@ -144,7 +144,6 @@ const getAllUsers = async () => {
 const getApprovedUsers = async () => {
   const UserConnection = await getUserConnection();
   const result = UserConnection.find({ approved: true });
-  console.log('===== ( result ) =======>', result);
   return result;
 };
 
@@ -170,7 +169,7 @@ const addRecommendations = async recommendationsObj => {
   const AddRecommendationsConnection = await connect(
     'recommendations',
     recommendationsSchema,
-    'recommendations',
+    'recommendations'
   );
 
   const allRecsQuery = recommendations.map(rec => ({
@@ -201,16 +200,16 @@ const addRecommendations = async recommendationsObj => {
               } else {
                 console.log(
                   'Recommendations inserted!',
-                  formatResultRecs(docs),
+                  formatResultRecs(docs)
                 );
                 resolve(formatResultRecs(docs));
               }
-            },
+            }
           );
         } else {
           console.warn(
             'Found duplicate recommendations!',
-            formatResultRecs(duplicateDocs),
+            formatResultRecs(duplicateDocs)
           );
           resolve({ duplicates: formatResultRecs(duplicateDocs) });
         }
