@@ -2,8 +2,10 @@ import axios from 'axios';
 import { trackPromise } from 'react-promise-tracker';
 
 const foodApiEndpoint = 'https://api.edamam.com/api/food-database/parser';
+const nutritionApiEndpoint =
+  'https://api.edamam.com/api/food-database/nutrients';
 const category = ``; // Edamam category filter
-const apiAuthParams = `&app_key=8a2617ec655417bd43fd2b3df4b85a30&app_id=652bd7d5`;
+const apiAuthParams = `app_key=8a2617ec655417bd43fd2b3df4b85a30&app_id=652bd7d5`;
 const searchTermsEndpoint = '/api/v1/search';
 const recommendationsEndpoint = '/api/v1/recommendations';
 const usersEndpoint = '/api/v1/users';
@@ -29,9 +31,24 @@ const fetchFoods = name =>
     getRequest(
       `${foodApiEndpoint}?ingr=${encodeURIComponent(
         name
-      )}${apiAuthParams}${category}`
+      )}&${apiAuthParams}${category}`
     ).then(res => res.hints),
     'fetchFoods'
+  );
+
+const getNutritionalData = foodId =>
+  trackPromise(
+    postRequest(`${nutritionApiEndpoint}?${apiAuthParams}`, {
+      ingredients: [
+        {
+          quantity: 100, // Currently hard coding 100 grams as measurement
+          measureURI:
+            'http://www.edamam.com/ontologies/edamam.owl#Measure_gram',
+          foodId: foodId,
+        },
+      ],
+    }),
+    `getNutrition`
   );
 
 const fetchRecommendations = user =>
@@ -91,4 +108,5 @@ export {
   approveUser,
   revokeUser,
   deleteUser,
+  getNutritionalData,
 };
