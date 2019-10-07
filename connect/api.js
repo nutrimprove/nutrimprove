@@ -13,7 +13,7 @@ const getRequest = endpoint =>
     .get(endpoint)
     .then(res => res.data)
     .catch(error =>
-      console.error(`ERROR connecting to '${endpoint}': ${error}`)
+      console.error(`ERROR connecting to '${endpoint}': ${error}`),
     );
 
 const postRequest = (endpoint, payload) =>
@@ -21,25 +21,25 @@ const postRequest = (endpoint, payload) =>
     .post(endpoint, payload)
     .then(res => res.data)
     .catch(error =>
-      console.error(`ERROR connecting to '${endpoint}': ${error}`)
+      console.error(`ERROR connecting to '${endpoint}': ${error}`),
     );
 
 const fetchFoods = name =>
   trackPromise(
     getRequest(
       `${foodApiEndpoint}?ingr=${encodeURIComponent(
-        name
-      )}${apiAuthParams}${category}`
+        name,
+      )}${apiAuthParams}${category}`,
     ).then(res => res.hints),
-    'fetchFoods'
+    'fetchFoods',
   );
 
 const fetchRecommendations = user =>
   trackPromise(
     getRequest(
-      `${recommendationsEndpoint}/?user=${encodeURIComponent(user)}`
+      `${recommendationsEndpoint}/?user=${encodeURIComponent(user)}`,
     ),
-    'fetchRecommendations'
+    'fetchRecommendations',
   );
 
 const getUsers = user =>
@@ -51,24 +51,24 @@ const addUser = user =>
 const approveUser = user =>
   trackPromise(
     postRequest(usersEndpoint, { user, approval: true }),
-    `approveUser-${user}`
+    `approveUser-${user}`,
   );
 
 const revokeUser = user =>
   trackPromise(
     postRequest(usersEndpoint, { user, approval: false }),
-    `revokeUser-${user}`
+    `revokeUser-${user}`,
   );
 
 const deleteUser = user =>
   trackPromise(
     postRequest(usersEndpoint, { user, deleteuser: true }),
-    `deleteUser-${user}`
+    `deleteUser-${user}`,
   );
 
 const getSearchedTerms = searchTerm =>
   getRequest(
-    `${searchTermsEndpoint}/?term=${encodeURIComponent(searchTerm)}`
+    `${searchTermsEndpoint}/?term=${encodeURIComponent(searchTerm)}`,
   );
 
 const postSearchTerm = searchTerm =>
@@ -77,7 +77,7 @@ const postSearchTerm = searchTerm =>
 const postRecommendations = payload =>
   trackPromise(
     postRequest(recommendationsEndpoint, payload),
-    'postRecommendations'
+    'postRecommendations',
   );
 
 export {
