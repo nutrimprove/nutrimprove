@@ -78,7 +78,7 @@ const SearchFoodField = ({
   classes,
   food,
   action,
-  isValid,
+  isValid = true,
   loadingContext,
 }) => {
   const { suggestions } = food;
