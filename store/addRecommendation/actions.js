@@ -1,5 +1,6 @@
 import { getSearchedTerms } from '../../connect/api';
 import { trackPromise } from 'react-promise-tracker';
+import { INPUT_TRIGGER_TIME } from '../../helpers/constants';
 
 let timeout = null;
 
@@ -61,7 +62,7 @@ export const editFood = (food, foodName, isRecommendation) => {
       // Fetches search results if more than 2 characters are typed
       if (foodName.length > 2) {
         const search = await trackPromise(
-          getSearchedTerms(foodName, isRecommendation),
+          getSearchedTerms(foodName),
           `getSearchTerms-${food.key}`
         );
         if (search && search.matches) {
@@ -90,6 +91,6 @@ export const editFood = (food, foodName, isRecommendation) => {
           }
         }
       }
-    }, 500);
+    }, INPUT_TRIGGER_TIME);
   };
 };
