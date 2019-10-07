@@ -149,10 +149,11 @@ const AddRecommendations = ({
     if (result) {
       const recCount = recommendationsPayload.length;
 
-      // Reset fields if all combinations were stored successfully
       if (result.length === recCount) {
+        // Reset fields if all combinations were stored successfully
         removeAllFoods();
         setValidation(false);
+
         const recommendationString =
           recCount === 1 ? 'recommendation' : 'recommendations';
         updateStatus(
@@ -161,7 +162,7 @@ const AddRecommendations = ({
       } else {
         if (result.duplicates) {
           const duplicatesList = result.duplicates.map(
-            (dup, index) => `${dup.food} -> ${dup.recommendation}`
+            dup => `${dup.food} -> ${dup.recommendation}`
           );
           updateStatus([
             'Some recommendations are already present in the database!',
