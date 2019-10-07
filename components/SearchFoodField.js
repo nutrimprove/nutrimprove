@@ -1,5 +1,4 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import deburr from 'lodash/deburr';
 import Downshift from 'downshift';
@@ -7,7 +6,6 @@ import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Paper from '@material-ui/core/Paper';
 import MenuItem from '@material-ui/core/MenuItem';
-import { editFood } from '../store/addRecommendation/actions';
 import LoadingSpinner from './LoadingSpinner';
 
 const renderInput = inputProps => {
@@ -67,19 +65,33 @@ renderSuggestion.propTypes = {
   suggestion: PropTypes.string.isRequired,
 };
 
-const SearchFoodField = ({ classes, food, setSearchTerm, isValid }) => {
+/**
+ *
+ * @param classes local prop from withStyles
+ * @param food object containing food attributes {id: string, isRecommendation: bool, key: string, name: string, suggestions: []}
+ * @param action function to execute when input changes
+ * @param isValid boolean controls normal/red styling of the field (for validation purposes)
+ * @param loadingContext string context to apply to LoadingSpinner
+ */
+
+const SearchFoodField = ({
+  classes,
+  food,
+  action,
+  isValid,
+  loadingContext,
+}) => {
   const { suggestions } = food;
-  const type = food.isRecommendation ? 'rec' : 'food';
 
   function onInputChange(item) {
-    setSearchTerm(item);
+    action(food, item);
   }
 
-  function getSuggestions(value, { showEmpty = false } = {}) {
+  function getSuggestions(value) {
     const inputValue = deburr(value.trim()).toLowerCase();
     const inputLength = inputValue.length;
 
-    return inputLength === 0 && !showEmpty ? [] : suggestions;
+    return inputLength === 0 ? [] : suggestions;
   }
 
   return (
@@ -109,7 +121,7 @@ const SearchFoodField = ({ classes, food, setSearchTerm, isValid }) => {
                 fullWidth: true,
                 classes,
                 label: '',
-                valid: isValid(food),
+                valid: isValid,
                 InputLabelProps: getLabelProps({ shrink: true }),
                 InputProps: {
                   onBlur,
@@ -119,7 +131,7 @@ const SearchFoodField = ({ classes, food, setSearchTerm, isValid }) => {
                     onChange(event);
                   },
                   endAdornment: (
-                    <LoadingSpinner context={`getSearchTerms-${type}`} />
+                    <LoadingSpinner context={loadingContext} />
                   ),
                 },
                 inputProps,
@@ -153,7 +165,9 @@ SearchFoodField.propTypes = {
   classes: PropTypes.object.isRequired,
   food: PropTypes.object,
   setSearchTerm: PropTypes.function,
-  isValid: PropTypes.function,
+  isValid: PropTypes.bool,
+  action: PropTypes.function,
+  loadingContext: PropTypes.string,
 };
 
 const styles = theme => ({
@@ -198,17 +212,4 @@ const styles = theme => ({
   },
 });
 
-const mapDispatchToProps = (dispatch, ownProps) => {
-  return {
-    setSearchTerm: name => {
-      dispatch(
-        editFood(ownProps.food, name, ownProps.food.isRecommendation)
-      );
-    },
-  };
-};
-
-export default connect(
-  null,
-  mapDispatchToProps
-)(withStyles(styles)(SearchFoodField));
+export default withStyles(styles)(SearchFoodField);

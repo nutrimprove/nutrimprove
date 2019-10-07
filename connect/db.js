@@ -168,9 +168,9 @@ const addRecommendations = async recommendationsObj => {
   }));
 
   const AddRecommendationsConnection = await connect(
-    'recommendations',
+    'recommendations_test',
     recommendationsSchema,
-    'recommendations'
+    'recommendations_test'
   );
 
   return new Promise((resolve, reject) => {

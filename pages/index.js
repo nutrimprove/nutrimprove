@@ -5,6 +5,8 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
+const SKIP_LOGIN = process.env.SKIP_LOGIN;
+
 const styles = {
   content: {
     margin: 20,
@@ -16,7 +18,9 @@ const styles = {
 
 const Index = ({ classes, userDetails }) => (
   <div className={classes.content}>
-    {userDetails && userDetails.email_verified && userDetails.approved ? (
+    {console.log(SKIP_LOGIN)}
+    {SKIP_LOGIN ||
+    (userDetails && userDetails.email_verified && userDetails.approved) ? (
       <Content />
     ) : (
       <NoAccess user={userDetails} />

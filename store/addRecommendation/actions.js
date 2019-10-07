@@ -53,8 +53,6 @@ export const editFood = (food, foodName, isRecommendation) => {
       ? editRecommendedFoodAction
       : editFoodAction;
 
-    const type = isRecommendation ? 'rec' : 'food';
-
     dispatch(action({ ...food, id: '', name: foodName, suggestions: [] }));
 
     clearTimeout(timeout);
@@ -64,7 +62,7 @@ export const editFood = (food, foodName, isRecommendation) => {
       if (foodName.length > 2) {
         const search = await trackPromise(
           getSearchedTerms(foodName, isRecommendation),
-          `getSearchTerms-${type}`
+          `getSearchTerms-${food.key}`
         );
         if (search && search.matches) {
           const suggestions = search.matches.map(match => ({
