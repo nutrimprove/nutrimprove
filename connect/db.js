@@ -144,7 +144,6 @@ const getAllUsers = async () => {
 const getApprovedUsers = async () => {
   const UserConnection = await getUserConnection();
   const result = UserConnection.find({ approved: true });
-  console.log('===== ( result ) =======>', result);
   return result;
 };
 
@@ -168,9 +167,9 @@ const addRecommendations = async recommendationsObj => {
   }));
 
   const AddRecommendationsConnection = await connect(
-    'recommendations_test',
+    'recommendations',
     recommendationsSchema,
-    'recommendations_test'
+    'recommendations'
   );
 
   return new Promise((resolve, reject) => {
