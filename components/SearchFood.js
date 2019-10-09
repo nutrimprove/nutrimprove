@@ -75,20 +75,23 @@ const SearchFood = ({ classes }) => {
       getNutritionalData(food.id),
       'getNutritionalData'
     );
-    const nutrients = parseNutrients(data.totalNutrients);
-    setSearchTerm(food.name);
-    let secondNutrientList;
-    if (nutrients.length > 6) {
-      const total = nutrients.length;
-      const slicePosition =
-        (total % 2) % 2 === 0 ? total / 2 : total / 2 + 1;
-      secondNutrientList = nutrients.splice(
-        slicePosition,
-        nutrients.length
-      );
-      setSecondColumnData(secondNutrientList);
+
+    if (data && data.totalNutrients) {
+      const nutrients = parseNutrients(data.totalNutrients);
+      setSearchTerm(food.name);
+      let secondNutrientList;
+      if (nutrients.length > 6) {
+        const total = nutrients.length;
+        const slicePosition =
+          (total % 2) % 2 === 0 ? total / 2 : total / 2 + 1;
+        secondNutrientList = nutrients.splice(
+          slicePosition,
+          nutrients.length
+        );
+        setSecondColumnData(secondNutrientList);
+      }
+      setFoodData(nutrients);
     }
-    setFoodData(nutrients);
   };
 
   return (
