@@ -49,7 +49,7 @@ const SearchFood = ({ classes }) => {
     timeout = setTimeout(async () => {
       const search = await trackPromise(
         getSearchedTerms(value),
-        `getSearchTerms-${selectedFood.id}`
+        'getSearchTerms'
       );
 
       if (search && search.matches) {
@@ -70,7 +70,10 @@ const SearchFood = ({ classes }) => {
   };
 
   const updateResults = async () => {
-    const data = await getNutritionalData(food.id);
+    const data = await trackPromise(
+      getNutritionalData(food.id),
+      'getNutritionalData'
+    );
     const nutrients = parseNutrients(data.totalNutrients);
     setSearchTerm(food.name);
     setFoodData(nutrients);
@@ -82,7 +85,7 @@ const SearchFood = ({ classes }) => {
       <div className={classes.search}>
         <SearchFoodField
           food={food}
-          loadingContext={`getSearchTerms-${food.id}`}
+          loadingContext='getSearchTerms'
           action={updateState}
         />
         <div className={classes.button}>
