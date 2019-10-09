@@ -173,7 +173,8 @@ SearchFoodField.propTypes = {
 const styles = theme => ({
   root: {
     flexGrow: 1,
-    width: 250,
+    width: 280,
+    alignSelf: 'flex-end',
   },
   container: {
     flexGrow: 1,

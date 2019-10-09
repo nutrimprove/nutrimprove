@@ -37,19 +37,16 @@ const fetchFoods = name =>
   );
 
 const getNutritionalData = foodId =>
-  trackPromise(
-    postRequest(`${nutritionApiEndpoint}?${apiAuthParams}`, {
-      ingredients: [
-        {
-          quantity: 100, // Currently hard coding 100 grams as measurement
-          measureURI:
-            'http://www.edamam.com/ontologies/edamam.owl#Measure_gram',
-          foodId: foodId,
-        },
-      ],
-    }),
-    `getNutrition`
-  );
+  postRequest(`${nutritionApiEndpoint}?${apiAuthParams}`, {
+    ingredients: [
+      {
+        foodId,
+        quantity: 100, // Currently hard coding 100 grams as measurement
+        measureURI:
+          'http://www.edamam.com/ontologies/edamam.owl#Measure_gram',
+      },
+    ],
+  });
 
 const fetchRecommendations = user =>
   trackPromise(

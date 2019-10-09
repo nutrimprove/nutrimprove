@@ -13,14 +13,8 @@ let timeout = null;
 
 const sectionHeader = {
   title: 'Search food by name',
-  subtitle: 'Search for a food in the general food database',
-};
-
-const styles = {
-  textField: {
-    width: 200,
-    margin: '-10px 10px 10px 0',
-  },
+  subtitle:
+    'Searches and displays the available nutritional data for that food item',
 };
 
 const parseNutrients = nutrients => {
@@ -38,7 +32,7 @@ const parseNutrients = nutrients => {
   return nutrientsObj;
 };
 
-const FoodByName = ({ classes }) => {
+const SearchFood = ({ classes }) => {
   const [food, setFood] = useState({
     name: null,
     id: null,
@@ -59,9 +53,9 @@ const FoodByName = ({ classes }) => {
           food_name: match.food_name,
           food_id: match.food_id,
         }));
-        const selected = suggestions.find(
-          suggestion => suggestion.food_name === value
-        );
+        const selected =
+          suggestions.find(suggestion => suggestion.food_name === value) ||
+          search.matches[0].food_name;
         setFood({
           name: selected.food_name,
           id: selected.food_id,
@@ -80,25 +74,44 @@ const FoodByName = ({ classes }) => {
   return (
     <>
       <SectionHeader content={sectionHeader} />
-      <SearchFoodField
-        food={food}
-        loadingContext={`getSearchTerms-${food.id}`}
-        action={updateState}
-      />
-      <ButtonWithSpinner
-        action={updateResults}
-        context='getNutritionalData'
-        disabled={!food.id}
-      >
-        Search
-      </ButtonWithSpinner>
-      {foodData && <ResultsTable values={foodData} />}
+      <div className={classes.search}>
+        <SearchFoodField
+          food={food}
+          loadingContext={`getSearchTerms-${food.id}`}
+          action={updateState}
+        />
+        <div className={classes.button}>
+          <ButtonWithSpinner
+            className={classes.button}
+            action={updateResults}
+            context='getNutritionalData'
+            disabled={false}
+          >
+            Search
+          </ButtonWithSpinner>
+        </div>
+      </div>
+      {foodData && (
+        <ResultsTable
+          values={foodData}
+          title={`Nutritional values per 100g of ${food.name}`}
+        />
+      )}
     </>
   );
 };
 
-FoodByName.propTypes = {
+SearchFood.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(FoodByName);
+const styles = {
+  search: {
+    display: 'inline-flex',
+  },
+  button: {
+    marginLeft: 10,
+  },
+};
+
+export default withStyles(styles)(SearchFood);

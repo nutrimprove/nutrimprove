@@ -6,9 +6,10 @@ import { withStyles } from '@material-ui/core/styles/index';
 import ResultsTableHeader from './ResultsTableHeader';
 import ResultsTableBody from './ResultsTableBody';
 
-const ResultsTable = ({ classes, values, columnNames }) => (
+const ResultsTable = ({ classes, values, columnNames, title }) => (
   <div>
     <Paper className={classes.root}>
+      <div className={classes.resultsTitle}>{title}</div>
       {values.length > 0 ? (
         <Table className={classes.table}>
           <ResultsTableHeader
@@ -27,20 +28,30 @@ ResultsTable.propTypes = {
   classes: PropTypes.object.isRequired,
   values: PropTypes.array.isRequired,
   columnNames: PropTypes.array,
+  title: PropTypes.string,
 };
 
 const styles = theme => ({
   root: {
-    width: '100%',
     marginTop: theme.spacing.unit * 3,
     overflowX: 'auto',
-    minWidth: 700,
+    width: 'fit-content',
   },
   table: {
-    minWidth: 700,
+    width: 'fit-content',
   },
   noresults: {
     padding: 15,
+  },
+  resultsTitle: {
+    padding: 10,
+    fontWeight: 'bold',
+    display: 'flex',
+    textAlign: 'center',
+    fontFamily: 'sans-serif, arial',
+    lineHeight: '40px',
+    fontSize: '1em',
+    justifyContent: 'center',
   },
 });
 

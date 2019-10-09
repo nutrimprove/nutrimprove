@@ -6,9 +6,14 @@ import TableBody from '@material-ui/core/TableBody/index';
 import { withStyles } from '@material-ui/core/styles/index';
 
 const ResultsTableBody = ({ values, classes }) => (
-  <TableBody>
+  <TableBody stripedRows>
     {values.map((row, index) => (
-      <TableRow key={index}>
+      <TableRow
+        key={index}
+        style={
+          index % 2 ? { background: '#f8f8f8' } : { background: 'white' }
+        }
+      >
         {Object.values(row).map((value, vIndex) => (
           <TableCell key={vIndex} className={classes.cell}>
             {typeof value === 'boolean' ? value.toString() : value}
@@ -26,7 +31,8 @@ ResultsTableBody.propTypes = {
 
 const styles = {
   cell: {
-    padding: 10,
+    padding: 7,
+    minWidth: 200,
   },
 };
 

@@ -26,8 +26,13 @@ ResultsTableHeader.propTypes = {
 
 const styles = {
   head: {
-    backgroundColor: '#E7E7E7',
-    fontSize: '1em',
+    backgroundColor: '#555555',
+  },
+  cell: {
+    padding: 9,
+    color: 'white',
+    fontSize: '0.9em',
+    textTransform: 'capitalize',
   },
 };
 
