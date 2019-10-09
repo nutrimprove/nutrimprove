@@ -108,6 +108,7 @@ const SearchFood = ({ classes }) => {
             className={classes.button}
             action={updateResults}
             context='getNutritionalData'
+            disabled={!food.id}
           >
             Search
           </ButtonWithSpinner>
