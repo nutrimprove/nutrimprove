@@ -13,11 +13,7 @@ import { isAdmin } from '../helpers/userUtils';
 import Paper from '@material-ui/core/Paper';
 
 function TabContainer(props) {
-  return (
-    <Paper style={{ padding: 8 * 3 }} paragraph={false}>
-      {props.children}
-    </Paper>
-  );
+  return <Paper style={{ padding: 8 * 3 }}>{props.children}</Paper>;
 }
 
 TabContainer.propTypes = {

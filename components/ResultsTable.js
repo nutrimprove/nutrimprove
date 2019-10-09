@@ -47,7 +47,6 @@ const styles = theme => ({
     padding: 10,
     fontWeight: 'bold',
     display: 'flex',
-    textAlign: 'center',
     fontFamily: 'sans-serif, arial',
     lineHeight: '40px',
     fontSize: '1em',

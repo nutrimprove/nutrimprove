@@ -269,7 +269,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       })
     );
   };
-  console.log('===== ( ownProps ) =======>', ownProps);
+
   return {
     addEmptyRecommendedFood: () => addEmptyField(addRecommendedFoodAction),
     addEmptyFood: () => addEmptyField(addFoodAction),

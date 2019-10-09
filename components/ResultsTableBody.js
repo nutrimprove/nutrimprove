@@ -6,7 +6,7 @@ import TableBody from '@material-ui/core/TableBody/index';
 import { withStyles } from '@material-ui/core/styles/index';
 
 const ResultsTableBody = ({ values, classes }) => (
-  <TableBody stripedRows>
+  <TableBody>
     {values.map((row, index) => (
       <TableRow
         key={index}
