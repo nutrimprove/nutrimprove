@@ -78,7 +78,7 @@ const SearchFood = ({ classes }) => {
     const nutrients = parseNutrients(data.totalNutrients);
     setSearchTerm(food.name);
     let secondNutrientList;
-    if (nutrients.length > 4) {
+    if (nutrients.length > 6) {
       const total = nutrients.length;
       const slicePosition =
         (total % 2) % 2 === 0 ? total / 2 : total / 2 + 1;
