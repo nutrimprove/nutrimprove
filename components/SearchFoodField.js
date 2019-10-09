@@ -6,7 +6,9 @@ import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Paper from '@material-ui/core/Paper';
 import MenuItem from '@material-ui/core/MenuItem';
+import ClearIcon from '@material-ui/icons/Clear';
 import LoadingSpinner from './LoadingSpinner';
+import IconButton from '@material-ui/core/IconButton';
 
 const renderInput = inputProps => {
   const { InputProps, classes, ref, valid, ...other } = inputProps;
@@ -108,6 +110,7 @@ const SearchFoodField = ({
           inputValue,
           isOpen,
           selectedItem,
+          clearSelection,
         }) => {
           const {
             onBlur,
@@ -133,7 +136,18 @@ const SearchFoodField = ({
                     onChange(event);
                   },
                   endAdornment: (
-                    <LoadingSpinner context={loadingContext} />
+                    <>
+                      <LoadingSpinner context={loadingContext} />
+                      {inputValue && inputValue.length > 0 && (
+                        <IconButton
+                          onClick={clearSelection}
+                          aria-label='clear'
+                          size='small'
+                        >
+                          <ClearIcon fontSize='small' />
+                        </IconButton>
+                      )}
+                    </>
                   ),
                 },
                 inputProps,
