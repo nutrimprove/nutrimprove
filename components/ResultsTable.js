@@ -33,7 +33,7 @@ ResultsTable.propTypes = {
 
 const styles = theme => ({
   root: {
-    marginTop: theme.spacing.unit * 3,
+    marginTop: 15,
     overflowX: 'auto',
     width: 'fit-content',
   },

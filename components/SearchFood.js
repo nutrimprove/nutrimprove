@@ -42,6 +42,7 @@ const SearchFood = ({ classes }) => {
   const [food, setFood] = useState(emptyFood);
   const [searchTerm, setSearchTerm] = useState();
   const [foodData, setFoodData] = useState();
+  const [secondColumnData, setSecondColumnData] = useState();
 
   const updateState = async (selectedFood, value) => {
     clearTimeout(timeout);
@@ -76,6 +77,17 @@ const SearchFood = ({ classes }) => {
     );
     const nutrients = parseNutrients(data.totalNutrients);
     setSearchTerm(food.name);
+    let secondNutrientList;
+    if (nutrients.length > 4) {
+      const total = nutrients.length;
+      const slicePosition =
+        (total % 2) % 2 === 0 ? total / 2 : total / 2 + 1;
+      secondNutrientList = nutrients.splice(
+        slicePosition,
+        nutrients.length
+      );
+      setSecondColumnData(secondNutrientList);
+    }
     setFoodData(nutrients);
   };
 
@@ -93,18 +105,28 @@ const SearchFood = ({ classes }) => {
             className={classes.button}
             action={updateResults}
             context='getNutritionalData'
-            disabled={!food.id}
           >
             Search
           </ButtonWithSpinner>
         </div>
       </div>
-      {foodData && (
-        <ResultsTable
-          values={foodData}
-          title={`Nutritional values per 100g of ${searchTerm}`}
-        />
-      )}
+      <div className={classes.tables}>
+        {foodData && (
+          <>
+            <div className={classes.title}>
+              Nutritional values per 100g of {searchTerm}
+            </div>
+            <div className={classes.table}>
+              <ResultsTable values={foodData} />
+            </div>
+          </>
+        )}
+        {secondColumnData && (
+          <div className={classes.table}>
+            <ResultsTable values={secondColumnData} />
+          </div>
+        )}
+      </div>
     </>
   );
 };
@@ -119,6 +141,19 @@ const styles = {
   },
   button: {
     marginLeft: 10,
+  },
+  tablesContainer: {
+    display: 'block',
+  },
+  table: {
+    display: 'inline-flex',
+  },
+  title: {
+    display: 'block',
+    marginTop: 30,
+    fontWeight: 'bold',
+    fontFamily: 'sans-serif, arial',
+    fontSize: '1em',
   },
 };
 
