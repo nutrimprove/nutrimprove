@@ -84,7 +84,9 @@ const SearchFoodField = ({
   const { suggestions } = food;
 
   function onInputChange(item) {
-    action(food, item);
+    if (item && item.length > 2) {
+      action(food, item);
+    }
   }
 
   function getSuggestions(value) {

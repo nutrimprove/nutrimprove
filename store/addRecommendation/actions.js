@@ -59,36 +59,30 @@ export const editFood = (food, foodName, isRecommendation) => {
     clearTimeout(timeout);
     // Timeout to control fetching of data while typing
     timeout = setTimeout(async () => {
-      // Fetches search results if more than 2 characters are typed
-      if (foodName.length > 2) {
-        const search = await trackPromise(
-          getSearchedTerms(foodName),
-          `getSearchTerms-${food.key}`
-        );
-        if (search && search.matches) {
-          const suggestions = search.matches.map(match => ({
-            food_name: match.food_name,
-            food_id: match.food_id,
-          }));
+      const search = await trackPromise(
+        getSearchedTerms(foodName),
+        `getSearchTerms-${food.key}`
+      );
+      if (search && search.matches) {
+        const suggestions = search.matches.map(match => ({
+          food_name: match.food_name,
+          food_id: match.food_id,
+        }));
 
-          const selectedSuggestion = suggestions.find(
-            suggestion => suggestion.food_name === foodName
+        const selectedSuggestion = suggestions.find(
+          suggestion => suggestion.food_name === foodName
+        );
+        if (selectedSuggestion && selectedSuggestion.food_id !== food.id) {
+          dispatch(
+            action({
+              ...food,
+              name: foodName,
+              id: selectedSuggestion.food_id,
+              suggestions,
+            })
           );
-          if (
-            selectedSuggestion &&
-            selectedSuggestion.food_id !== food.id
-          ) {
-            dispatch(
-              action({
-                ...food,
-                name: foodName,
-                id: selectedSuggestion.food_id,
-                suggestions,
-              })
-            );
-          } else if (suggestions.length > 0) {
-            dispatch(action({ ...food, name: foodName, suggestions }));
-          }
+        } else if (suggestions.length > 0) {
+          dispatch(action({ ...food, name: foodName, suggestions }));
         }
       }
     }, INPUT_TRIGGER_TIME);

@@ -42,7 +42,10 @@ const ViewRecommendations = ({ userDetails }) => {
         {sectionHeader.title}
       </ButtonWithSpinner>
       {recommendations && (
-        <ResultsTable values={formattedRecommendations()} />
+        <ResultsTable
+          values={formattedRecommendations()}
+          title='Recommendations added by you'
+        />
       )}
     </>
   );

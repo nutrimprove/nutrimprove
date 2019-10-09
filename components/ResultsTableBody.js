@@ -31,7 +31,7 @@ ResultsTableBody.propTypes = {
 
 const styles = {
   cell: {
-    padding: 7,
+    padding: '7px 20px 7px 10px',
     minWidth: 200,
   },
 };

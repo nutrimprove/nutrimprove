@@ -17,6 +17,12 @@ const sectionHeader = {
     'Searches and displays the available nutritional data for that food item',
 };
 
+const emptyFood = {
+  name: null,
+  id: null,
+  suggestions: [],
+};
+
 const parseNutrients = nutrients => {
   const nutrientsObj = [];
   const keys = Object.keys(nutrients);
@@ -24,24 +30,22 @@ const parseNutrients = nutrients => {
     const nutrient = nutrients[key];
     nutrientsObj.push({
       nutrient: nutrient.label,
-      quantity: `${Number.parseFloat(nutrient.quantity).toFixed(2)} (${
-        nutrient.unit
-      })`,
+      'quantity (unit)': `${Number.parseFloat(nutrient.quantity).toFixed(
+        2
+      )} (${nutrient.unit})`,
     });
   });
   return nutrientsObj;
 };
 
 const SearchFood = ({ classes }) => {
-  const [food, setFood] = useState({
-    name: null,
-    id: null,
-    suggestions: [],
-  });
+  const [food, setFood] = useState(emptyFood);
+  const [searchTerm, setSearchTerm] = useState();
   const [foodData, setFoodData] = useState();
 
   const updateState = async (selectedFood, value) => {
     clearTimeout(timeout);
+    setFood(emptyFood);
     timeout = setTimeout(async () => {
       const search = await trackPromise(
         getSearchedTerms(value),
@@ -68,6 +72,7 @@ const SearchFood = ({ classes }) => {
   const updateResults = async () => {
     const data = await getNutritionalData(food.id);
     const nutrients = parseNutrients(data.totalNutrients);
+    setSearchTerm(food.name);
     setFoodData(nutrients);
   };
 
@@ -94,7 +99,7 @@ const SearchFood = ({ classes }) => {
       {foodData && (
         <ResultsTable
           values={foodData}
-          title={`Nutritional values per 100g of ${food.name}`}
+          title={`Nutritional values per 100g of ${searchTerm}`}
         />
       )}
     </>
