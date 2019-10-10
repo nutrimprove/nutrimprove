@@ -24,7 +24,9 @@ const getCollectionResults = async (req, res) => {
       : console.warn('No recommendations payload!', req.body);
   }
 
-  return res.status(200).json(result);
+  return result
+    ? res.status(200).json(result)
+    : res.status(404).json(result);
 };
 
 export default getCollectionResults;

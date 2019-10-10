@@ -144,7 +144,6 @@ const getAllUsers = async () => {
 const getApprovedUsers = async () => {
   const UserConnection = await getUserConnection();
   const result = UserConnection.find({ approved: true });
-  console.log('===== ( result ) =======>', result);
   return result;
 };
 
@@ -173,20 +172,48 @@ const addRecommendations = async recommendationsObj => {
     'recommendations'
   );
 
+  const allRecsQuery = recommendations.map(rec => ({
+    $and: [
+      { 'food.name': rec.food.name },
+      { 'recommendation.name': rec.recommendation.name },
+    ],
+  }));
+
+  const formatResultRecs = recs =>
+    recs.map(rec => ({
+      food: rec.food.name,
+      recommendation: rec.recommendation.name,
+    }));
+
   return new Promise((resolve, reject) => {
-    AddRecommendationsConnection.collection.insertMany(
-      recommendations,
-      (err, docs) => {
-        mongoose.connection.close();
-        if (err) {
-          console.error('Error inserting recommendations!', err);
-          reject(err);
+    AddRecommendationsConnection.find()
+      .or(allRecsQuery)
+      .then(duplicateDocs => {
+        if (duplicateDocs.length === 0) {
+          AddRecommendationsConnection.insertMany(
+            recommendations,
+            (err, docs) => {
+              mongoose.connection.close();
+              if (err) {
+                console.error('Error inserting recommendations!', err);
+                reject(err);
+              } else {
+                console.log(
+                  'Recommendations inserted!',
+                  formatResultRecs(docs)
+                );
+                resolve(formatResultRecs(docs));
+              }
+            }
+          );
         } else {
-          console.log('Recommendations inserted!', docs);
-          resolve(docs);
+          console.warn(
+            'Found duplicate recommendations!',
+            formatResultRecs(duplicateDocs)
+          );
+          resolve({ duplicates: formatResultRecs(duplicateDocs) });
         }
-      }
-    );
+      });
   });
 };
 
