@@ -30,12 +30,25 @@ const parseNutrients = nutrients => {
     const nutrient = nutrients[key];
     nutrientsObj.push({
       nutrient: nutrient.label,
-      'quantity (unit)': `${Number.parseFloat(nutrient.quantity).toFixed(
-        2
-      )} (${nutrient.unit})`,
+      quantity: `${Number.parseFloat(nutrient.quantity).toFixed(2)} ${
+        nutrient.unit
+      }`,
     });
   });
   return nutrientsObj;
+};
+
+const combineResults = (nutrients, dailyValues) => {
+  const combined = [...nutrients];
+  return combined.map(nutrient => {
+    const dailyValue = dailyValues.find(
+      value => value.nutrient === nutrient.nutrient
+    );
+    return {
+      ...nutrient,
+      rdi: dailyValue ? dailyValue.quantity : '',
+    };
+  });
 };
 
 const SearchFood = ({ classes }) => {
@@ -78,19 +91,21 @@ const SearchFood = ({ classes }) => {
 
     if (data && data.totalNutrients) {
       const nutrients = parseNutrients(data.totalNutrients);
+      const daily = parseNutrients(data.totalDaily);
+      const combinedResults = combineResults(nutrients, daily);
       setSearchTerm(food.name);
       let secondNutrientList;
-      if (nutrients.length > 6) {
-        const total = nutrients.length;
+      if (combinedResults.length > 6) {
+        const total = combinedResults.length;
         const slicePosition =
           (total % 2) % 2 === 0 ? total / 2 : total / 2 + 1;
-        secondNutrientList = nutrients.splice(
+        secondNutrientList = combinedResults.splice(
           slicePosition,
-          nutrients.length
+          combinedResults.length
         );
         setSecondColumnData(secondNutrientList);
       }
-      setFoodData(nutrients);
+      setFoodData(combinedResults);
     }
   };
 
