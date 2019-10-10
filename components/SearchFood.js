@@ -133,7 +133,7 @@ const SearchFood = ({ classes }) => {
         {foodData && (
           <>
             <div className={classes.title}>
-              Nutritional values per 100g of {searchTerm}
+              Nutritional values per 100g of &apos;{searchTerm}&apos;
             </div>
             <div className={classes.table}>
               <ResultsTable values={foodData} />
