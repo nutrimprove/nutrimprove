@@ -9,6 +9,7 @@ import { getTime } from '../helpers/utils';
 import {
   addFoodAction,
   addRecommendedFoodAction,
+  editFood,
   removeAllFoodsAndRecommendationsAction,
 } from '../store/addRecommendation/actions';
 import { postRecommendations } from '../connect/api';
@@ -36,6 +37,7 @@ const AddRecommendations = ({
   addEmptyFood,
   removeAllFoods,
   userDetails,
+  setSearchTerm,
   classes,
 }) => {
   const [validation, setValidation] = useState(false);
@@ -67,7 +69,12 @@ const AddRecommendations = ({
   const renderField = foods =>
     foods.map(food => (
       <div key={food.key} className={classes.searchfood}>
-        <SearchFoodField food={food} isValid={isValid} />
+        <SearchFoodField
+          food={food}
+          isValid={isValid(food)}
+          action={setSearchTerm}
+          loadingContext={`getSearchTerms-${food.key}`}
+        />
         {foods.length <= 1 ? (
           <RemoveIcon />
         ) : (
@@ -235,6 +242,7 @@ AddRecommendations.propTypes = {
   removeAllFoods: PropTypes.function,
   userDetails: PropTypes.object,
   classes: PropTypes.object.isRequired,
+  setSearchTerm: PropTypes.function,
 };
 
 const styles = {
@@ -285,11 +293,15 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       })
     );
   };
+
   return {
     addEmptyRecommendedFood: () => addEmptyField(addRecommendedFoodAction),
     addEmptyFood: () => addEmptyField(addFoodAction),
     removeAllFoods: () =>
       dispatch(removeAllFoodsAndRecommendationsAction()),
+    setSearchTerm: (food, name) => {
+      dispatch(editFood(food, name, food.isRecommendation));
+    },
   };
 };
 

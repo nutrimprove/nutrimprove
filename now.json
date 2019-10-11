@@ -1,7 +1,7 @@
 {
   "version": 2,
-  "name": "eatwell-web",
-  "alias": "eatwell.now.sh",
+  "name": "nutrimprove",
+  "alias": "nutrimprove.now.sh",
   "builds": [
     { "src": "api/**/*.js", "use": "@now/node" },
     { "src": "next.config.js", "use": "@now/next" }
@@ -12,8 +12,12 @@
       "dest": "api/v1/search/index.js?term=$term"
     },
     {
-      "src": "/api/v1/recommendations/(?<cid>[^/]+)",
-      "dest": "api/v1/recommendations/index.js?cid=$cid"
+      "src": "/api/v1/recommendations/(?<user>[^/]+)",
+      "dest": "api/v1/recommendations/index.js?user=user"
+    },
+    {
+      "src": "/api/v1/users/(?<user>[^/]+)",
+      "dest": "api/v1/users/user.js?user=user"
     }
   ],
   "env": {

@@ -6,13 +6,16 @@ import uniqid from 'uniqid';
 const styles = {
   header: {
     marginBottom: '30px',
+    fontFamily: 'sans-serif, arial',
   },
   title: {
-    fontSize: '1.6em',
+    fontSize: '1.4em',
     marginBottom: 10,
+    fontFamily: 'sans-serif, arial',
   },
   subtitle: {
-    fontSize: '1.2em',
+    fontSize: '1.1em',
+    fontFamily: 'sans-serif, arial',
   },
   messages: {
     fontSize: '1em',

@@ -11,8 +11,8 @@ const sectionHeader = {
   subtitle: 'Fetch the list of recommendations you have provided',
 };
 
-const Recommendations = ({ userDetails }) => {
-  const [recommendations, setRecommendations] = useState([]);
+const ViewRecommendations = ({ userDetails }) => {
+  const [recommendations, setRecommendations] = useState();
 
   const updateResults = () => {
     if (userDetails) {
@@ -41,12 +41,17 @@ const Recommendations = ({ userDetails }) => {
       >
         {sectionHeader.title}
       </ButtonWithSpinner>
-      <ResultsTable values={formattedRecommendations()} />
+      {recommendations && (
+        <ResultsTable
+          values={formattedRecommendations()}
+          title='Recommendations added by you'
+        />
+      )}
     </>
   );
 };
 
-Recommendations.propTypes = {
+ViewRecommendations.propTypes = {
   userDetails: PropTypes.object,
 };
 
@@ -59,4 +64,4 @@ const mapStateToProps = (states, ownProps) => {
 export default connect(
   mapStateToProps,
   null
-)(Recommendations);
+)(ViewRecommendations);

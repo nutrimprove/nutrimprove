@@ -8,7 +8,12 @@ import { withStyles } from '@material-ui/core/styles/index';
 const ResultsTableBody = ({ values, classes }) => (
   <TableBody>
     {values.map((row, index) => (
-      <TableRow key={index}>
+      <TableRow
+        key={index}
+        style={
+          index % 2 ? { background: '#f8f8f8' } : { background: 'white' }
+        }
+      >
         {Object.values(row).map((value, vIndex) => (
           <TableCell key={vIndex} className={classes.cell}>
             {typeof value === 'boolean' ? value.toString() : value}
@@ -26,7 +31,8 @@ ResultsTableBody.propTypes = {
 
 const styles = {
   cell: {
-    padding: 10,
+    padding: '7px 20px 7px 10px',
+    minWidth: 75,
   },
 };
 

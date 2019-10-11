@@ -4,18 +4,16 @@ import { withStyles } from '@material-ui/core/styles/index';
 import AppBar from '@material-ui/core/AppBar/index';
 import Tabs from '@material-ui/core/Tabs/index';
 import Tab from '@material-ui/core/Tab/index';
-import Typography from '@material-ui/core/Typography/index';
-import FoodByName from './FoodByName';
-import Recommendations from './Recommendations';
+import SearchFood from './SearchFood';
+import ViewRecommendations from './ViewRecommendations';
 import AddRecommendations from './AddRecommendations';
 import AdminPanel from './AdminPanel';
 import { connect } from 'react-redux';
 import { isAdmin } from '../helpers/userUtils';
+import Paper from '@material-ui/core/Paper';
 
 function TabContainer(props) {
-  return (
-    <Typography style={{ padding: 8 * 3 }}>{props.children}</Typography>
-  );
+  return <Paper style={{ padding: 8 * 3 }}>{props.children}</Paper>;
 }
 
 TabContainer.propTypes = {
@@ -43,12 +41,12 @@ const Content = ({ classes, userDetails }) => {
       </AppBar>
       {tab === 0 && (
         <TabContainer id='foodByName'>
-          <FoodByName />
+          <SearchFood />
         </TabContainer>
       )}
       {tab === 1 && (
         <TabContainer id='recommendations'>
-          <Recommendations />
+          <ViewRecommendations />
         </TabContainer>
       )}
       {tab === 2 && (
