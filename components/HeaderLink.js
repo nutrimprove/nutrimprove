@@ -12,7 +12,7 @@ const HeaderLink = ({ action, children }) => (
 
 HeaderLink.propTypes = {
   action: PropTypes.func,
-  children: PropTypes.object,
+  children: PropTypes.string,
 };
 
 export default HeaderLink;
