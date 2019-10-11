@@ -166,6 +166,7 @@ const styles = {
   },
   table: {
     display: 'inline-flex',
+    marginRight: 30,
   },
   title: {
     display: 'block',
