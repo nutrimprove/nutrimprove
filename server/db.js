@@ -35,7 +35,10 @@ const connect = (description, schema, collection) => {
       }
     });
   }
-  return mongoose.model(description, schema, collection);
+  return (
+    mongoose.models[description] ||
+    mongoose.model(description, schema, collection)
+  );
 };
 
 const getDocuments = async (
@@ -59,12 +62,13 @@ const addSearchTerm = async searchTermObj => {
     'search_cache'
   );
 
-  return new Promise((resolve, reject) =>
-    SearchTermConnection.findOne({ search_term: term }, (err, result) => {
+  return SearchTermConnection.findOne(
+    { search_term: term },
+    (err, result) => {
       if (err) {
         console.error(`Error when searching for '${term}'`, err);
         mongoose.connection.close();
-        reject(err);
+        return err;
       }
       if (!result) {
         const newSearchTerm = new SearchTermConnection(searchTermObj);
@@ -72,14 +76,14 @@ const addSearchTerm = async searchTermObj => {
           mongoose.connection.close();
           if (err) {
             console.error(`Error saving '${term}'`, err);
-            reject(err);
+            return err;
           } else {
             console.log('Search term cached!', term);
-            resolve(newSearchTerm);
+            return term;
           }
         });
       }
-    })
+    }
   );
 };
 
@@ -92,35 +96,13 @@ const getUserConnection = () =>
 
 const getUser = async user => {
   const UserConnection = await getUserConnection();
+  return UserConnection.findOne({ email: user });
+};
 
-  return new Promise((resolve, reject) =>
-    UserConnection.findOne({ email: user }, (err, result) => {
-      if (err) {
-        console.error(`Error when searching for '${user}'`, err);
-        mongoose.connection.close();
-        reject(err);
-      }
-      if (!result) {
-        const newUser = new UserConnection({
-          email: user,
-          role: 100,
-          approved: false,
-        });
-        newUser.save(err => {
-          if (err) {
-            console.error(`Error saving '${user}'`, err);
-            reject(err);
-          } else {
-            console.log('User stored!', user);
-            resolve(newUser);
-          }
-        });
-      } else {
-        console.log('User fetched!', user);
-        resolve(result);
-      }
-    })
-  );
+const saveUser = async userObj => {
+  const UserConnection = await getUserConnection();
+  const newUser = new UserConnection(userObj);
+  return newUser.save();
 };
 
 const setUserApproval = async (user, approval) => {
@@ -143,8 +125,7 @@ const getAllUsers = async () => {
 
 const getApprovedUsers = async () => {
   const UserConnection = await getUserConnection();
-  const result = UserConnection.find({ approved: true });
-  return result;
+  return UserConnection.find({ approved: true });
 };
 
 const getNotApprovedUsers = async () => {
@@ -185,36 +166,34 @@ const addRecommendations = async recommendationsObj => {
       recommendation: rec.recommendation.name,
     }));
 
-  return new Promise((resolve, reject) => {
-    AddRecommendationsConnection.find()
-      .or(allRecsQuery)
-      .then(duplicateDocs => {
-        if (duplicateDocs.length === 0) {
-          AddRecommendationsConnection.insertMany(
-            recommendations,
-            (err, docs) => {
-              mongoose.connection.close();
-              if (err) {
-                console.error('Error inserting recommendations!', err);
-                reject(err);
-              } else {
-                console.log(
-                  'Recommendations inserted!',
-                  formatResultRecs(docs)
-                );
-                resolve(formatResultRecs(docs));
-              }
+  AddRecommendationsConnection.find()
+    .or(allRecsQuery)
+    .then(duplicateDocs => {
+      if (duplicateDocs.length === 0) {
+        AddRecommendationsConnection.insertMany(
+          recommendations,
+          (err, docs) => {
+            mongoose.connection.close();
+            if (err) {
+              console.error('Error inserting recommendations!', err);
+              return err;
+            } else {
+              console.log(
+                'Recommendations inserted!',
+                formatResultRecs(docs)
+              );
+              return formatResultRecs(docs);
             }
-          );
-        } else {
-          console.warn(
-            'Found duplicate recommendations!',
-            formatResultRecs(duplicateDocs)
-          );
-          resolve({ duplicates: formatResultRecs(duplicateDocs) });
-        }
-      });
-  });
+          }
+        );
+      } else {
+        console.warn(
+          'Found duplicate recommendations!',
+          formatResultRecs(duplicateDocs)
+        );
+        return { duplicates: formatResultRecs(duplicateDocs) };
+      }
+    });
 };
 
 export {
@@ -228,4 +207,5 @@ export {
   getNotApprovedUsers,
   setUserApproval,
   deleteUser,
+  saveUser,
 };

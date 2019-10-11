@@ -7,7 +7,7 @@ import {
   Typography,
   Link,
 } from '@material-ui/core';
-import Auth from '../auth/Auth';
+import Auth from '../connect/auth/Auth';
 import { setUserDetails } from '../store/global/actions';
 import { connect } from 'react-redux';
 import HeaderLink from './HeaderLink';

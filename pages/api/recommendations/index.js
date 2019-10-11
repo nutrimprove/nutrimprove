@@ -1,4 +1,4 @@
-import { addRecommendations, getDocuments } from '../../../connect/db';
+import { addRecommendations, getDocuments } from '../../../server/db';
 
 const getCollectionResults = async (req, res) => {
   const { user } = req.query;

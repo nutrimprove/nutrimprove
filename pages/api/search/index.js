@@ -1,4 +1,4 @@
-import { addSearchTerm, connectToDatabase } from '../../../connect/db';
+import { addSearchTerm, connectToDatabase } from '../../../server/db';
 import { fetchFoods } from '../../../connect/api';
 
 const formatSearchTerm = (searchTerm, foods) => {
