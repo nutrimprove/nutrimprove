@@ -36,7 +36,4 @@ function configureStore(initialState) {
   return createStore(rootReducer, initialState, appliedMiddleware);
 }
 
-export const makeRootStore = initialState => {
-  console.log('this is initial state', initialState.testReducer);
-  return configureStore(initialState);
-};
+export const makeRootStore = initialState => configureStore(initialState);

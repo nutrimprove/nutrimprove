@@ -8,7 +8,7 @@ import SectionHeader from '../components/SectionHeader';
 import { setUserDetailsWithRole } from '../helpers/userUtils';
 
 const auth = new Auth();
-const title = `Redirection Page!!`;
+const content = { title: `Redirection Page!!` };
 
 const Callback = ({ setUserDetails }) => {
   useEffect(() => {
@@ -33,7 +33,7 @@ const Callback = ({ setUserDetails }) => {
 
   return (
     <>
-      <SectionHeader title={title} />
+      <SectionHeader content={content} />
     </>
   );
 };
