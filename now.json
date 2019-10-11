@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "name": "Nutrimprove",
+  "name": "nutrimprove",
   "alias": "nutrimprove.now.sh",
   "builds": [
     { "src": "api/**/*.js", "use": "@now/node" },
