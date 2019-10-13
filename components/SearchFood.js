@@ -133,7 +133,8 @@ const SearchFood = ({ classes }) => {
         {foodData && (
           <>
             <div className={classes.title}>
-              Nutritional values per 100g of &apos;{searchTerm}&apos;
+              Nutritional values per 100g of &apos;
+              <span className={classes.term}>{searchTerm}&apos;</span>
             </div>
             <div className={classes.table}>
               <ResultsTable values={foodData} />
@@ -171,9 +172,11 @@ const styles = {
   title: {
     display: 'block',
     marginTop: 30,
-    fontWeight: 'bold',
     fontFamily: 'sans-serif, arial',
     fontSize: '1em',
+  },
+  term: {
+    fontWeight: 'bold',
   },
 };
 
