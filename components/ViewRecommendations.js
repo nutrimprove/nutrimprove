@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import ResultsTable from './ResultsTable';
-import { fetchRecommendations } from '../connect/api';
+import { getRecommendations } from '../connect/api';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import SectionHeader from './SectionHeader';
@@ -14,12 +14,10 @@ const sectionHeader = {
 const ViewRecommendations = ({ userDetails }) => {
   const [recommendations, setRecommendations] = useState();
 
-  const updateResults = () => {
+  const updateResults = async () => {
     if (userDetails) {
-      fetchRecommendations(userDetails.email).then(
-        fetchedRecommendations =>
-          setRecommendations(fetchedRecommendations)
-      );
+      const recommendations = await getRecommendations(userDetails.email);
+      setRecommendations(recommendations);
     } else {
       console.error('User details not found!', userDetails);
     }
@@ -37,7 +35,7 @@ const ViewRecommendations = ({ userDetails }) => {
       <SectionHeader content={sectionHeader} />
       <ButtonWithSpinner
         action={updateResults}
-        context='fetchRecommendations'
+        context='getRecommendations'
       >
         {sectionHeader.title}
       </ButtonWithSpinner>

@@ -4,8 +4,7 @@
   "description": "NutrImprove app",
   "main": "pages/index.js",
   "scripts": {
-    "build": "next build",
-    "start": "next start",
+    "start": "next build && next start",
     "dev": "next",
     "deploy": "cross-env NODE_ENV=production now",
     "test": "jest",

@@ -1,5 +1,3 @@
-import url from 'url';
-import { MongoClient } from 'mongodb';
 import mongoose from 'mongoose';
 import {
   recommendationsSchema,
@@ -8,22 +6,7 @@ import {
 } from './mongoDBSchemas';
 
 const URI = process.env.MONGODB_URI;
-let db = null;
 const mongoOptions = { useUnifiedTopology: true, useNewUrlParser: true };
-
-const connectToDatabase = async uri => {
-  // Return db if already cached
-  if (db) {
-    return db;
-  }
-
-  // Create new MongoDB connection
-  const client = await MongoClient.connect(uri, mongoOptions);
-
-  // eslint-disable-next-line node/no-deprecated-api
-  db = await client.db(url.parse(uri).pathname.substr(1));
-  return db;
-};
 
 const connect = (description, schema, collection) => {
   if (mongoose.connection.readyState === 0) {
@@ -41,50 +24,22 @@ const connect = (description, schema, collection) => {
   );
 };
 
-const getDocuments = async (
-  collectionName,
-  query = {},
-  projection = {}
-) => {
-  const mongodb = await connectToDatabase(URI);
-  const collection = await mongodb.collection(collectionName);
-  return collection
-    .find(query)
-    .project(projection)
-    .toArray();
-};
-
-const addSearchTerm = async searchTermObj => {
-  const term = searchTermObj.search_term;
-  const SearchTermConnection = await connect(
+const getSearchTermConnection = () =>
+  connect(
     'SearchTerm',
     searchTermSchema,
     'search_cache'
   );
 
-  return SearchTermConnection.findOne(
-    { search_term: term },
-    (err, result) => {
-      if (err) {
-        console.error(`Error when searching for '${term}'`, err);
-        mongoose.connection.close();
-        return err;
-      }
-      if (!result) {
-        const newSearchTerm = new SearchTermConnection(searchTermObj);
-        newSearchTerm.save(err => {
-          mongoose.connection.close();
-          if (err) {
-            console.error(`Error saving '${term}'`, err);
-            return err;
-          } else {
-            console.log('Search term cached!', term);
-            return term;
-          }
-        });
-      }
-    }
-  );
+const getSearchTerm = async term => {
+  const SearchTermConnection = await getSearchTermConnection();
+  return SearchTermConnection.findOne({ search_term: term });
+};
+
+const addSearchTerm = async searchTermObj => {
+  const SearchTerm = await getSearchTermConnection();
+  const newSearchTerm = new SearchTerm(searchTermObj);
+  return newSearchTerm;
 };
 
 const getUserConnection = () =>
@@ -133,6 +88,18 @@ const getNotApprovedUsers = async () => {
   return UserConnection.find({ approved: false });
 };
 
+const getRecommendationsConnection = () =>
+  connect(
+    'recommendations',
+    recommendationsSchema,
+    'recommendations'
+  );
+
+const getRecommendations = async user => {
+  const RecommendationsConnection = await getRecommendationsConnection();
+  return RecommendationsConnection.find({ contributor_id: user });
+};
+
 const addRecommendations = async recommendationsObj => {
   const recommendations = recommendationsObj.map(recommendation => ({
     food: {
@@ -147,11 +114,7 @@ const addRecommendations = async recommendationsObj => {
     timestamp: new Date().getTime(),
   }));
 
-  const AddRecommendationsConnection = await connect(
-    'recommendations',
-    recommendationsSchema,
-    'recommendations'
-  );
+  const AddRecommendationsConnection = await getRecommendationsConnection();
 
   const allRecsQuery = recommendations.map(rec => ({
     $and: [
@@ -183,9 +146,9 @@ const addRecommendations = async recommendationsObj => {
 };
 
 export {
-  connectToDatabase,
-  getDocuments,
+  getSearchTerm,
   addSearchTerm,
+  getRecommendations,
   addRecommendations,
   getUser,
   getAllUsers,

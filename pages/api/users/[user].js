@@ -7,8 +7,8 @@ import {
 } from '../../../server/db';
 
 const getCollectionResults = async (req, res) => {
-  let result;
   const { user } = req.query;
+  let result;
 
   if (user) {
     switch (user) {
@@ -34,11 +34,9 @@ const getCollectionResults = async (req, res) => {
     }
   }
 
-  if (result) {
-    return res.status(200).json(result);
-  } else {
-    return res.status(404).json(result);
-  }
+  return result
+    ? res.status(200).json(result)
+    : res.status(404);
 };
 
 export default getCollectionResults;

@@ -48,10 +48,10 @@ const getNutritionalData = foodId =>
     ],
   });
 
-const fetchRecommendations = user =>
+const getRecommendations = user =>
   trackPromise(
     getRequest(`${recommendationsEndpoint}/${encodeURIComponent(user)}`),
-    'fetchRecommendations'
+    'getRecommendations'
   );
 
 const getUsers = user =>
@@ -95,7 +95,7 @@ export {
   postSearchTerm,
   addUser,
   fetchFoods,
-  fetchRecommendations,
+  getRecommendations,
   getUsers,
   getSearchedTerms,
   approveUser,

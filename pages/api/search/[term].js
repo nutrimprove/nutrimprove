@@ -1,4 +1,4 @@
-import { addSearchTerm, connectToDatabase } from '../../../server/db';
+import { addSearchTerm, getSearchTerm } from '../../../server/db';
 import { fetchFoods } from '../../../connect/api';
 
 const formatSearchTerm = (searchTerm, foods) => {
@@ -25,16 +25,18 @@ const getCollectionResults = async (req, res) => {
 
   if (term) {
     term = term.toLowerCase();
-
-    const db = await connectToDatabase(process.env.MONGODB_URI);
-    const collection = await db.collection('search_cache');
-    let result = await collection.findOne({ search_term: term });
+    const result = await getSearchTerm(term);
 
     if (!result) {
       const foods = await fetchFoods(term);
       const searchTermObject = formatSearchTerm(term, foods);
-      result = await addSearchTerm(searchTermObject, res);
+      const savedTerm = await addSearchTerm(searchTermObject);
+
+      return savedTerm
+        ? res.status(201).json(savedTerm)
+        : res.status(500);
     }
+
     return res.status(200).json(result);
   }
 };
