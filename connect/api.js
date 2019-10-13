@@ -57,9 +57,6 @@ const getRecommendations = user =>
 const getUsers = user =>
   getRequest(`${usersEndpoint}/${encodeURIComponent(user)}`);
 
-const addUser = user =>
-  postRequest(usersEndpoint, encodeURIComponent(user));
-
 const approveUser = user =>
   trackPromise(
     postRequest(usersEndpoint, { user, approval: true }),
@@ -81,9 +78,6 @@ const deleteUser = user =>
 const getSearchedTerms = searchTerm =>
   getRequest(`${searchTermsEndpoint}/${encodeURIComponent(searchTerm)}`);
 
-const postSearchTerm = searchTerm =>
-  postRequest(searchTermsEndpoint, encodeURIComponent(searchTerm));
-
 const postRecommendations = payload =>
   trackPromise(
     postRequest(recommendationsEndpoint, payload),
@@ -92,8 +86,6 @@ const postRecommendations = payload =>
 
 export {
   postRecommendations,
-  postSearchTerm,
-  addUser,
   fetchFoods,
   getRecommendations,
   getUsers,

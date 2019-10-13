@@ -30,10 +30,12 @@ const getCollectionResults = async (req, res) => {
             approved: false,
           };
           result = await saveUser(newUserDocument);
+          return result
+            ? res.status(201).json(result)
+            : res.status(500);
         }
     }
   }
-
   return result
     ? res.status(200).json(result)
     : res.status(404);
