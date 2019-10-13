@@ -50,14 +50,12 @@ const getNutritionalData = foodId =>
 
 const fetchRecommendations = user =>
   trackPromise(
-    getRequest(
-      `${recommendationsEndpoint}?user=${encodeURIComponent(user)}`
-    ),
+    getRequest(`${recommendationsEndpoint}/${encodeURIComponent(user)}`),
     'fetchRecommendations'
   );
 
 const getUsers = user =>
-  getRequest(`${usersEndpoint}?user=${encodeURIComponent(user)}`);
+  getRequest(`${usersEndpoint}/${encodeURIComponent(user)}`);
 
 const addUser = user =>
   postRequest(usersEndpoint, encodeURIComponent(user));
@@ -81,9 +79,7 @@ const deleteUser = user =>
   );
 
 const getSearchedTerms = searchTerm =>
-  getRequest(
-    `${searchTermsEndpoint}?term=${encodeURIComponent(searchTerm)}`
-  );
+  getRequest(`${searchTermsEndpoint}/${encodeURIComponent(searchTerm)}`);
 
 const postSearchTerm = searchTerm =>
   postRequest(searchTermsEndpoint, encodeURIComponent(searchTerm));

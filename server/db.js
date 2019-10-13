@@ -166,32 +166,18 @@ const addRecommendations = async recommendationsObj => {
       recommendation: rec.recommendation.name,
     }));
 
-  AddRecommendationsConnection.find()
+  return AddRecommendationsConnection.find()
     .or(allRecsQuery)
-    .then(duplicateDocs => {
+    .then(async duplicateDocs => {
       if (duplicateDocs.length === 0) {
-        AddRecommendationsConnection.insertMany(
-          recommendations,
-          (err, docs) => {
-            mongoose.connection.close();
-            if (err) {
-              console.error('Error inserting recommendations!', err);
-              return err;
-            } else {
-              console.log(
-                'Recommendations inserted!',
-                formatResultRecs(docs)
-              );
-              return formatResultRecs(docs);
-            }
-          }
+        const results = await AddRecommendationsConnection.insertMany(
+          recommendations
         );
+        return formatResultRecs(results);
       } else {
-        console.warn(
-          'Found duplicate recommendations!',
-          formatResultRecs(duplicateDocs)
-        );
-        return { duplicates: formatResultRecs(duplicateDocs) };
+        const duplicates = formatResultRecs(duplicateDocs);
+        console.warn('Found duplicate recommendations!', duplicates);
+        return { duplicates };
       }
     });
 };

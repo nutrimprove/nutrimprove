@@ -178,7 +178,7 @@ const AddRecommendations = ({
           ]);
         } else {
           updateStatus([
-            'Something went wrong when saving records to database.',
+            'Something went wrong when saving record(s) to database.',
             'Please refresh and try again. If it persists please contact us!',
           ]);
         }
