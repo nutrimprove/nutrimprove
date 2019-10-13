@@ -70,7 +70,8 @@ export const editFood = (food, foodName, isRecommendation) => {
         }));
 
         const selectedSuggestion = suggestions.find(
-          suggestion => suggestion.food_name === foodName
+          suggestion =>
+            suggestion.food_name.toLowerCase() === foodName.toLowerCase()
         );
         if (selectedSuggestion && selectedSuggestion.food_id !== food.id) {
           dispatch(

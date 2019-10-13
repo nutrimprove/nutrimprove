@@ -21,7 +21,7 @@ TabContainer.propTypes = {
 };
 
 const Content = ({ classes, userDetails }) => {
-  const [tab, setTab] = useState(2);
+  const [tab, setTab] = useState(0);
 
   const tabChange = (event, tab) => {
     setTab(tab);

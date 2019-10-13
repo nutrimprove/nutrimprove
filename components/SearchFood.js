@@ -72,8 +72,10 @@ const SearchFood = ({ classes }) => {
           food_id: match.food_id,
         }));
         const selected =
-          suggestions.find(suggestion => suggestion.food_name === value) ||
-          search.matches[0].food_name;
+          suggestions.find(
+            suggestion =>
+              suggestion.food_name.toLowerCase() === value.toLowerCase()
+          ) || search.matches[0].food_name;
         setFood({
           name: selected.food_name,
           id: selected.food_id,
