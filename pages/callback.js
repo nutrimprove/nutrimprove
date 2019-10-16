@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import Auth from '../auth/Auth';
+import Auth from '../connect/auth/Auth';
 import Router from 'next/router';
 import { setUserDetails } from '../store/global/actions';
 import { connect } from 'react-redux';
@@ -8,7 +8,7 @@ import SectionHeader from '../components/SectionHeader';
 import { setUserDetailsWithRole } from '../helpers/userUtils';
 
 const auth = new Auth();
-const title = `Redirection Page!!`;
+const content = { title: `Redirection Page!!` };
 
 const Callback = ({ setUserDetails }) => {
   useEffect(() => {
@@ -33,7 +33,7 @@ const Callback = ({ setUserDetails }) => {
 
   return (
     <>
-      <SectionHeader title={title} />
+      <SectionHeader content={content} />
     </>
   );
 };

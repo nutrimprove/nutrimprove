@@ -12,14 +12,14 @@ const DeleteUserButton = ({ user, action }) => {
   const confirmButtonActions = async () => {
     setDisabled(true);
     await deleteUser(user.email);
-    action();
+    action(user.email);
   };
 
   const setTempConfirmation = () => {
     setConfirm(true);
     setTimeout(() => {
       setConfirm(false);
-    }, 5000);
+    }, 3000);
   };
 
   const defaultButton = () => (

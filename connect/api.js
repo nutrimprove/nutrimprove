@@ -6,9 +6,9 @@ const nutritionApiEndpoint =
   'https://api.edamam.com/api/food-database/nutrients';
 const category = ``; // Edamam category filter
 const apiAuthParams = `app_key=8a2617ec655417bd43fd2b3df4b85a30&app_id=652bd7d5`;
-const searchTermsEndpoint = '/api/v1/search';
-const recommendationsEndpoint = '/api/v1/recommendations';
-const usersEndpoint = '/api/v1/users';
+const searchTermsEndpoint = '/api/search';
+const recommendationsEndpoint = '/api/recommendations';
+const usersEndpoint = '/api/users';
 
 const getRequest = endpoint =>
   axios
@@ -48,19 +48,14 @@ const getNutritionalData = foodId =>
     ],
   });
 
-const fetchRecommendations = user =>
+const getRecommendations = user =>
   trackPromise(
-    getRequest(
-      `${recommendationsEndpoint}/?user=${encodeURIComponent(user)}`
-    ),
-    'fetchRecommendations'
+    getRequest(`${recommendationsEndpoint}/${encodeURIComponent(user)}`),
+    'getRecommendations'
   );
 
 const getUsers = user =>
-  getRequest(`${usersEndpoint}/?user=${encodeURIComponent(user)}`);
-
-const addUser = user =>
-  postRequest(usersEndpoint, encodeURIComponent(user));
+  getRequest(`${usersEndpoint}/${encodeURIComponent(user)}`);
 
 const approveUser = user =>
   trackPromise(
@@ -81,12 +76,7 @@ const deleteUser = user =>
   );
 
 const getSearchedTerms = searchTerm =>
-  getRequest(
-    `${searchTermsEndpoint}/?term=${encodeURIComponent(searchTerm)}`
-  );
-
-const postSearchTerm = searchTerm =>
-  postRequest(searchTermsEndpoint, encodeURIComponent(searchTerm));
+  getRequest(`${searchTermsEndpoint}/${encodeURIComponent(searchTerm)}`);
 
 const postRecommendations = payload =>
   trackPromise(
@@ -96,10 +86,8 @@ const postRecommendations = payload =>
 
 export {
   postRecommendations,
-  postSearchTerm,
-  addUser,
   fetchFoods,
-  fetchRecommendations,
+  getRecommendations,
   getUsers,
   getSearchedTerms,
   approveUser,

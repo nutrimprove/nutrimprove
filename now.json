@@ -2,10 +2,7 @@
   "version": 2,
   "name": "nutrimprove",
   "alias": "nutrimprove.now.sh",
-  "builds": [
-    { "src": "api/**/*.js", "use": "@now/node" },
-    { "src": "next.config.js", "use": "@now/next" }
-  ],
+  "builds": [{ "src": "next.config.js", "use": "@now/next" }],
   "routes": [
     {
       "src": "/api/v1/search/(?<term>[^/]+)",

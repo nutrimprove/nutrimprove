@@ -39,7 +39,6 @@ const AdminPanel = ({ userDetails }) => {
           action === 'approve'
             ? await approveUser(user.email)
             : await revokeUser(user.email);
-          updateResults();
         }}
         context={`${action}User-${user.email}`}
         disabled={!hasPermissions}
@@ -49,9 +48,15 @@ const AdminPanel = ({ userDetails }) => {
     );
   };
 
+  const removeUser = userToDelete => {
+    const newUserList = users.filter(user => user.email !== userToDelete);
+    setUsers(newUserList);
+    updateResults();
+  };
+
   const deleteButton = user => {
     if (userDetails.role === ROLES.OWNER) {
-      return <DeleteUserButton action={updateResults} user={user} />;
+      return <DeleteUserButton action={removeUser} user={user} />;
     }
   };
 

@@ -13,7 +13,7 @@ import {
   removeAllFoodsAndRecommendationsAction,
 } from '../store/addRecommendation/actions';
 import { postRecommendations } from '../connect/api';
-import * as _ from 'lodash';
+import { uniqBy, difference } from 'lodash';
 import SectionHeader from './SectionHeader';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { usePromiseTracker } from 'react-promise-tracker';
@@ -102,9 +102,9 @@ const AddRecommendations = ({
   const validateFields = () => {
     const allFoods = foods.concat(recommendations);
     const emptyFields = allFoods.filter(food => food.id.length === 0);
-    const duplicatedFoods = _.difference(
+    const duplicatedFoods = difference(
       allFoods,
-      _.uniqBy(allFoods, 'id'),
+      uniqBy(allFoods, 'id'),
       'id'
     );
     return duplicatedFoods.length === 0 && emptyFields.length === 0;
@@ -178,7 +178,7 @@ const AddRecommendations = ({
           ]);
         } else {
           updateStatus([
-            'Something went wrong when saving records to database.',
+            'Something went wrong when saving record(s) to database.',
             'Please refresh and try again. If it persists please contact us!',
           ]);
         }

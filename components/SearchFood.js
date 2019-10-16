@@ -72,8 +72,10 @@ const SearchFood = ({ classes }) => {
           food_id: match.food_id,
         }));
         const selected =
-          suggestions.find(suggestion => suggestion.food_name === value) ||
-          search.matches[0].food_name;
+          suggestions.find(
+            suggestion =>
+              suggestion.food_name.toLowerCase() === value.toLowerCase()
+          ) || search.matches[0].food_name;
         setFood({
           name: selected.food_name,
           id: selected.food_id,
@@ -133,7 +135,8 @@ const SearchFood = ({ classes }) => {
         {foodData && (
           <>
             <div className={classes.title}>
-              Nutritional values per 100g of &apos;{searchTerm}&apos;
+              Nutritional values per 100g of &apos;
+              <span className={classes.term}>{searchTerm}&apos;</span>
             </div>
             <div className={classes.table}>
               <ResultsTable values={foodData} />
@@ -171,9 +174,11 @@ const styles = {
   title: {
     display: 'block',
     marginTop: 30,
-    fontWeight: 'bold',
     fontFamily: 'sans-serif, arial',
     fontSize: '1em',
+  },
+  term: {
+    fontWeight: 'bold',
   },
 };
 
