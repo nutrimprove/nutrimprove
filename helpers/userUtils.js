@@ -22,3 +22,8 @@ export const setUserDetailsWithRole = async (setUserDetails, userInfo) => {
 export const isAdmin = user => {
   return user.role === ROLES.OWNER || user.role === ROLES.ADMIN;
 };
+
+export const isValidEmail = email => {
+  const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return re.test(String(email).toLowerCase());
+};

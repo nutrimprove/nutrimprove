@@ -5,7 +5,8 @@ import {
 
 const getCollectionResults = async (req, res) => {
   const { approved } = req.query;
-  if (approved === undefined) return null;
+  if (approved === undefined)
+    return res.status(400).json('Approved status not specified!');
 
   let result;
 

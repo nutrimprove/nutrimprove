@@ -2,13 +2,14 @@ import {
   getUser,
   saveUser,
 } from '../../../server/db';
+import { isValidEmail } from '../../../helpers/userUtils';
 
 const getCollectionResults = async (req, res) => {
   const { user } = req.query;
-  if (!user) return null;
+  if (!user) return res.status(400).json('User not specified!');;
 
   let result = await getUser(user);
-  if (!result) {
+  if (!result && isValidEmail(user)) {
     const newUserDocument = {
       email: user,
       role: 100,

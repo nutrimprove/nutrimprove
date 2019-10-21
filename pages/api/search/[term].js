@@ -22,7 +22,7 @@ const formatSearchTerm = (searchTerm, foods) => {
 
 const getCollectionResults = async (req, res) => {
   const term = req.query.term.toLowerCase();
-  if (!term) return null;
+  if (!term) return res.status(400).json('Search term not specified!');;
 
   const result = await getSearchTerm(term);
   if (!result) {
