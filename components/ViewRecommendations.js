@@ -19,7 +19,7 @@ const ViewRecommendations = ({ userDetails }) => {
   const loadUserRecommendations = async () => {
     if (userDetails) {
       const recommendations = await getRecommendations(userDetails.email);
-      setTitle('Your recommendations');
+      setTitle(`Your recommendations (${recommendations.length})`);
       setRecommendations(recommendations);
     } else {
       console.error('User details not found!', userDetails);
@@ -28,7 +28,7 @@ const ViewRecommendations = ({ userDetails }) => {
 
   const loadAllRecommendations = async () => {
     const recommendations = await getAllRecommendations();
-    setTitle('All recommendations');
+    setTitle(`All recommendations (${recommendations.length})`);
     setRecommendations(recommendations);
   };
 
