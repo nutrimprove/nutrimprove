@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import ResultsTable from './ResultsTable';
-import { getRecommendations } from '../connect/api';
+import { getAllRecommendations, getRecommendations } from '../connect/api';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import SectionHeader from './SectionHeader';
 import ButtonWithSpinner from './ButtonWithSpinner';
+import { isAdmin } from '../helpers/userUtils';
 
 const sectionHeader = {
   title: 'View Recommendations',
@@ -13,14 +14,22 @@ const sectionHeader = {
 
 const ViewRecommendations = ({ userDetails }) => {
   const [recommendations, setRecommendations] = useState();
+  const [title, setTitle] = useState();
 
-  const updateResults = async () => {
+  const loadUserRecommendations = async () => {
     if (userDetails) {
       const recommendations = await getRecommendations(userDetails.email);
+      setTitle('Your recommendations');
       setRecommendations(recommendations);
     } else {
       console.error('User details not found!', userDetails);
     }
+  };
+
+  const loadAllRecommendations = async () => {
+    const recommendations = await getAllRecommendations();
+    setTitle('All recommendations');
+    setRecommendations(recommendations);
   };
 
   const formattedRecommendations = () =>
@@ -34,16 +43,21 @@ const ViewRecommendations = ({ userDetails }) => {
     <>
       <SectionHeader content={sectionHeader} />
       <ButtonWithSpinner
-        action={updateResults}
+        action={loadUserRecommendations}
         context='getRecommendations'
       >
         {sectionHeader.title}
       </ButtonWithSpinner>
+      {isAdmin(userDetails) && (
+        <ButtonWithSpinner
+          action={loadAllRecommendations}
+          context='getAllRecommendations'
+        >
+          View All Recommendations
+        </ButtonWithSpinner>
+      )}
       {recommendations && (
-        <ResultsTable
-          values={formattedRecommendations()}
-          title='Recommendations added by you'
-        />
+        <ResultsTable values={formattedRecommendations()} title={title} />
       )}
     </>
   );
