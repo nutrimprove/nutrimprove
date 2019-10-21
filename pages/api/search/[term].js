@@ -21,24 +21,19 @@ const formatSearchTerm = (searchTerm, foods) => {
 };
 
 const getCollectionResults = async (req, res) => {
-  let { term } = req.query;
+  const term = req.query.term.toLowerCase();
+  if (!term) return null;
 
-  if (term) {
-    term = term.toLowerCase();
-    const result = await getSearchTerm(term);
-
-    if (!result) {
-      const foods = await fetchFoods(term);
-      const searchTermObject = formatSearchTerm(term, foods);
-      const savedTerm = await addSearchTerm(searchTermObject);
-
-      return savedTerm
-        ? res.status(201).json(savedTerm)
-        : res.status(500);
-    }
-
-    return res.status(200).json(result);
+  const result = await getSearchTerm(term);
+  if (!result) {
+    const foods = await fetchFoods(term);
+    const searchTermObject = formatSearchTerm(term, foods);
+    const savedTerm = await addSearchTerm(searchTermObject);
+    return savedTerm
+      ? res.status(201).json(savedTerm)
+      : res.status(500);
   }
+  return res.status(200).json(result);
 };
 
 export default getCollectionResults;
