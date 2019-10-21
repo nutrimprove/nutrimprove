@@ -1,5 +1,5 @@
 import { ROLES } from './constants';
-import { getUsers } from '../connect/api';
+import { getUser } from '../connect/api';
 
 export const userRoleToString = userRole => {
   return Object.keys(ROLES).find(key => ROLES[key] === userRole);
@@ -7,7 +7,7 @@ export const userRoleToString = userRole => {
 
 export const setUserDetailsWithRole = async (setUserDetails, userInfo) => {
   if (userInfo && userInfo.email) {
-    const user = await getUsers(userInfo.email);
+    const user = await getUser(userInfo.email);
     if (user) {
       const { role, approved } = user;
       setUserDetails({ ...userInfo, role, approved });
