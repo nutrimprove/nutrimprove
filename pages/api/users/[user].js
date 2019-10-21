@@ -6,10 +6,14 @@ import { isValidEmail } from '../../../helpers/userUtils';
 
 const getCollectionResults = async (req, res) => {
   const { user } = req.query;
-  if (!user) return res.status(400).json('User not specified!');;
+
+  if (!isValidEmail(user)) {
+    return res.status(400).json('Invalid user!');
+  }
 
   let result = await getUser(user);
-  if (!result && isValidEmail(user)) {
+
+  if (!result) {
     const newUserDocument = {
       email: user,
       role: 100,
