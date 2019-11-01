@@ -3,18 +3,16 @@ import Loader from 'react-loader-spinner';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core';
 
-const styles = {
-  spinner: {
-    display: 'inline-flex',
-    padding: '3px 0 0 12px',
-  },
-};
-
-const LoadingSpinner = ({ classes, colour = 'black', context }) => {
+const LoadingSpinner = ({
+  classes,
+  colour = 'black',
+  context,
+  force = false,
+}) => {
   const { promiseInProgress } = usePromiseTracker({ area: context });
 
   return (
-    promiseInProgress && (
+    (promiseInProgress || force) && (
       <div className={classes.spinner}>
         <Loader type='Oval' color={colour} height={22} width={22} />
       </div>
@@ -25,6 +23,13 @@ const LoadingSpinner = ({ classes, colour = 'black', context }) => {
 LoadingSpinner.propTypes = {
   colour: PropTypes.string,
   classes: PropTypes.object.required,
+};
+
+const styles = {
+  spinner: {
+    display: 'inline-flex',
+    padding: '3px 0 0 12px',
+  },
 };
 
 export default withStyles(styles)(LoadingSpinner);
