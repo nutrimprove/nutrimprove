@@ -100,6 +100,11 @@ const getRecommendations = async user => {
   return RecommendationsConnection.find({ contributor_id: user });
 };
 
+const getAllRecommendations = async () => {
+  const RecommendationsConnection = await getRecommendationsConnection();
+  return RecommendationsConnection.find({});
+};
+
 const addRecommendations = async recommendationsObj => {
   const recommendations = recommendationsObj.map(recommendation => ({
     food: {
@@ -149,6 +154,7 @@ export {
   getSearchTerm,
   addSearchTerm,
   getRecommendations,
+  getAllRecommendations,
   addRecommendations,
   getUser,
   getAllUsers,

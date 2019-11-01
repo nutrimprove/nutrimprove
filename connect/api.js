@@ -54,29 +54,11 @@ const getRecommendations = user =>
     'getRecommendations'
   );
 
-const getUsers = user =>
-  getRequest(`${usersEndpoint}/${encodeURIComponent(user)}`);
-
-const approveUser = user =>
+const getAllRecommendations = () =>
   trackPromise(
-    postRequest(usersEndpoint, { user, approval: true }),
-    `approveUser-${user}`
+    getRequest(`${recommendationsEndpoint}/all`),
+    'getAllRecommendations'
   );
-
-const revokeUser = user =>
-  trackPromise(
-    postRequest(usersEndpoint, { user, approval: false }),
-    `revokeUser-${user}`
-  );
-
-const deleteUser = user =>
-  trackPromise(
-    postRequest(usersEndpoint, { user, deleteuser: true }),
-    `deleteUser-${user}`
-  );
-
-const getSearchedTerms = searchTerm =>
-  getRequest(`${searchTermsEndpoint}/${encodeURIComponent(searchTerm)}`);
 
 const postRecommendations = payload =>
   trackPromise(
@@ -84,11 +66,47 @@ const postRecommendations = payload =>
     'postRecommendations'
   );
 
+const getUser = user =>
+  getRequest(`${usersEndpoint}/${encodeURIComponent(user)}`);
+
+const getAllUsers = () => getRequest(`${usersEndpoint}/all`);
+
+const getApprovedUsers = () =>
+  getRequest(`${usersEndpoint}/approved?approved=true`);
+
+const getNotApprovedUsers = () =>
+  getRequest(`${usersEndpoint}/approved?approved=false`);
+
+const approveUser = user =>
+  trackPromise(
+    postRequest(`${usersEndpoint}/approve`, { user, approval: true }),
+    `approveUser-${user}`
+  );
+
+const revokeUser = user =>
+  trackPromise(
+    postRequest(`${usersEndpoint}/approve`, { user, approval: false }),
+    `revokeUser-${user}`
+  );
+
+const deleteUser = user =>
+  trackPromise(
+    postRequest(`${usersEndpoint}/delete`, { user }),
+    `deleteUser-${user}`
+  );
+
+const getSearchedTerms = searchTerm =>
+  getRequest(`${searchTermsEndpoint}/${encodeURIComponent(searchTerm)}`);
+
 export {
   postRecommendations,
   fetchFoods,
   getRecommendations,
-  getUsers,
+  getAllRecommendations,
+  getUser,
+  getAllUsers,
+  getApprovedUsers,
+  getNotApprovedUsers,
   getSearchedTerms,
   approveUser,
   revokeUser,

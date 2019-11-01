@@ -1,9 +1,7 @@
-import { addRecommendations } from '../../../server/db';
+import { getAllRecommendations } from '../../../../server/db';
 
 const getCollectionResults = async (req, res) => {
-  if (req.method !== 'POST') return null;
-
-  const result = await addRecommendations(req.body);
+  const result = await getAllRecommendations();
 
   return result ? res.status(200).json(result) : res.status(404);
 };

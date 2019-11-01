@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import SectionHeader from './SectionHeader';
-import { approveUser, getUsers, revokeUser } from '../connect/api';
+import {
+  approveUser,
+  getAllUsers,
+  getApprovedUsers,
+  getNotApprovedUsers,
+  revokeUser,
+} from '../connect/api';
 import ResultsTable from './ResultsTable';
 import ButtonWithSpinner from './ButtonWithSpinner';
 import { connect } from 'react-redux';
@@ -39,6 +45,7 @@ const AdminPanel = ({ userDetails }) => {
           action === 'approve'
             ? await approveUser(user.email)
             : await revokeUser(user.email);
+          updateResults();
         }}
         context={`${action}User-${user.email}`}
         disabled={!hasPermissions}
@@ -68,21 +75,30 @@ const AdminPanel = ({ userDetails }) => {
   );
 
   const updateResults = async () => {
-    if (userQuery) {
-      const users = await getUsers(userQuery);
-      const newUsersObj = [];
-      if (users) {
-        users.map(user => {
-          newUsersObj.push({
-            email: user.email,
-            role: userRoleToString(user.role),
-            approved: user.approved,
-            action: renderActionButtons(user),
-          });
-        });
-      }
-      setUsers(newUsersObj);
+    let users;
+    switch (userQuery) {
+      case queries.GET_ALL:
+        users = await getAllUsers();
+        break;
+      case queries.APPROVED:
+        users = await getApprovedUsers();
+        break;
+      case queries.NOT_APPROVED:
+        users = await getNotApprovedUsers();
+        break;
     }
+    const newUsersObj = [];
+    if (users) {
+      users.map(user => {
+        newUsersObj.push({
+          email: user.email,
+          role: userRoleToString(user.role),
+          approved: user.approved,
+          action: renderActionButtons(user),
+        });
+      });
+    }
+    setUsers(newUsersObj);
   };
 
   const listAllUsers = () => setUserQuery(queries.GET_ALL);
