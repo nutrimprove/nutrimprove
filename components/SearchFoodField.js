@@ -225,7 +225,7 @@ const styles = theme => ({
     color: '#770000',
   },
   divider: {
-    height: theme.spacing.unit * 2,
+    height: theme.spacing(2),
   },
 });
 
