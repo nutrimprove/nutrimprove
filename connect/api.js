@@ -67,7 +67,10 @@ const postRecommendations = payload =>
   );
 
 const getUser = user =>
-  getRequest(`${usersEndpoint}/${encodeURIComponent(user)}`);
+  trackPromise(
+    getRequest(`${usersEndpoint}/${encodeURIComponent(user)}`),
+    'getUser'
+  );
 
 const getAllUsers = () => getRequest(`${usersEndpoint}/all`);
 
