@@ -63,5 +63,8 @@ typings/
 # IDE files
 .idea
 
+# Other files
+.DS_Store
+
 # Notes
 todo.md
