@@ -49,7 +49,7 @@ const Header = ({ classes, userDetails, setUserDetails }) => {
           <div id='links'>
             <Typography variant='button' color='inherit'>
               <Link href='/about'>About</Link>
-              <Link href='/help'>Help</Link>
+              {username() && <Link href='/help'>Help</Link>}
             </Typography>
             {username() ? (
               <HeaderLink action={handleLogout}>Logout</HeaderLink>
