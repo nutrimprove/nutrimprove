@@ -31,7 +31,11 @@ const Help = ({ classes }) => {
         </div>
 
         <Section title='Search Food'>
-          <img src='/searchfood.png' alt='Search food panel' />
+          <img
+            className={classes.image}
+            src='/searchfood.png'
+            alt='Search food panel'
+          />
 
           <Typography paragraph={true} variant='body1'>
             This panel will be used to search for foods and view their
@@ -47,7 +51,11 @@ const Help = ({ classes }) => {
             to choose from.
           </Typography>
 
-          <img src='/foodsdropdown.png' alt='Foods dropdown' />
+          <img
+            className={classes.image}
+            src='/foodsdropdown.png'
+            alt='Foods dropdown'
+          />
 
           <Typography variant='body1'>
             2 - Choose a food from the dropdown (you may amend the food
@@ -68,17 +76,20 @@ const Help = ({ classes }) => {
           </Typography>
 
           <img
+            className={classes.image}
             src='/nutritiontable.png'
             alt='Nutrition information table'
           />
 
-          <Typography paragraph={true} variant='body1'>
+          <Typography variant='body1'>
             Note: When the loading icon is active it means the application
             is trying to load or save information.{' '}
           </Typography>
-
-          <img src='/loading.png' alt='Loading icon' />
-
+          <img
+            className={classes.image}
+            src='/loading.png'
+            alt='Loading icon'
+          />
           <Typography paragraph={true} variant='body2'>
             Loading times may vary depending on your Internet connection or
             the database load.
@@ -86,7 +97,11 @@ const Help = ({ classes }) => {
         </Section>
 
         <Section title='View Recommendations'>
-          <img src='/viewrecs.png' alt='View recommendations panel' />
+          <img
+            className={classes.image}
+            src='/viewrecs.png'
+            alt='View recommendations panel'
+          />
 
           <Typography variant='body1'>
             The View Recommendations panel is used to simply view the
@@ -97,18 +112,20 @@ const Help = ({ classes }) => {
             recommendations listed.
           </Typography>
 
-          <Typography paragraph={true} variant='body1'>
-            <i>
-              This is a work in progress and we will add more features in
-              the near future (eg: ability to view all recommendations
-              inserted by all contributors, ability to search a food in
-              recommendations, etc)
-            </i>
+          <Typography paragraph={true} variant='body2'>
+            This is a work in progress and we will add more features in the
+            near future (eg: ability to view all recommendations inserted
+            by all contributors, ability to search a food in
+            recommendations, etc)
           </Typography>
         </Section>
 
         <Section title='Add Recommendations'>
-          <img src='/addrecs.png' alt='Add recommendations panel' />
+          <img
+            className={classes.image}
+            src='/addrecs.png'
+            alt='Add recommendations panel'
+          />
 
           <Typography paragraph={true} variant='body1'>
             This is where we will be adding the recommendations which will
@@ -155,7 +172,11 @@ const Help = ({ classes }) => {
             foods. An example would be:
           </Typography>
 
-          <img src='/recs.png' alt='Recommendations fields' />
+          <img
+            className={classes.image}
+            src='/recs.png'
+            alt='Recommendations fields'
+          />
 
           <Typography paragraph={true} variant='body1'>
             Note that this an N to N relationship, meaning that each food
@@ -235,8 +256,9 @@ const styles = {
     fontSize: 18,
   },
   image: {
-    margin: 'auto',
-    display: 'block',
+    border: 'solid 1px grey',
+    padding: 5,
+    margin: '5px 0 10px 0',
   },
 };
 

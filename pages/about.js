@@ -47,10 +47,9 @@ const About = ({ classes }) => {
             If you are a registered nutritionist, nutritional therapist or
             dietitian and if you are interested in knowing more about this
             project please contact us via email on:
-            <Link>johncjesus@gmail.com</Link>
           </Typography>
+          <Link>johncjesus@gmail.com</Link>
         </Section>
-
         <BackToMainPageLink />
       </div>
     </>
