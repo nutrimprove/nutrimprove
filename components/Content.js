@@ -76,6 +76,7 @@ const styles = theme => ({
   tabs: {
     backgroundColor: '#3f51b5',
     color: 'white',
+    borderRadius: '9px 9px 0 0',
   },
 });
 
