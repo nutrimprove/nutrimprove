@@ -2,14 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
 
-const Section = ({ classes, title, children }) => {
+const Section = ({ classes, id, title, children }) => {
   const sectionStyle = title
     ? classes.section
     : `${classes.section} ${classes.allRadius}`;
   return (
     <>
       {title && (
-        <h5 id='view' className={classes.title}>
+        <h5 id={id} className={classes.title}>
           {title}
         </h5>
       )}
@@ -22,6 +22,7 @@ Section.propTypes = {
   content: PropTypes.object.isRequired,
   classes: PropTypes.object.isRequired,
   title: PropTypes.string,
+  id: PropTypes.string,
   children: PropTypes.object,
 };
 

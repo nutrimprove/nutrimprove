@@ -21,13 +21,19 @@ const HelpPage = ({ classes }) => (
       </Typography>
 
       <div className={classes.links}>
-        <Link href='#search'>[ Search Foods ]</Link>
-        <Link href='#view'>[ View Recommendations ]</Link>
-        <Link href='#add'>[ Add Recommendations ]</Link>
+        <Link href='#search_food' component='a'>
+          [ Search Foods ]
+        </Link>
+        <Link href='#view_recs' component='a'>
+          [ View Recommendations ]
+        </Link>
+        <Link href='#add_recs' component='a'>
+          [ Add Recommendations ]
+        </Link>
       </div>
     </div>
 
-    <Section title='Search Food'>
+    <Section id='search_food' title='Search Food'>
       <img
         className={classes.image}
         src='/searchfood.png'
@@ -93,7 +99,7 @@ const HelpPage = ({ classes }) => (
       </Typography>
     </Section>
 
-    <Section title='View Recommendations'>
+    <Section id='view_recs' title='View Recommendations'>
       <img
         className={classes.image}
         src='/viewrecs.png'
@@ -116,7 +122,7 @@ const HelpPage = ({ classes }) => (
       </Typography>
     </Section>
 
-    <Section title='Add Recommendations'>
+    <Section id='add_recs' title='Add Recommendations'>
       <img
         className={classes.image}
         src='/addrecs.png'
