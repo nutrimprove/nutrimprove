@@ -9,7 +9,7 @@ import { PROJECT_NAME, MIN_WIDTH } from '../helpers/constants';
 
 const content = {
   title: `Help`,
-  subtitle: `How to use ${PROJECT_NAME} web application`,
+  subtitle: `How to use the ${PROJECT_NAME} web application`,
 };
 
 const HelpPage = ({ classes }) => (
