@@ -72,6 +72,7 @@ const styles = theme => ({
   root: {
     flexGrow: 1,
     backgroundColor: theme.palette.background.paper,
+    minWidth: 800,
   },
   tabs: {
     backgroundColor: '#3f51b5',

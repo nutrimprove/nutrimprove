@@ -75,6 +75,7 @@ Header.propTypes = {
 const styles = {
   header: {
     flexGrow: 1,
+    minWidth: 800,
   },
   logo: {
     width: 50,
