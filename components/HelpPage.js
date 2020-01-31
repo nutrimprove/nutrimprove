@@ -5,7 +5,7 @@ import SectionHeader from './SectionHeader';
 import Link from '@material-ui/core/Link';
 import Section from './Section';
 import BackToMainPageLink from './BackToMainPageLink';
-import { PROJECT_NAME } from '../helpers/constants';
+import { PROJECT_NAME, MIN_WIDTH } from '../helpers/constants';
 
 const content = {
   title: `Help`,
@@ -226,7 +226,7 @@ const styles = {
     margin: 20,
     padding: 20,
     border: '1px solid #DDD',
-    minWidth: 800,
+    minWidth: MIN_WIDTH,
   },
   title: {
     fontWeight: 'bold',

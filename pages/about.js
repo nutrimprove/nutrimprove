@@ -6,6 +6,7 @@ import Link from '@material-ui/core/Link';
 import { Typography } from '@material-ui/core';
 import BackToMainPageLink from '../components/BackToMainPageLink';
 import Section from '../components/Section';
+import { MIN_WIDTH } from '../helpers/constants';
 
 const content = {
   title: `About`,
@@ -65,7 +66,7 @@ const styles = {
     margin: 20,
     padding: 20,
     border: '1px solid #DDD',
-    minWidth: 800,
+    minWidth: MIN_WIDTH,
   },
   footer: {
     marginTop: 20,

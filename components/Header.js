@@ -12,6 +12,7 @@ import { setUserDetails } from '../store/global/actions';
 import { connect } from 'react-redux';
 import HeaderLink from './HeaderLink';
 import { setUserDetailsWithRole } from '../helpers/userUtils';
+import { MIN_WIDTH } from '../helpers/constants';
 
 const auth = new Auth();
 
@@ -75,7 +76,7 @@ Header.propTypes = {
 const styles = {
   header: {
     flexGrow: 1,
-    minWidth: 800,
+    minWidth: MIN_WIDTH,
   },
   logo: {
     width: 50,

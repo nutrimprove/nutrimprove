@@ -1,7 +1,7 @@
 import React from 'react';
 import SectionHeader from './SectionHeader';
 import PropTypes from 'prop-types';
-import { PROJECT_NAME } from '../helpers/constants';
+import { PROJECT_NAME, MIN_WIDTH } from '../helpers/constants';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core';
 
@@ -45,7 +45,7 @@ const styles = {
     margin: 20,
     padding: 20,
     border: '1px solid #DDD',
-    minWidth: 800,
+    minWidth: MIN_WIDTH,
   },
 };
 
