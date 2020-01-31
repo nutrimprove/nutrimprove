@@ -3,6 +3,7 @@ import SectionHeader from './SectionHeader';
 import PropTypes from 'prop-types';
 import { PROJECT_NAME } from '../helpers/constants';
 import { connect } from 'react-redux';
+import { withStyles } from '@material-ui/core';
 
 const content = {
   title: PROJECT_NAME,
@@ -10,7 +11,7 @@ const content = {
   message: '',
 };
 
-const NoAccess = ({ userDetails }) => {
+const NoAccess = ({ classes, userDetails }) => {
   if (userDetails.email) {
     if (!userDetails.email_verified) {
       content.subtitle = 'Please verify your email account';
@@ -28,14 +29,24 @@ const NoAccess = ({ userDetails }) => {
   }
 
   return (
-    <>
+    <div className={classes.content}>
       <SectionHeader content={content} />
-    </>
+    </div>
   );
 };
 
 NoAccess.propTypes = {
+  classes: PropTypes.object.isRequired,
   userDetails: PropTypes.object.isRequired,
+};
+
+const styles = {
+  content: {
+    margin: 20,
+    padding: 20,
+    border: '1px solid #DDD',
+    minWidth: 800,
+  },
 };
 
 const mapStateToProps = (states, ownProps) => {
@@ -47,4 +58,4 @@ const mapStateToProps = (states, ownProps) => {
 export default connect(
   mapStateToProps,
   null
-)(NoAccess);
+)(withStyles(styles)(NoAccess));
