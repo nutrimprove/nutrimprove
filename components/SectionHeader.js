@@ -7,15 +7,21 @@ const styles = {
   header: {
     marginBottom: '30px',
     fontFamily: 'sans-serif, arial',
+    backgroundColor: 'lightyellow',
+    padding: '10px 0 5px 10px',
+    border: 'solid 1px lightgrey',
+    borderRadius: 9,
   },
   title: {
-    fontSize: '1.4em',
+    fontSize: '1.5em',
     marginBottom: 10,
-    fontFamily: 'sans-serif, arial',
+    fontFamily: 'tahome, sans-serif, arial',
+    fontWeight: 300,
   },
   subtitle: {
-    fontSize: '1.1em',
+    fontSize: '1em',
     fontFamily: 'sans-serif, arial',
+    fontWeight: 200,
   },
   messages: {
     fontSize: '1em',

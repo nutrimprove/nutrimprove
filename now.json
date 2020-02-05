@@ -1,7 +1,6 @@
 {
   "version": 2,
   "name": "nutrimprove",
-  "alias": "nutrimprove.now.sh",
   "builds": [{ "src": "next.config.js", "use": "@now/next" }],
   "routes": [
     {

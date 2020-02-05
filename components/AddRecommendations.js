@@ -253,6 +253,7 @@ const styles = {
     width: 300,
     border: '1px dashed #ddd',
     padding: 20,
+    borderRadius: 9,
   },
   title: {
     fontSize: '1.4em',

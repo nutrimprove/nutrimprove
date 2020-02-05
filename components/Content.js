@@ -11,6 +11,7 @@ import AdminPanel from './AdminPanel';
 import { connect } from 'react-redux';
 import { isAdmin } from '../helpers/userUtils';
 import Paper from '@material-ui/core/Paper';
+import { MIN_WIDTH } from '../helpers/constants';
 
 function TabContainer(props) {
   return <Paper style={{ padding: 8 * 3 }}>{props.children}</Paper>;
@@ -72,10 +73,12 @@ const styles = theme => ({
   root: {
     flexGrow: 1,
     backgroundColor: theme.palette.background.paper,
+    minWidth: MIN_WIDTH,
   },
   tabs: {
     backgroundColor: '#3f51b5',
     color: 'white',
+    borderRadius: '9px 9px 0 0',
   },
 });
 

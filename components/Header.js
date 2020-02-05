@@ -12,6 +12,7 @@ import { setUserDetails } from '../store/global/actions';
 import { connect } from 'react-redux';
 import HeaderLink from './HeaderLink';
 import { setUserDetailsWithRole } from '../helpers/userUtils';
+import { MIN_WIDTH } from '../helpers/constants';
 
 const auth = new Auth();
 
@@ -49,6 +50,7 @@ const Header = ({ classes, userDetails, setUserDetails }) => {
           <div id='links'>
             <Typography variant='button' color='inherit'>
               <Link href='/about'>About</Link>
+              {username() && <Link href='/help'>Help</Link>}
             </Typography>
             {username() ? (
               <HeaderLink action={handleLogout}>Logout</HeaderLink>
@@ -74,6 +76,7 @@ Header.propTypes = {
 const styles = {
   header: {
     flexGrow: 1,
+    minWidth: MIN_WIDTH,
   },
   logo: {
     width: 50,
