@@ -12,6 +12,7 @@ import ButtonWithSpinner from './ButtonWithSpinner';
 import { isAdmin } from '../helpers/userUtils';
 import SearchFood from './SearchFood';
 import { Typography } from '@material-ui/core';
+import Spacer from './Spacer';
 
 const sectionHeader = {
   title: 'View Recommendations',
@@ -58,14 +59,9 @@ const ViewRecommendationsPage = ({ userDetails }) => {
   return (
     <>
       <SectionHeader content={sectionHeader} />
-      <Typography>
-        In this page you can view which recommendations have already been
-        inserted into the database.
-      </Typography>
-      <Typography paragraph={true}>
-        You can either retrieve all recommendations, list only your
-        insertions or simply type a food name and a list of existing
-        recommendations with that food will be displayed.
+      <Typography paragraph={true} variant='subtitle2'>
+        List only your recommendations or simply type a food name to list
+        all existing recommendations with that food.
       </Typography>
       {isAdmin(userDetails) && (
         <ButtonWithSpinner
@@ -81,11 +77,11 @@ const ViewRecommendationsPage = ({ userDetails }) => {
       >
         Your Recommendations
       </ButtonWithSpinner>
+      <Spacer />
       <SearchFood
         action={loadRecommendationsByFood}
         context='getRecommendationsByFood'
       />
-
       {recommendations && (
         <ResultsTable values={formattedRecommendations()} title={title} />
       )}

@@ -9,8 +9,7 @@ import SearchFood from './SearchFood';
 
 const sectionHeader = {
   title: 'Search food by name',
-  subtitle:
-    'Searches and displays the available nutritional data for that food item',
+  subtitle: 'Search for a food to display its nutritional data',
 };
 
 const parseNutrients = nutrients => {

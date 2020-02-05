@@ -15,7 +15,7 @@ const emptyFood = {
 
 let timeout = null;
 
-const SearchFood = ({ classes, action, context }) => {
+const SearchFood = ({ classes, action, context, title }) => {
   const [food, setFood] = useState(emptyFood);
 
   const updateState = async (selectedFood, value) => {
@@ -75,6 +75,7 @@ SearchFood.propTypes = {
   classes: PropTypes.object.isRequired,
   action: PropTypes.func,
   context: PropTypes.string,
+  title: PropTypes.string,
 };
 
 const styles = {
