@@ -15,7 +15,7 @@ const emptyFood = {
 
 let timeout = null;
 
-const SearchFood = ({ classes, action }) => {
+const SearchFood = ({ classes, action, context }) => {
   const [food, setFood] = useState(emptyFood);
 
   const updateState = async (selectedFood, value) => {
@@ -61,7 +61,7 @@ const SearchFood = ({ classes, action }) => {
         <ButtonWithSpinner
           className={classes.button}
           action={() => action(food)}
-          context='getNutritionalData'
+          context={context}
           disabled={!food.id}
         >
           Search
@@ -74,6 +74,7 @@ const SearchFood = ({ classes, action }) => {
 SearchFood.propTypes = {
   classes: PropTypes.object.isRequired,
   action: PropTypes.func,
+  context: PropTypes.string,
 };
 
 const styles = {
