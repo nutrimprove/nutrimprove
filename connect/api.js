@@ -48,10 +48,20 @@ const getNutritionalData = foodId =>
     ],
   });
 
-const getRecommendations = user =>
+const getUserRecommendations = user =>
   trackPromise(
-    getRequest(`${recommendationsEndpoint}/${encodeURIComponent(user)}`),
-    'getRecommendations'
+    getRequest(
+      `${recommendationsEndpoint}/user/${encodeURIComponent(user)}`
+    ),
+    'getUserRecommendations'
+  );
+
+const getRecommendationsByFood = food =>
+  trackPromise(
+    getRequest(
+      `${recommendationsEndpoint}/food/${encodeURIComponent(food)}`
+    ),
+    'getRecommendationsByFood'
   );
 
 const getAllRecommendations = () =>
@@ -104,7 +114,8 @@ const getSearchedTerms = searchTerm =>
 export {
   postRecommendations,
   fetchFoods,
-  getRecommendations,
+  getUserRecommendations,
+  getRecommendationsByFood,
   getAllRecommendations,
   getUser,
   getAllUsers,

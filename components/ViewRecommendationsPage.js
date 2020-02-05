@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import ResultsTable from './ResultsTable';
-import { getAllRecommendations, getRecommendations } from '../connect/api';
+import {
+  getAllRecommendations,
+  getUserRecommendations,
+} from '../connect/api';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import SectionHeader from './SectionHeader';
@@ -12,14 +15,17 @@ const sectionHeader = {
   subtitle: 'Fetch the list of recommendations you have provided',
 };
 
-const ViewRecommendations = ({ userDetails }) => {
+const ViewRecommendationsPage = ({ userDetails }) => {
   const [recommendations, setRecommendations] = useState();
   const [title, setTitle] = useState();
 
   const loadUserRecommendations = async () => {
     if (userDetails) {
-      const recommendations = await getRecommendations(userDetails.email);
-      setTitle(`Your recommendations (${recommendations.length})`);
+      const recommendations = await getUserRecommendations(
+        userDetails.email
+      );
+      const count = recommendations ? recommendations.length : 0;
+      setTitle(`Your recommendations (${count})`);
       setRecommendations(recommendations);
     } else {
       console.error('User details not found!', userDetails);
@@ -44,9 +50,9 @@ const ViewRecommendations = ({ userDetails }) => {
       <SectionHeader content={sectionHeader} />
       <ButtonWithSpinner
         action={loadUserRecommendations}
-        context='getRecommendations'
+        context='getUserRecommendations'
       >
-        {sectionHeader.title}
+        Your Recommendations
       </ButtonWithSpinner>
       {isAdmin(userDetails) && (
         <ButtonWithSpinner
@@ -63,7 +69,7 @@ const ViewRecommendations = ({ userDetails }) => {
   );
 };
 
-ViewRecommendations.propTypes = {
+ViewRecommendationsPage.propTypes = {
   userDetails: PropTypes.object,
 };
 
@@ -76,4 +82,4 @@ const mapStateToProps = (states, ownProps) => {
 export default connect(
   mapStateToProps,
   null
-)(ViewRecommendations);
+)(ViewRecommendationsPage);

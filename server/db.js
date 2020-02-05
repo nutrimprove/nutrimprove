@@ -95,9 +95,16 @@ const getRecommendationsConnection = () =>
     'recommendations'
   );
 
-const getRecommendations = async user => {
+const getUserRecommendations = async user => {
   const RecommendationsConnection = await getRecommendationsConnection();
   return RecommendationsConnection.find({ contributor_id: user });
+};
+
+const getRecommendationsByFood = async food => {
+  const RecommendationsConnection = await getRecommendationsConnection();
+  return RecommendationsConnection.find({
+    $or: [{ 'food.name': food }, { 'recommendation.name': food }],
+  });
 };
 
 const getAllRecommendations = async () => {
@@ -153,7 +160,8 @@ const addRecommendations = async recommendationsObj => {
 export {
   getSearchTerm,
   addSearchTerm,
-  getRecommendations,
+  getUserRecommendations,
+  getRecommendationsByFood,
   getAllRecommendations,
   addRecommendations,
   getUser,
