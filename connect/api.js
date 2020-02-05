@@ -31,7 +31,7 @@ const fetchFoods = name =>
     getRequest(
       `${foodApiEndpoint}?ingr=${encodeURIComponent(
         name
-      )}&${apiAuthParams}${category}`
+      )}&${apiAuthParams}&category=${category}`
     ).then(res => res.hints),
     'fetchFoods'
   );
