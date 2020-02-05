@@ -4,7 +4,7 @@ import { trackPromise } from 'react-promise-tracker';
 const foodApiEndpoint = 'https://api.edamam.com/api/food-database/parser';
 const nutritionApiEndpoint =
   'https://api.edamam.com/api/food-database/nutrients';
-const category = ``; // Edamam category filter
+const category = `generic-foods`; // Edamam category filter
 const apiAuthParams = `app_key=8a2617ec655417bd43fd2b3df4b85a30&app_id=652bd7d5`;
 const searchTermsEndpoint = '/api/search';
 const recommendationsEndpoint = '/api/recommendations';
@@ -31,7 +31,7 @@ const fetchFoods = name =>
     getRequest(
       `${foodApiEndpoint}?ingr=${encodeURIComponent(
         name
-      )}&${apiAuthParams}${category}`
+      )}&${apiAuthParams}&category=${category}`
     ).then(res => res.hints),
     'fetchFoods'
   );
