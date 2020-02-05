@@ -21,24 +21,24 @@ const About = ({ classes }) => {
 
         <Section>
           <Typography>
-            NutrImprove is a project still in early stages with the
-            objective of creating a large database of nutritional
-            recommendations.
+            NutrImprove is an initiative that aims to curate the
+            world&apos;s largest database of nutritional recommendations.
           </Typography>
           <Typography paragraph={true}>
             The NutrImprove web application will allow nutritionists,
-            nutritional therapists or dietitians to recommend potential
-            healthier alternatives to the foods that may not be adequate
-            for optimal health.
+            nutritional therapists and dietitians to recommend healthier
+            alternatives to the foods that may not be adequate for optimal
+            health.
           </Typography>
           <Typography>
-            Recommendations will be stored in a database and the amount
-            will grow as more contributors join the project.
+            Recommendations will be stored in a database which will grow as
+            more contributors join the project, feeding into a deeper and
+            richer source of information for all users.
           </Typography>
           <Typography paragraph={true}>
-            The web application will also allow its users to search for
-            foods and display their nutritional information, including
-            vitamins, minerals and their RDI.
+            In time, the web application will also allow it&apos;s users to
+            search for foods and display their nutritional information,
+            including vitamins, minerals and their RDI.
           </Typography>
           <Typography paragraph={true}>
             Contributors will have access to this data so they may quickly
@@ -46,10 +46,10 @@ const About = ({ classes }) => {
           </Typography>
           <Typography>
             If you are a registered nutritionist, nutritional therapist or
-            dietitian and if you are interested in knowing more about this
-            project please contact us via email on:
+            dietitian and are interested in knowing more about this project
+            please contact our resident us via email on:
           </Typography>
-          <Link>johncjesus@gmail.com</Link>
+          <Link>nutrimprove@gmail.com</Link>
         </Section>
         <BackToMainPageLink />
       </div>
