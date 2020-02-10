@@ -1,9 +1,3 @@
-import { getSearchedTerms } from '../../connect/api';
-import { trackPromise } from 'react-promise-tracker';
-import { INPUT_TRIGGER_TIME } from '../../helpers/constants';
-
-let timeout = null;
-
 export const ActionsTypes = {
   ADD_FOOD: 'ADD_FOOD',
   ADD_RECOMMENDED_FOOD: 'ADD_RECOMMENDED_FOOD',
@@ -44,48 +38,4 @@ export const removeRecommendedFoodAction = food => {
 
 export const removeAllFoodsAndRecommendationsAction = () => {
   return { type: ActionsTypes.REMOVE_ALL_FOODS_AND_RECOMMENDATIONS };
-};
-
-export const editFood = (food, foodName, isRecommendation) => {
-  if (foodName == null) return;
-
-  return async (dispatch, getState) => {
-    const action = isRecommendation
-      ? editRecommendedFoodAction
-      : editFoodAction;
-
-    dispatch(action({ ...food, id: '', name: foodName, suggestions: [] }));
-
-    clearTimeout(timeout);
-    // Timeout to control fetching of data while typing
-    timeout = setTimeout(async () => {
-      const search = await trackPromise(
-        getSearchedTerms(foodName),
-        `getSearchTerms-${food.key}`
-      );
-      if (search && search.matches) {
-        const suggestions = search.matches.map(match => ({
-          food_name: match.food_name,
-          food_id: match.food_id,
-        }));
-
-        const selectedSuggestion = suggestions.find(
-          suggestion =>
-            suggestion.food_name.toLowerCase() === foodName.toLowerCase()
-        );
-        if (selectedSuggestion && selectedSuggestion.food_id !== food.id) {
-          dispatch(
-            action({
-              ...food,
-              name: foodName,
-              id: selectedSuggestion.food_id,
-              suggestions,
-            })
-          );
-        } else if (suggestions.length > 0) {
-          dispatch(action({ ...food, name: foodName, suggestions }));
-        }
-      }
-    }, INPUT_TRIGGER_TIME);
-  };
 };

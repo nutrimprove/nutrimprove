@@ -4,13 +4,15 @@ import RemoveIcon from './RemoveIcon';
 import PrimaryButton from './PrimaryButton';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import uniqid from 'uniqid';
-import { getTime } from '../helpers/utils';
+import { emptyFood, getTime } from '../helpers/utils';
 import {
   addFoodAction,
   addRecommendedFoodAction,
-  editFood,
+  editFoodAction,
+  editRecommendedFoodAction,
   removeAllFoodsAndRecommendationsAction,
+  removeFoodAction,
+  removeRecommendedFoodAction,
 } from '../store/addRecommendation/actions';
 import { postRecommendations } from '../connect/api';
 import { uniqBy, difference } from 'lodash';
@@ -37,13 +39,17 @@ const AddRecommendationsPage = ({
   recommendations,
   addEmptyRecommendedFood,
   addEmptyFood,
+  removeFood,
+  removeRecommendedFood,
   removeAllFoods,
   userDetails,
-  setSearchTerm,
+  saveFood,
+  saveRecommendedFood,
   classes,
 }) => {
   const [validation, setValidation] = useState(false);
   const [status, setStatus] = useState([]);
+
   const { promiseInProgress: savingRecommendations } = usePromiseTracker({
     area: 'postRecommendations',
   });
@@ -54,6 +60,7 @@ const AddRecommendationsPage = ({
     area: 'getSearchTerms-food',
   });
   const loadingSearchTerms = loadingRecs || loadingFoods;
+
   const addRecommendationDisabled =
     recommendations.length >= maxRecommendationFields;
   const addFoodDisabled = foods.length >= maxFoodFields;
@@ -68,42 +75,68 @@ const AddRecommendationsPage = ({
     addEmptyRecommendedFood();
   }
 
-  const renderField = foods =>
+  const isValid = food => {
+    if (!validation) {
+      return food && !!food.id ? true : null;
+    }
+
+    if (!food || !food.id || !food.name) return;
+
+    const allFoodIds = foods
+      .concat(recommendations)
+      .map(item => item.name);
+    const sameIds = allFoodIds.filter(id => id === food.name);
+    return (
+      food.id.length > 0 && food.name.length > 2 && sameIds.length <= 1
+    );
+  };
+
+  const setFood = food => {
+    if (food) {
+      saveFood(food);
+    }
+  };
+
+  const setRecommendation = food => {
+    if (food) {
+      saveRecommendedFood(food);
+    }
+  };
+
+  const renderRemoveIcon = (food, isRecommendation) => {
+    return isRecommendation ? (
+      <RemoveIcon foodItem={food} action={removeRecommendedFood} />
+    ) : (
+      <RemoveIcon foodItem={food} action={removeFood} />
+    );
+  };
+
+  /**
+   * @param foods foods to render in input fields
+   * @param isRecommendation if the food is a recommendation
+   * @returns {*}
+   */
+  const renderField = (foods, isRecommendation) =>
     foods.map(food => (
       <div key={food.key} className={classes.searchfood}>
         <SearchInputField
-          food={food}
           isValid={isValid(food)}
-          action={setSearchTerm}
-          loadingContext={`getSearchTerms-${food.key}`}
+          foodAction={isRecommendation ? setRecommendation : setFood}
+          foodKey={food.key}
         />
         {foods.length <= 1 ? (
           <RemoveIcon />
         ) : (
-          <RemoveIcon foodItem={food} />
+          renderRemoveIcon(food, isRecommendation)
         )}
       </div>
     ));
 
-  const isValid = food => {
-    if (validation) {
-      const allFoodIds = foods
-        .concat(recommendations)
-        .map(item => item.name);
-      const sameIds = allFoodIds.filter(id => id === food.name);
-      return (
-        food &&
-        food.id.length > 0 &&
-        food.name.length > 2 &&
-        sameIds.length <= 1
-      );
-    }
-    return true;
-  };
-
   const validateFields = () => {
     const allFoods = foods.concat(recommendations);
-    const emptyFields = allFoods.filter(food => food.id.length === 0);
+    const emptyFields = allFoods.filter(
+      food => food.id && food.id.length === 0
+    );
     const duplicatedFoods = difference(
       allFoods,
       uniqBy(allFoods, 'id'),
@@ -202,7 +235,7 @@ const AddRecommendationsPage = ({
         <div className={classes.fieldBox}>
           <div className={classes.fieldtitle}>Choose food(s):</div>
           <div id='foods_input'>
-            {renderField(foods)}
+            {renderField(foods, false)}
             <PrimaryButton
               action={addEmptyFood}
               disabled={addFoodDisabled}
@@ -216,7 +249,7 @@ const AddRecommendationsPage = ({
             Healthier alternative(s):
           </div>
           <div id='recommendations_input'>
-            {renderField(recommendations)}
+            {renderField(recommendations, true)}
             <PrimaryButton
               action={addEmptyRecommendedFood}
               disabled={addRecommendationDisabled}
@@ -241,14 +274,17 @@ const AddRecommendationsPage = ({
 };
 
 AddRecommendationsPage.propTypes = {
-  recommendations: PropTypes.Array,
-  foods: PropTypes.Array,
-  addEmptyFood: PropTypes.function,
-  addEmptyRecommendedFood: PropTypes.function,
-  removeAllFoods: PropTypes.function,
+  recommendations: PropTypes.array,
+  foods: PropTypes.array,
+  addEmptyFood: PropTypes.func,
+  removeFood: PropTypes.func,
+  addEmptyRecommendedFood: PropTypes.func,
+  removeRecommendedFood: PropTypes.func,
+  removeAllFoods: PropTypes.func,
   userDetails: PropTypes.object,
   classes: PropTypes.object.isRequired,
-  setSearchTerm: PropTypes.function,
+  saveFood: PropTypes.func,
+  saveRecommendedFood: PropTypes.func,
 };
 
 const styles = {
@@ -281,7 +317,7 @@ const styles = {
   },
 };
 
-const mapStateToProps = (states, ownProps) => {
+const mapStateToProps = states => {
   return {
     recommendations: states.addRecommendationState.recommendedFoods,
     foods: states.addRecommendationState.foods,
@@ -289,28 +325,17 @@ const mapStateToProps = (states, ownProps) => {
   };
 };
 
-const mapDispatchToProps = (dispatch, ownProps) => {
-  const addEmptyField = action => {
-    dispatch(
-      action({
-        key: uniqid(),
-        id: '',
-        name: '',
-        suggestions: [],
-      })
-    );
-  };
-
-  return {
-    addEmptyRecommendedFood: () => addEmptyField(addRecommendedFoodAction),
-    addEmptyFood: () => addEmptyField(addFoodAction),
-    removeAllFoods: () =>
-      dispatch(removeAllFoodsAndRecommendationsAction()),
-    setSearchTerm: (food, name) => {
-      dispatch(editFood(food, name, food.isRecommendation));
-    },
-  };
-};
+const mapDispatchToProps = dispatch => ({
+  removeFood: food => dispatch(removeFoodAction(food)),
+  removeRecommendedFood: food =>
+    dispatch(removeRecommendedFoodAction(food)),
+  addEmptyFood: () => dispatch(addFoodAction(emptyFood())),
+  addEmptyRecommendedFood: () =>
+    dispatch(addRecommendedFoodAction(emptyFood())),
+  removeAllFoods: () => dispatch(removeAllFoodsAndRecommendationsAction()),
+  saveFood: food => dispatch(editFoodAction(food)),
+  saveRecommendedFood: food => dispatch(editRecommendedFoodAction(food)),
+});
 
 export default connect(
   mapStateToProps,

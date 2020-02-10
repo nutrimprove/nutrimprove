@@ -74,7 +74,7 @@ const SearchFoodPage = ({ classes }) => {
   return (
     <>
       <SectionHeader content={sectionHeader} />
-      <SearchFood action={updateResults} />
+      <SearchFood action={updateResults} context='getNutritionalData' />
       <div className={classes.tables}>
         {foodData && (
           <>

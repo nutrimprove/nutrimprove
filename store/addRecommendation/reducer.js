@@ -1,11 +1,18 @@
 import { ActionsTypes } from './actions';
 
 const editFoodItemArray = (foods, foodToChange) => {
-  const indexToModify = foods
-    .map(food => food.key)
-    .indexOf(foodToChange.key);
+  if (!foods || !foodToChange) return;
+
+  const foodIndex = foods.map(food => food.key).indexOf(foodToChange.key);
+  const editedFood = {
+    key: foods[foodIndex].key,
+    id: foodToChange.id,
+    name: foodToChange.name,
+    suggestions: foodToChange.suggestions,
+    isRecommendation: foods[foodIndex].isRecommendation,
+  };
   const updatedFoods = [...foods];
-  updatedFoods.splice(indexToModify, 1, foodToChange);
+  updatedFoods.splice(foodIndex, 1, editedFood);
 
   return updatedFoods;
 };
@@ -17,30 +24,12 @@ export const reducer = (
   if (action.type === ActionsTypes.ADD_FOOD) {
     return {
       ...state,
-      foods: [
-        ...state.foods,
-        {
-          key: action.food.key,
-          id: action.food.id,
-          name: action.food.name,
-          suggestions: action.food.suggestions,
-          isRecommendation: false,
-        },
-      ],
+      foods: [...state.foods, action.food],
     };
   } else if (action.type === ActionsTypes.ADD_RECOMMENDED_FOOD) {
     return {
       ...state,
-      recommendedFoods: [
-        ...state.recommendedFoods,
-        {
-          key: action.food.key,
-          id: action.food.id,
-          name: action.food.name,
-          suggestions: action.food.suggestions,
-          isRecommendation: true,
-        },
-      ],
+      recommendedFoods: [...state.recommendedFoods, action.food],
     };
   } else if (action.type === ActionsTypes.EDIT_FOOD) {
     const foods = editFoodItemArray(state.foods, action.food);
