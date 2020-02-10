@@ -1,4 +1,6 @@
-export const getTime = () => {
+import { uniqueId } from 'lodash';
+
+const getTime = () => {
   const today = new Date();
   const hours = today.getHours();
   let minutes = today.getMinutes();
@@ -8,3 +10,12 @@ export const getTime = () => {
 
   return `${hours}:${minutes}:${seconds}`;
 };
+
+const emptyFood = (key = uniqueId()) => ({
+  key,
+  id: null,
+  name: '',
+  suggestions: [],
+});
+
+export { getTime, emptyFood };
