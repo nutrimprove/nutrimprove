@@ -248,6 +248,7 @@ const styles = theme => ({
     flexGrow: 1,
     width: 280,
     alignSelf: 'flex-end',
+    marginBottom: 12,
   },
   container: {
     flexGrow: 1,

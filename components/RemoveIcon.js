@@ -2,12 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
+import { withStyles } from '@material-ui/core';
 
-const RemoveIcon = ({ foodItem, action }) => {
+const RemoveIcon = ({ classes, foodItem, action }) => {
   if (foodItem != null) {
     return (
       <>
         <IconButton
+          className={classes.icon}
           aria-label='remove-button'
           onClick={() => action(foodItem)}
         >
@@ -18,7 +20,11 @@ const RemoveIcon = ({ foodItem, action }) => {
   }
   return (
     <>
-      <IconButton aria-label='disabled-remove-button' disabled>
+      <IconButton
+        className={classes.icon}
+        aria-label='disabled-remove-button'
+        disabled
+      >
         <DeleteIcon />
       </IconButton>
     </>
@@ -26,8 +32,15 @@ const RemoveIcon = ({ foodItem, action }) => {
 };
 
 RemoveIcon.propTypes = {
+  classes: PropTypes.object,
   foodItem: PropTypes.object,
   action: PropTypes.func,
 };
 
-export default RemoveIcon;
+const styles = {
+  icon: {
+    padding: 8,
+  },
+};
+
+export default withStyles(styles)(RemoveIcon);
