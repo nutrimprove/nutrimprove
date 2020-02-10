@@ -296,10 +296,11 @@ const styles = {
     marginBottom: 30,
     width: 300,
     border: '1px dashed #ddd',
-    padding: 20,
+    padding: '30px 40px',
     borderRadius: 9,
     backgroundColor: '#dfefff',
     borderStyle: 'outset',
+    height: 'fit-content',
   },
   title: {
     fontSize: '1.4em',
