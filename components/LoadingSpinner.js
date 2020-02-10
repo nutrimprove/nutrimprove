@@ -22,7 +22,9 @@ const LoadingSpinner = ({
 
 LoadingSpinner.propTypes = {
   colour: PropTypes.string,
-  classes: PropTypes.object.required,
+  classes: PropTypes.object.isRequired,
+  context: PropTypes.string,
+  force: PropTypes.bool,
 };
 
 const styles = {

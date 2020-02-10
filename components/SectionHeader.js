@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
-import uniqid from 'uniqid';
+import { uniqueId } from 'lodash';
 
 const styles = {
   header: {
@@ -42,7 +42,7 @@ const SectionHeader = ({ content, classes }) => {
         {content &&
           content.messages &&
           content.messages.map(message => (
-            <div key={uniqid()}>{message}</div>
+            <div key={uniqueId()}>{message}</div>
           ))}
       </div>
     </div>

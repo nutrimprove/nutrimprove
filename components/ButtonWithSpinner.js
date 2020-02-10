@@ -13,8 +13,8 @@ const ButtonWithSpinner = ({ action, disabled, context, children }) => (
 ButtonWithSpinner.propTypes = {
   action: PropTypes.func,
   disabled: PropTypes.bool,
-  children: PropTypes.object,
-  context: PropTypes.string.isRequired,
+  children: PropTypes.any,
+  context: PropTypes.string,
 };
 
 export default ButtonWithSpinner;

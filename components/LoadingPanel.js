@@ -11,7 +11,7 @@ const LoadingPanel = ({ classes }) => (
 );
 
 LoadingPanel.propTypes = {
-  classes: PropTypes.object.required,
+  classes: PropTypes.object.isRequired,
 };
 
 const styles = {
