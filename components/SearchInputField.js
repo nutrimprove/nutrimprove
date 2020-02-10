@@ -252,6 +252,7 @@ const styles = theme => ({
   container: {
     flexGrow: 1,
     position: 'relative',
+    backgroundColor: 'white',
   },
   dropdown: {
     position: 'absolute',
@@ -274,6 +275,7 @@ const styles = theme => ({
     flexGrow: 1,
     backgroundColor: '#ffffff',
     color: '#000000',
+    padding: 10,
   },
   invalidInput: {
     width: 'auto',

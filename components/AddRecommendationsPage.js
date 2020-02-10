@@ -233,7 +233,9 @@ const AddRecommendationsPage = ({
       </Typography>
       <div className={classes.main}>
         <div className={classes.fieldBox}>
-          <div className={classes.fieldtitle}>Choose food(s):</div>
+          <Typography className={classes.fieldtitle} component='h4'>
+            Choose food(s):
+          </Typography>
           <div id='foods_input'>
             {renderField(foods, false)}
             <PrimaryButton
@@ -245,9 +247,9 @@ const AddRecommendationsPage = ({
           </div>
         </div>
         <div className={classes.fieldBox}>
-          <div className={classes.fieldtitle}>
+          <Typography className={classes.fieldtitle} component='h4'>
             Healthier alternative(s):
-          </div>
+          </Typography>
           <div id='recommendations_input'>
             {renderField(recommendations, true)}
             <PrimaryButton
@@ -296,6 +298,8 @@ const styles = {
     border: '1px dashed #ddd',
     padding: 20,
     borderRadius: 9,
+    backgroundColor: '#dfefff',
+    borderStyle: 'outset',
   },
   title: {
     fontSize: '1.4em',
@@ -304,7 +308,7 @@ const styles = {
     fontSize: '0.8em',
   },
   fieldtitle: {
-    marginBottom: 30,
+    marginBottom: 20,
   },
   searchfood: {
     display: '-webkit-box',
