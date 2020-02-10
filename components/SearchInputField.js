@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { uniqueId, deburr } from 'lodash';
+import { deburr } from 'lodash';
 import Downshift from 'downshift';
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
@@ -74,11 +74,10 @@ let timeout = null;
 const SearchInputField = ({ classes, foodKey, foodAction, isValid }) => {
   const [food, setFood] = useState();
   const [charCount, setCharCount] = useState(0);
-  const context = uniqueId('getSearchTerms-');
+  const context = foodKey ? `getSearchTerms-${foodKey}` : 'getSearchTerms';
   const { promiseInProgress } = usePromiseTracker({ area: context });
 
   useEffect(() => {
-    console.log('===== ( food state ) =======>', food);
     foodAction(food);
   }, [food]);
 
