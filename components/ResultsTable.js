@@ -31,14 +31,15 @@ ResultsTable.propTypes = {
   title: PropTypes.string,
 };
 
-const styles = theme => ({
+const styles = {
   root: {
-    marginTop: 15,
+    marginTop: 30,
     overflowX: 'auto',
-    width: 'fit-content',
+    width: 'auto',
+    margin: 'auto',
   },
   table: {
-    width: 'fit-content',
+    width: '100%',
   },
   noresults: {
     padding: 15,
@@ -52,6 +53,6 @@ const styles = theme => ({
     fontSize: '1em',
     justifyContent: 'center',
   },
-});
+};
 
 export default withStyles(styles)(ResultsTable);

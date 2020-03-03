@@ -1,4 +1,4 @@
-import SearchFoodField from './SearchFoodField';
+import SearchInputField from './SearchInputField';
 import React, { useState } from 'react';
 import RemoveIcon from './RemoveIcon';
 import PrimaryButton from './PrimaryButton';
@@ -19,6 +19,8 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import { usePromiseTracker } from 'react-promise-tracker';
 import ButtonWithSpinner from './ButtonWithSpinner';
 import Status from './Status';
+import { Typography } from '@material-ui/core';
+import Link from '@material-ui/core/Link';
 
 const maxFoodFields = 4;
 const maxRecommendationFields = 4;
@@ -30,7 +32,7 @@ const sectionHeader = {
     'Choose the foods and the recommendations you would like to provide',
 };
 
-const AddRecommendations = ({
+const AddRecommendationsPage = ({
   foods,
   recommendations,
   addEmptyRecommendedFood,
@@ -69,7 +71,7 @@ const AddRecommendations = ({
   const renderField = foods =>
     foods.map(food => (
       <div key={food.key} className={classes.searchfood}>
-        <SearchFoodField
+        <SearchInputField
           food={food}
           isValid={isValid(food)}
           action={setSearchTerm}
@@ -192,6 +194,10 @@ const AddRecommendations = ({
   return (
     <>
       <SectionHeader content={sectionHeader} />
+      <Typography paragraph={true} variant='subtitle2'>
+        Please refer to the <Link href={'/help#add_recs'}>Help page</Link>{' '}
+        for instructions.
+      </Typography>
       <div className={classes.main}>
         <div className={classes.fieldBox}>
           <div className={classes.fieldtitle}>Choose food(s):</div>
@@ -234,7 +240,7 @@ const AddRecommendations = ({
   );
 };
 
-AddRecommendations.propTypes = {
+AddRecommendationsPage.propTypes = {
   recommendations: PropTypes.Array,
   foods: PropTypes.Array,
   addEmptyFood: PropTypes.function,
@@ -309,4 +315,4 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withStyles(styles)(AddRecommendations));
+)(withStyles(styles)(AddRecommendationsPage));

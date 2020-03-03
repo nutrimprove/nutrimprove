@@ -1,9 +1,9 @@
-import { getRecommendations } from '../../../server/db';
+import { getRecommendationsByFood } from '../../../../server/db';
 
 const getCollectionResults = async (req, res) => {
-  const { user } = req.query;
+  const { food } = req.query;
 
-  const result = await getRecommendations(user);
+  const result = await getRecommendationsByFood(food);
 
   return result
     ? res.status(200).json(result)

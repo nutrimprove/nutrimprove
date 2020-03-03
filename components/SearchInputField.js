@@ -76,7 +76,7 @@ renderSuggestion.propTypes = {
  * @param loadingContext string context to apply to LoadingSpinner
  */
 
-const SearchFoodField = ({
+const SearchInputField = ({
   classes,
   food,
   action,
@@ -177,7 +177,7 @@ const SearchFoodField = ({
   );
 };
 
-SearchFoodField.propTypes = {
+SearchInputField.propTypes = {
   classes: PropTypes.object.isRequired,
   food: PropTypes.object,
   setSearchTerm: PropTypes.function,
@@ -229,4 +229,4 @@ const styles = theme => ({
   },
 });
 
-export default withStyles(styles)(SearchFoodField);
+export default withStyles(styles)(SearchInputField);

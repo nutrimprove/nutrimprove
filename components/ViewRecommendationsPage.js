@@ -1,29 +1,46 @@
 import React, { useState } from 'react';
 import ResultsTable from './ResultsTable';
-import { getAllRecommendations, getRecommendations } from '../connect/api';
+import {
+  getAllRecommendations,
+  getRecommendationsByFood,
+  getUserRecommendations,
+} from '../connect/api';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import SectionHeader from './SectionHeader';
 import ButtonWithSpinner from './ButtonWithSpinner';
 import { isAdmin } from '../helpers/userUtils';
+import SearchFood from './SearchFood';
+import { Typography } from '@material-ui/core';
+import Spacer from './Spacer';
 
 const sectionHeader = {
   title: 'View Recommendations',
-  subtitle: 'Fetch the list of recommendations you have provided',
+  subtitle: 'Search and display existing recommendations',
 };
 
-const ViewRecommendations = ({ userDetails }) => {
+const ViewRecommendationsPage = ({ userDetails }) => {
   const [recommendations, setRecommendations] = useState();
   const [title, setTitle] = useState();
 
   const loadUserRecommendations = async () => {
     if (userDetails) {
-      const recommendations = await getRecommendations(userDetails.email);
-      setTitle(`Your recommendations (${recommendations.length})`);
+      const recommendations = await getUserRecommendations(
+        userDetails.email
+      );
+      const count = recommendations ? recommendations.length : 0;
+      setTitle(`Your recommendations (${count})`);
       setRecommendations(recommendations);
     } else {
       console.error('User details not found!', userDetails);
     }
+  };
+
+  const loadRecommendationsByFood = async food => {
+    const recommendations = await getRecommendationsByFood(food.name);
+    const count = recommendations ? recommendations.length : 0;
+    setTitle(`Found ${count} recommendations with '${food.name}'`);
+    setRecommendations(recommendations);
   };
 
   const loadAllRecommendations = async () => {
@@ -42,12 +59,10 @@ const ViewRecommendations = ({ userDetails }) => {
   return (
     <>
       <SectionHeader content={sectionHeader} />
-      <ButtonWithSpinner
-        action={loadUserRecommendations}
-        context='getRecommendations'
-      >
-        {sectionHeader.title}
-      </ButtonWithSpinner>
+      <Typography paragraph={true} variant='subtitle2'>
+        List only your recommendations or simply type a food name to list
+        all existing recommendations with that food.
+      </Typography>
       {isAdmin(userDetails) && (
         <ButtonWithSpinner
           action={loadAllRecommendations}
@@ -56,6 +71,17 @@ const ViewRecommendations = ({ userDetails }) => {
           View All Recommendations
         </ButtonWithSpinner>
       )}
+      <ButtonWithSpinner
+        action={loadUserRecommendations}
+        context='getUserRecommendations'
+      >
+        Your Recommendations
+      </ButtonWithSpinner>
+      <Spacer />
+      <SearchFood
+        action={loadRecommendationsByFood}
+        context='getRecommendationsByFood'
+      />
       {recommendations && (
         <ResultsTable values={formattedRecommendations()} title={title} />
       )}
@@ -63,7 +89,7 @@ const ViewRecommendations = ({ userDetails }) => {
   );
 };
 
-ViewRecommendations.propTypes = {
+ViewRecommendationsPage.propTypes = {
   userDetails: PropTypes.object,
 };
 
@@ -76,4 +102,4 @@ const mapStateToProps = (states, ownProps) => {
 export default connect(
   mapStateToProps,
   null
-)(ViewRecommendations);
+)(ViewRecommendationsPage);

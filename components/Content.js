@@ -4,9 +4,9 @@ import { withStyles } from '@material-ui/core/styles/index';
 import AppBar from '@material-ui/core/AppBar/index';
 import Tabs from '@material-ui/core/Tabs/index';
 import Tab from '@material-ui/core/Tab/index';
-import SearchFood from './SearchFood';
-import ViewRecommendations from './ViewRecommendations';
-import AddRecommendations from './AddRecommendations';
+import SearchFoodPage from './SearchFoodPage';
+import ViewRecommendationsPage from './ViewRecommendationsPage';
+import AddRecommendationsPage from './AddRecommendationsPage';
 import AdminPanel from './AdminPanel';
 import { connect } from 'react-redux';
 import { isAdmin } from '../helpers/userUtils';
@@ -42,17 +42,17 @@ const Content = ({ classes, userDetails }) => {
       </AppBar>
       {tab === 0 && (
         <TabContainer id='foodByName'>
-          <SearchFood />
+          <SearchFoodPage />
         </TabContainer>
       )}
       {tab === 1 && (
         <TabContainer id='recommendations'>
-          <ViewRecommendations />
+          <ViewRecommendationsPage />
         </TabContainer>
       )}
       {tab === 2 && (
         <TabContainer id='addRecommendations'>
-          <AddRecommendations />
+          <AddRecommendationsPage />
         </TabContainer>
       )}
       {tab === 3 && (
