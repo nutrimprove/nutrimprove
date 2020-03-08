@@ -44,8 +44,9 @@ const styles = {
     marginBottom: 5,
   },
   line: {
-    fontSize: '0.8em',
+    fontSize: '0.9em',
     fontWeight: 'normal',
+    color: 'grey',
     margin: 0,
   },
 };
