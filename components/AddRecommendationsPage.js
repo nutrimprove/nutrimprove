@@ -134,9 +134,7 @@ const AddRecommendationsPage = ({
 
   const validateFields = () => {
     const allFoods = foods.concat(recommendations);
-    const emptyFields = allFoods.filter(
-      food => food.id && food.id.length === 0
-    );
+    const emptyFields = allFoods.filter(food => !food.id);
     const duplicatedFoods = difference(
       allFoods,
       uniqBy(allFoods, 'id'),
