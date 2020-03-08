@@ -18,4 +18,6 @@ const emptyFood = (key = uniqueId()) => ({
   suggestions: [],
 });
 
-export { getTime, emptyFood };
+const fullTrim = str => str.trim().replace(/\s{2,}/g, '');
+
+export { getTime, emptyFood, fullTrim };

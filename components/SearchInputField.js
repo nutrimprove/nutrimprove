@@ -15,6 +15,7 @@ import { trackPromise, usePromiseTracker } from 'react-promise-tracker';
 import { getSearchedTerms } from '../connect/api';
 import { INPUT_TRIGGER_TIME } from '../helpers/constants';
 import { Tooltip } from '@material-ui/core';
+import { fullTrim } from '../helpers/utils';
 
 const renderInput = inputProps => {
   const {
@@ -117,14 +118,22 @@ const SearchInputField = ({ classes, foodKey, foodAction, isValid }) => {
         if (suggestions.length > 0) {
           const selected = suggestions.find(
             suggestion =>
-              suggestion.food_name.toLowerCase() === input.toLowerCase()
+              fullTrim(suggestion.food_name.toLowerCase()) ===
+              fullTrim(input.toLowerCase())
           );
           if (selected) {
             setFood({
               suggestions,
               key: foodKey,
-              name: selected.food_name,
+              name: fullTrim(selected.food_name),
               id: selected.food_id,
+            });
+          } else {
+            setFood({
+              suggestions,
+              key: foodKey,
+              name: input,
+              id: null,
             });
           }
           setNotFound(false);
