@@ -14,11 +14,18 @@ import IconButton from '@material-ui/core/IconButton';
 import { trackPromise, usePromiseTracker } from 'react-promise-tracker';
 import { getSearchedTerms } from '../connect/api';
 import { INPUT_TRIGGER_TIME } from '../helpers/constants';
+import { Tooltip } from '@material-ui/core';
 
 const renderInput = inputProps => {
-  const { InputProps, classes, ref, ...other } = inputProps;
-
-  return (
+  const {
+    InputProps,
+    classes,
+    ref,
+    inputValue,
+    isOpen,
+    ...other
+  } = inputProps;
+  const textField = (
     <TextField
       InputProps={{
         inputRef: ref,
@@ -31,6 +38,12 @@ const renderInput = inputProps => {
       {...other}
     />
   );
+
+  return !isOpen && inputValue && inputValue.length > 30 ? (
+    <Tooltip title={inputValue}>{textField}</Tooltip>
+  ) : (
+    textField
+  );
 };
 
 const renderSuggestion = ({
@@ -39,7 +52,14 @@ const renderSuggestion = ({
   itemProps,
   highlightedIndex,
   selectedItem,
+  renderNotFound,
 }) => {
+  if (!suggestion && renderNotFound) {
+    return <MenuItem>No matching foods found!!</MenuItem>;
+  }
+
+  if (!suggestion) return;
+
   const isHighlighted = highlightedIndex === index;
   const isSelected =
     (selectedItem || '').indexOf(suggestion.food_name) > -1;
@@ -67,6 +87,7 @@ renderSuggestion.propTypes = {
   itemProps: PropTypes.object.isRequired,
   selectedItem: PropTypes.string.isRequired,
   suggestion: PropTypes.string.isRequired,
+  renderNotFound: PropTypes.bool,
 };
 
 let timeout = null;
@@ -74,11 +95,13 @@ let timeout = null;
 const SearchInputField = ({ classes, foodKey, foodAction, isValid }) => {
   const [food, setFood] = useState();
   const [charCount, setCharCount] = useState(0);
+  const [notFound, setNotFound] = useState();
   const context = foodKey ? `getSearchTerms-${foodKey}` : 'getSearchTerms';
   const { promiseInProgress } = usePromiseTracker({ area: context });
 
   useEffect(() => {
     foodAction(food);
+    isValid = null;
   }, [food]);
 
   const updateState = async input => {
@@ -104,12 +127,16 @@ const SearchInputField = ({ classes, foodKey, foodAction, isValid }) => {
               id: selected.food_id,
             });
           }
+          setNotFound(false);
+        } else {
+          setNotFound(true);
         }
       }
     }, INPUT_TRIGGER_TIME);
   };
 
   function onInputChange(input) {
+    setNotFound(false);
     setCharCount(input && input.length ? input.length : 0);
     if (input && input.length > 2) {
       updateState(input);
@@ -179,6 +206,8 @@ const SearchInputField = ({ classes, foodKey, foodAction, isValid }) => {
                 fullWidth: true,
                 classes,
                 label: '',
+                inputValue,
+                isOpen,
                 InputLabelProps: getLabelProps({ shrink: true }),
                 InputProps: {
                   onBlur,
@@ -214,17 +243,24 @@ const SearchInputField = ({ classes, foodKey, foodAction, isValid }) => {
               <div {...getMenuProps()}>
                 {isOpen ? (
                   <Paper className={classes.dropdown}>
-                    {getSuggestions(inputValue).map((suggestion, index) =>
-                      renderSuggestion({
-                        suggestion,
-                        index,
-                        itemProps: getItemProps({
-                          item: suggestion.food_name,
-                        }),
-                        highlightedIndex,
-                        selectedItem,
-                      })
-                    )}
+                    {notFound
+                      ? renderSuggestion({
+                          suggestion: null,
+                          renderNotFound:
+                            inputValue.length > 2 && !promiseInProgress,
+                        })
+                      : getSuggestions(inputValue).map(
+                          (suggestion, index) =>
+                            renderSuggestion({
+                              suggestion,
+                              index,
+                              itemProps: getItemProps({
+                                item: suggestion.food_name,
+                              }),
+                              highlightedIndex,
+                              selectedItem,
+                            })
+                        )}
                   </Paper>
                 ) : null}
               </div>
@@ -270,6 +306,7 @@ const styles = theme => ({
   },
   inputRoot: {
     flexWrap: 'wrap',
+    paddingRight: 5,
   },
   inputInput: {
     width: 'auto',

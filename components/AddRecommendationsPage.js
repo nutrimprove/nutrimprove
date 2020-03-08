@@ -77,10 +77,10 @@ const AddRecommendationsPage = ({
 
   const isValid = food => {
     if (!validation) {
-      return food && !!food.id ? true : null;
+      return !!food && food.id ? true : null;
     }
 
-    if (!food || !food.id || !food.name) return;
+    if (!food || !food.id || !food.name) return false;
 
     const allFoodIds = foods
       .concat(recommendations)
@@ -116,7 +116,7 @@ const AddRecommendationsPage = ({
    * @param isRecommendation if the food is a recommendation
    * @returns {*}
    */
-  const renderField = (foods, isRecommendation) =>
+  const renderField = ({ foods, isRecommendation }) =>
     foods.map(food => (
       <div key={food.key} className={classes.searchfood}>
         <SearchInputField
@@ -235,7 +235,7 @@ const AddRecommendationsPage = ({
             Choose food(s):
           </Typography>
           <div id='foods_input'>
-            {renderField(foods, false)}
+            {renderField({ foods, isRecommendation: false })}
             <PrimaryButton
               action={addEmptyFood}
               disabled={addFoodDisabled}
@@ -249,7 +249,10 @@ const AddRecommendationsPage = ({
             Healthier alternative(s):
           </Typography>
           <div id='recommendations_input'>
-            {renderField(recommendations, true)}
+            {renderField({
+              foods: recommendations,
+              isRecommendation: true,
+            })}
             <PrimaryButton
               action={addEmptyRecommendedFood}
               disabled={addRecommendationDisabled}
