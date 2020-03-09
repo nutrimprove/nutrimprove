@@ -9,8 +9,8 @@ export const setUserDetailsWithRole = async (setUserDetails, userInfo) => {
   if (userInfo && userInfo.email) {
     const user = await getUser(userInfo.email);
     if (user) {
-      const { role, approved } = user;
-      setUserDetails({ ...userInfo, role, approved });
+      const { role, approved, points } = user;
+      setUserDetails({ ...userInfo, role, approved, points });
     } else {
       console.error('User not found!', userInfo.email);
     }
