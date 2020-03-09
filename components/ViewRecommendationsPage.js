@@ -56,7 +56,7 @@ const ViewRecommendationsPage = ({ classes, userDetails }) => {
     <>
       <SectionHeader content={sectionHeader} />
       <Typography paragraph={true} variant='subtitle1'>
-        Your points: {userDetails.points}
+        Your points: {userDetails.points || 0}
       </Typography>
       <Typography paragraph={true} variant='subtitle2'>
         List only your recommendations or simply type a food name to list
