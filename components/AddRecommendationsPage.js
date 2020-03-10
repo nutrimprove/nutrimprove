@@ -179,7 +179,7 @@ const AddRecommendationsPage = ({
             id: recommendation.id,
             name: recommendation.name,
           },
-          contributorId: userDetails.email,
+          contributors: [userDetails.email],
         });
       }
     }
@@ -208,16 +208,17 @@ const AddRecommendationsPage = ({
 
         if (result.incremented) {
           status =
-            status + ` Incremented relevance on ${incrementedCount}.`;
+            status +
+            ` Added your contribution to ${incrementedCount} already present.`;
         }
         updateStatus(status);
       } else {
         if (duplicatesCount > 0) {
           const duplicatesList = result.duplicates.map(
-            dup => `${dup.food} -> ${dup.recommendation}`
+            dup => `${dup.food.name} -> ${dup.recommendation.name}`
           );
           updateStatus([
-            'Some recommendations were already submitted by you!',
+            'Some recommendations have already been submitted by you!',
             'Please remove these before submitting again:',
             ...duplicatesList,
           ]);

@@ -65,6 +65,7 @@ const recommendationsSchema = new mongoose.Schema([
           type: Number,
           required: false,
         },
+        _id: false,
       },
     ],
     timestamp: {

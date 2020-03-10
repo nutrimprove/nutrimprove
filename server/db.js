@@ -114,6 +114,7 @@ const getAllRecommendations = async () => {
 };
 
 const addRecommendations = async recommendationsObj => {
+  const contributor = recommendationsObj[0].contributors[0];
   const recommendations = recommendationsObj.map(recommendation => ({
     food: {
       id: recommendation.food.id,
@@ -123,8 +124,7 @@ const addRecommendations = async recommendationsObj => {
       id: recommendation.recommendation.id,
       name: recommendation.recommendation.name,
     },
-    relevance: 1,
-    contributor_id: recommendation.contributorId,
+    contributors: recommendation.contributors,
     timestamp: new Date().getTime(),
   }));
 
@@ -142,7 +142,6 @@ const addRecommendations = async recommendationsObj => {
     recs.map(rec => ({
       food: rec.food.name,
       recommendation: rec.recommendation.name,
-      contributor: rec.contributor_id,
     }));
 
   return AddRecommendationsConnection.find()
@@ -154,33 +153,22 @@ const addRecommendations = async recommendationsObj => {
         );
         return { inserted: formatResultRecs(results) };
       } else {
-        const contributor = recommendationsObj[0].contributorId;
-        // Gets duplicate records from same user and removes them from duplicateDocs
-        const duplicates = remove(
-          duplicateDocs,
-          recommendation => recommendation.contributor_id === contributor
+        // Get recommendations already added by current user (removes from duplicateDocs)
+        const duplicates = remove(duplicateDocs, recommendation =>
+          recommendation.contributors.find(({ id }) => id === contributor)
         );
 
         let updated;
-        // If there are still duplicate records (from other users) then increment relevance of recommendation
+        // Add current user as contributor to recommendations already present
         if (duplicateDocs.length > 0) {
-          const query = { $or: getRecommendationsQuery(duplicateDocs) };
-          console.log('===== ( query ) =======>', JSON.stringify(query));
           updated = await AddRecommendationsConnection.update(
             { $or: getRecommendationsQuery(duplicateDocs) },
             {
-              $inc: { relevance: 1 },
-              $set: { a: 'a' },
+              $addToSet: {
+                contributors: { id: contributor, added_on: new Date() },
+              },
             },
-            // { $addToSet: { other_contributors: { contributor_id: contributor, added_on: new Date() } } },
-            {
-              multi: true,
-              upsert: false,
-            }
-            // (err, result) => {
-            //   console.log('===== ( err ) =======>', err);
-            //   console.log('===== ( result ) =======>', result);
-            // }
+            { multi: true }
           );
         }
 
