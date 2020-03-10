@@ -1,13 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import LoadingSpinner from './LoadingSpinner';
-import PrimaryButton from './PrimaryButton';
+import MainButton from './MainButton';
 
-const ButtonWithSpinner = ({ action, disabled, context, children }) => (
-  <PrimaryButton action={action} disabled={disabled}>
+const ButtonWithSpinner = ({
+  action,
+  disabled,
+  context,
+  colour,
+  children,
+}) => (
+  <MainButton action={action} disabled={disabled} colour={colour}>
     {children}
     <LoadingSpinner context={context} colour='white' />
-  </PrimaryButton>
+  </MainButton>
 );
 
 ButtonWithSpinner.propTypes = {
@@ -15,6 +21,7 @@ ButtonWithSpinner.propTypes = {
   disabled: PropTypes.bool,
   children: PropTypes.any,
   context: PropTypes.string,
+  colour: PropTypes.string,
 };
 
 export default ButtonWithSpinner;

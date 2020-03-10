@@ -1,7 +1,7 @@
 import SearchInputField from './SearchInputField';
 import React, { useState } from 'react';
 import RemoveIcon from './RemoveIcon';
-import PrimaryButton from './PrimaryButton';
+import MainButton from './MainButton';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { emptyFood, getTime } from '../helpers/utils';
@@ -256,12 +256,9 @@ const AddRecommendationsPage = ({
           </Typography>
           <div id='foods_input'>
             {renderField({ foods, isRecommendation: false })}
-            <PrimaryButton
-              action={addEmptyFood}
-              disabled={addFoodDisabled}
-            >
+            <MainButton action={addEmptyFood} disabled={addFoodDisabled}>
               Add
-            </PrimaryButton>
+            </MainButton>
           </div>
         </div>
         <div className={classes.fieldBox}>
@@ -273,12 +270,12 @@ const AddRecommendationsPage = ({
               foods: recommendations,
               isRecommendation: true,
             })}
-            <PrimaryButton
+            <MainButton
               action={addEmptyRecommendedFood}
               disabled={addRecommendationDisabled}
             >
               Add
-            </PrimaryButton>
+            </MainButton>
           </div>
         </div>
       </div>
