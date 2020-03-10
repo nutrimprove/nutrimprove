@@ -179,7 +179,7 @@ const AddRecommendationsPage = ({
             id: recommendation.id,
             name: recommendation.name,
           },
-          contributors: [userDetails.email],
+          contributors: [{ id: userDetails.email }],
         });
       }
     }
