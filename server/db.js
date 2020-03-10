@@ -202,7 +202,7 @@ const updateDB = async (run = false) => {
     });
     return docs;
   });
-  console.log('===== ( Database updated ) =======>', result);
+  console.log('Database updated!', result);
   return result;
 };
 
