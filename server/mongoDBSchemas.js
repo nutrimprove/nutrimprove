@@ -54,16 +54,19 @@ const recommendationsSchema = new mongoose.Schema([
         required: true,
       },
     },
-    contributor_id: {
-      type: String,
-      lowercase: true,
-      trim: true,
-      required: true,
-    },
-    relevance: {
-      type: Number,
-      required: false,
-    },
+    contributors: [
+      {
+        id: {
+          type: String,
+          lowercase: true,
+          trim: true,
+        },
+        added_on: {
+          type: Number,
+          required: false,
+        },
+      },
+    ],
     timestamp: {
       type: Number,
       required: true,

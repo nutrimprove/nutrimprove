@@ -15,7 +15,7 @@ import {
   removeRecommendedFoodAction,
 } from '../store/addRecommendation/actions';
 import { postRecommendations } from '../connect/api';
-import { uniqBy, difference } from 'lodash';
+import { difference, uniqBy } from 'lodash';
 import SectionHeader from './SectionHeader';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { usePromiseTracker } from 'react-promise-tracker';

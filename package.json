@@ -5,7 +5,7 @@
   "main": "pages/index.js",
   "scripts": {
     "start": "next build && next start",
-    "dev": "next",
+    "dev": "next -p 4000",
     "deploy": "cross-env NODE_ENV=production now",
     "test": "jest",
     "lint": "eslint . --fix",
