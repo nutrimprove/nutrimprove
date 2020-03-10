@@ -5,6 +5,16 @@ import TableCell from '@material-ui/core/TableCell/index';
 import TableBody from '@material-ui/core/TableBody/index';
 import { withStyles } from '@material-ui/core/styles/index';
 
+const formatCellValue = cell => {
+  if (typeof cell === 'boolean') {
+    return cell.toString();
+  }
+  if (typeof cell === 'object' && Array.isArray(cell)) {
+    return cell.map(value => value.id).join(', ');
+  }
+  return cell;
+};
+
 const ResultsTableBody = ({ values, classes }) => (
   <TableBody>
     {values.map((row, index) => (
@@ -16,7 +26,7 @@ const ResultsTableBody = ({ values, classes }) => (
       >
         {Object.values(row).map((value, vIndex) => (
           <TableCell key={vIndex} className={classes.cell}>
-            {typeof value === 'boolean' ? value.toString() : value}
+            {formatCellValue(value)}
           </TableCell>
         ))}
       </TableRow>
