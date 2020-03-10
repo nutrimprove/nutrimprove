@@ -98,7 +98,7 @@ const getRecommendationsConnection = () =>
 
 const getUserRecommendations = async user => {
   const RecommendationsConnection = await getRecommendationsConnection();
-  return RecommendationsConnection.find({ contributor_id: user });
+  return RecommendationsConnection.find({ 'contributors.id': user });
 };
 
 const getRecommendationsByFood = async food => {

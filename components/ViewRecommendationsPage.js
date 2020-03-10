@@ -46,11 +46,16 @@ const ViewRecommendationsPage = ({ classes, userDetails }) => {
   };
 
   const formattedRecommendations = () =>
-    recommendations.map(recommendation => ({
-      food: recommendation.food.name,
-      recommendation: recommendation.recommendation.name,
-      contributor: recommendation.contributor_id,
-    }));
+    recommendations.map(recommendation => {
+      const contributors = recommendation.contributors.length;
+      const plusText = contributors > 1 ? `+ ${contributors}` : '';
+
+      return {
+        food: recommendation.food.name,
+        recommendation: recommendation.recommendation.name,
+        contributors: `${recommendation.contributors[0].id} ${plusText}`,
+      };
+    });
 
   return (
     <>
