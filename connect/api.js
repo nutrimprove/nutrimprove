@@ -9,6 +9,7 @@ const apiAuthParams = `app_key=8a2617ec655417bd43fd2b3df4b85a30&app_id=652bd7d5`
 const searchTermsEndpoint = '/api/search';
 const recommendationsEndpoint = '/api/recommendations';
 const usersEndpoint = '/api/users';
+const updateDBEndpoint = '/api/db/update';
 
 const getRequest = endpoint =>
   axios
@@ -111,6 +112,9 @@ const deleteUser = user =>
 const getSearchedTerms = searchTerm =>
   getRequest(`${searchTermsEndpoint}/${encodeURIComponent(searchTerm)}`);
 
+const updateDB = () =>
+  trackPromise(postRequest(updateDBEndpoint), 'updateDB');
+
 export {
   postRecommendations,
   fetchFoods,
@@ -126,4 +130,5 @@ export {
   revokeUser,
   deleteUser,
   getNutritionalData,
+  updateDB,
 };

@@ -4,15 +4,18 @@ import {
   getAllRecommendations,
   getRecommendationsByFood,
   getUserRecommendations,
+  updateDB,
 } from '../connect/api';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import SectionHeader from './SectionHeader';
 import ButtonWithSpinner from './ButtonWithSpinner';
-import { isAdmin } from '../helpers/userUtils';
+import { isAdmin, isOwner } from '../helpers/userUtils';
 import SearchFood from './SearchFood';
 import { Typography } from '@material-ui/core';
 import withStyles from '@material-ui/core/styles/withStyles';
+
+const enableDB = process.env.ENABLE_UPDATE_DB;
 
 const sectionHeader = {
   title: 'View Recommendations',
@@ -45,6 +48,11 @@ const ViewRecommendationsPage = ({ classes, userDetails }) => {
     setRecommendations(recommendations);
   };
 
+  const updateDatabase = async () => {
+    const result = await updateDB();
+    console.log('Update DB result:', result);
+  };
+
   const formattedRecommendations = () =>
     recommendations.map(recommendation => {
       const contributors = recommendation.contributors.length;
@@ -68,6 +76,11 @@ const ViewRecommendationsPage = ({ classes, userDetails }) => {
         all existing recommendations with that food.
       </Typography>
       <div>
+        {isOwner(userDetails) && enableDB && (
+          <ButtonWithSpinner action={updateDatabase} context='updateDB'>
+            Update DB
+          </ButtonWithSpinner>
+        )}
         {isAdmin(userDetails) && (
           <ButtonWithSpinner
             action={loadAllRecommendations}

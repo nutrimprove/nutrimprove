@@ -23,6 +23,10 @@ export const isAdmin = user => {
   return user.role === ROLES.OWNER || user.role === ROLES.ADMIN;
 };
 
+export const isOwner = user => {
+  return user.role === ROLES.OWNER;
+};
+
 export const isValidEmail = email => {
   const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return regex.test(String(email).toLowerCase());
