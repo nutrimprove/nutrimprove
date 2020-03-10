@@ -4,6 +4,7 @@ import {
   searchTermSchema,
   userSchema,
 } from './mongoDBSchemas';
+import { remove } from 'lodash';
 
 const URI = process.env.MONGODB_URI;
 const mongoOptions = { useUnifiedTopology: true, useNewUrlParser: true };
@@ -122,37 +123,73 @@ const addRecommendations = async recommendationsObj => {
       id: recommendation.recommendation.id,
       name: recommendation.recommendation.name,
     },
+    relevance: 1,
     contributor_id: recommendation.contributorId,
     timestamp: new Date().getTime(),
   }));
 
   const AddRecommendationsConnection = await getRecommendationsConnection();
 
-  const allRecsQuery = recommendations.map(rec => ({
-    $and: [
-      { 'food.name': rec.food.name },
-      { 'recommendation.name': rec.recommendation.name },
-    ],
-  }));
+  const getRecommendationsQuery = list =>
+    list.map(rec => ({
+      $and: [
+        { 'food.name': rec.food.name },
+        { 'recommendation.name': rec.recommendation.name },
+      ],
+    }));
 
   const formatResultRecs = recs =>
     recs.map(rec => ({
       food: rec.food.name,
       recommendation: rec.recommendation.name,
+      contributor: rec.contributor_id,
     }));
 
   return AddRecommendationsConnection.find()
-    .or(allRecsQuery)
+    .or(getRecommendationsQuery(recommendations))
     .then(async duplicateDocs => {
       if (duplicateDocs.length === 0) {
         const results = await AddRecommendationsConnection.insertMany(
           recommendations
         );
-        return formatResultRecs(results);
+        return { inserted: formatResultRecs(results) };
       } else {
-        const duplicates = formatResultRecs(duplicateDocs);
-        console.warn('Found duplicate recommendations!', duplicates);
-        return { duplicates };
+        const contributor = recommendationsObj[0].contributorId;
+        // Gets duplicate records from same user and removes them from duplicateDocs
+        const duplicates = remove(
+          duplicateDocs,
+          recommendation => recommendation.contributor_id === contributor
+        );
+
+        let updated;
+        // If there are still duplicate records (from other users) then increment relevance of recommendation
+        if (duplicateDocs.length > 0) {
+          const query = { $or: getRecommendationsQuery(duplicateDocs) };
+          console.log('===== ( query ) =======>', JSON.stringify(query));
+          updated = await AddRecommendationsConnection.update(
+            { $or: getRecommendationsQuery(duplicateDocs) },
+            {
+              $inc: { relevance: 1 },
+              $set: { a: 'a' },
+            },
+            // { $addToSet: { other_contributors: { contributor_id: contributor, added_on: new Date() } } },
+            {
+              multi: true,
+              upsert: false,
+            }
+            // (err, result) => {
+            //   console.log('===== ( err ) =======>', err);
+            //   console.log('===== ( result ) =======>', result);
+            // }
+          );
+        }
+
+        if (updated && updated.nModified !== duplicateDocs.length) {
+          throw Error(
+            `Number of documents updated: ${updated.nModified}, expected: ${duplicateDocs.length}`
+          );
+        }
+        return { duplicates, incremented: duplicateDocs };
       }
     });
 };

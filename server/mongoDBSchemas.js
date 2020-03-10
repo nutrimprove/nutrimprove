@@ -60,6 +60,10 @@ const recommendationsSchema = new mongoose.Schema([
       trim: true,
       required: true,
     },
+    relevance: {
+      type: Number,
+      required: false,
+    },
     timestamp: {
       type: Number,
       required: true,

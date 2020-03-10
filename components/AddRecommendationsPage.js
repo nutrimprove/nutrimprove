@@ -188,24 +188,36 @@ const AddRecommendationsPage = ({
 
     if (result) {
       const recCount = recommendationsPayload.length;
+      const insertedCount = result.inserted ? result.inserted.length : 0;
+      const incrementedCount = result.incremented
+        ? result.incremented.length
+        : 0;
+      const duplicatesCount = result.duplicates
+        ? result.duplicates.length
+        : 0;
 
-      if (result.length === recCount) {
+      if (insertedCount + incrementedCount === recCount) {
         // Reset fields if all combinations were stored successfully
         removeAllFoods();
         setValidation(false);
 
         const recommendationString =
-          recCount === 1 ? 'recommendation' : 'recommendations';
-        updateStatus(
-          `${recCount} ${recommendationString} added to the database!`
-        );
+          insertedCount === 1 ? 'recommendation' : 'recommendations';
+
+        let status = `${insertedCount} new ${recommendationString} added to the database!`;
+
+        if (result.incremented) {
+          status =
+            status + ` Incremented relevance on ${incrementedCount}.`;
+        }
+        updateStatus(status);
       } else {
-        if (result.duplicates) {
+        if (duplicatesCount > 0) {
           const duplicatesList = result.duplicates.map(
             dup => `${dup.food} -> ${dup.recommendation}`
           );
           updateStatus([
-            'Some recommendations are already present in the database!',
+            'Some recommendations were already submitted by you!',
             'Please remove these before submitting again:',
             ...duplicatesList,
           ]);
@@ -216,9 +228,8 @@ const AddRecommendationsPage = ({
           ]);
         }
       }
-    } else {
-      updateStatus(`Something went wrong. No results.`);
     }
+
     return result;
   };
 
