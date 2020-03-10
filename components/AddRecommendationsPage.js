@@ -111,6 +111,10 @@ const AddRecommendationsPage = ({
     );
   };
 
+  const awardPoints = points => {
+    return points;
+  };
+
   /**
    * @param foods foods to render in input fields
    * @param isRecommendation if the food is a recommendation
@@ -201,6 +205,9 @@ const AddRecommendationsPage = ({
         removeAllFoods();
         setValidation(false);
 
+        const addedPoints = awardPoints(
+          insertedCount * 10 + incrementedCount * 5
+        );
         const recommendationString =
           insertedCount === 1 ? 'recommendation' : 'recommendations';
 
@@ -211,6 +218,7 @@ const AddRecommendationsPage = ({
             status +
             ` Added your contribution to ${incrementedCount} already present.`;
         }
+        status += ` +${addedPoints} points`;
         updateStatus(status);
       } else {
         if (duplicatesCount > 0) {
