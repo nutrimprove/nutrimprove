@@ -11,7 +11,7 @@ import CheckIcon from '@material-ui/icons/CheckCircle';
 import ErrorIcon from '@material-ui/icons/Error';
 import LoadingSpinner from './LoadingSpinner';
 import IconButton from '@material-ui/core/IconButton';
-import { trackPromise, usePromiseTracker } from 'react-promise-tracker';
+import { usePromiseTracker } from 'react-promise-tracker';
 import { getSearchedTerms } from '../connect/api';
 import { INPUT_TRIGGER_TIME } from '../helpers/constants';
 import { Tooltip } from '@material-ui/core';
@@ -108,7 +108,7 @@ const SearchInputField = ({ classes, foodKey, foodAction, isValid }) => {
   const updateState = async input => {
     clearTimeout(timeout);
     timeout = setTimeout(async () => {
-      const search = await trackPromise(getSearchedTerms(input), context);
+      const search = await getSearchedTerms(input, context);
 
       if (search && search.matches) {
         const suggestions = search.matches.map(match => ({
@@ -227,11 +227,8 @@ const SearchInputField = ({ classes, foodKey, foodAction, isValid }) => {
                   },
                   endAdornment: (
                     <>
-                      {promiseInProgress ? (
-                        <LoadingSpinner context={context} />
-                      ) : (
-                        validationIcon(isOpen)
-                      )}
+                      <LoadingSpinner context={context} />
+                      {validationIcon(isOpen)}
                       {inputValue && inputValue.length > 0 && (
                         <IconButton
                           onClick={() => {

@@ -38,16 +38,19 @@ const fetchFoods = name =>
   );
 
 const getNutritionalData = foodId =>
-  postRequest(`${nutritionApiEndpoint}?${apiAuthParams}`, {
-    ingredients: [
-      {
-        foodId,
-        quantity: 100, // Currently hard coding 100 grams as measurement
-        measureURI:
-          'http://www.edamam.com/ontologies/edamam.owl#Measure_gram',
-      },
-    ],
-  });
+  trackPromise(
+    postRequest(`${nutritionApiEndpoint}?${apiAuthParams}`, {
+      ingredients: [
+        {
+          foodId,
+          quantity: 100, // Currently hard coding 100 grams as measurement
+          measureURI:
+            'http://www.edamam.com/ontologies/edamam.owl#Measure_gram',
+        },
+      ],
+    }),
+    'getNutritionalData'
+  );
 
 const getUserRecommendations = user =>
   trackPromise(
@@ -109,8 +112,11 @@ const deleteUser = user =>
     `deleteUser-${user}`
   );
 
-const getSearchedTerms = searchTerm =>
-  getRequest(`${searchTermsEndpoint}/${encodeURIComponent(searchTerm)}`);
+const getSearchedTerms = (searchTerm, context = 'getSearchTerms') =>
+  trackPromise(
+    getRequest(`${searchTermsEndpoint}/${encodeURIComponent(searchTerm)}`),
+    context
+  );
 
 const updateDB = () =>
   trackPromise(postRequest(updateDBEndpoint), 'updateDB');

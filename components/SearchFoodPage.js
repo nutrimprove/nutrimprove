@@ -4,7 +4,6 @@ import { getNutritionalData } from '../connect/api';
 import SectionHeader from './SectionHeader';
 import withStyles from '@material-ui/core/styles/withStyles';
 import PropTypes from 'prop-types';
-import { trackPromise } from 'react-promise-tracker';
 import SearchFood from './SearchFood';
 
 const sectionHeader = {
@@ -46,10 +45,7 @@ const SearchFoodPage = ({ classes }) => {
   const [secondColumnData, setSecondColumnData] = useState();
 
   const updateResults = async food => {
-    const data = await trackPromise(
-      getNutritionalData(food.id),
-      'getNutritionalData'
-    );
+    const data = await getNutritionalData(food.id);
 
     if (data && data.totalNutrients) {
       const nutrients = parseNutrients(data.totalNutrients);
