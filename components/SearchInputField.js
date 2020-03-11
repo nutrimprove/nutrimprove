@@ -40,11 +40,10 @@ const renderInput = inputProps => {
     />
   );
 
-  return !isOpen && inputValue && inputValue.length > 30 ? (
-    <Tooltip title={inputValue}>{textField}</Tooltip>
-  ) : (
-    textField
-  );
+  if (!isOpen && inputValue && inputValue.length > 30) {
+    return <Tooltip title={inputValue}>{textField}</Tooltip>;
+  }
+  return textField;
 };
 
 const renderSuggestion = ({
