@@ -12,14 +12,14 @@ import ButtonWithSpinner from './ButtonWithSpinner';
 import { isAdmin } from '../helpers/userUtils';
 import SearchFood from './SearchFood';
 import { Typography } from '@material-ui/core';
-import Spacer from './Spacer';
+import withStyles from '@material-ui/core/styles/withStyles';
 
 const sectionHeader = {
   title: 'View Recommendations',
   subtitle: 'Search and display existing recommendations',
 };
 
-const ViewRecommendationsPage = ({ userDetails }) => {
+const ViewRecommendationsPage = ({ classes, userDetails }) => {
   const [recommendations, setRecommendations] = useState();
   const [title, setTitle] = useState();
 
@@ -63,25 +63,28 @@ const ViewRecommendationsPage = ({ userDetails }) => {
         List only your recommendations or simply type a food name to list
         all existing recommendations with that food.
       </Typography>
-      {isAdmin(userDetails) && (
+      <div>
+        {isAdmin(userDetails) && (
+          <ButtonWithSpinner
+            action={loadAllRecommendations}
+            context='getAllRecommendations'
+          >
+            View All Recommendations
+          </ButtonWithSpinner>
+        )}
         <ButtonWithSpinner
-          action={loadAllRecommendations}
-          context='getAllRecommendations'
+          action={loadUserRecommendations}
+          context='getUserRecommendations'
         >
-          View All Recommendations
+          Your Recommendations
         </ButtonWithSpinner>
-      )}
-      <ButtonWithSpinner
-        action={loadUserRecommendations}
-        context='getUserRecommendations'
-      >
-        Your Recommendations
-      </ButtonWithSpinner>
-      <Spacer />
-      <SearchFood
-        action={loadRecommendationsByFood}
-        context='getRecommendationsByFood'
-      />
+        <div className={classes.searchBox}>
+          <SearchFood
+            action={loadRecommendationsByFood}
+            context='getRecommendationsByFood'
+          />
+        </div>
+      </div>
       {recommendations && (
         <ResultsTable values={formattedRecommendations()} title={title} />
       )}
@@ -90,7 +93,15 @@ const ViewRecommendationsPage = ({ userDetails }) => {
 };
 
 ViewRecommendationsPage.propTypes = {
+  classes: PropTypes.object,
   userDetails: PropTypes.object,
+};
+
+const styles = {
+  searchBox: {
+    position: 'absolute',
+    display: 'inline-block',
+  },
 };
 
 const mapStateToProps = (states, ownProps) => {
@@ -102,4 +113,4 @@ const mapStateToProps = (states, ownProps) => {
 export default connect(
   mapStateToProps,
   null
-)(ViewRecommendationsPage);
+)(withStyles(styles)(ViewRecommendationsPage));

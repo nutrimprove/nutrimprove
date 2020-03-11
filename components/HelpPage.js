@@ -224,7 +224,7 @@ const HelpPage = ({ classes }) => (
 );
 
 HelpPage.propTypes = {
-  classes: PropTypes.object.required,
+  classes: PropTypes.object.isRequired,
 };
 
 const styles = {

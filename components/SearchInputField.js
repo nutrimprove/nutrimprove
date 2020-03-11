@@ -1,33 +1,49 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import deburr from 'lodash/deburr';
+import { deburr } from 'lodash';
 import Downshift from 'downshift';
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Paper from '@material-ui/core/Paper';
 import MenuItem from '@material-ui/core/MenuItem';
 import ClearIcon from '@material-ui/icons/Clear';
+import CheckIcon from '@material-ui/icons/CheckCircle';
+import ErrorIcon from '@material-ui/icons/Error';
 import LoadingSpinner from './LoadingSpinner';
 import IconButton from '@material-ui/core/IconButton';
+import { trackPromise, usePromiseTracker } from 'react-promise-tracker';
+import { getSearchedTerms } from '../connect/api';
+import { INPUT_TRIGGER_TIME } from '../helpers/constants';
+import { Tooltip } from '@material-ui/core';
+import { fullTrim } from '../helpers/utils';
 
 const renderInput = inputProps => {
-  const { InputProps, classes, ref, valid, ...other } = inputProps;
-  const inputStyle = valid
-    ? classes.inputInput
-    : classes.invalidInputInput;
-
-  return (
+  const {
+    InputProps,
+    classes,
+    ref,
+    inputValue,
+    isOpen,
+    ...other
+  } = inputProps;
+  const textField = (
     <TextField
       InputProps={{
         inputRef: ref,
         classes: {
           root: classes.inputRoot,
-          input: inputStyle,
+          input: classes.inputInput,
         },
         ...InputProps,
       }}
       {...other}
     />
+  );
+
+  return !isOpen && inputValue && inputValue.length > 30 ? (
+    <Tooltip title={inputValue}>{textField}</Tooltip>
+  ) : (
+    textField
   );
 };
 
@@ -37,7 +53,14 @@ const renderSuggestion = ({
   itemProps,
   highlightedIndex,
   selectedItem,
+  renderNotFound,
 }) => {
+  if (!suggestion && renderNotFound) {
+    return <MenuItem>No matching foods found!!</MenuItem>;
+  }
+
+  if (!suggestion) return;
+
   const isHighlighted = highlightedIndex === index;
   const isSelected =
     (selectedItem || '').indexOf(suggestion.food_name) > -1;
@@ -65,42 +88,107 @@ renderSuggestion.propTypes = {
   itemProps: PropTypes.object.isRequired,
   selectedItem: PropTypes.string.isRequired,
   suggestion: PropTypes.string.isRequired,
+  renderNotFound: PropTypes.bool,
 };
 
-/**
- *
- * @param classes local prop from withStyles
- * @param food object containing food attributes {id: string, isRecommendation: bool, key: string, name: string, suggestions: []}
- * @param action function to execute when input changes
- * @param isValid boolean controls normal/red styling of the field (for validation purposes)
- * @param loadingContext string context to apply to LoadingSpinner
- */
+let timeout = null;
 
-const SearchInputField = ({
-  classes,
-  food,
-  action,
-  isValid = true,
-  loadingContext,
-}) => {
-  const { suggestions } = food;
+const SearchInputField = ({ classes, foodKey, foodAction, isValid }) => {
+  const [food, setFood] = useState();
+  const [charCount, setCharCount] = useState(0);
+  const [notFound, setNotFound] = useState();
+  const context = foodKey ? `getSearchTerms-${foodKey}` : 'getSearchTerms';
+  const { promiseInProgress } = usePromiseTracker({ area: context });
 
-  function onInputChange(item) {
-    if (item && item.length > 2) {
-      action(food, item);
+  useEffect(() => {
+    foodAction(food);
+    isValid = null;
+  }, [food]);
+
+  const updateState = async input => {
+    clearTimeout(timeout);
+    timeout = setTimeout(async () => {
+      const search = await trackPromise(getSearchedTerms(input), context);
+
+      if (search && search.matches) {
+        const suggestions = search.matches.map(match => ({
+          food_name: match.food_name,
+          food_id: match.food_id,
+        }));
+        if (suggestions.length > 0) {
+          const selected = suggestions.find(
+            suggestion =>
+              fullTrim(suggestion.food_name.toLowerCase()) ===
+              fullTrim(input.toLowerCase())
+          );
+          if (selected) {
+            setFood({
+              suggestions,
+              key: foodKey,
+              name: fullTrim(selected.food_name),
+              id: selected.food_id,
+            });
+          } else {
+            setFood({
+              suggestions,
+              key: foodKey,
+              name: input,
+              id: null,
+            });
+          }
+          setNotFound(false);
+        } else {
+          setNotFound(true);
+        }
+      }
+    }, INPUT_TRIGGER_TIME);
+  };
+
+  function onInputChange(input) {
+    setNotFound(false);
+    setCharCount(input && input.length ? input.length : 0);
+    if (input && input.length > 2) {
+      updateState(input);
     }
   }
 
-  function getSuggestions(value) {
-    const inputValue = deburr(value.trim()).toLowerCase();
-    const inputLength = inputValue.length;
+  function resetField() {
+    setFood({
+      key: foodKey,
+      id: null,
+      name: '',
+      suggestions: [],
+    });
+  }
 
-    return inputLength === 0 ? [] : suggestions;
+  function getSuggestions(value) {
+    if (food && food.suggestions) {
+      const inputValue = deburr(value.trim()).toLowerCase();
+      return inputValue.length === 0 ? [] : food.suggestions;
+    }
+    return [];
+  }
+
+  function validationIcon(isOpen) {
+    if (!isOpen) {
+      if (isValid != null) {
+        return isValid ? (
+          <CheckIcon className={classes.checkIcon} />
+        ) : (
+          <ErrorIcon className={classes.errorIcon} />
+        );
+      }
+      if ((charCount < 3 && charCount > 0) || (food && !!food.id)) {
+        return <CheckIcon className={classes.checkIcon} />;
+      } else if (charCount > 0) {
+        return <ErrorIcon className={classes.errorIcon} />;
+      }
+    }
   }
 
   return (
     <div className={classes.root}>
-      <Downshift id='downshift' onChange={onInputChange}>
+      <Downshift onChange={onInputChange}>
         {({
           getInputProps,
           getItemProps,
@@ -120,13 +208,15 @@ const SearchInputField = ({
           } = getInputProps({
             placeholder: 'Type food name',
           });
+
           return (
             <div className={classes.container}>
               {renderInput({
                 fullWidth: true,
                 classes,
                 label: '',
-                valid: isValid,
+                inputValue,
+                isOpen,
                 InputLabelProps: getLabelProps({ shrink: true }),
                 InputProps: {
                   onBlur,
@@ -137,10 +227,17 @@ const SearchInputField = ({
                   },
                   endAdornment: (
                     <>
-                      <LoadingSpinner context={loadingContext} />
+                      {promiseInProgress ? (
+                        <LoadingSpinner context={context} />
+                      ) : (
+                        validationIcon(isOpen)
+                      )}
                       {inputValue && inputValue.length > 0 && (
                         <IconButton
-                          onClick={clearSelection}
+                          onClick={() => {
+                            clearSelection();
+                            resetField();
+                          }}
                           aria-label='clear'
                           size='small'
                         >
@@ -155,17 +252,24 @@ const SearchInputField = ({
               <div {...getMenuProps()}>
                 {isOpen ? (
                   <Paper className={classes.dropdown}>
-                    {getSuggestions(inputValue).map((suggestion, index) =>
-                      renderSuggestion({
-                        suggestion,
-                        index,
-                        itemProps: getItemProps({
-                          item: suggestion.food_name,
-                        }),
-                        highlightedIndex,
-                        selectedItem,
-                      })
-                    )}
+                    {notFound
+                      ? renderSuggestion({
+                          suggestion: null,
+                          renderNotFound:
+                            inputValue.length > 2 && !promiseInProgress,
+                        })
+                      : getSuggestions(inputValue).map(
+                          (suggestion, index) =>
+                            renderSuggestion({
+                              suggestion,
+                              index,
+                              itemProps: getItemProps({
+                                item: suggestion.food_name,
+                              }),
+                              highlightedIndex,
+                              selectedItem,
+                            })
+                        )}
                   </Paper>
                 ) : null}
               </div>
@@ -179,11 +283,9 @@ const SearchInputField = ({
 
 SearchInputField.propTypes = {
   classes: PropTypes.object.isRequired,
-  food: PropTypes.object,
-  setSearchTerm: PropTypes.function,
+  foodAction: PropTypes.func,
+  foodKey: PropTypes.string,
   isValid: PropTypes.bool,
-  action: PropTypes.function,
-  loadingContext: PropTypes.string,
 };
 
 const styles = theme => ({
@@ -191,15 +293,17 @@ const styles = theme => ({
     flexGrow: 1,
     width: 280,
     alignSelf: 'flex-end',
+    marginBottom: 12,
   },
   container: {
     flexGrow: 1,
     position: 'relative',
+    backgroundColor: 'white',
   },
   dropdown: {
     position: 'absolute',
     zIndex: 1,
-    marginTop: theme.spacing.unit,
+    marginTop: theme.spacing(1),
     left: 0,
     right: 0,
     maxHeight: 230,
@@ -207,25 +311,31 @@ const styles = theme => ({
     overflow: 'auto',
   },
   chip: {
-    margin: `${theme.spacing.unit / 2}px ${theme.spacing.unit / 4}px`,
+    margin: `${theme.spacing(0.5)}px ${theme.spacing(0.25)}px`,
   },
   inputRoot: {
     flexWrap: 'wrap',
+    paddingRight: 5,
   },
   inputInput: {
     width: 'auto',
     flexGrow: 1,
     backgroundColor: '#ffffff',
     color: '#000000',
+    padding: 10,
   },
-  invalidInputInput: {
+  invalidInput: {
     width: 'auto',
     flexGrow: 1,
-    backgroundColor: '#ffdddd',
-    color: '#770000',
+    color: 'firebrick',
   },
-  divider: {
-    height: theme.spacing(2),
+  checkIcon: {
+    color: 'limegreen',
+    fontSize: 'medium',
+  },
+  errorIcon: {
+    color: 'firebrick',
+    fontSize: 'medium',
   },
 });
 

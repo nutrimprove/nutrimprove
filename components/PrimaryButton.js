@@ -26,7 +26,7 @@ const PrimaryButton = ({
 PrimaryButton.propTypes = {
   action: PropTypes.func,
   disabled: PropTypes.bool,
-  children: PropTypes.array,
+  children: PropTypes.any,
   classes: PropTypes.object.isRequired,
   colour: PropTypes.string,
 };

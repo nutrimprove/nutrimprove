@@ -40,8 +40,7 @@
     "redux-devtools-extension": "^2.13.8",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0",
-    "serve-favicon": "^2.5.0",
-    "uniqid": "^5.0.3"
+    "serve-favicon": "^2.5.0"
   },
   "devDependencies": {
     "@babel/core": "^7.6.0",
@@ -64,7 +63,7 @@
     "jest": "^24.9.0",
     "lint-staged": "^9.2.5",
     "nodemon": "^1.19.2",
-    "now": "^16.7.3",
+    "now": "^17.0.3",
     "prettier": "^1.18.2"
   },
   "husky": {

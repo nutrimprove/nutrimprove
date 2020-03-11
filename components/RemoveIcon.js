@@ -1,47 +1,46 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
-import {
-  removeFoodAction,
-  removeRecommendedFoodAction,
-} from '../store/addRecommendation/actions';
+import { withStyles } from '@material-ui/core';
 
-const RemoveIcon = ({ foodItem, doRemove }) => {
+const RemoveIcon = ({ classes, foodItem, action }) => {
   if (foodItem != null) {
     return (
       <>
-        <IconButton aria-label='remove-button' onClick={() => doRemove()}>
-          <DeleteIcon />
-        </IconButton>
-      </>
-    );
-  } else {
-    return (
-      <>
-        <IconButton aria-label='disabled-remove-button' disabled>
+        <IconButton
+          className={classes.icon}
+          aria-label='remove-button'
+          onClick={() => action(foodItem)}
+        >
           <DeleteIcon />
         </IconButton>
       </>
     );
   }
+  return (
+    <>
+      <IconButton
+        className={classes.icon}
+        aria-label='disabled-remove-button'
+        disabled
+      >
+        <DeleteIcon />
+      </IconButton>
+    </>
+  );
 };
 
 RemoveIcon.propTypes = {
+  classes: PropTypes.object,
   foodItem: PropTypes.object,
-  doRemove: PropTypes.function,
+  action: PropTypes.func,
 };
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
-  doRemove: () => {
-    ownProps.foodItem.isRecommendation
-      ? dispatch(removeRecommendedFoodAction(ownProps.foodItem))
-      : dispatch(removeFoodAction(ownProps.foodItem));
+const styles = {
+  icon: {
+    padding: 8,
   },
-});
+};
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(RemoveIcon);
+export default withStyles(styles)(RemoveIcon);

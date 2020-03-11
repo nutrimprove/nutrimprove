@@ -39,7 +39,7 @@ const Callback = ({ setUserDetails }) => {
 };
 
 Callback.propTypes = {
-  setUserDetails: PropTypes.function,
+  setUserDetails: PropTypes.func,
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => {
