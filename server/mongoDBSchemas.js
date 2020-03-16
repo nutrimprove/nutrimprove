@@ -91,6 +91,10 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       required: true,
     },
+    points: {
+      type: Number,
+      required: true,
+    },
   },
   { timestamps: true }
 );

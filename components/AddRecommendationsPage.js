@@ -23,6 +23,7 @@ import ButtonWithSpinner from './ButtonWithSpinner';
 import Status from './Status';
 import { Typography } from '@material-ui/core';
 import Link from '@material-ui/core/Link';
+import { calcPoints } from '../helpers/userUtils';
 
 const maxFoodFields = 4;
 const maxRecommendationFields = 4;
@@ -109,10 +110,6 @@ const AddRecommendationsPage = ({
     ) : (
       <RemoveIcon foodItem={food} action={removeFood} />
     );
-  };
-
-  const awardPoints = points => {
-    return points;
   };
 
   /**
@@ -205,9 +202,11 @@ const AddRecommendationsPage = ({
         removeAllFoods();
         setValidation(false);
 
-        const addedPoints = awardPoints(
-          insertedCount * 10 + incrementedCount * 5
-        );
+        const addedPoints = calcPoints({
+          added: insertedCount,
+          incremented: incrementedCount,
+        });
+
         const recommendationString =
           insertedCount === 1 ? 'recommendation' : 'recommendations';
 

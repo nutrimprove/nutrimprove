@@ -5,6 +5,7 @@ import {
   userSchema,
 } from './mongoDBSchemas';
 import { remove } from 'lodash';
+import { calcPoints } from '../helpers/userUtils';
 
 const URI = process.env.MONGODB_URI;
 const mongoOptions = { useUnifiedTopology: true, useNewUrlParser: true };
@@ -113,6 +114,34 @@ const getAllRecommendations = async () => {
   return RecommendationsConnection.find({});
 };
 
+const updateUserPoints = async user => {
+  const RecommendationsConnection = await getRecommendationsConnection();
+  const userRecommendations = await RecommendationsConnection.find({
+    'contributors.id': user,
+  });
+
+  let addedCount = 0;
+  let incrementedCount = 0;
+  userRecommendations.forEach(recommendation => {
+    if (recommendation.id[0] === user) {
+      addedCount++;
+    } else {
+      incrementedCount++;
+    }
+  });
+
+  const UserConnection = await getUserConnection();
+  return UserConnection.findOneAndUpdate(
+    { email: user },
+    {
+      points: calcPoints({
+        added: addedCount,
+        incremented: incrementedCount,
+      }),
+    }
+  );
+};
+
 const addRecommendations = async recommendationsObj => {
   const contributor = recommendationsObj[0].contributors[0].id;
   const recommendations = recommendationsObj.map(recommendation => ({
@@ -144,7 +173,7 @@ const addRecommendations = async recommendationsObj => {
       recommendation: rec.recommendation.name,
     }));
 
-  return AddRecommendationsConnection.find()
+  const recommendationsResult = AddRecommendationsConnection.find()
     .or(getRecommendationsQuery(recommendations))
     .then(async duplicateDocs => {
       if (duplicateDocs.length === 0) {
@@ -180,6 +209,8 @@ const addRecommendations = async recommendationsObj => {
         return { duplicates, incremented: duplicateDocs };
       }
     });
+  await updateUserPoints(contributor);
+  return recommendationsResult;
 };
 
 const updateDB = async (run = false) => {
