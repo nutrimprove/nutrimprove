@@ -134,7 +134,7 @@ const AdminPanel = ({ userDetails }) => {
       >
         Approved Users
       </MainButton>
-      {isOwner(userDetails) && enableDB && (
+      {isOwner(userDetails) && enableDB === 'true' && (
         <ButtonWithSpinner
           action={updateDatabase}
           context='updateDB'
