@@ -114,7 +114,7 @@ const getAllRecommendations = async () => {
 };
 
 const addRecommendations = async recommendationsObj => {
-  const contributor = recommendationsObj[0].contributors;
+  const contributor = recommendationsObj[0].contributors[0].id;
   const recommendations = recommendationsObj.map(recommendation => ({
     food: {
       id: recommendation.food.id,
