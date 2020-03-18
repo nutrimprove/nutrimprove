@@ -32,7 +32,7 @@ const isValidEmail = email => {
   return regex.test(String(email).toLowerCase());
 };
 
-const calcPoints = ({ added, incremented }) => {
+const calcPoints = ({ added = 0, incremented = 0 }) => {
   const pointsForAdded = 10;
   const pointsForIncremented = 10;
   return added * pointsForAdded + incremented * pointsForIncremented;
