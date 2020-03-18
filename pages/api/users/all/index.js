@@ -1,4 +1,4 @@
-import { getAllUsers } from '../../../../server/db';
+import { getAllUsers } from '../../../../server/users/users';
 
 const getCollectionResults = async (req, res) => {
   const result = await getAllUsers();

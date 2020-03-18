@@ -1,7 +1,7 @@
 import {
   getUser,
   saveUser,
-} from '../../../server/db';
+} from '../../../server/users/users';
 import { isValidEmail } from '../../../helpers/userUtils';
 
 const getCollectionResults = async (req, res) => {

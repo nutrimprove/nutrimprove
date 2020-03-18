@@ -27,13 +27,10 @@ Index.propTypes = {
   userDetails: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = (states, ownProps) => {
+const mapStateToProps = states => {
   return {
     userDetails: states.globalState.userDetails,
   };
 };
 
-export default connect(
-  mapStateToProps,
-  null
-)(Index);
+export default connect(mapStateToProps, null)(Index);

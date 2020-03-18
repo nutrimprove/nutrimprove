@@ -1,4 +1,4 @@
-import { addSearchTerm, getSearchTerm } from '../../../server/db';
+import { addSearchTerm, getSearchTerm } from '../../../server/search/search';
 import { fetchFoods } from '../../../connect/api';
 
 const formatSearchTerm = (searchTerm, foods) => {
