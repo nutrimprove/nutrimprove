@@ -97,9 +97,10 @@ const addRecommendations = async recommendationsObj => {
           );
         }
 
-        if (updated.nModified > 0) {
+        if (updated && updated.nModified > 0) {
           await addPoints(contributor, updated.nModified);
         }
+
         return { duplicates, incremented: duplicateDocs };
       }
     });
