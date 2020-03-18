@@ -1,4 +1,4 @@
-import { getRecommendationsConnection } from '../connect';
+import { getRecommendationsConnection } from '../recommendations/recommendations';
 
 const updateDB = async (run = false) => {
   if (!run)

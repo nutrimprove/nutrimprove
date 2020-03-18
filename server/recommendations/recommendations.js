@@ -124,6 +124,7 @@ const addRecommendations = async recommendationsObj => {
 };
 
 export {
+  getRecommendationsConnection,
   getUserRecommendations,
   getRecommendationsByFood,
   getAllRecommendations,
