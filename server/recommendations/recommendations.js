@@ -61,7 +61,7 @@ const addRecommendations = async recommendationsObj => {
 
   const AddRecommendationsConnection = await getRecommendationsConnection();
 
-  const recommendationsResult = AddRecommendationsConnection.find()
+  return AddRecommendationsConnection.find()
     .or(getRecommendationsQuery(recommendations))
     .then(async duplicateDocs => {
       if (duplicateDocs.length === 0) {
@@ -103,8 +103,6 @@ const addRecommendations = async recommendationsObj => {
         return { duplicates, incremented: duplicateDocs };
       }
     });
-
-  return recommendationsResult;
 };
 
 export {
