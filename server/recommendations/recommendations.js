@@ -1,101 +1,11 @@
-import mongoose from 'mongoose';
-import {
-  recommendationsSchema,
-  searchTermSchema,
-  userSchema,
-} from './mongoDBSchemas';
+import connect from '../connect';
 import { remove } from 'lodash';
-import { calcPoints } from '../helpers/userUtils';
-
-const URI = process.env.MONGODB_URI;
-const mongoOptions = { useUnifiedTopology: true, useNewUrlParser: true };
-
-const connect = (description, schema, collection) => {
-  if (mongoose.connection.readyState === 0) {
-    mongoose.connect(URI, mongoOptions, err => {
-      if (err) {
-        console.error(`ERROR connecting to '${URI}'`, err);
-      } else {
-        console.log(`Succeeded connecting to '${URI}'`);
-      }
-    });
-  }
-  return (
-    mongoose.models[description] ||
-    mongoose.model(description, schema, collection)
-  );
-};
-
-const getSearchTermConnection = () =>
-  connect(
-    'SearchTerm',
-    searchTermSchema,
-    'search_cache'
-  );
-
-const getSearchTerm = async term => {
-  const SearchTermConnection = await getSearchTermConnection();
-  return SearchTermConnection.findOne({ search_term: term });
-};
-
-const addSearchTerm = async searchTermObj => {
-  const SearchTerm = await getSearchTermConnection();
-  const newSearchTerm = new SearchTerm(searchTermObj);
-  return newSearchTerm.save();
-};
-
-const getUserConnection = () =>
-  connect(
-    'users',
-    userSchema,
-    'users'
-  );
-
-const getUser = async user => {
-  const UserConnection = await getUserConnection();
-  return UserConnection.findOne({ email: user });
-};
-
-const saveUser = async userObj => {
-  const UserConnection = await getUserConnection();
-  const newUser = new UserConnection(userObj);
-  return newUser.save();
-};
-
-const setUserApproval = async (user, approval) => {
-  const UserConnection = await getUserConnection();
-  return UserConnection.findOneAndUpdate(
-    { email: user },
-    { approved: approval }
-  );
-};
-
-const deleteUser = async user => {
-  const UserConnection = await getUserConnection();
-  return UserConnection.deleteOne({ email: user });
-};
-
-const getAllUsers = async () => {
-  const UserConnection = await getUserConnection();
-  return UserConnection.find({});
-};
-
-const getApprovedUsers = async () => {
-  const UserConnection = await getUserConnection();
-  return UserConnection.find({ approved: true });
-};
-
-const getNotApprovedUsers = async () => {
-  const UserConnection = await getUserConnection();
-  return UserConnection.find({ approved: false });
-};
+import { calcPoints } from '../../helpers/userUtils';
+import recommendationsSchema from './recommendationsSchema';
+import { getUserConnection } from '../users/users';
 
 const getRecommendationsConnection = () =>
-  connect(
-    'recommendations',
-    recommendationsSchema,
-    'recommendations'
-  );
+  connect('recommendations', recommendationsSchema, 'recommendations');
 
 const getUserRecommendations = async user => {
   const RecommendationsConnection = await getRecommendationsConnection();
@@ -213,43 +123,9 @@ const addRecommendations = async recommendationsObj => {
   return recommendationsResult;
 };
 
-const updateDB = async (run = false) => {
-  if (!run)
-    return {
-      message:
-        'For security reasons please set the "run" flag to true before running the DB update script!',
-    };
-  const AddRecommendationsConnection = await getRecommendationsConnection();
-  const result = await AddRecommendationsConnection.find({
-    contributor_id: { $exists: true },
-  }).then(docs => {
-    docs.forEach(item => {
-      item.set('contributors', [{ id: item.get('contributor_id') }], {
-        strict: false,
-      });
-      item.set('contributor_id', undefined, { strict: false });
-      item.set('relevance', undefined, { strict: false });
-      item.save();
-    });
-    return docs;
-  });
-  console.log('Database updated!', result);
-  return result;
-};
-
 export {
-  getSearchTerm,
-  addSearchTerm,
   getUserRecommendations,
   getRecommendationsByFood,
   getAllRecommendations,
   addRecommendations,
-  getUser,
-  getAllUsers,
-  getApprovedUsers,
-  getNotApprovedUsers,
-  setUserApproval,
-  deleteUser,
-  saveUser,
-  updateDB,
 };
