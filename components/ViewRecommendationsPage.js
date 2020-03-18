@@ -47,13 +47,34 @@ const ViewRecommendationsPage = ({ classes, userDetails }) => {
 
   const formattedRecommendations = () =>
     recommendations.map(recommendation => {
-      const contributors = recommendation.contributors.length;
-      const plusText = contributors > 1 ? `+ ${contributors}` : '';
+      const contributorsCount = recommendation.contributors.length;
+      const contributorIndex = recommendation.contributors.findIndex(
+        ({ id }) => id === userDetails.email
+      );
+      let mainContributor =
+        contributorIndex === 0 ? 'You' : recommendation.contributors[0].id;
+      let otherContributors =
+        contributorsCount > 1 ? `+ ${contributorsCount - 1}` : '';
+
+      if (contributorIndex === -1) {
+        mainContributor = recommendation.contributors[0].id;
+        otherContributors =
+          contributorsCount > 1 ? `+ ${contributorsCount - 1}` : '';
+      } else if (contributorIndex === 0) {
+        mainContributor = 'You';
+        otherContributors =
+          contributorsCount > 1 ? `+ ${contributorsCount - 1}` : '';
+      } else {
+        mainContributor = recommendation.contributors[0].id;
+        otherContributors =
+          contributorsCount > 2 ? `You + ${contributorsCount - 1}` : 'You';
+      }
 
       return {
         food: recommendation.food.name,
         recommendation: recommendation.recommendation.name,
-        contributors: `${recommendation.contributors[0].id} ${plusText}`,
+        'Main Contributor': mainContributor,
+        'Other Contributors': otherContributors,
       };
     });
 
