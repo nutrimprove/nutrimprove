@@ -17,6 +17,7 @@ const getCollectionResults = async (req, res) => {
     const newUserDocument = {
       email: user,
       role: 100,
+      points: 0,
       approved: false,
     };
     result = await saveUser(newUserDocument);

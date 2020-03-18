@@ -1,7 +1,7 @@
 import SearchInputField from './SearchInputField';
 import React, { useState } from 'react';
 import RemoveIcon from './RemoveIcon';
-import PrimaryButton from './PrimaryButton';
+import MainButton from './MainButton';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { emptyFood, getTime } from '../helpers/utils';
@@ -15,7 +15,7 @@ import {
   removeRecommendedFoodAction,
 } from '../store/addRecommendation/actions';
 import { postRecommendations } from '../connect/api';
-import { uniqBy, difference } from 'lodash';
+import { difference, uniqBy } from 'lodash';
 import SectionHeader from './SectionHeader';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { usePromiseTracker } from 'react-promise-tracker';
@@ -23,6 +23,7 @@ import ButtonWithSpinner from './ButtonWithSpinner';
 import Status from './Status';
 import { Typography } from '@material-ui/core';
 import Link from '@material-ui/core/Link';
+import { calcPoints } from '../helpers/userUtils';
 
 const maxFoodFields = 4;
 const maxRecommendationFields = 4;
@@ -179,7 +180,7 @@ const AddRecommendationsPage = ({
             id: recommendation.id,
             name: recommendation.name,
           },
-          contributorId: userDetails.email,
+          contributors: [{ id: userDetails.email }],
         });
       }
     }
@@ -188,24 +189,43 @@ const AddRecommendationsPage = ({
 
     if (result) {
       const recCount = recommendationsPayload.length;
+      const insertedCount = result.inserted ? result.inserted.length : 0;
+      const incrementedCount = result.incremented
+        ? result.incremented.length
+        : 0;
+      const duplicatesCount = result.duplicates
+        ? result.duplicates.length
+        : 0;
 
-      if (result.length === recCount) {
+      if (insertedCount + incrementedCount === recCount) {
         // Reset fields if all combinations were stored successfully
         removeAllFoods();
         setValidation(false);
 
+        const addedPoints = calcPoints({
+          added: insertedCount,
+          incremented: incrementedCount,
+        });
+
         const recommendationString =
-          recCount === 1 ? 'recommendation' : 'recommendations';
-        updateStatus(
-          `${recCount} ${recommendationString} added to the database!`
-        );
+          insertedCount === 1 ? 'recommendation' : 'recommendations';
+
+        let status = `${insertedCount} new ${recommendationString} added to the database!`;
+
+        if (result.incremented) {
+          status =
+            status +
+            ` Added your contribution to ${incrementedCount} already present.`;
+        }
+        status += ` +${addedPoints} points`;
+        updateStatus(status);
       } else {
-        if (result.duplicates) {
+        if (duplicatesCount > 0) {
           const duplicatesList = result.duplicates.map(
-            dup => `${dup.food} -> ${dup.recommendation}`
+            dup => `${dup.food.name} -> ${dup.recommendation.name}`
           );
           updateStatus([
-            'Some recommendations are already present in the database!',
+            'Some recommendations have already been submitted by you!',
             'Please remove these before submitting again:',
             ...duplicatesList,
           ]);
@@ -216,9 +236,8 @@ const AddRecommendationsPage = ({
           ]);
         }
       }
-    } else {
-      updateStatus(`Something went wrong. No results.`);
     }
+
     return result;
   };
 
@@ -236,12 +255,9 @@ const AddRecommendationsPage = ({
           </Typography>
           <div id='foods_input'>
             {renderField({ foods, isRecommendation: false })}
-            <PrimaryButton
-              action={addEmptyFood}
-              disabled={addFoodDisabled}
-            >
+            <MainButton action={addEmptyFood} disabled={addFoodDisabled}>
               Add
-            </PrimaryButton>
+            </MainButton>
           </div>
         </div>
         <div className={classes.fieldBox}>
@@ -253,12 +269,12 @@ const AddRecommendationsPage = ({
               foods: recommendations,
               isRecommendation: true,
             })}
-            <PrimaryButton
+            <MainButton
               action={addEmptyRecommendedFood}
               disabled={addRecommendationDisabled}
             >
               Add
-            </PrimaryButton>
+            </MainButton>
           </div>
         </div>
       </div>

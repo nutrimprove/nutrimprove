@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import PrimaryButton from './PrimaryButton';
+import MainButton from './MainButton';
 import LoadingSpinner from './LoadingSpinner';
 import { deleteUser } from '../connect/api';
 import { useState } from 'react';
@@ -23,20 +23,20 @@ const DeleteUserButton = ({ user, action }) => {
   };
 
   const defaultButton = () => (
-    <PrimaryButton action={setTempConfirmation} disabled={disabled}>
+    <MainButton action={setTempConfirmation} disabled={disabled}>
       Delete User
-    </PrimaryButton>
+    </MainButton>
   );
 
   const confirmButton = () => (
-    <PrimaryButton
+    <MainButton
       action={confirmButtonActions}
       colour={'secondary'}
       disabled={disabled}
     >
       Confirm Deletion
       <LoadingSpinner context={`deleteUser-${user.email}`} />
-    </PrimaryButton>
+    </MainButton>
   );
 
   return confirm ? confirmButton() : defaultButton();

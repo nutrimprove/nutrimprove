@@ -9,6 +9,7 @@ const apiAuthParams = `app_key=8a2617ec655417bd43fd2b3df4b85a30&app_id=652bd7d5`
 const searchTermsEndpoint = '/api/search';
 const recommendationsEndpoint = '/api/recommendations';
 const usersEndpoint = '/api/users';
+const updateDBEndpoint = '/api/db/update';
 
 const getRequest = endpoint =>
   axios
@@ -37,16 +38,19 @@ const fetchFoods = name =>
   );
 
 const getNutritionalData = foodId =>
-  postRequest(`${nutritionApiEndpoint}?${apiAuthParams}`, {
-    ingredients: [
-      {
-        foodId,
-        quantity: 100, // Currently hard coding 100 grams as measurement
-        measureURI:
-          'http://www.edamam.com/ontologies/edamam.owl#Measure_gram',
-      },
-    ],
-  });
+  trackPromise(
+    postRequest(`${nutritionApiEndpoint}?${apiAuthParams}`, {
+      ingredients: [
+        {
+          foodId,
+          quantity: 100, // Currently hard coding 100 grams as measurement
+          measureURI:
+            'http://www.edamam.com/ontologies/edamam.owl#Measure_gram',
+        },
+      ],
+    }),
+    'getNutritionalData'
+  );
 
 const getUserRecommendations = user =>
   trackPromise(
@@ -108,8 +112,14 @@ const deleteUser = user =>
     `deleteUser-${user}`
   );
 
-const getSearchedTerms = searchTerm =>
-  getRequest(`${searchTermsEndpoint}/${encodeURIComponent(searchTerm)}`);
+const getSearchedTerms = (searchTerm, context = 'getSearchTerms') =>
+  trackPromise(
+    getRequest(`${searchTermsEndpoint}/${encodeURIComponent(searchTerm)}`),
+    context
+  );
+
+const updateDB = () =>
+  trackPromise(postRequest(updateDBEndpoint), 'updateDB');
 
 export {
   postRecommendations,
@@ -126,4 +136,5 @@ export {
   revokeUser,
   deleteUser,
   getNutritionalData,
+  updateDB,
 };

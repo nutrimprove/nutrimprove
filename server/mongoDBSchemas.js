@@ -54,12 +54,20 @@ const recommendationsSchema = new mongoose.Schema([
         required: true,
       },
     },
-    contributor_id: {
-      type: String,
-      lowercase: true,
-      trim: true,
-      required: true,
-    },
+    contributors: [
+      {
+        id: {
+          type: String,
+          lowercase: true,
+          trim: true,
+        },
+        added_on: {
+          type: Number,
+          required: false,
+        },
+        _id: false,
+      },
+    ],
     timestamp: {
       type: Number,
       required: true,
@@ -81,6 +89,10 @@ const userSchema = new mongoose.Schema(
     },
     approved: {
       type: Boolean,
+      required: true,
+    },
+    points: {
+      type: Number,
       required: true,
     },
   },

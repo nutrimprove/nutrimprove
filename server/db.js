@@ -4,6 +4,8 @@ import {
   searchTermSchema,
   userSchema,
 } from './mongoDBSchemas';
+import { remove } from 'lodash';
+import { calcPoints } from '../helpers/userUtils';
 
 const URI = process.env.MONGODB_URI;
 const mongoOptions = { useUnifiedTopology: true, useNewUrlParser: true };
@@ -97,7 +99,7 @@ const getRecommendationsConnection = () =>
 
 const getUserRecommendations = async user => {
   const RecommendationsConnection = await getRecommendationsConnection();
-  return RecommendationsConnection.find({ contributor_id: user });
+  return RecommendationsConnection.find({ 'contributors.id': user });
 };
 
 const getRecommendationsByFood = async food => {
@@ -112,7 +114,36 @@ const getAllRecommendations = async () => {
   return RecommendationsConnection.find({});
 };
 
+const updateUserPoints = async user => {
+  const RecommendationsConnection = await getRecommendationsConnection();
+  const userRecommendations = await RecommendationsConnection.find({
+    'contributors.id': user,
+  });
+
+  let addedCount = 0;
+  let incrementedCount = 0;
+  userRecommendations.forEach(recommendation => {
+    if (recommendation.id[0] === user) {
+      addedCount++;
+    } else {
+      incrementedCount++;
+    }
+  });
+
+  const UserConnection = await getUserConnection();
+  return UserConnection.findOneAndUpdate(
+    { email: user },
+    {
+      points: calcPoints({
+        added: addedCount,
+        incremented: incrementedCount,
+      }),
+    }
+  );
+};
+
 const addRecommendations = async recommendationsObj => {
+  const contributor = recommendationsObj[0].contributors[0].id;
   const recommendations = recommendationsObj.map(recommendation => ({
     food: {
       id: recommendation.food.id,
@@ -122,18 +153,19 @@ const addRecommendations = async recommendationsObj => {
       id: recommendation.recommendation.id,
       name: recommendation.recommendation.name,
     },
-    contributor_id: recommendation.contributorId,
+    contributors: recommendation.contributors,
     timestamp: new Date().getTime(),
   }));
 
   const AddRecommendationsConnection = await getRecommendationsConnection();
 
-  const allRecsQuery = recommendations.map(rec => ({
-    $and: [
-      { 'food.name': rec.food.name },
-      { 'recommendation.name': rec.recommendation.name },
-    ],
-  }));
+  const getRecommendationsQuery = list =>
+    list.map(rec => ({
+      $and: [
+        { 'food.name': rec.food.name },
+        { 'recommendation.name': rec.recommendation.name },
+      ],
+    }));
 
   const formatResultRecs = recs =>
     recs.map(rec => ({
@@ -141,20 +173,68 @@ const addRecommendations = async recommendationsObj => {
       recommendation: rec.recommendation.name,
     }));
 
-  return AddRecommendationsConnection.find()
-    .or(allRecsQuery)
+  const recommendationsResult = AddRecommendationsConnection.find()
+    .or(getRecommendationsQuery(recommendations))
     .then(async duplicateDocs => {
       if (duplicateDocs.length === 0) {
         const results = await AddRecommendationsConnection.insertMany(
           recommendations
         );
-        return formatResultRecs(results);
+        return { inserted: formatResultRecs(results) };
       } else {
-        const duplicates = formatResultRecs(duplicateDocs);
-        console.warn('Found duplicate recommendations!', duplicates);
-        return { duplicates };
+        // Get recommendations already added by current user (removes from duplicateDocs)
+        const duplicates = remove(duplicateDocs, recommendation =>
+          recommendation.contributors.find(({ id }) => id === contributor)
+        );
+
+        let updated;
+        // Add current user as contributor to recommendations already present
+        if (duplicateDocs.length > 0) {
+          updated = await AddRecommendationsConnection.update(
+            { $or: getRecommendationsQuery(duplicateDocs) },
+            {
+              $addToSet: {
+                contributors: { id: contributor, added_on: new Date() },
+              },
+            },
+            { multi: true }
+          );
+        }
+
+        if (updated && updated.nModified !== duplicateDocs.length) {
+          throw Error(
+            `Number of documents updated: ${updated.nModified}, expected: ${duplicateDocs.length}`
+          );
+        }
+        return { duplicates, incremented: duplicateDocs };
       }
     });
+  await updateUserPoints(contributor);
+  return recommendationsResult;
+};
+
+const updateDB = async (run = false) => {
+  if (!run)
+    return {
+      message:
+        'For security reasons please set the "run" flag to true before running the DB update script!',
+    };
+  const AddRecommendationsConnection = await getRecommendationsConnection();
+  const result = await AddRecommendationsConnection.find({
+    contributor_id: { $exists: true },
+  }).then(docs => {
+    docs.forEach(item => {
+      item.set('contributors', [{ id: item.get('contributor_id') }], {
+        strict: false,
+      });
+      item.set('contributor_id', undefined, { strict: false });
+      item.set('relevance', undefined, { strict: false });
+      item.save();
+    });
+    return docs;
+  });
+  console.log('Database updated!', result);
+  return result;
 };
 
 export {
@@ -171,4 +251,5 @@ export {
   setUserApproval,
   deleteUser,
   saveUser,
+  updateDB,
 };

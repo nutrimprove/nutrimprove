@@ -47,7 +47,7 @@ const About = ({ classes }) => {
           <Typography>
             If you are a registered nutritionist, nutritional therapist or
             dietitian and are interested in knowing more about this project
-            please contact our resident us via email on:
+            please contact us via email on:
           </Typography>
           <Link>nutrimprove@gmail.com</Link>
         </Section>

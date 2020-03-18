@@ -6,15 +6,18 @@ import {
   getApprovedUsers,
   getNotApprovedUsers,
   revokeUser,
+  updateDB,
 } from '../connect/api';
 import ResultsTable from './ResultsTable';
 import ButtonWithSpinner from './ButtonWithSpinner';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import PrimaryButton from './PrimaryButton';
+import MainButton from './MainButton';
 import DeleteUserButton from './DeleteUserButton';
-import { isAdmin, userRoleToString } from '../helpers/userUtils';
+import { isAdmin, isOwner, userRoleToString } from '../helpers/userUtils';
 import { ROLES } from '../helpers/constants';
+
+const enableDB = process.env.ENABLE_UPDATE_DB;
 
 const sectionHeader = {
   title: 'Administration page',
@@ -25,6 +28,11 @@ const queries = {
   GET_ALL: 'getall',
   APPROVED: 'approved',
   NOT_APPROVED: 'notapproved',
+};
+
+const updateDatabase = async () => {
+  const result = await updateDB();
+  console.log('Update DB result:', result);
 };
 
 const AdminPanel = ({ userDetails }) => {
@@ -108,24 +116,33 @@ const AdminPanel = ({ userDetails }) => {
   return (
     <>
       <SectionHeader content={sectionHeader} />
-      <PrimaryButton
+      <MainButton
         action={listAllUsers}
         disabled={userQuery === queries.GET_ALL}
       >
         All Users
-      </PrimaryButton>
-      <PrimaryButton
+      </MainButton>
+      <MainButton
         action={listNotApprovedUsers}
         disabled={userQuery === queries.NOT_APPROVED}
       >
         Waiting Approval
-      </PrimaryButton>
-      <PrimaryButton
+      </MainButton>
+      <MainButton
         action={listApprovedUsers}
         disabled={userQuery === queries.APPROVED}
       >
         Approved Users
-      </PrimaryButton>
+      </MainButton>
+      {isOwner(userDetails) && enableDB === 'true' && (
+        <ButtonWithSpinner
+          action={updateDatabase}
+          context='updateDB'
+          colour='secondary'
+        >
+          Update DB
+        </ButtonWithSpinner>
+      )}
       {users && <ResultsTable values={users} />}
     </>
   );

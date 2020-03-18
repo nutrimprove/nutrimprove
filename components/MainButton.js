@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import withStyles from '@material-ui/core/styles/withStyles';
 
-const PrimaryButton = ({
+const MainButton = ({
   classes,
   action,
   disabled,
@@ -23,7 +23,7 @@ const PrimaryButton = ({
   </>
 );
 
-PrimaryButton.propTypes = {
+MainButton.propTypes = {
   action: PropTypes.func,
   disabled: PropTypes.bool,
   children: PropTypes.any,
@@ -40,4 +40,4 @@ const styles = {
   },
 };
 
-export default withStyles(styles)(PrimaryButton);
+export default withStyles(styles)(MainButton);

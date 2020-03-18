@@ -24,16 +24,12 @@ const ViewRecommendationsPage = ({ classes, userDetails }) => {
   const [title, setTitle] = useState();
 
   const loadUserRecommendations = async () => {
-    if (userDetails) {
-      const recommendations = await getUserRecommendations(
-        userDetails.email
-      );
-      const count = recommendations ? recommendations.length : 0;
-      setTitle(`Your recommendations (${count})`);
-      setRecommendations(recommendations);
-    } else {
-      console.error('User details not found!', userDetails);
-    }
+    const recommendations = await getUserRecommendations(
+      userDetails.email
+    );
+    const count = recommendations ? recommendations.length : 0;
+    setTitle(`Your recommendations (${count})`);
+    setRecommendations(recommendations);
   };
 
   const loadRecommendationsByFood = async food => {
@@ -50,15 +46,23 @@ const ViewRecommendationsPage = ({ classes, userDetails }) => {
   };
 
   const formattedRecommendations = () =>
-    recommendations.map(recommendation => ({
-      food: recommendation.food.name,
-      recommendation: recommendation.recommendation.name,
-      contributor: recommendation.contributor_id,
-    }));
+    recommendations.map(recommendation => {
+      const contributors = recommendation.contributors.length;
+      const plusText = contributors > 1 ? `+ ${contributors}` : '';
+
+      return {
+        food: recommendation.food.name,
+        recommendation: recommendation.recommendation.name,
+        contributors: `${recommendation.contributors[0].id} ${plusText}`,
+      };
+    });
 
   return (
     <>
       <SectionHeader content={sectionHeader} />
+      <Typography paragraph={true} variant='subtitle1'>
+        Your points: {userDetails.points || 0}
+      </Typography>
       <Typography paragraph={true} variant='subtitle2'>
         List only your recommendations or simply type a food name to list
         all existing recommendations with that food.
