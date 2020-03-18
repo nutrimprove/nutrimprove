@@ -3,7 +3,7 @@ export const ActionsTypes = {
   ADD_USER_POINTS: 'ADD_USER_POINTS',
 };
 
-export const setUserDetails = userDetails => {
+export const setUserDetailsAction = userDetails => {
   return { type: ActionsTypes.SET_USER_DETAILS, userDetails };
 };
 

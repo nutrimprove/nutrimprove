@@ -8,7 +8,7 @@ import {
   Link,
 } from '@material-ui/core';
 import Auth from '../connect/auth/Auth';
-import { setUserDetails } from '../store/global/actions';
+import { setUserDetailsAction } from '../store/global/actions';
 import { connect } from 'react-redux';
 import HeaderLink from './HeaderLink';
 import { setUserDetailsWithRole } from '../helpers/userUtils';
@@ -106,7 +106,7 @@ const mapStateToProps = (states, ownProps) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    setUserDetails: details => dispatch(setUserDetails(details)),
+    setUserDetails: details => dispatch(setUserDetailsAction(details)),
   };
 };
 
