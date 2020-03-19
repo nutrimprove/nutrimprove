@@ -149,6 +149,10 @@ const AdminPanel = ({ userDetails }) => {
           >
             Update DB
           </ButtonWithSpinner>
+        </>
+      )}
+      {isOwner(userDetails) && (
+        <>
           <ButtonWithSpinner
             action={updatePoints}
             context='updateAllUsersPoints'
