@@ -105,12 +105,9 @@ const updateAllUsersPoints = async () => {
 
 const addUserPoints = async (user, points) => {
   const UserConnection = await getUserConnection();
-  const userRecord = await UserConnection.findOne({ email: user });
-  const currentPoints = userRecord.points;
-  return UserConnection.findOneAndUpdate(
-    { email: user },
-    { points: currentPoints + points }
-  );
+  return UserConnection.findOneAndUpdate({ email: user }, [
+    { $set: { points: { $add: ['$points', points] } } },
+  ]);
 };
 
 export {
