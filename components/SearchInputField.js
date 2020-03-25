@@ -12,7 +12,7 @@ import ErrorIcon from '@material-ui/icons/Error';
 import LoadingSpinner from './LoadingSpinner';
 import IconButton from '@material-ui/core/IconButton';
 import { usePromiseTracker } from 'react-promise-tracker';
-import { getSearchedTerms } from '../connect/api';
+import { getSearchedTerms } from '../interfaces/api/search';
 import { INPUT_TRIGGER_TIME } from '../helpers/constants';
 import { Tooltip } from '@material-ui/core';
 import { fullTrim } from '../helpers/utils';

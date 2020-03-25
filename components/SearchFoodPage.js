@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import ResultsTable from './ResultsTable';
-import { getNutritionalData } from '../connect/api';
+import { getNutritionalData } from '../interfaces/api/foods';
 import SectionHeader from './SectionHeader';
 import withStyles from '@material-ui/core/styles/withStyles';
 import PropTypes from 'prop-types';

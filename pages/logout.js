@@ -1,4 +1,4 @@
-import Auth from '../connect/auth/Auth';
+import Auth from '../interfaces/auth/Auth';
 import { useEffect } from 'react';
 
 const Logout = () => {

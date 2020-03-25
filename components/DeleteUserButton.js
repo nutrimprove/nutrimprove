@@ -1,8 +1,8 @@
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import MainButton from './MainButton';
 import LoadingSpinner from './LoadingSpinner';
-import { deleteUser } from '../connect/api';
-import { useState } from 'react';
+import { deleteUser } from '../interfaces/api/users';
 import { isAdmin } from '../helpers/userUtils';
 
 const DeleteUserButton = ({ user, action }) => {

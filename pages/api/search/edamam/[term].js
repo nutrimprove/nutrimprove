@@ -1,5 +1,5 @@
-import { addSearchTerm, getSearchTerm } from '../../../server/search/search';
-import { fetchFoods } from '../../../connect/api';
+import { addSearchTerm, getSearchTerm } from '../../../../server/search/search';
+import { fetchEdamamFoods } from '../../../../interfaces/api/foods';
 
 const formatSearchTerm = (searchTerm, foods) => {
   const searchTermObj = {
@@ -26,7 +26,7 @@ const getCollectionResults = async (req, res) => {
   const result = await getSearchTerm(term);
 
   if (!result) {
-    const foods = await fetchFoods(term);
+    const foods = await fetchEdamamFoods(term);
     const searchTermObject = formatSearchTerm(term, foods);
     const savedTerm = await addSearchTerm(searchTermObject);
     return savedTerm
