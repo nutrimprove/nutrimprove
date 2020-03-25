@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import Auth from '../connect/auth/Auth';
 import Router from 'next/router';
-import { setUserDetails } from '../store/global/actions';
+import { setUserDetailsAction } from '../store/global/actions';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import SectionHeader from '../components/SectionHeader';
@@ -44,11 +44,8 @@ Callback.propTypes = {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    setUserDetails: details => dispatch(setUserDetails(details)),
+    setUserDetails: details => dispatch(setUserDetailsAction(details)),
   };
 };
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(Callback);
+export default connect(null, mapDispatchToProps)(Callback);

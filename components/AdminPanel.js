@@ -6,6 +6,7 @@ import {
   getApprovedUsers,
   getNotApprovedUsers,
   revokeUser,
+  updateAllUsersPoints,
   updateDB,
 } from '../connect/api';
 import ResultsTable from './ResultsTable';
@@ -33,6 +34,11 @@ const queries = {
 const updateDatabase = async () => {
   const result = await updateDB();
   console.log('Update DB result:', result);
+};
+
+const updatePoints = async () => {
+  const result = await updateAllUsersPoints();
+  console.log('Update all users points result:', result);
 };
 
 const AdminPanel = ({ userDetails }) => {
@@ -135,13 +141,26 @@ const AdminPanel = ({ userDetails }) => {
         Approved Users
       </MainButton>
       {isOwner(userDetails) && enableDB === 'true' && (
-        <ButtonWithSpinner
-          action={updateDatabase}
-          context='updateDB'
-          colour='secondary'
-        >
-          Update DB
-        </ButtonWithSpinner>
+        <>
+          <ButtonWithSpinner
+            action={updateDatabase}
+            context='updateDB'
+            colour='secondary'
+          >
+            Update DB
+          </ButtonWithSpinner>
+        </>
+      )}
+      {isOwner(userDetails) && (
+        <>
+          <ButtonWithSpinner
+            action={updatePoints}
+            context='updateAllUsersPoints'
+            colour='secondary'
+          >
+            Update All User Points
+          </ButtonWithSpinner>
+        </>
       )}
       {users && <ResultsTable values={users} />}
     </>
@@ -158,7 +177,4 @@ const mapStateToProps = (states, ownProps) => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  null
-)(AdminPanel);
+export default connect(mapStateToProps, null)(AdminPanel);

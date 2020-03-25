@@ -14,6 +14,7 @@ import {
   removeFoodAction,
   removeRecommendedFoodAction,
 } from '../store/addRecommendation/actions';
+import { addUserPointsAction } from '../store/global/actions';
 import { postRecommendations } from '../connect/api';
 import { difference, uniqBy } from 'lodash';
 import SectionHeader from './SectionHeader';
@@ -46,6 +47,7 @@ const AddRecommendationsPage = ({
   userDetails,
   saveFood,
   saveRecommendedFood,
+  addUserPoints,
   classes,
 }) => {
   const [validation, setValidation] = useState(false);
@@ -207,6 +209,8 @@ const AddRecommendationsPage = ({
           incremented: incrementedCount,
         });
 
+        addUserPoints(addedPoints);
+
         const recommendationString =
           insertedCount === 1 ? 'recommendation' : 'recommendations';
 
@@ -304,6 +308,7 @@ AddRecommendationsPage.propTypes = {
   classes: PropTypes.object.isRequired,
   saveFood: PropTypes.func,
   saveRecommendedFood: PropTypes.func,
+  addUserPoints: PropTypes.func,
 };
 
 const styles = {
@@ -357,6 +362,7 @@ const mapDispatchToProps = dispatch => ({
   removeAllFoods: () => dispatch(removeAllFoodsAndRecommendationsAction()),
   saveFood: food => dispatch(editFoodAction(food)),
   saveRecommendedFood: food => dispatch(editRecommendedFoodAction(food)),
+  addUserPoints: points => dispatch(addUserPointsAction(points)),
 });
 
 export default connect(

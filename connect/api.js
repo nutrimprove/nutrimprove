@@ -10,6 +10,7 @@ const searchTermsEndpoint = '/api/search';
 const recommendationsEndpoint = '/api/recommendations';
 const usersEndpoint = '/api/users';
 const updateDBEndpoint = '/api/db/update';
+const updateUsersPointsEndpoint = '/api/recommendations/usersPoints';
 
 const getRequest = endpoint =>
   axios
@@ -121,6 +122,12 @@ const getSearchedTerms = (searchTerm, context = 'getSearchTerms') =>
 const updateDB = () =>
   trackPromise(postRequest(updateDBEndpoint), 'updateDB');
 
+const updateAllUsersPoints = () =>
+  trackPromise(
+    postRequest(updateUsersPointsEndpoint),
+    'updateAllUsersPoints'
+  );
+
 export {
   postRecommendations,
   fetchFoods,
@@ -137,4 +144,5 @@ export {
   deleteUser,
   getNutritionalData,
   updateDB,
+  updateAllUsersPoints,
 };

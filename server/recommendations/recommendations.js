@@ -2,7 +2,7 @@ import connect from '../connect';
 import { remove } from 'lodash';
 import { calcPoints } from '../../helpers/userUtils';
 import recommendationsSchema from './recommendationsSchema';
-import { getUserConnection } from '../users/users';
+import { addUserPoints } from '../users/users';
 
 const getRecommendationsConnection = () =>
   connect('recommendations', recommendationsSchema, 'recommendations');
@@ -24,32 +24,24 @@ const getAllRecommendations = async () => {
   return RecommendationsConnection.find({});
 };
 
-const updateUserPoints = async user => {
-  const RecommendationsConnection = await getRecommendationsConnection();
-  const userRecommendations = await RecommendationsConnection.find({
-    'contributors.id': user,
-  });
+const getRecommendationsQuery = list =>
+  list.map(rec => ({
+    $and: [
+      { 'food.name': rec.food.name },
+      { 'recommendation.name': rec.recommendation.name },
+    ],
+  }));
 
-  let addedCount = 0;
-  let incrementedCount = 0;
-  userRecommendations.forEach(recommendation => {
-    if (recommendation.id[0] === user) {
-      addedCount++;
-    } else {
-      incrementedCount++;
-    }
-  });
+const formatResultRecs = recs =>
+  recs.map(rec => ({
+    food: rec.food.name,
+    recommendation: rec.recommendation.name,
+  }));
 
-  const UserConnection = await getUserConnection();
-  return UserConnection.findOneAndUpdate(
-    { email: user },
-    {
-      points: calcPoints({
-        added: addedCount,
-        incremented: incrementedCount,
-      }),
-    }
-  );
+const addPoints = (user, points) => {
+  if (points > 0) {
+    return addUserPoints(user, calcPoints({ added: points }));
+  }
 };
 
 const addRecommendations = async recommendationsObj => {
@@ -69,27 +61,15 @@ const addRecommendations = async recommendationsObj => {
 
   const AddRecommendationsConnection = await getRecommendationsConnection();
 
-  const getRecommendationsQuery = list =>
-    list.map(rec => ({
-      $and: [
-        { 'food.name': rec.food.name },
-        { 'recommendation.name': rec.recommendation.name },
-      ],
-    }));
-
-  const formatResultRecs = recs =>
-    recs.map(rec => ({
-      food: rec.food.name,
-      recommendation: rec.recommendation.name,
-    }));
-
-  const recommendationsResult = AddRecommendationsConnection.find()
+  return AddRecommendationsConnection.find()
     .or(getRecommendationsQuery(recommendations))
     .then(async duplicateDocs => {
       if (duplicateDocs.length === 0) {
         const results = await AddRecommendationsConnection.insertMany(
           recommendations
         );
+
+        await addPoints(contributor, results.length);
         return { inserted: formatResultRecs(results) };
       } else {
         // Get recommendations already added by current user (removes from duplicateDocs)
@@ -116,11 +96,14 @@ const addRecommendations = async recommendationsObj => {
             `Number of documents updated: ${updated.nModified}, expected: ${duplicateDocs.length}`
           );
         }
+
+        if (updated && updated.nModified > 0) {
+          await addPoints(contributor, updated.nModified);
+        }
+
         return { duplicates, incremented: duplicateDocs };
       }
     });
-  await updateUserPoints(contributor);
-  return recommendationsResult;
 };
 
 export {
