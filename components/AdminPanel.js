@@ -6,6 +6,7 @@ import {
   getApprovedUsers,
   getNotApprovedUsers,
   revokeUser,
+  updateAllUsersPoints,
 } from '../interfaces/api/users';
 import ResultsTable from './ResultsTable';
 import ButtonWithSpinner from './ButtonWithSpinner';
@@ -16,7 +17,6 @@ import DeleteUserButton from './DeleteUserButton';
 import { isAdmin, isOwner, userRoleToString } from '../helpers/userUtils';
 import { ROLES } from '../helpers/constants';
 import { updateDB } from '../interfaces/api/db';
-import { updateAllUsersPoints } from '../server/users/users';
 
 const enableDB = process.env.ENABLE_UPDATE_DB;
 
