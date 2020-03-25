@@ -5,19 +5,16 @@ const edamamFoodApiEndpoint =
   'https://api.edamam.com/api/food-database/parser';
 const edamamNutritionApiEndpoint =
   'https://api.edamam.com/api/food-database/nutrients';
-const edamamCategory = `generic-foods`; // Edamam category filter
+const edamamCategory = `generic-foods`;
 const edamamApiAuthParams = `app_key=8a2617ec655417bd43fd2b3df4b85a30&app_id=652bd7d5`;
 const foodApiEndpoint = '/api/foods';
 
 const fetchEdamamFoods = name =>
-  trackPromise(
-    getRequest(
-      `${edamamFoodApiEndpoint}?ingr=${encodeURIComponent(
-        name
-      )}&${edamamApiAuthParams}&category=${edamamCategory}`
-    ).then(res => res.hints),
-    'fetchEdamamFoods'
-  );
+  getRequest(
+    `${edamamFoodApiEndpoint}?ingr=${encodeURIComponent(
+      name
+    )}&${edamamApiAuthParams}&category=${edamamCategory}`
+  ).then(res => res.hints);
 
 const getFoods = name =>
   trackPromise(
