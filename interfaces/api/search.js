@@ -1,12 +1,10 @@
-import { trackPromise } from 'react-promise-tracker';
-import { getRequest } from './requests';
+import { EDAMAM_DB } from '../../helpers/constants';
+import { getSearchedTerms } from './edamamFoods';
+import { getFoods } from './foods';
 
-const searchTermsEndpoint = '/api/search/edamam';
+const searchFoods = (name, context) => {
+  const search = EDAMAM_DB ? getSearchedTerms : getFoods;
+  return search(name, context);
+};
 
-const getSearchedTerms = (searchTerm, context = 'getSearchTerms') =>
-  trackPromise(
-    getRequest(`${searchTermsEndpoint}/${encodeURIComponent(searchTerm)}`),
-    context
-  );
-
-export { getSearchedTerms };
+export default searchFoods;

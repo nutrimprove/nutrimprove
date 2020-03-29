@@ -12,10 +12,10 @@ import ErrorIcon from '@material-ui/icons/Error';
 import LoadingSpinner from './LoadingSpinner';
 import IconButton from '@material-ui/core/IconButton';
 import { usePromiseTracker } from 'react-promise-tracker';
-import { getSearchedTerms } from '../interfaces/api/search';
+import searchFoods from '../interfaces/api/search';
 import { INPUT_TRIGGER_TIME } from '../helpers/constants';
 import { Tooltip } from '@material-ui/core';
-import { fullTrim } from '../helpers/utils';
+import { fullTrim, lowerCaseCompare, mapSearchResults } from '../helpers/utils';
 
 const renderInput = inputProps => {
   const {
@@ -47,13 +47,13 @@ const renderInput = inputProps => {
 };
 
 const renderSuggestion = ({
-  suggestion,
-  index,
-  itemProps,
-  highlightedIndex,
-  selectedItem,
-  renderNotFound,
-}) => {
+                            suggestion,
+                            index,
+                            itemProps,
+                            highlightedIndex,
+                            selectedItem,
+                            renderNotFound,
+                          }) => {
   if (!suggestion && renderNotFound) {
     return <MenuItem>No matching foods found!!</MenuItem>;
   }
@@ -93,168 +93,168 @@ renderSuggestion.propTypes = {
 let timeout = null;
 
 const SearchInputField = ({ classes, foodKey, foodAction, isValid }) => {
-  const [food, setFood] = useState();
-  const [charCount, setCharCount] = useState(0);
-  const [notFound, setNotFound] = useState();
-  const context = foodKey ? `getSearchTerms-${foodKey}` : 'getSearchTerms';
-  const { promiseInProgress } = usePromiseTracker({ area: context });
+    const [food, setFood] = useState();
+    const [charCount, setCharCount] = useState(0);
+    const [notFound, setNotFound] = useState();
+    const context = foodKey ? `getSearchTerms-${foodKey}` : 'getSearchTerms';
+    const { promiseInProgress } = usePromiseTracker({ area: context });
 
-  useEffect(() => {
-    foodAction(food);
-    isValid = null;
-  }, [food]);
+    useEffect(() => {
+      foodAction(food);
+      isValid = null;
+    }, [food]);
 
-  const updateState = async input => {
-    clearTimeout(timeout);
-    timeout = setTimeout(async () => {
-      const search = await getSearchedTerms(input, context);
+    const updateState = async input => {
+      clearTimeout(timeout);
+      timeout = setTimeout(async () => {
+        const search = await searchFoods(input, context);
+        const mappedSearchResults = mapSearchResults(search);
 
-      if (search && search.matches) {
-        const suggestions = search.matches.map(match => ({
-          food_name: match.food_name,
-          food_id: match.food_id,
-        }));
-        if (suggestions.length > 0) {
-          const selected = suggestions.find(
-            suggestion =>
-              fullTrim(suggestion.food_name.toLowerCase()) ===
-              fullTrim(input.toLowerCase())
-          );
-          if (selected) {
-            setFood({
-              suggestions,
-              key: foodKey,
-              name: fullTrim(selected.food_name),
-              id: selected.food_id,
-            });
+        if (mappedSearchResults) {
+          const suggestions = mappedSearchResults.map(food => ({
+            food_name: food.food_name,
+            food_id: food.food_id,
+          }));
+          if (suggestions.length > 0) {
+            const selected = suggestions.find(
+              suggestion => lowerCaseCompare(suggestion.food_name, input),
+            );
+            if (selected) {
+              setFood({
+                suggestions,
+                key: foodKey,
+                name: fullTrim(selected.food_name),
+                id: selected.food_id,
+              });
+            } else {
+              setFood({
+                suggestions,
+                key: foodKey,
+                name: input,
+                id: null,
+              });
+            }
+            setNotFound(false);
           } else {
-            setFood({
-              suggestions,
-              key: foodKey,
-              name: input,
-              id: null,
-            });
+            setNotFound(true);
           }
-          setNotFound(false);
-        } else {
-          setNotFound(true);
+        }
+      }, INPUT_TRIGGER_TIME);
+    };
+
+    function onInputChange(input) {
+      setNotFound(false);
+      setCharCount(input && input.length ? input.length : 0);
+      if (input && input.length > 2) {
+        updateState(input);
+      }
+    }
+
+    function resetField() {
+      setFood({
+        key: foodKey,
+        id: null,
+        name: '',
+        suggestions: [],
+      });
+    }
+
+    function getSuggestions(value) {
+      if (food && food.suggestions) {
+        const inputValue = deburr(value.trim()).toLowerCase();
+        return inputValue.length === 0 ? [] : food.suggestions;
+      }
+      return [];
+    }
+
+    function validationIcon(isOpen) {
+      if (!isOpen) {
+        if (isValid != null) {
+          return isValid ? (
+            <CheckIcon className={classes.checkIcon}/>
+          ) : (
+            <ErrorIcon className={classes.errorIcon}/>
+          );
+        }
+        if ((charCount < 3 && charCount > 0) || (food && !!food.id)) {
+          return <CheckIcon className={classes.checkIcon}/>;
+        } else if (charCount > 0) {
+          return <ErrorIcon className={classes.errorIcon}/>;
         }
       }
-    }, INPUT_TRIGGER_TIME);
-  };
-
-  function onInputChange(input) {
-    setNotFound(false);
-    setCharCount(input && input.length ? input.length : 0);
-    if (input && input.length > 2) {
-      updateState(input);
     }
-  }
 
-  function resetField() {
-    setFood({
-      key: foodKey,
-      id: null,
-      name: '',
-      suggestions: [],
-    });
-  }
+    return (
+      <div className={classes.root}>
+        <Downshift onChange={onInputChange}>
+          {({
+              getInputProps,
+              getItemProps,
+              getLabelProps,
+              getMenuProps,
+              highlightedIndex,
+              inputValue,
+              isOpen,
+              selectedItem,
+              clearSelection,
+            }) => {
+            const {
+              onBlur,
+              onChange,
+              onFocus,
+              onClick,
+              ...inputProps
+            } = getInputProps({
+              placeholder: 'Type food name',
+            });
 
-  function getSuggestions(value) {
-    if (food && food.suggestions) {
-      const inputValue = deburr(value.trim()).toLowerCase();
-      return inputValue.length === 0 ? [] : food.suggestions;
-    }
-    return [];
-  }
-
-  function validationIcon(isOpen) {
-    if (!isOpen) {
-      if (isValid != null) {
-        return isValid ? (
-          <CheckIcon className={classes.checkIcon} />
-        ) : (
-          <ErrorIcon className={classes.errorIcon} />
-        );
-      }
-      if ((charCount < 3 && charCount > 0) || (food && !!food.id)) {
-        return <CheckIcon className={classes.checkIcon} />;
-      } else if (charCount > 0) {
-        return <ErrorIcon className={classes.errorIcon} />;
-      }
-    }
-  }
-
-  return (
-    <div className={classes.root}>
-      <Downshift onChange={onInputChange}>
-        {({
-          getInputProps,
-          getItemProps,
-          getLabelProps,
-          getMenuProps,
-          highlightedIndex,
-          inputValue,
-          isOpen,
-          selectedItem,
-          clearSelection,
-        }) => {
-          const {
-            onBlur,
-            onChange,
-            onFocus,
-            ...inputProps
-          } = getInputProps({
-            placeholder: 'Type food name',
-          });
-
-          return (
-            <div className={classes.container}>
-              {renderInput({
-                fullWidth: true,
-                classes,
-                label: '',
-                inputValue,
-                isOpen,
-                InputLabelProps: getLabelProps({ shrink: true }),
-                InputProps: {
-                  onBlur,
-                  onFocus,
-                  onChange: event => {
-                    onInputChange(event.target.value);
-                    onChange(event);
+            return (
+              <div className={classes.container}>
+                {renderInput({
+                  fullWidth: true,
+                  classes,
+                  label: '',
+                  inputValue,
+                  isOpen,
+                  InputLabelProps: getLabelProps({ shrink: true }),
+                  InputProps: {
+                    onBlur,
+                    onFocus,
+                    onChange: event => {
+                      onInputChange(event.target.value);
+                      onChange(event);
+                    },
+                    endAdornment: (
+                      <>
+                        <LoadingSpinner context={context}/>
+                        {validationIcon(isOpen)}
+                        {inputValue && inputValue.length > 0 && (
+                          <IconButton
+                            onClick={() => {
+                              clearSelection();
+                              resetField();
+                            }}
+                            aria-label='clear'
+                            size='small'
+                          >
+                            <ClearIcon fontSize='small'/>
+                          </IconButton>
+                        )}
+                      </>
+                    ),
                   },
-                  endAdornment: (
-                    <>
-                      <LoadingSpinner context={context} />
-                      {validationIcon(isOpen)}
-                      {inputValue && inputValue.length > 0 && (
-                        <IconButton
-                          onClick={() => {
-                            clearSelection();
-                            resetField();
-                          }}
-                          aria-label='clear'
-                          size='small'
-                        >
-                          <ClearIcon fontSize='small' />
-                        </IconButton>
-                      )}
-                    </>
-                  ),
-                },
-                inputProps,
-              })}
-              <div {...getMenuProps()}>
-                {isOpen ? (
-                  <Paper className={classes.dropdown}>
-                    {notFound
-                      ? renderSuggestion({
+                  inputProps,
+                })}
+                <div {...getMenuProps()}>
+                  {isOpen ? (
+                    <Paper className={classes.dropdown}>
+                      {notFound
+                        ? renderSuggestion({
                           suggestion: null,
                           renderNotFound:
                             inputValue.length > 2 && !promiseInProgress,
                         })
-                      : getSuggestions(inputValue).map(
+                        : getSuggestions(inputValue).map(
                           (suggestion, index) =>
                             renderSuggestion({
                               suggestion,
@@ -264,18 +264,19 @@ const SearchInputField = ({ classes, foodKey, foodAction, isValid }) => {
                               }),
                               highlightedIndex,
                               selectedItem,
-                            })
+                            }),
                         )}
-                  </Paper>
-                ) : null}
+                    </Paper>
+                  ) : null}
+                </div>
               </div>
-            </div>
-          );
-        }}
-      </Downshift>
-    </div>
-  );
-};
+            );
+          }}
+        </Downshift>
+      </div>
+    );
+  }
+;
 
 SearchInputField.propTypes = {
   classes: PropTypes.object.isRequired,
