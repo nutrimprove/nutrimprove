@@ -33,7 +33,7 @@ const mapSearchResults = results => {
     }));
   }
   return results.map(item => ({
-    food_id: item.code,
+    food_id: item.foodCode,
     food_name: item.foodName,
   }));
 };

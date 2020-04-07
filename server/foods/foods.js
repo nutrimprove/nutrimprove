@@ -11,7 +11,7 @@ const getFoods = async name => {
 
 const getFood = async id => {
   const FoodsConnection = await getFoodsConnection();
-  return FoodsConnection.findOne({ code: id });
+  return FoodsConnection.findOne({ foodCode: id });
 };
 
 const getAllFoods = async () => {

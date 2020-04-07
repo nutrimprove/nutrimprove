@@ -9,4 +9,10 @@ const getFoods = (name, context = 'getFoods') =>
     context
   );
 
-export { getFoods };
+const getFood = (id, context = 'getFoods') =>
+  trackPromise(
+    getRequest(`${foodApiEndpoint}/id/${encodeURIComponent(id)}`),
+    context
+  );
+
+export { getFoods, getFood };

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { deburr } from 'lodash';
+import { deburr, uniqueId } from 'lodash';
 import Downshift from 'downshift';
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
@@ -67,7 +67,7 @@ const renderSuggestion = ({
   return (
     <MenuItem
       {...itemProps}
-      key={suggestion.food_name}
+      key={uniqueId()}
       selected={isHighlighted}
       style={{
         fontWeight: isSelected ? 500 : 400,
