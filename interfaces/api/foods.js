@@ -9,7 +9,7 @@ const getFoods = (name, context = 'getFoods') =>
     context
   );
 
-const getFood = (id, context = 'getFoods') =>
+const getFood = (id, context = 'getFoodData') =>
   trackPromise(
     getRequest(`${foodApiEndpoint}/id/${encodeURIComponent(id)}`),
     context

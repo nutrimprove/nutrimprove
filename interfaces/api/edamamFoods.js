@@ -32,7 +32,7 @@ const getNutritionalData = foodId =>
         },
       ],
     }),
-    'getNutritionalData'
+    'getFoodData'
   );
 
 export { getSearchedTerms, fetchEdamamFoods, getNutritionalData };

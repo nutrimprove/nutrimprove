@@ -82,7 +82,7 @@ const SearchFoodPage = ({ classes }) => {
   return (
     <>
       <SectionHeader content={sectionHeader}/>
-      <SearchFood action={updateResults} context='getNutritionalData'/>
+      <SearchFood action={updateResults} context='getFoodData'/>
       <div className={classes.tables}>
         {foodData && (
           <>
