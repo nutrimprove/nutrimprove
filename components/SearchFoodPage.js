@@ -6,6 +6,7 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import PropTypes from 'prop-types';
 import SearchFood from './SearchFood';
 import { EDAMAM_DB } from '../helpers/constants';
+import SearchFilters from './SearchFilters';
 
 const sectionHeader = {
   title: 'Search food by name',
@@ -83,6 +84,7 @@ const SearchFoodPage = ({ classes }) => {
     <>
       <SectionHeader content={sectionHeader}/>
       <SearchFood action={updateResults} context='getFoodData'/>
+      <SearchFilters />
       <div className={classes.tables}>
         {foodData && (
           <>
