@@ -57,11 +57,12 @@ const renderSuggestion = ({
                             filters,
                           }) => {
   if (!suggestion && renderNotFound) {
-    let noItemsMsg = 'No matching foods found!!';
+    const messages = [];
+    messages.push('No matching foods found!!');
     if (filters) {
-      noItemsMsg += ' Check selected categories.'
+      messages.push('Check selected categories.');
     }
-    return <MenuItem>{noItemsMsg}</MenuItem>;
+    return messages.map(message => (<MenuItem key={uniqueId()}>{message}</MenuItem>));
   }
 
   if (!suggestion) return;
@@ -103,7 +104,7 @@ const SearchInputField = ({ classes, foodKey, foodAction, isValid, categories })
     const [food, setFood] = useState();
     const [charCount, setCharCount] = useState(0);
     const [notFound, setNotFound] = useState();
-    const [filters, setFilters] = useState();
+    const [hasFilters, setHasFilters] = useState();
     const context = foodKey ? `getSearchTerms-${foodKey}` : 'getSearchTerms';
     const { promiseInProgress } = usePromiseTracker({ area: context });
 
@@ -113,10 +114,11 @@ const SearchInputField = ({ classes, foodKey, foodAction, isValid, categories })
     }, [food]);
 
     const updateState = async input => {
+
       clearTimeout(timeout);
       timeout = setTimeout(async () => {
         const selectedFilters = categories.filter(category => category.selected).map(category => category.group);
-        setFilters(selectedFilters);
+        setHasFilters(selectedFilters.length !== categories.length);
         const search = await searchFoods(input, context, selectedFilters);
         const mappedSearchResults = mapSearchResults(search);
 
@@ -157,6 +159,8 @@ const SearchInputField = ({ classes, foodKey, foodAction, isValid, categories })
       setCharCount(input && input.length ? input.length : 0);
       if (input && input.length > 2) {
         updateState(input);
+      } else {
+        resetField();
       }
     }
 
@@ -263,7 +267,7 @@ const SearchInputField = ({ classes, foodKey, foodAction, isValid, categories })
                           suggestion: null,
                           renderNotFound:
                             inputValue.length > 2 && !promiseInProgress,
-                          filters: !!filters,
+                          filters: hasFilters,
                         })
                         : getSuggestions(inputValue).map(
                           (suggestion, index) =>
@@ -275,7 +279,7 @@ const SearchInputField = ({ classes, foodKey, foodAction, isValid, categories })
                               }),
                               highlightedIndex,
                               selectedItem,
-                              filters: !!filters,
+                              filters: hasFilters,
                             }),
                         )}
                     </Paper>
