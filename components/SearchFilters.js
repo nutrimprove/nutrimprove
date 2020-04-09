@@ -27,7 +27,7 @@ const SearchFilters = ({ categories, setCategories, classes }) => {
 
   return (
     <FormControl component="fieldset" margin='dense' classes={{ root: classes.group}}>
-      <FormLabel component="legend">Search categories</FormLabel>
+      <FormLabel component="legend">Filter categories</FormLabel>
       <FormGroup row={true}>
         {filters && filters.map(filter => {
           return (
