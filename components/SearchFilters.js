@@ -33,7 +33,16 @@ const SearchFilters = ({ categories, setCategories, classes }) => {
           return (
             <FormControlLabel
               key={uniqueId()}
-              control={<Checkbox color='primary' fontSize='small' size='small' checked={filter.selected} onChange={updateFilters} name={filter.group}/>}
+              control={
+                <Checkbox
+                  color='primary'
+                  fontSize='small'
+                  size='small'
+                  checked={filter.selected}
+                  onChange={updateFilters}
+                  name={filter.group}
+                />
+              }
               label={filter.name}
               classes={{ label: classes.category }}
             />
