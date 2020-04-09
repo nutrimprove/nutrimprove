@@ -10,7 +10,7 @@ import SearchFilters from './SearchFilters';
 
 const sectionHeader = {
   title: 'Search food by name',
-  subtitle: 'Search for a food to display its nutritional data (use the filters to constrain your search results)',
+  subtitle: 'Search for a food to display its nutritional data (use the filters to refine your search)',
 };
 
 const parseNutrients = nutrients => {
