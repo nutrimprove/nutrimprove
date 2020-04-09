@@ -10,7 +10,7 @@ import SearchFilters from './SearchFilters';
 
 const sectionHeader = {
   title: 'Search food by name',
-  subtitle: 'Search for a food to display its nutritional data',
+  subtitle: 'Search for a food to display its nutritional data (use the filters to constrain your search results)',
 };
 
 const parseNutrients = nutrients => {
@@ -83,8 +83,8 @@ const SearchFoodPage = ({ classes }) => {
   return (
     <>
       <SectionHeader content={sectionHeader}/>
-      <SearchFood action={updateResults} context='getFoodData'/>
       <SearchFilters />
+      <SearchFood action={updateResults} context='getFoodData'/>
       <div className={classes.tables}>
         {foodData && (
           <>

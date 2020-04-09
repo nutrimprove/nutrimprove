@@ -5,12 +5,12 @@ import FormLabel from '@material-ui/core/FormLabel';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-import FormHelperText from '@material-ui/core/FormHelperText';
 import PropTypes from 'prop-types';
 import { setCategoriesAction } from '../store/global/actions';
 import { connect } from 'react-redux';
+import withStyles from '@material-ui/core/styles/withStyles';
 
-const SearchFilters = ({ categories, setCategories }) => {
+const SearchFilters = ({ categories, setCategories, classes }) => {
   const [filters, setFilters] = useState(categories);
 
   useEffect(() => {
@@ -26,20 +26,20 @@ const SearchFilters = ({ categories, setCategories }) => {
   };
 
   return (
-    <FormControl component="fieldset">
+    <FormControl component="fieldset" margin='dense' classes={{ root: classes.group}}>
       <FormLabel component="legend">Search categories</FormLabel>
-      <FormGroup>
+      <FormGroup row={true}>
         {filters && filters.map(filter => {
           return (
             <FormControlLabel
               key={uniqueId()}
-              control={<Checkbox checked={filter.selected} onChange={updateFilters} name={filter.code}/>}
+              control={<Checkbox color='primary' fontSize='small' size='small' checked={filter.selected} onChange={updateFilters} name={filter.code}/>}
               label={filter.name}
+              classes={{ label: classes.category }}
             />
           );
         })}
       </FormGroup>
-      <FormHelperText>Be careful</FormHelperText>
     </FormControl>
   );
 };
@@ -47,6 +47,7 @@ const SearchFilters = ({ categories, setCategories }) => {
 SearchFilters.propTypes = {
   categories: PropTypes.array,
   setCategories: PropTypes.func.isRequired,
+  classes: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = states => {
@@ -59,4 +60,21 @@ const mapDispatchToProps = dispatch => ({
   setCategories: filters => dispatch(setCategoriesAction(filters)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(SearchFilters);
+const styles = {
+  group: {
+    borderStyle: 'solid',
+    borderWidth: 'thin',
+    borderRadius: 7,
+    borderColor: 'lightgray',
+    padding: '10px 10px 10px 20px',
+    marginBottom: 20,
+  },
+  category: {
+    fontSize: '0.8em',
+  },
+  checkbox: {
+    width: '0.6em',
+  },
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(SearchFilters));
