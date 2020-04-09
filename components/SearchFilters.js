@@ -19,7 +19,7 @@ const SearchFilters = ({ categories, setCategories, classes }) => {
 
   const updateFilters = (event) => {
     setFilters(filters.map(filter =>
-      filter.code === event.target.name
+      filter.group === event.target.name
         ? { ...filter, selected: event.target.checked }
         : filter,
     ));
@@ -33,7 +33,7 @@ const SearchFilters = ({ categories, setCategories, classes }) => {
           return (
             <FormControlLabel
               key={uniqueId()}
-              control={<Checkbox color='primary' fontSize='small' size='small' checked={filter.selected} onChange={updateFilters} name={filter.code}/>}
+              control={<Checkbox color='primary' fontSize='small' size='small' checked={filter.selected} onChange={updateFilters} name={filter.group}/>}
               label={filter.name}
               classes={{ label: classes.category }}
             />
