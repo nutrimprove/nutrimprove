@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import Auth from '../connect/auth/Auth';
+import Auth from '../interfaces/auth/Auth';
 import Router from 'next/router';
 import { setUserDetailsAction } from '../store/global/actions';
 import { connect } from 'react-redux';

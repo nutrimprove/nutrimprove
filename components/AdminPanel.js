@@ -7,8 +7,7 @@ import {
   getNotApprovedUsers,
   revokeUser,
   updateAllUsersPoints,
-  updateDB,
-} from '../connect/api';
+} from '../interfaces/api/users';
 import ResultsTable from './ResultsTable';
 import ButtonWithSpinner from './ButtonWithSpinner';
 import { connect } from 'react-redux';
@@ -17,6 +16,7 @@ import MainButton from './MainButton';
 import DeleteUserButton from './DeleteUserButton';
 import { isAdmin, isOwner, userRoleToString } from '../helpers/userUtils';
 import { ROLES } from '../helpers/constants';
+import { updateDB } from '../interfaces/api/db';
 
 const enableDB = process.env.ENABLE_UPDATE_DB;
 

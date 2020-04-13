@@ -10,10 +10,10 @@ const ResultsTable = ({ classes, values, columnNames, title }) => (
   <div>
     <Paper className={classes.root}>
       <div className={classes.resultsTitle}>{title}</div>
-      {values.length > 0 ? (
+      {values && values.length > 0 ? (
         <Table className={classes.table}>
           <ResultsTableHeader
-            columnNames={columnNames || Object.keys(values[0])}
+            columnNames={columnNames || values[0] ? Object.keys(values[0]) : Object.keys(values)}
           />
           <ResultsTableBody values={values} />
         </Table>

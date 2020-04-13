@@ -1,5 +1,5 @@
 import { ROLES } from './constants';
-import { getUser } from '../connect/api';
+import { getUser } from '../interfaces/api/users';
 
 const userRoleToString = userRole => {
   return Object.keys(ROLES).find(key => ROLES[key] === userRole);

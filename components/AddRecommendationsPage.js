@@ -15,7 +15,7 @@ import {
   removeRecommendedFoodAction,
 } from '../store/addRecommendation/actions';
 import { addUserPointsAction } from '../store/global/actions';
-import { postRecommendations } from '../connect/api';
+import { postRecommendations } from '../interfaces/api/recommendations';
 import { difference, uniqBy } from 'lodash';
 import SectionHeader from './SectionHeader';
 import withStyles from '@material-ui/core/styles/withStyles';

@@ -4,7 +4,7 @@ import {
   getAllRecommendations,
   getRecommendationsByFood,
   getUserRecommendations,
-} from '../connect/api';
+} from '../interfaces/api/recommendations';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import SectionHeader from './SectionHeader';
