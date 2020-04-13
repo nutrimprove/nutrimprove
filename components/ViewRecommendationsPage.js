@@ -25,7 +25,7 @@ const ViewRecommendationsPage = ({ classes, userDetails }) => {
 
   const loadUserRecommendations = async () => {
     const recommendations = await getUserRecommendations(
-      userDetails.email,
+      userDetails.email
     );
     const count = recommendations ? recommendations.length : 0;
     setTitle(`Your recommendations (${count})`);
@@ -49,7 +49,7 @@ const ViewRecommendationsPage = ({ classes, userDetails }) => {
     recommendations.map(recommendation => {
       const contributorsCount = recommendation.contributors.length;
       const contributorIndex = recommendation.contributors.findIndex(
-        ({ id }) => id === userDetails.email,
+        ({ id }) => id === userDetails.email
       );
       let mainContributor =
         contributorIndex === 0 ? 'You' : recommendation.contributors[0].id;
@@ -80,7 +80,7 @@ const ViewRecommendationsPage = ({ classes, userDetails }) => {
 
   return (
     <>
-      <SectionHeader content={sectionHeader}/>
+      <SectionHeader content={sectionHeader} />
       <Typography paragraph={true} variant='subtitle1'>
         Your points: {userDetails.points || 0}
       </Typography>
@@ -88,7 +88,7 @@ const ViewRecommendationsPage = ({ classes, userDetails }) => {
         List only your recommendations or simply type a food name to list
         all existing recommendations with that food.
       </Typography>
-      <div className={classes.buttons}>
+      <div>
         {isAdmin(userDetails) && (
           <ButtonWithSpinner
             action={loadAllRecommendations}
@@ -103,14 +103,15 @@ const ViewRecommendationsPage = ({ classes, userDetails }) => {
         >
           Your Recommendations
         </ButtonWithSpinner>
+        <div className={classes.searchBox}>
+          <SearchFood
+            action={loadRecommendationsByFood}
+            context='getRecommendationsByFood'
+          />
+        </div>
       </div>
-      <SearchFood
-        action={loadRecommendationsByFood}
-        context='getRecommendationsByFood'
-        naked={true}
-      />
       {recommendations && (
-        <ResultsTable values={formattedRecommendations()} title={title}/>
+        <ResultsTable values={formattedRecommendations()} title={title} />
       )}
     </>
   );
@@ -122,9 +123,9 @@ ViewRecommendationsPage.propTypes = {
 };
 
 const styles = {
-  buttons: {
-    marginTop: 17,
-    display: 'inline-flex',
+  searchBox: {
+    position: 'absolute',
+    display: 'inline-block',
   },
 };
 
@@ -136,5 +137,5 @@ const mapStateToProps = (states, ownProps) => {
 
 export default connect(
   mapStateToProps,
-  null,
+  null
 )(withStyles(styles)(ViewRecommendationsPage));

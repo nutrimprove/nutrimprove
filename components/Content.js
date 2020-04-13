@@ -10,8 +10,16 @@ import AddRecommendationsPage from './AddRecommendationsPage';
 import AdminPanel from './AdminPanel';
 import { connect } from 'react-redux';
 import { isAdmin } from '../helpers/userUtils';
+import Paper from '@material-ui/core/Paper';
 import { MIN_WIDTH } from '../helpers/constants';
-import TabContainer from './TabContainer';
+
+function TabContainer(props) {
+  return <Paper style={{ padding: 8 * 3 }}>{props.children}</Paper>;
+}
+
+TabContainer.propTypes = {
+  children: PropTypes.node.isRequired,
+};
 
 const Content = ({ classes, userDetails }) => {
   const [tab, setTab] = useState(0);
@@ -33,7 +41,7 @@ const Content = ({ classes, userDetails }) => {
         </Tabs>
       </AppBar>
       {tab === 0 && (
-        <TabContainer classes={classes} id='foodByName'>
+        <TabContainer id='foodByName'>
           <SearchFoodPage />
         </TabContainer>
       )}

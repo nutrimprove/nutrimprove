@@ -33,6 +33,7 @@ ResultsTable.propTypes = {
 
 const styles = {
   root: {
+    marginTop: 30,
     overflowX: 'auto',
     width: 'auto',
     margin: 'auto',

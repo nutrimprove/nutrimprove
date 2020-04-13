@@ -1,6 +1,20 @@
 {
   "version": 2,
   "builds": [{ "src": "next.config.js", "use": "@now/next" }],
+  "routes": [
+    {
+      "src": "/api/v1/search/(?<term>[^/]+)",
+      "dest": "api/v1/search/index.js?term=$term"
+    },
+    {
+      "src": "/api/v1/recommendations/(?<user>[^/]+)",
+      "dest": "api/v1/recommendations/index.js?user=user"
+    },
+    {
+      "src": "/api/v1/users/(?<user>[^/]+)",
+      "dest": "api/v1/users/user.js?user=user"
+    }
+  ],
   "env": {
     "MONGODB_URI": "@mongodb-uri"
   }
