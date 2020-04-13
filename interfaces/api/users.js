@@ -6,39 +6,49 @@ const usersEndpoint = '/api/users';
 const getUser = user =>
   trackPromise(
     getRequest(`${usersEndpoint}/${encodeURIComponent(user)}`),
-    'getUser'
+    'getUser',
   );
 
-const getAllUsers = () => getRequest(`${usersEndpoint}/all`);
+const getAllUsers = () =>
+  trackPromise(
+    getRequest(`${usersEndpoint}/all`),
+    'getall',
+  );
 
 const getApprovedUsers = () =>
-  getRequest(`${usersEndpoint}/approved?approved=true`);
+  trackPromise(
+    getRequest(`${usersEndpoint}/approved?approved=true`),
+    'approved',
+  );
 
 const getNotApprovedUsers = () =>
-  getRequest(`${usersEndpoint}/approved?approved=false`);
+  trackPromise(
+    getRequest(`${usersEndpoint}/approved?approved=false`),
+    'notapproved',
+  );
 
 const approveUser = user =>
   trackPromise(
     postRequest(`${usersEndpoint}/approve`, { user, approval: true }),
-    `approveUser-${user}`
+    `approveUser-${user}`,
   );
 
 const revokeUser = user =>
   trackPromise(
     postRequest(`${usersEndpoint}/approve`, { user, approval: false }),
-    `revokeUser-${user}`
+    `revokeUser-${user}`,
   );
 
 const deleteUser = user =>
   trackPromise(
     postRequest(`${usersEndpoint}/delete`, { user }),
-    `deleteUser-${user}`
+    `deleteUser-${user}`,
   );
 
 const updateAllUsersPoints = () =>
   trackPromise(
     postRequest(`${usersEndpoint}/points`),
-    'updateAllUsersPoints'
+    'updateAllUsersPoints',
   );
 
 export {
