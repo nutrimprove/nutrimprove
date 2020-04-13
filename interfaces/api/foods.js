@@ -3,11 +3,13 @@ import { getRequest } from './requests';
 
 const foodApiEndpoint = '/api/foods';
 
-const getFoods = (name, context = 'getFoods') =>
-  trackPromise(
-    getRequest(`${foodApiEndpoint}/name/${encodeURIComponent(name)}`),
+const getFoods = (name, context = 'getFoods', categories = []) => {
+  const subgroups = categories.map(category => `/${category}`).join('');
+  return trackPromise(
+    getRequest(`${foodApiEndpoint}/name/${encodeURIComponent(name)}${subgroups}`),
     context
   );
+};
 
 const getFood = (id, context = 'getFoodData') =>
   trackPromise(

@@ -6,10 +6,11 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import PropTypes from 'prop-types';
 import SearchFood from './SearchFood';
 import { EDAMAM_DB } from '../helpers/constants';
+import SearchFilters from './SearchFilters';
 
 const sectionHeader = {
   title: 'Search food by name',
-  subtitle: 'Search for a food to display its nutritional data',
+  subtitle: 'Search for a food to display its nutritional data (use the filters to refine your search)',
 };
 
 const parseNutrients = nutrients => {
@@ -82,6 +83,7 @@ const SearchFoodPage = ({ classes }) => {
   return (
     <>
       <SectionHeader content={sectionHeader}/>
+      <SearchFilters />
       <SearchFood action={updateResults} context='getFoodData'/>
       <div className={classes.tables}>
         {foodData && (
