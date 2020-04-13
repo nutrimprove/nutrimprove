@@ -14,8 +14,6 @@ const SearchFood = ({ classes, action, context, naked }) => {
       ? classes.group
       : [classes.group, classes.groupBorder].join(' ');
 
-  console.log('=== SearchFood.js #17 === ( formClasses ) =======>', formClasses);
-
   return (
     <FormControl component="fieldset" margin='dense' className={formClasses}>
       {!naked && <FormLabel component="legend">Search food</FormLabel>}
