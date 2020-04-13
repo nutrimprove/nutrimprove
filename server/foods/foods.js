@@ -1,20 +1,12 @@
 import connect from '../connect';
 import { Schema } from 'mongoose';
-import { getFoodGroups } from '../../helpers/utils';
 
 const getFoodsConnection = () => connect('foods', new Schema(), 'cofid');
 
-const getFoods = async (food) => {
-  const name = food.shift();
-  const regex = new RegExp(`.*${decodeURIComponent(name)}.*`, 'i');
-  const categories = getFoodGroups(food);
+const getFoods = async name => {
   const FoodsConnection = await getFoodsConnection();
-
-  let query = { foodName: { $regex: regex } };
-  if (food.length > 0) {
-    query = { foodName: { $regex: regex }, group: { $in : categories } };
-  }
-  return FoodsConnection.find(query);
+  const regex = new RegExp(`.*${decodeURIComponent(name)}.*`, 'i');
+  return FoodsConnection.find({ foodName: { $regex: regex } });
 };
 
 const getFood = async id => {
