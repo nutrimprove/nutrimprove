@@ -12,7 +12,6 @@ import ResultsTable from './ResultsTable';
 import ButtonWithSpinner from './ButtonWithSpinner';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import MainButton from './MainButton';
 import DeleteUserButton from './DeleteUserButton';
 import { isAdmin, isOwner, userRoleToString } from '../helpers/userUtils';
 import { ROLES } from '../helpers/constants';
@@ -44,6 +43,10 @@ const updatePoints = async () => {
 const AdminPanel = ({ userDetails }) => {
   const [users, setUsers] = useState();
   const [userQuery, setUserQuery] = useState();
+
+  useEffect(() => {
+    setUserQuery(queries.NOT_APPROVED);
+  }, []);
 
   useEffect(() => {
     updateResults();
@@ -122,24 +125,27 @@ const AdminPanel = ({ userDetails }) => {
   return (
     <>
       <SectionHeader content={sectionHeader} />
-      <MainButton
+      <ButtonWithSpinner
         action={listAllUsers}
         disabled={userQuery === queries.GET_ALL}
+        context={queries.GET_ALL}
       >
         All Users
-      </MainButton>
-      <MainButton
+      </ButtonWithSpinner>
+      <ButtonWithSpinner
         action={listNotApprovedUsers}
         disabled={userQuery === queries.NOT_APPROVED}
+        context={queries.NOT_APPROVED}
       >
         Waiting Approval
-      </MainButton>
-      <MainButton
+      </ButtonWithSpinner>
+      <ButtonWithSpinner
         action={listApprovedUsers}
         disabled={userQuery === queries.APPROVED}
+        context={queries.APPROVED}
       >
         Approved Users
-      </MainButton>
+      </ButtonWithSpinner>
       {isOwner(userDetails) && enableDB === 'true' && (
         <>
           <ButtonWithSpinner
