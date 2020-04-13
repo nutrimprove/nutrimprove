@@ -16,6 +16,7 @@ import searchFoods from '../interfaces/api/search';
 import { INPUT_TRIGGER_TIME } from '../helpers/constants';
 import { Tooltip } from '@material-ui/core';
 import { fullTrim, lowerCaseCompare, mapSearchResults } from '../helpers/utils';
+import { connect } from 'react-redux';
 
 const renderInput = inputProps => {
   const {
@@ -53,9 +54,15 @@ const renderSuggestion = ({
                             highlightedIndex,
                             selectedItem,
                             renderNotFound,
+                            filters,
                           }) => {
   if (!suggestion && renderNotFound) {
-    return <MenuItem>No matching foods found!!</MenuItem>;
+    const messages = [];
+    messages.push('No matching foods found!!');
+    if (filters) {
+      messages.push('Check selected categories.');
+    }
+    return messages.map(message => (<MenuItem key={uniqueId()}>{message}</MenuItem>));
   }
 
   if (!suggestion) return;
@@ -88,14 +95,16 @@ renderSuggestion.propTypes = {
   selectedItem: PropTypes.string.isRequired,
   suggestion: PropTypes.string.isRequired,
   renderNotFound: PropTypes.bool,
+  filters: PropTypes.bool,
 };
 
 let timeout = null;
 
-const SearchInputField = ({ classes, foodKey, foodAction, isValid }) => {
+const SearchInputField = ({ classes, foodKey, foodAction, isValid, categories }) => {
     const [food, setFood] = useState();
     const [charCount, setCharCount] = useState(0);
     const [notFound, setNotFound] = useState();
+    const [hasFilters, setHasFilters] = useState();
     const context = foodKey ? `getSearchTerms-${foodKey}` : 'getSearchTerms';
     const { promiseInProgress } = usePromiseTracker({ area: context });
 
@@ -105,9 +114,12 @@ const SearchInputField = ({ classes, foodKey, foodAction, isValid }) => {
     }, [food]);
 
     const updateState = async input => {
+
       clearTimeout(timeout);
       timeout = setTimeout(async () => {
-        const search = await searchFoods(input, context);
+        const selectedFilters = categories.filter(category => category.selected).map(category => category.group);
+        setHasFilters(selectedFilters.length !== categories.length);
+        const search = await searchFoods(input, context, selectedFilters);
         const mappedSearchResults = mapSearchResults(search);
 
         if (mappedSearchResults) {
@@ -147,6 +159,8 @@ const SearchInputField = ({ classes, foodKey, foodAction, isValid }) => {
       setCharCount(input && input.length ? input.length : 0);
       if (input && input.length > 2) {
         updateState(input);
+      } else {
+        resetField();
       }
     }
 
@@ -253,6 +267,7 @@ const SearchInputField = ({ classes, foodKey, foodAction, isValid }) => {
                           suggestion: null,
                           renderNotFound:
                             inputValue.length > 2 && !promiseInProgress,
+                          filters: hasFilters,
                         })
                         : getSuggestions(inputValue).map(
                           (suggestion, index) =>
@@ -264,6 +279,7 @@ const SearchInputField = ({ classes, foodKey, foodAction, isValid }) => {
                               }),
                               highlightedIndex,
                               selectedItem,
+                              filters: hasFilters,
                             }),
                         )}
                     </Paper>
@@ -283,6 +299,13 @@ SearchInputField.propTypes = {
   foodAction: PropTypes.func,
   foodKey: PropTypes.string,
   isValid: PropTypes.bool,
+  categories: PropTypes.array,
+};
+
+const mapStateToProps = states => {
+  return {
+    categories: states.globalState.categories,
+  };
 };
 
 const styles = theme => ({
@@ -336,4 +359,4 @@ const styles = theme => ({
   },
 });
 
-export default withStyles(styles)(SearchInputField);
+export default connect(mapStateToProps)(withStyles(styles)(SearchInputField));

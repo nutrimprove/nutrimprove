@@ -25,6 +25,7 @@ import Status from './Status';
 import { Typography } from '@material-ui/core';
 import Link from '@material-ui/core/Link';
 import { calcPoints } from '../helpers/userUtils';
+import SearchFilters from './SearchFilters';
 
 const maxFoodFields = 4;
 const maxRecommendationFields = 4;
@@ -63,12 +64,9 @@ const AddRecommendationsPage = ({
     area: 'getSearchTerms-food',
   });
   const loadingSearchTerms = loadingRecs || loadingFoods;
-
-  const addRecommendationDisabled =
-    recommendations.length >= maxRecommendationFields;
+  const addRecommendationDisabled = recommendations.length >= maxRecommendationFields;
   const addFoodDisabled = foods.length >= maxFoodFields;
-  const addRecommendationsDisabled =
-    loadingSearchTerms || savingRecommendations;
+  const addRecommendationsDisabled = loadingSearchTerms || savingRecommendations;
 
   if (foods.length === 0) {
     addEmptyFood();
@@ -252,6 +250,7 @@ const AddRecommendationsPage = ({
         Please refer to the <Link href={'/help#add_recs'}>Help page</Link>{' '}
         for instructions.
       </Typography>
+      <SearchFilters />
       <div className={classes.main}>
         <div className={classes.fieldBox}>
           <Typography className={classes.fieldtitle} component='h4'>
