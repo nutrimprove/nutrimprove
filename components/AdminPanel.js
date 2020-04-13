@@ -73,6 +73,7 @@ const AdminPanel = ({ userDetails }) => {
   };
 
   const removeUser = userToDelete => {
+
     const newUserList = users.filter(user => user.email !== userToDelete);
     setUsers(newUserList);
     updateResults();
@@ -103,6 +104,8 @@ const AdminPanel = ({ userDetails }) => {
       case queries.NOT_APPROVED:
         users = await getNotApprovedUsers();
         break;
+      default:
+        return;
     }
     const newUsersObj = [];
     if (users) {
