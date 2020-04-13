@@ -7,13 +7,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
+import Typography from '@material-ui/core/Typography';
 
-const PopoverPanelWithButton = ({ title, children, classes }) => (
+const PopoverPanelWithButton = ({ buttonText, title, children, classes }) => (
   <PopupState variant="popover" popupId="popover">
     {(popupState) => (
       <div>
         <Button variant="contained" color="primary" className={classes.button} {...bindTrigger(popupState)}>
-          {title}
+          {buttonText}
         </Button>
         <Popover
           {...bindPopover(popupState)}
@@ -29,6 +30,9 @@ const PopoverPanelWithButton = ({ title, children, classes }) => (
           <IconButton classes={{ root: classes.closeIcon }} onClick={popupState.close} aria-label='close'>
             <CloseIcon fontSize='small' />
           </IconButton>
+          <Typography variant='subtitle2' color='textSecondary' classes={{root: classes.title}}>
+            {title}
+          </Typography>
           <Box classes={{ root: classes.container }} p={3}>
             {children}
           </Box>
@@ -40,6 +44,7 @@ const PopoverPanelWithButton = ({ title, children, classes }) => (
 
 PopoverPanelWithButton.propTypes = {
   title: PropTypes.string.isRequired,
+  buttonText: PropTypes.string.isRequired,
   children: PropTypes.node.isRequired,
   classes: PropTypes.object.isRequired,
 };
@@ -54,6 +59,11 @@ const styles = {
   },
   container: {
     display: 'flex',
+    padding: '15px 10px 20px 20px',
+  },
+  title: {
+    marginTop: 20,
+    marginLeft: 20,
   },
 };
 

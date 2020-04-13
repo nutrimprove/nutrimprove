@@ -8,7 +8,6 @@ import { setCategoriesAction } from '../store/global/actions';
 import { connect } from 'react-redux';
 import withStyles from '@material-ui/core/styles/withStyles';
 import PopoverPanelWithButton from './PopoverPanelWithButton';
-import FormLabel from '@material-ui/core/FormLabel';
 import FormControl from '@material-ui/core/FormControl';
 import Button from '@material-ui/core/Button';
 
@@ -35,36 +34,40 @@ const SearchFilters = ({ categories, setCategories, classes }) => {
     setFilters(filters.map(filter => ({ ...filter, selected: false })));
   };
 
+  const splitList = () => {
+    const list = [...filters];
+    const half = Math.ceil(list.length / 2);
+    const firstHalf = list.splice(0, half);
+    return [[...firstHalf], [...list]];
+  };
+
+  const renderFilters = list =>
+    list.map(filter => (
+      <FormControlLabel
+        key={uniqueId()}
+        control={
+          <Checkbox
+            color='primary'
+            fontSize='small'
+            size='small'
+            checked={filter.selected}
+            onChange={updateFilters}
+            name={filter.group}
+          />
+        }
+        label={filter.name}
+        classes={{ label: classes.category }}
+      />
+    ));
+
   return (
-    <PopoverPanelWithButton title='Filter by category'>
-      <FormControl component="fieldset" margin='dense'>
-        <FormLabel
-          component="label"
-          classes={{ root: classes.label }}
-        >
-          Select which categories to include in search
-        </FormLabel>
-        <FormGroup row={true}>
-          {filters && filters.map(filter => {
-            return (
-              <FormControlLabel
-                key={uniqueId()}
-                control={
-                  <Checkbox
-                    color='primary'
-                    fontSize='small'
-                    size='small'
-                    checked={filter.selected}
-                    onChange={updateFilters}
-                    name={filter.group}
-                  />
-                }
-                label={filter.name}
-                classes={{ label: classes.category }}
-              />
-            );
-          })}
-        </FormGroup>
+    <PopoverPanelWithButton buttonText='Filter by category' title='Select which categories to include in search'>
+      <FormControl classes={{root: classes.control}} component="fieldset" margin='dense'>
+        {filters && splitList(filters).map(list =>
+          <FormGroup key={uniqueId()} classes={{root: classes.column}}>
+            {filters && renderFilters(list)}
+          </FormGroup>,
+        )}
         {filters &&
         <div className={classes.filterButtons}>
           <Button variant='outlined' color='primary' className={classes.button} onClick={setAll}>All</Button>
@@ -96,21 +99,18 @@ const styles = {
   category: {
     fontSize: '0.9em',
   },
-  checkbox: {
-    width: '0.6em',
-  },
-  title: {
-    marginBottom: 15,
-  },
-  label: {
-    marginBottom: 10,
-  },
   filterButtons: {
     float: 'right',
   },
   button: {
     marginRight: 10,
     marginTop: 10,
+  },
+  control: {
+    display: 'contents',
+  },
+  column: {
+    width: '-webkit-fill-available',
   },
 };
 
