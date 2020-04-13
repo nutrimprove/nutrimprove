@@ -49,6 +49,7 @@ const AdminPanel = ({ userDetails }) => {
   }, []);
 
   useEffect(() => {
+    setUsers(null);
     updateResults();
   }, [userQuery]);
 
@@ -73,7 +74,6 @@ const AdminPanel = ({ userDetails }) => {
   };
 
   const removeUser = userToDelete => {
-
     const newUserList = users.filter(user => user.email !== userToDelete);
     setUsers(newUserList);
     updateResults();
