@@ -19,7 +19,7 @@ const ButtonWithSpinner = ({
 ButtonWithSpinner.propTypes = {
   action: PropTypes.func,
   disabled: PropTypes.bool,
-  children: PropTypes.any,
+  children: PropTypes.node,
   context: PropTypes.string,
   colour: PropTypes.string,
 };
