@@ -27,8 +27,7 @@ import {
 
 const sectionHeader = {
   title: 'Add Recommendations',
-  subtitle:
-    'Choose the foods and the recommendations you would like to provide',
+  subtitle: 'Choose the foods and the recommendations you would like to provide',
 };
 
 const AddRecommendationsPage = ({
@@ -87,11 +86,11 @@ const AddRecommendationsPage = ({
   const updateStatus = newStatus => {
     if (Array.isArray(newStatus)) {
       const statusToAppend = [];
-      newStatus.map((statusLine, index) => {
+      newStatus.map((statusLine, index) =>
         index === 0
           ? statusToAppend.push(`${getTime()} - ${statusLine}`)
-          : statusToAppend.push(statusLine);
-      });
+          : statusToAppend.push(statusLine)
+      );
       setStatus([...statusToAppend, '', ...status]);
     } else {
       setStatus([`${getTime()} - ${newStatus}`, '', ...status]);
@@ -172,15 +171,13 @@ const AddRecommendationsPage = ({
                         addEmptyField={addEmptyFood}
                         setFood={setFood}
                         removeField={removeFood}
-                        isValid={isValid}
-        />
+                        isValid={isValid}/>
         <ChooseFoodsBox title='Healthier alternative(s):'
                         foods={recommendations}
                         addEmptyField={addEmptyRecommendedFood}
                         setFood={setRecommendation}
                         removeField={removeRecommendedFood}
-                        isValid={isValid}
-        />
+                        isValid={isValid}/>
       </div>
       <div className={classes.submit}>
         <ButtonWithSpinner
@@ -251,11 +248,9 @@ const mapStateToProps = states => {
 
 const mapDispatchToProps = dispatch => ({
   removeFood: food => dispatch(removeFoodAction(food)),
-  removeRecommendedFood: food =>
-    dispatch(removeRecommendedFoodAction(food)),
+  removeRecommendedFood: food => dispatch(removeRecommendedFoodAction(food)),
   addEmptyFood: () => dispatch(addFoodAction(emptyFood())),
-  addEmptyRecommendedFood: () =>
-    dispatch(addRecommendedFoodAction(emptyFood())),
+  addEmptyRecommendedFood: () => dispatch(addRecommendedFoodAction(emptyFood())),
   removeAllFoods: () => dispatch(removeAllFoodsAndRecommendationsAction()),
   saveFood: food => dispatch(editFoodAction(food)),
   saveRecommendedFood: food => dispatch(editRecommendedFoodAction(food)),
