@@ -19,7 +19,7 @@ const PopoverPanelWithButton = ({ buttonText, title, children, classes }) => (
         <Popover
           {...bindPopover(popupState)}
           anchorOrigin={{
-            vertical: 'bottom',
+            vertical: 'top',
             horizontal: 'right',
           }}
           transformOrigin={{
