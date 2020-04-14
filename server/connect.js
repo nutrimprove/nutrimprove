@@ -11,9 +11,9 @@ const connect = (description, schema, collection) => {
   if (mongoose.connection.readyState === 0) {
     mongoose.connect(URI, mongoOptions, err => {
       if (err) {
-        console.error(`ERROR connecting to '${URI}'`, err);
+        console.error('ERROR connecting to database!', err);
       } else {
-        console.log(`Succeeded connecting to '${URI}'`);
+        console.log('Succeeded connecting to database!');
       }
     });
   }
