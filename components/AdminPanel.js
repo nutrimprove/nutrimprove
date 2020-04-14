@@ -132,14 +132,14 @@ const AdminPanel = ({ userDetails }) => {
         All Users
       </ButtonWithSpinner>
       <ButtonWithSpinner
-        action={setUserQuery(queries.NOT_APPROVED)}
+        action={() => setUserQuery(queries.NOT_APPROVED)}
         disabled={userQuery === queries.NOT_APPROVED}
         context={queries.NOT_APPROVED}
       >
         Waiting Approval
       </ButtonWithSpinner>
       <ButtonWithSpinner
-        action={setUserQuery(queries.APPROVED)}
+        action={() => setUserQuery(queries.APPROVED)}
         disabled={userQuery === queries.APPROVED}
         context={queries.APPROVED}
       >
