@@ -121,29 +121,25 @@ const AdminPanel = ({ userDetails }) => {
     setUsers(newUsersObj);
   };
 
-  const listAllUsers = () => setUserQuery(queries.GET_ALL);
-  const listApprovedUsers = () => setUserQuery(queries.APPROVED);
-  const listNotApprovedUsers = () => setUserQuery(queries.NOT_APPROVED);
-
   return (
     <>
       <SectionHeader content={sectionHeader} />
       <ButtonWithSpinner
-        action={listAllUsers}
+        action={() => setUserQuery(queries.GET_ALL)}
         disabled={userQuery === queries.GET_ALL}
         context={queries.GET_ALL}
       >
         All Users
       </ButtonWithSpinner>
       <ButtonWithSpinner
-        action={listNotApprovedUsers}
+        action={setUserQuery(queries.NOT_APPROVED)}
         disabled={userQuery === queries.NOT_APPROVED}
         context={queries.NOT_APPROVED}
       >
         Waiting Approval
       </ButtonWithSpinner>
       <ButtonWithSpinner
-        action={listApprovedUsers}
+        action={setUserQuery(queries.APPROVED)}
         disabled={userQuery === queries.APPROVED}
         context={queries.APPROVED}
       >
@@ -180,7 +176,7 @@ AdminPanel.propTypes = {
   userDetails: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = (states, ownProps) => {
+const mapStateToProps = states => {
   return {
     userDetails: states.globalState.userDetails,
   };
