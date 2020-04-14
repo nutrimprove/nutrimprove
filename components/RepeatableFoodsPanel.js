@@ -7,7 +7,7 @@ import SearchInputField from './SearchInputField';
 
 const maxFields = 4;
 
-const ChooseFoodsBox = ({ classes, title, addEmptyField, foods = [], setFood, removeField, isValid }) => {
+const RepeatableFoodsPanel = ({ classes, title, addEmptyField, foods = [], setFood, removeField, isValid }) => {
   const addButtonDisabled = foods.length >= maxFields;
 
   if (foods.length === 0) {
@@ -38,7 +38,7 @@ const ChooseFoodsBox = ({ classes, title, addEmptyField, foods = [], setFood, re
   );
 };
 
-ChooseFoodsBox.propTypes = {
+RepeatableFoodsPanel.propTypes = {
   foods: PropTypes.array,
   recommendations: PropTypes.array,
   addEmptyField: PropTypes.func,
@@ -70,4 +70,4 @@ const styles = {
   },
 };
 
-export default withStyles(styles)(ChooseFoodsBox);
+export default withStyles(styles)(RepeatableFoodsPanel);

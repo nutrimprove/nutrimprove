@@ -14,7 +14,7 @@ import { Typography } from '@material-ui/core';
 import Link from '@material-ui/core/Link';
 import { calcPoints } from '../helpers/userUtils';
 import SearchFilters from './SearchFilters';
-import ChooseFoodsBox from './ChooseFoodsBox';
+import RepeatableFoodsPanel from './RepeatableFoodsPanel';
 import {
   addFoodAction,
   addRecommendedFoodAction,
@@ -166,18 +166,18 @@ const AddRecommendationsPage = ({
       </Typography>
       <SearchFilters/>
       <div className={classes.main}>
-        <ChooseFoodsBox title='Choose food(s):'
-                        foods={foods}
-                        addEmptyField={addEmptyFood}
-                        setFood={setFood}
-                        removeField={removeFood}
-                        isValid={isValid}/>
-        <ChooseFoodsBox title='Healthier alternative(s):'
-                        foods={recommendations}
-                        addEmptyField={addEmptyRecommendedFood}
-                        setFood={setRecommendation}
-                        removeField={removeRecommendedFood}
-                        isValid={isValid}/>
+        <RepeatableFoodsPanel title='Choose food(s):'
+                              foods={foods}
+                              addEmptyField={addEmptyFood}
+                              setFood={setFood}
+                              removeField={removeFood}
+                              isValid={isValid}/>
+        <RepeatableFoodsPanel title='Healthier alternative(s):'
+                              foods={recommendations}
+                              addEmptyField={addEmptyRecommendedFood}
+                              setFood={setRecommendation}
+                              removeField={removeRecommendedFood}
+                              isValid={isValid}/>
       </div>
       <div className={classes.submit}>
         <ButtonWithSpinner
