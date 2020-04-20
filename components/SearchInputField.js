@@ -118,7 +118,7 @@ const SearchInputField = ({ classes, foodKey, foodAction, isValid, categories })
       clearTimeout(timeout);
       timeout = setTimeout(async () => {
         const selectedFilters = categories.filter(category => category.selected).map(category => category.group);
-        setHasFilters(selectedFilters.length !== categories.length);
+        setHasFilters(selectedFilters.length !== 0 && selectedFilters.length !== categories.length);
         const search = await searchFoods(input, context, selectedFilters);
         const mappedSearchResults = mapSearchResults(search);
 
