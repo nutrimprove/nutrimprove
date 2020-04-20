@@ -9,10 +9,11 @@ const MainButton = ({
   disabled,
   colour = 'primary',
   children,
+  className,
 }) => (
   <>
     <Button
-      className={classes.button}
+      className={className ? [classes.button, className].join(' ') : classes.button }
       variant='contained'
       color={colour}
       onClick={action}
@@ -28,6 +29,7 @@ MainButton.propTypes = {
   disabled: PropTypes.bool,
   children: PropTypes.any,
   classes: PropTypes.object.isRequired,
+  className: PropTypes.object,
   colour: PropTypes.string,
 };
 

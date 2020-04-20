@@ -16,6 +16,7 @@ import DeleteUserButton from './DeleteUserButton';
 import { isAdmin, isOwner, userRoleToString } from '../helpers/userUtils';
 import { ROLES } from '../helpers/constants';
 import { updateDB } from '../interfaces/api/db';
+import { withStyles } from '@material-ui/core';
 
 const enableDB = process.env.ENABLE_UPDATE_DB;
 
@@ -25,9 +26,9 @@ const sectionHeader = {
 };
 
 const queries = {
-  GET_ALL: 'getall',
-  APPROVED: 'approved',
-  NOT_APPROVED: 'notapproved',
+  GET_ALL: 'All Users',
+  APPROVED: 'Approved Users',
+  NOT_APPROVED: 'Users Waiting Approval',
 };
 
 const updateDatabase = async () => {
@@ -40,7 +41,7 @@ const updatePoints = async () => {
   console.log('Update all users points result:', result);
 };
 
-const AdminPanel = ({ userDetails }) => {
+const AdminPanel = ({ userDetails, classes }) => {
   const [users, setUsers] = useState();
   const [userQuery, setUserQuery] = useState();
 
@@ -67,6 +68,7 @@ const AdminPanel = ({ userDetails }) => {
         }}
         context={`${action}User-${user.email}`}
         disabled={!hasPermissions}
+        className={ classes.actionButton }
       >
         {action}
       </ButtonWithSpinner>
@@ -81,7 +83,7 @@ const AdminPanel = ({ userDetails }) => {
 
   const deleteButton = user => {
     if (userDetails.role === ROLES.OWNER) {
-      return <DeleteUserButton action={removeUser} user={user} />;
+      return <DeleteUserButton action={removeUser} user={user} className={ classes.actionButton }/>;
     }
   };
 
@@ -127,21 +129,21 @@ const AdminPanel = ({ userDetails }) => {
       <ButtonWithSpinner
         action={() => setUserQuery(queries.GET_ALL)}
         disabled={!users || userQuery === queries.GET_ALL}
-        context={queries.GET_ALL}
+        context='getall'
       >
         All Users
       </ButtonWithSpinner>
       <ButtonWithSpinner
         action={() => setUserQuery(queries.NOT_APPROVED)}
         disabled={!users || userQuery === queries.NOT_APPROVED}
-        context={queries.NOT_APPROVED}
+        context='notapproved'
       >
         Waiting Approval
       </ButtonWithSpinner>
       <ButtonWithSpinner
         action={() => setUserQuery(queries.APPROVED)}
         disabled={!users || userQuery === queries.APPROVED}
-        context={queries.APPROVED}
+        context='approved'
       >
         Approved Users
       </ButtonWithSpinner>
@@ -167,13 +169,20 @@ const AdminPanel = ({ userDetails }) => {
           </ButtonWithSpinner>
         </>
       )}
-      {users && <ResultsTable values={users} />}
+      {users && <ResultsTable values={users} title={userQuery} />}
     </>
   );
 };
 
+const styles = {
+  actionButton: {
+    minWidth: 150,
+  }
+};
+
 AdminPanel.propTypes = {
   userDetails: PropTypes.object.isRequired,
+  classes: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = states => {
@@ -182,4 +191,4 @@ const mapStateToProps = states => {
   };
 };
 
-export default connect(mapStateToProps, null)(AdminPanel);
+export default connect(mapStateToProps, null)(withStyles(styles)(AdminPanel));
