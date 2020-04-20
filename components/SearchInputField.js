@@ -114,7 +114,6 @@ const SearchInputField = ({ classes, foodKey, foodAction, isValid, categories })
     }, [food]);
 
     const updateState = async input => {
-
       clearTimeout(timeout);
       timeout = setTimeout(async () => {
         const selectedFilters = categories.filter(category => category.selected).map(category => category.group);
@@ -156,11 +155,10 @@ const SearchInputField = ({ classes, foodKey, foodAction, isValid, categories })
 
     function onInputChange(input) {
       setNotFound(false);
+      resetField();
       setCharCount(input && input.length ? input.length : 0);
       if (input && input.length > 2) {
         updateState(input);
-      } else {
-        resetField();
       }
     }
 
