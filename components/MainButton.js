@@ -38,6 +38,7 @@ const styles = {
     lineHeight: 'normal',
     marginRight: 20,
     fontSize: '0.8em',
+    minWidth: 200,
   },
 };
 
