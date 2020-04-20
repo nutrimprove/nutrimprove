@@ -126,21 +126,21 @@ const AdminPanel = ({ userDetails }) => {
       <SectionHeader content={sectionHeader} />
       <ButtonWithSpinner
         action={() => setUserQuery(queries.GET_ALL)}
-        disabled={userQuery === queries.GET_ALL}
+        disabled={!users || userQuery === queries.GET_ALL}
         context={queries.GET_ALL}
       >
         All Users
       </ButtonWithSpinner>
       <ButtonWithSpinner
         action={() => setUserQuery(queries.NOT_APPROVED)}
-        disabled={userQuery === queries.NOT_APPROVED}
+        disabled={!users || userQuery === queries.NOT_APPROVED}
         context={queries.NOT_APPROVED}
       >
         Waiting Approval
       </ButtonWithSpinner>
       <ButtonWithSpinner
         action={() => setUserQuery(queries.APPROVED)}
-        disabled={userQuery === queries.APPROVED}
+        disabled={!users || userQuery === queries.APPROVED}
         context={queries.APPROVED}
       >
         Approved Users
@@ -163,7 +163,7 @@ const AdminPanel = ({ userDetails }) => {
             context='updateAllUsersPoints'
             colour='secondary'
           >
-            Update All User Points
+            Update Users&apos; Points
           </ButtonWithSpinner>
         </>
       )}
