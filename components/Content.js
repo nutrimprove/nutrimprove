@@ -24,34 +24,26 @@ const Content = ({ classes, userDetails }) => {
     <div className={classes.root}>
       <AppBar position='static' className={classes.tabs}>
         <Tabs value={tab} onChange={tabChange}>
-          <Tab label='Search Food' />
-          <Tab label='View Recommendations' />
-          <Tab label='Add Recommendations' />
+          <Tab label='Search Food'/>
+          <Tab label='View Recommendations'/>
+          <Tab label='Add Recommendations'/>
           {userDetails.approved && isAdmin(userDetails) && (
-            <Tab label='Admin Panel' />
+            <Tab label='Admin Panel'/>
           )}
         </Tabs>
       </AppBar>
-      {tab === 0 && (
-        <TabContainer classes={classes} id='foodByName'>
-          <SearchFoodPage />
-        </TabContainer>
-      )}
-      {tab === 1 && (
-        <TabContainer id='recommendations'>
-          <ViewRecommendationsPage />
-        </TabContainer>
-      )}
-      {tab === 2 && (
-        <TabContainer id='addRecommendations'>
-          <AddRecommendationsPage />
-        </TabContainer>
-      )}
-      {tab === 3 && (
-        <TabContainer id='adminPanel'>
-          <AdminPanel />
-        </TabContainer>
-      )}
+      <TabContainer value={tab} index={0}>
+        <SearchFoodPage/>
+      </TabContainer>
+      <TabContainer value={tab} index={1}>
+        <ViewRecommendationsPage/>
+      </TabContainer>
+      <TabContainer value={tab} index={2}>
+        <AddRecommendationsPage/>
+      </TabContainer>
+      <TabContainer value={tab} index={3}>
+        <AdminPanel/>
+      </TabContainer>
     </div>
   );
 };
@@ -70,11 +62,10 @@ const styles = theme => ({
   tabs: {
     backgroundColor: '#3f51b5',
     color: 'white',
-    borderRadius: '9px 9px 0 0',
   },
 });
 
-const mapStateToProps = (states, ownProps) => {
+const mapStateToProps = states => {
   return {
     userDetails: states.globalState.userDetails,
   };
@@ -82,5 +73,5 @@ const mapStateToProps = (states, ownProps) => {
 
 export default connect(
   mapStateToProps,
-  null
+  null,
 )(withStyles(styles)(Content));

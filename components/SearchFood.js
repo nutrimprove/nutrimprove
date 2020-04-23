@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
 import FormControl from '@material-ui/core/FormControl';
-import FormLabel from '@material-ui/core/FormLabel';
 import FormGroup from '@material-ui/core/FormGroup';
 
 const SearchFood = ({ classes, action, context, naked }) => {
@@ -16,7 +15,6 @@ const SearchFood = ({ classes, action, context, naked }) => {
 
   return (
     <FormControl component="fieldset" margin='dense' className={formClasses}>
-      {!naked && <FormLabel component="legend">Search food</FormLabel>}
       <FormGroup row={true}>
         <SearchInputField foodAction={setFood}/>
         <div className={classes.button}>

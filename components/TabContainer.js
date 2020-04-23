@@ -3,10 +3,15 @@ import PropTypes from 'prop-types';
 import Paper from '@material-ui/core/Paper';
 import { withStyles } from '@material-ui/core/styles/index';
 
-const DeleteUserButton = ({ classes, children }) =>
-  <Paper className={classes.content}>{children}</Paper>;
+const TabContainer = ({ value, index, classes, children }) => (
+  <>
+    {value === index && <Paper elevation={2} className={classes.content}>{children}</Paper>}
+  </>
+);
 
-DeleteUserButton.propTypes = {
+TabContainer.propTypes = {
+  value: PropTypes.number.isRequired,
+  index: PropTypes.number.isRequired,
   classes: PropTypes.object.isRequired,
   children: PropTypes.node.isRequired,
 };
@@ -17,4 +22,4 @@ const styles = {
   },
 };
 
-export default withStyles(styles)(DeleteUserButton);
+export default withStyles(styles)(TabContainer);
