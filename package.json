@@ -6,7 +6,7 @@
   "scripts": {
     "start": "next build && next start -p 4000",
     "dev": "next -p 4000",
-    "deploy": "cross-env NODE_ENV=production now",
+    "deploy": "now",
     "test": "jest",
     "lint": "eslint . --fix",
     "prettier": "prettier \"**/*.+(js|jsx|json|yml|yaml|css|less|scss|ts|tsx|md|mdx|graphql)\"",
@@ -27,6 +27,7 @@
     "isomorphic-unfetch": "^3.0.0",
     "jwt-decode": "^2.2.0",
     "lodash": "^4.17.15",
+    "material-ui-popup-state": "^1.5.4",
     "mongodb": "^3.3.2",
     "mongoose": "^5.7.7",
     "next": "^9.3.2",

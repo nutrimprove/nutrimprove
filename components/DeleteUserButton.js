@@ -5,7 +5,7 @@ import LoadingSpinner from './LoadingSpinner';
 import { deleteUser } from '../interfaces/api/users';
 import { isAdmin } from '../helpers/userUtils';
 
-const DeleteUserButton = ({ user, action }) => {
+const DeleteUserButton = ({ user, action, className }) => {
   const [confirm, setConfirm] = useState(false);
   const [disabled, setDisabled] = useState(isAdmin(user)); // Admin users not deletable
 
@@ -23,7 +23,7 @@ const DeleteUserButton = ({ user, action }) => {
   };
 
   const defaultButton = () => (
-    <MainButton action={setTempConfirmation} disabled={disabled}>
+    <MainButton action={setTempConfirmation} disabled={disabled} className={className}>
       Delete User
     </MainButton>
   );
@@ -33,6 +33,7 @@ const DeleteUserButton = ({ user, action }) => {
       action={confirmButtonActions}
       colour={'secondary'}
       disabled={disabled}
+      className={className}
     >
       Confirm Deletion
       <LoadingSpinner context={`deleteUser-${user.email}`} />
