@@ -8,18 +8,24 @@ import {
   Link,
 } from '@material-ui/core';
 import Auth from '../interfaces/auth/Auth';
-import { setUserDetailsAction } from '../store/global/actions';
+import { setFoodNamesAction, setUserDetailsAction } from '../store/global/actions';
 import { connect } from 'react-redux';
 import HeaderLink from './HeaderLink';
 import { setUserDetailsWithRole } from '../helpers/userUtils';
-import { MIN_WIDTH } from '../helpers/constants';
+import { EDAMAM_DB, MIN_WIDTH } from '../helpers/constants';
+import { getAllFoodNames } from '../interfaces/api/foods';
 
 const auth = new Auth();
 
-const Header = ({ classes, userDetails, setUserDetails }) => {
-  useEffect(() => {
+const Header = ({ classes, userDetails, setUserDetails, setFoodNames }) => {
+  useEffect(async () => {
     const userInfo = auth.extractUserFromToken();
     setUserDetailsWithRole(setUserDetails, userInfo);
+
+    if (!EDAMAM_DB) {
+      const foodNames = await getAllFoodNames();
+      setFoodNames(foodNames);
+    }
   }, []);
 
   function handleLogin() {
@@ -71,6 +77,7 @@ Header.propTypes = {
   classes: PropTypes.object.isRequired,
   userDetails: PropTypes.object.isRequired,
   setUserDetails: PropTypes.func.isRequired,
+  setFoodNames: PropTypes.func.isRequired,
 };
 
 const styles = {
@@ -98,15 +105,16 @@ const styles = {
   },
 };
 
-const mapStateToProps = (states, ownProps) => {
+const mapStateToProps = states => {
   return {
     userDetails: states.globalState.userDetails,
   };
 };
 
-const mapDispatchToProps = (dispatch, ownProps) => {
+const mapDispatchToProps = dispatch => {
   return {
     setUserDetails: details => dispatch(setUserDetailsAction(details)),
+    setFoodNames: foodNames => dispatch(setFoodNamesAction(foodNames)),
   };
 };
 

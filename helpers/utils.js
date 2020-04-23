@@ -35,11 +35,11 @@ const mapSearchResults = results => {
   return results.map(item => ({
     food_id: item.foodCode,
     food_name: item.foodName,
+    food_group: item.group,
   }));
 };
 
-
-// Function to extract groups and subgroups from a CoFID food record
+// Function to generate applicable groups and subgroups to use for CoFID foods search
 const getFoodGroups = groups => {
   if (!groups) return;
 
@@ -52,4 +52,4 @@ const getFoodGroups = groups => {
   return subgroups;
 };
 
-export { getTime, emptyFood, fullTrim, lowerCaseCompare, mapSearchResults, getFoodGroups};
+export { getTime, emptyFood, fullTrim, lowerCaseCompare, mapSearchResults, getFoodGroups };
