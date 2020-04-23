@@ -6,7 +6,7 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import FormControl from '@material-ui/core/FormControl';
 import FormGroup from '@material-ui/core/FormGroup';
 
-const SearchFood = ({ classes, action, context, naked }) => {
+const SearchFoodSet = ({ classes, action, context, naked }) => {
   const [food, setFood] = useState(null);
 
   const formClasses = naked
@@ -32,7 +32,7 @@ const SearchFood = ({ classes, action, context, naked }) => {
   );
 };
 
-SearchFood.propTypes = {
+SearchFoodSet.propTypes = {
   classes: PropTypes.object.isRequired,
   action: PropTypes.func,
   context: PropTypes.string,
@@ -58,4 +58,4 @@ const styles = {
   },
 };
 
-export default withStyles(styles)(SearchFood);
+export default withStyles(styles)(SearchFoodSet);

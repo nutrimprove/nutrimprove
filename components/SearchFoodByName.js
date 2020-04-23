@@ -3,7 +3,7 @@ import ResultsTable from './ResultsTable';
 import { getNutritionData } from '../interfaces/api/nutrition';
 import withStyles from '@material-ui/core/styles/withStyles';
 import PropTypes from 'prop-types';
-import SearchFood from './SearchFood';
+import SearchFoodSet from './SearchFoodSet';
 import { EDAMAM_DB } from '../helpers/constants';
 
 const parseNutrients = nutrients => {
@@ -75,7 +75,7 @@ const SearchFoodByName = ({ classes }) => {
 
   return (
     <>
-      <SearchFood action={updateResults} context='getFoodData'/>
+      <SearchFoodSet action={updateResults} context='getFoodData'/>
       <div className={classes.tables}>
         {foodData && (
           <>

@@ -10,7 +10,7 @@ import { connect } from 'react-redux';
 import SectionHeader from './SectionHeader';
 import ButtonWithSpinner from './ButtonWithSpinner';
 import { isAdmin } from '../helpers/userUtils';
-import SearchFood from './SearchFood';
+import SearchFoodSet from './SearchFoodSet';
 import { Typography } from '@material-ui/core';
 import withStyles from '@material-ui/core/styles/withStyles';
 
@@ -104,7 +104,7 @@ const ViewRecommendationsPage = ({ classes, userDetails }) => {
           Your Recommendations
         </ButtonWithSpinner>
       </div>
-      <SearchFood
+      <SearchFoodSet
         action={loadRecommendationsByFood}
         context='getRecommendationsByFood'
         naked={true}
