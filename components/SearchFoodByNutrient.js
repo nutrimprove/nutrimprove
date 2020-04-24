@@ -1,39 +1,57 @@
 import React, { useState } from 'react';
-import ResultsTable from './ResultsTable';
-import { getNutritionData } from '../interfaces/api/nutrition';
-import SectionHeader from './SectionHeader';
 import withStyles from '@material-ui/core/styles/withStyles';
 import PropTypes from 'prop-types';
-import SearchFood from './SearchFood';
-import { EDAMAM_DB } from '../helpers/constants';
-import SearchFilters from './SearchFilters';
 import { connect } from 'react-redux';
+import TextField from '@material-ui/core/TextField';
+import ButtonWithSpinner from './ButtonWithSpinner';
+import Autocomplete from '@material-ui/lab/Autocomplete';
+
+const list = [
+  { name: 'Vitamin C', value: 1 },
+  { name: 'Phosphorus', value: 2 },
+  { name: 'Vitamin K2', value: 3 },
+  { name: 'Calcium', value: 4 },
+  { name: 'Glucose', value: 5 },
+];
+
 
 const SearchFoodByNutrient = ({ classes }) => {
-  const [searchTerm, setSearchTerm] = useState();
-  const [foodData, setFoodData] = useState();
-  const [secondColumnData, setSecondColumnData] = useState();
+  const [nutrient, setNutrient] = useState();
 
+  const getFoods = () => {
+    console.log('=== SearchFoodByNutrient.js #21 === ( nutrient ) =======>', nutrient);
+  };
 
   return (
     <>
-      <div className={classes.tables}>
-        {foodData && (
-          <>
-            <div className={classes.title}>
-              Nutritional values per 100g of &apos;
-              <span className={classes.term}>{searchTerm}&apos;</span>
-            </div>
-            <div className={classes.table}>
-              <ResultsTable values={foodData}/>
-            </div>
-          </>
-        )}
-        {secondColumnData && (
-          <div className={classes.table}>
-            <ResultsTable values={secondColumnData}/>
-          </div>
-        )}
+      <div className={classes.search}>
+        <Autocomplete
+          id='select_nutrient'
+          options={list}
+          getOptionLabel={(option) => option.name}
+          style={{ width: 300, height: 40 }}
+          renderInput={(params) =>
+            <TextField
+              label='Choose nutrient'
+              variant='standard'
+              {...params}
+            />
+          }
+          autoComplete={true}
+          autoHighlight={true}
+          autoSelect={true}
+          noOptionsText='No nutrient matched!!'
+          openOnFocus
+          onChange={(event, value) => setNutrient(value)}
+        />
+        <ButtonWithSpinner
+          className={classes.button}
+          context='getTopNutrientFoods'
+          action={getFoods}
+          disabled={!nutrient}
+        >
+          Search
+        </ButtonWithSpinner>
       </div>
     </>
   );
@@ -52,25 +70,14 @@ const mapStateToProps = states => {
 const styles = {
   search: {
     display: 'inline-flex',
+    borderStyle: 'solid',
+    borderWidth: 'thin',
+    borderRadius: 7,
+    borderColor: 'lightgray',
+    padding: '10px 10px 10px 20px',
   },
   button: {
-    marginLeft: 10,
-  },
-  tablesContainer: {
-    display: 'block',
-  },
-  table: {
-    display: 'inline-flex',
-    marginRight: 30,
-  },
-  title: {
-    display: 'block',
-    marginTop: 30,
-    fontFamily: 'sans-serif, arial',
-    fontSize: '1em',
-  },
-  term: {
-    fontWeight: 'bold',
+    margin: 10,
   },
 };
 
