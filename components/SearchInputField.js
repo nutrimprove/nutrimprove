@@ -341,9 +341,6 @@ const styles = theme => ({
     width: 'fit-content',
     overflow: 'auto',
   },
-  chip: {
-    margin: `${theme.spacing(0.5)}px ${theme.spacing(0.25)}px`,
-  },
   inputRoot: {
     flexWrap: 'wrap',
     paddingRight: 5,
@@ -354,11 +351,6 @@ const styles = theme => ({
     backgroundColor: '#ffffff',
     color: '#000000',
     padding: 10,
-  },
-  invalidInput: {
-    width: 'auto',
-    flexGrow: 1,
-    color: 'firebrick',
   },
   checkIcon: {
     color: 'limegreen',
