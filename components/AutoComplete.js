@@ -6,7 +6,7 @@ import { Autocomplete, createFilterOptions } from '@material-ui/lab';
 
 const AutoComplete = ({ values, label, labelProp, noMatchText, onChange, groupBy, loading, context, strict = false }) => {
   const filterOptions = createFilterOptions({
-    limit: strict ? 30 : 200,
+    limit: strict ? 30 : null,
     startAfter: strict ? 2 : 0,
     trim: true,
   });
@@ -53,7 +53,7 @@ AutoComplete.propTypes = {
   onChange: PropTypes.func,
   autoSelect: PropTypes.bool,
   noMatchText: PropTypes.string,
-  labelProp: PropTypes.func,
+  labelProp: PropTypes.string,
   groupBy: PropTypes.func,
   strict: PropTypes.bool,
 };
