@@ -6,11 +6,13 @@ import TextField from '@material-ui/core/TextField';
 import ButtonWithSpinner from './ButtonWithSpinner';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { getFoodsByNutrient, getNutrients } from '../interfaces/api/foods';
+import LoadingSpinner from './LoadingSpinner';
 
 const SearchFoodByNutrient = ({ classes }) => {
   const [nutrient, setNutrient] = useState();
-  const [nutrients, setNutrients] = useState();
+  const [nutrients, setNutrients] = useState([]);
   const [foods, setFoods] = useState();
+  const loading = nutrients.length === 0;
 
   useEffect(() => {
     (async () => {
@@ -34,14 +36,25 @@ const SearchFoodByNutrient = ({ classes }) => {
       <div className={classes.search}>
         <Autocomplete
           id='select_nutrient'
+          loading={loading}
           options={nutrients}
           getOptionLabel={(option) => option.label}
           style={{ width: 300, height: 40 }}
+          disabled={loading}
           renderInput={(params) =>
             <TextField
               label='Choose nutrient'
               variant='standard'
               {...params}
+              InputProps={{
+                ...params.InputProps,
+                endAdornment: (
+                  <>
+                    {loading ? <LoadingSpinner context='getNutrients'/> : null}
+                    {params.InputProps.endAdornment}
+                  </>
+                ),
+              }}
             />
           }
           autoComplete={true}
@@ -53,7 +66,7 @@ const SearchFoodByNutrient = ({ classes }) => {
         />
         <ButtonWithSpinner
           className={classes.button}
-          context='getTopNutrientFoods'
+          context='getFoodsByNutrient'
           action={getFoods}
           disabled={!nutrient}
         >
