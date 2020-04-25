@@ -6,7 +6,7 @@ import TextField from '@material-ui/core/TextField';
 import ButtonWithSpinner from './ButtonWithSpinner';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { getFoodsByNutrient, getNutrients } from '../interfaces/api/foods';
-import LoadingSpinner from './LoadingSpinner';
+import AutoComplete from './AutoComplete';
 
 const SearchFoodByNutrient = ({ classes }) => {
   const [nutrient, setNutrient] = useState();
@@ -16,7 +16,7 @@ const SearchFoodByNutrient = ({ classes }) => {
 
   useEffect(() => {
     (async () => {
-      const nutrientList = await getNutrients(['vitamins', 'inorganics']);
+      const nutrientList = await getNutrients(['proximates', 'vitamins', 'inorganics']);
       setNutrients(nutrientList);
     })()
   }, []);
@@ -34,35 +34,12 @@ const SearchFoodByNutrient = ({ classes }) => {
   return (
     <>
       <div className={classes.search}>
-        <Autocomplete
-          id='select_nutrient'
-          loading={loading}
+        <AutoComplete
           options={nutrients}
-          getOptionLabel={(option) => option.label}
-          style={{ width: 300, height: 40 }}
-          disabled={loading}
-          renderInput={(params) =>
-            <TextField
-              label='Choose nutrient'
-              variant='standard'
-              {...params}
-              InputProps={{
-                ...params.InputProps,
-                endAdornment: (
-                  <>
-                    {loading ? <LoadingSpinner context='getNutrients'/> : null}
-                    {params.InputProps.endAdornment}
-                  </>
-                ),
-              }}
-            />
-          }
-          autoComplete={true}
-          autoHighlight={true}
-          autoSelect={true}
-          noOptionsText='No nutrient matched!!'
-          openOnFocus
-          onChange={(event, value) => setNutrient(value)}
+          groupBy={(option) => option.group}
+          context='getNutrients'
+          loading={loading}
+          onChange={setNutrient}
         />
         <ButtonWithSpinner
           className={classes.button}
