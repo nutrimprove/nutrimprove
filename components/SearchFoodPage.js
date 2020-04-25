@@ -35,7 +35,6 @@ const SearchFoodPage = ({ classes }) => {
       <TabContainer value={tab} index={1}>
         <SearchFoodByNutrient/>
       </TabContainer>
-
     </>
   );
 };
@@ -50,7 +49,7 @@ const styles = {
     color: '#3f51b5',
     borderColor: 'lightgray',
     borderStyle: 'solid',
-    borderWidth: '1px 1px 0 1px',
+    borderWidth: 1,
     borderRadius: '9px 9px 0 0',
     fontSize: 'small',
   },
