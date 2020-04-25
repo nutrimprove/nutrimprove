@@ -52,4 +52,17 @@ const getFoodGroups = groups => {
   return subgroups;
 };
 
-export { getTime, emptyFood, fullTrim, lowerCaseCompare, mapSearchResults, getFoodGroups };
+const splitList = list => {
+  if (!list || list.length === 0) return;
+  const result = [];
+  if (list.length > 6) {
+    const total = list.length;
+    const slicePosition = (total % 2) % 2 === 0 ? total / 2 : total / 2 + 1;
+    const secondHalf = list.splice(slicePosition, list.length);
+    result.push(list, secondHalf);
+    console.log('=== utils.js #63 === ( result ) =======>', result);
+    return result;
+  }
+};
+
+export { getTime, emptyFood, fullTrim, lowerCaseCompare, mapSearchResults, getFoodGroups, splitList };

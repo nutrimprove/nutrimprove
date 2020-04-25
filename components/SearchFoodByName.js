@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import ResultsTable from './ResultsTable';
 import { getNutritionData } from '../interfaces/api/nutrition';
 import withStyles from '@material-ui/core/styles/withStyles';
 import PropTypes from 'prop-types';
 import SearchFoodSet from './SearchFoodSet';
 import { EDAMAM_DB } from '../helpers/constants';
+import { splitList } from '../helpers/utils';
+import Results from './Results';
 
 const parseNutrients = nutrients => {
   const nutrientsObj = [];
@@ -57,43 +58,17 @@ const SearchFoodByName = ({ classes }) => {
         combinedResults = [...proximates, ...vitamins, ...minerals];
         setSearchTerm(food.name);
       }
-      let secondNutrientList;
-      // Organises data in 2 columns if enough data exists
-      if (combinedResults.length > 6) {
-        const total = combinedResults.length;
-        const slicePosition =
-          (total % 2) % 2 === 0 ? total / 2 : total / 2 + 1;
-        secondNutrientList = combinedResults.splice(
-          slicePosition,
-          combinedResults.length,
-        );
-        setFoodData(combinedResults);
-        setSecondColumnData(secondNutrientList);
-      }
+      const results = splitList(combinedResults);
+      setFoodData(results[0]);
+      setSecondColumnData(results[1]);
     }
   };
 
   return (
     <>
       <SearchFoodSet action={updateResults} context='getFoodData'/>
-      <div className={classes.tables}>
-        {foodData && (
-          <>
-            <div className={classes.title}>
-              Nutritional values per 100g of &apos;
-              <span className={classes.term}>{searchTerm}&apos;</span>
-            </div>
-            <div className={classes.table}>
-              <ResultsTable values={foodData}/>
-            </div>
-          </>
-        )}
-        {secondColumnData && (
-          <div className={classes.table}>
-            <ResultsTable values={secondColumnData}/>
-          </div>
-        )}
-      </div>
+      {foodData && <Results list={foodData} title={`Nutritional values per 100g of '${searchTerm}'`}/>}
+      {secondColumnData && <Results list={secondColumnData}/>}
     </>
   );
 };
@@ -101,7 +76,6 @@ const SearchFoodByName = ({ classes }) => {
 SearchFoodByName.propTypes = {
   classes: PropTypes.object.isRequired,
 };
-
 
 const styles = {
   table: {

@@ -33,6 +33,7 @@ const styles = {
     color: 'white',
     fontSize: '0.9em',
     textTransform: 'capitalize',
+    minWidth: 80,
   },
 };
 

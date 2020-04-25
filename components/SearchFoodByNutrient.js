@@ -2,11 +2,10 @@ import React, { useEffect, useState } from 'react';
 import withStyles from '@material-ui/core/styles/withStyles';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import TextField from '@material-ui/core/TextField';
 import ButtonWithSpinner from './ButtonWithSpinner';
-import Autocomplete from '@material-ui/lab/Autocomplete';
 import { getFoodsByNutrient, getNutrients } from '../interfaces/api/foods';
 import AutoComplete from './AutoComplete';
+import Results from './Results';
 
 const SearchFoodByNutrient = ({ classes }) => {
   const [nutrient, setNutrient] = useState();
@@ -18,17 +17,26 @@ const SearchFoodByNutrient = ({ classes }) => {
     (async () => {
       const nutrientList = await getNutrients(['proximates', 'vitamins', 'inorganics']);
       setNutrients(nutrientList);
-    })()
+    })();
   }, []);
 
-  useEffect(() => {
-    console.log('=== SearchFoodByNutrient.js #24 === ( foods ) =======>', foods);
-  }, [foods]);
+  const formatFoods = foods =>
+    foods.map(food => {
+      const foodObj = food[nutrient.group][nutrient.name];
+      // In some rare cases and due to some rounding calculations (from the source data)
+      // the quantity of a nutrient is higher than 100 for 100g of food (eg: Simple sugar and carbohydrates)
+      // In these cases we are setting 100 as the value
+      const quantity = foodObj.quantity > 100 ? 100 : foodObj.quantity;
+      return {
+        name: food.foodName,
+        [nutrient.label]: `${quantity} ${foodObj.unit}`,
+      };
+    });
 
   const getFoods = async () => {
     const nutrientKey = `${nutrient.group}.${nutrient.name}`;
     const foods = await getFoodsByNutrient(nutrientKey);
-    setFoods(foods);
+    setFoods(formatFoods(foods));
   };
 
   return (
@@ -50,6 +58,7 @@ const SearchFoodByNutrient = ({ classes }) => {
           Search
         </ButtonWithSpinner>
       </div>
+      {foods && <Results list={foods} title='Nutritional values per 100g of food'/>}
     </>
   );
 };
