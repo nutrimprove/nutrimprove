@@ -12,7 +12,7 @@ const getFoods = async (food) => {
 
   let query = { foodName: { $regex: regex } };
   if (food.length > 0) {
-    query = { foodName: { $regex: regex }, group: { $in : categories } };
+    query = { foodName: { $regex: regex }, group: { $in: categories } };
   }
   return FoodsConnection.find(query);
 };
@@ -27,4 +27,41 @@ const getAllFoodNames = async () => {
   return FoodsConnection.find({}, { foodCode: 1, foodName: 1, group: 1, _id: 0 });
 };
 
-export { getFoods, getFood, getAllFoodNames };
+const getNutrients = async (nutrientGroups) => {
+  const FoodsConnection = await getFoodsConnection();
+  const projection = { _id: 0 };
+
+  // Add only required nutrient types to projection
+  nutrientGroups.forEach(type => {
+    projection[type] = 1;
+  });
+
+  const result = await FoodsConnection.findOne({}, projection);
+  const document = result._doc;
+  const nutrientsList = [];
+
+  nutrientGroups.map(group => {
+      const list = Object.keys(document[group]).map(nutrientKey => ({
+        group,
+        name: nutrientKey,
+        label: document[group][nutrientKey].label,
+      }));
+      nutrientsList.push(...list);
+    });
+
+  return nutrientsList;
+};
+
+const getFoodsByNutrient = async (nutrient, limit) => {
+  const numberOfRecords = limit && Number(limit) ? Number(limit) : 100;
+  const FoodsConnection = await getFoodsConnection();
+  const query = {};
+  query[`${nutrient}.quantity`] = { $gt: 0 };
+  const sort = {};
+  sort[nutrient] = -1;
+  const projection = { _id: 0, foodName: 1, group: 1 };
+  projection[nutrient] = 1;
+  return FoodsConnection.find(query, projection).sort(sort).limit(numberOfRecords);
+};
+
+export { getFoods, getFood, getAllFoodNames, getNutrients, getFoodsByNutrient };

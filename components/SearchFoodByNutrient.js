@@ -1,25 +1,32 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import withStyles from '@material-ui/core/styles/withStyles';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import TextField from '@material-ui/core/TextField';
 import ButtonWithSpinner from './ButtonWithSpinner';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-
-const list = [
-  { name: 'Vitamin C', value: 1 },
-  { name: 'Phosphorus', value: 2 },
-  { name: 'Vitamin K2', value: 3 },
-  { name: 'Calcium', value: 4 },
-  { name: 'Glucose', value: 5 },
-];
-
+import { getFoodsByNutrient, getNutrients } from '../interfaces/api/foods';
 
 const SearchFoodByNutrient = ({ classes }) => {
   const [nutrient, setNutrient] = useState();
+  const [nutrients, setNutrients] = useState();
+  const [foods, setFoods] = useState();
 
-  const getFoods = () => {
-    console.log('=== SearchFoodByNutrient.js #21 === ( nutrient ) =======>', nutrient);
+  useEffect(() => {
+    (async () => {
+      const nutrientList = await getNutrients(['vitamins', 'inorganics']);
+      setNutrients(nutrientList);
+    })()
+  }, []);
+
+  useEffect(() => {
+    console.log('=== SearchFoodByNutrient.js #24 === ( foods ) =======>', foods);
+  }, [foods]);
+
+  const getFoods = async () => {
+    const nutrientKey = `${nutrient.group}.${nutrient.name}`;
+    const foods = await getFoodsByNutrient(nutrientKey);
+    setFoods(foods);
   };
 
   return (
@@ -27,8 +34,8 @@ const SearchFoodByNutrient = ({ classes }) => {
       <div className={classes.search}>
         <Autocomplete
           id='select_nutrient'
-          options={list}
-          getOptionLabel={(option) => option.name}
+          options={nutrients}
+          getOptionLabel={(option) => option.label}
           style={{ width: 300, height: 40 }}
           renderInput={(params) =>
             <TextField
