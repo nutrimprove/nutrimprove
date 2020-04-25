@@ -19,7 +19,7 @@ const getFood = (id, context = 'getFoodData') =>
 
 const getAllFoodNames = (context = 'getAllFoodNames') =>
   trackPromise(
-    getRequest(`${foodApiEndpoint}/names`),
+    getRequest(`${foodApiEndpoint}`),
     context
   );
 
