@@ -29,7 +29,7 @@ MainButton.propTypes = {
   disabled: PropTypes.bool,
   children: PropTypes.any,
   classes: PropTypes.object.isRequired,
-  className: PropTypes.object,
+  className: PropTypes.string,
   colour: PropTypes.string,
 };
 

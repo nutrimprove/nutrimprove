@@ -1,12 +1,6 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import {
-  withStyles,
-  AppBar,
-  Toolbar,
-  Typography,
-  Link,
-} from '@material-ui/core';
+import { AppBar, Link, Toolbar, Typography, withStyles } from '@material-ui/core';
 import Auth from '../interfaces/auth/Auth';
 import { setFoodNamesAction, setUserDetailsAction } from '../store/global/actions';
 import { connect } from 'react-redux';
@@ -18,14 +12,16 @@ import { getAllFoodNames } from '../interfaces/api/foods';
 const auth = new Auth();
 
 const Header = ({ classes, userDetails, setUserDetails, setFoodNames }) => {
-  useEffect(async () => {
-    const userInfo = auth.extractUserFromToken();
-    setUserDetailsWithRole(setUserDetails, userInfo);
+  useEffect(() => {
+    (async () => {
+      const userInfo = auth.extractUserFromToken();
+      setUserDetailsWithRole(setUserDetails, userInfo);
 
-    if (!EDAMAM_DB) {
-      const foodNames = await getAllFoodNames();
-      setFoodNames(foodNames);
-    }
+      if (!EDAMAM_DB) {
+        const foodNames = await getAllFoodNames();
+        setFoodNames(foodNames);
+      }
+    })();
   }, []);
 
   function handleLogin() {
@@ -120,5 +116,5 @@ const mapDispatchToProps = dispatch => {
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(withStyles(styles)(Header));
