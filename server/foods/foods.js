@@ -40,15 +40,19 @@ const getNutrients = async (nutrientGroups) => {
   const document = result._doc;
   const nutrientsList = [];
 
-  nutrientGroups.map(group => {
-      const list = Object.keys(document[group]).map(nutrientKey => ({
-        group,
-        name: nutrientKey,
-        label: document[group][nutrientKey].label,
-      }));
-      nutrientsList.push(...list);
-    });
+  // Removing nutrients that are listed per 100g of Fatty Acids as these are not relevant
+  const nutrientsToExclude = 'Per100gFA';
 
+  nutrientGroups.map(group => {
+    const list = Object.keys(document[group])
+      .filter(nutrient => !nutrient.includes(nutrientsToExclude))
+      .map(nutrient => ({
+        group,
+        name: nutrient,
+        label: document[group][nutrient].label,
+      }));
+    nutrientsList.push(...list);
+  });
   return nutrientsList;
 };
 
