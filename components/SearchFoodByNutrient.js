@@ -26,7 +26,7 @@ const SearchFoodByNutrient = ({ classes }) => {
       // In some rare cases and due to some rounding calculations (from the source data)
       // the quantity of a nutrient is higher than 100 for 100g of food (eg: Simple sugar and carbohydrates)
       // In these cases we are setting 100 as the value
-      const quantity = foodObj.quantity > 100 ? 100 : foodObj.quantity;
+      const quantity = nutrient.label === 'Carbohydrate' && foodObj.quantity > 100 ? 100 : foodObj.quantity;
       return {
         name: food.foodName,
         [nutrient.label]: `${quantity} ${foodObj.unit}`,
@@ -43,11 +43,15 @@ const SearchFoodByNutrient = ({ classes }) => {
     <>
       <div className={classes.search}>
         <AutoComplete
-          options={nutrients}
+          values={nutrients}
           groupBy={(option) => option.group}
+          label='Choose nutrient'
+          noMatchText='No nutrient matched!!'
+          labelProp='label'
           context='getNutrients'
           loading={loading}
           onChange={setNutrient}
+          openOnFocus={true}
         />
         <ButtonWithSpinner
           className={classes.button}

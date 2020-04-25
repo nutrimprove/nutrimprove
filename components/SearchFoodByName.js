@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { getNutritionData } from '../interfaces/api/nutrition';
 import withStyles from '@material-ui/core/styles/withStyles';
-import PropTypes from 'prop-types';
-import SearchFoodSet from './SearchFoodSet';
 import { EDAMAM_DB } from '../helpers/constants';
-import { splitList } from '../helpers/utils';
 import Results from './Results';
+import AutoComplete from './AutoComplete';
+import ButtonWithSpinner from './ButtonWithSpinner';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 const parseNutrients = nutrients => {
   const nutrientsObj = [];
@@ -37,60 +38,88 @@ const mergeEdamamResults = (nutrients, dailyValues) => {
   });
 };
 
-const SearchFoodByName = ({ classes }) => {
-  const [searchTerm, setSearchTerm] = useState();
-  const [foodData, setFoodData] = useState();
-  const [secondColumnData, setSecondColumnData] = useState();
+const SearchFoodByName = ({ categories, foodNames, classes }) => {
+  const [selectedFood, setSelectedFood] = useState();
+  const [foods, setFoods] = useState();
+  const loading = foodNames.length === 0;
 
-  const updateResults = async food => {
-    const data = await getNutritionData(food.id);
+  const updateResults = async () => {
+    const data = await getNutritionData(selectedFood.foodCode);
     if (data) {
       let combinedResults;
       if (EDAMAM_DB && data.totalNutrients) {
         const nutrients = parseNutrients(data.totalNutrients);
         const daily = parseNutrients(data.totalDaily);
         combinedResults = mergeEdamamResults(nutrients, daily);
-        setSearchTerm(food.name);
       } else {
         const proximates = parseNutrients(data.proximates);
         const vitamins = parseNutrients(data.vitamins);
         const minerals = parseNutrients(data.inorganics);
         combinedResults = [...proximates, ...vitamins, ...minerals];
-        setSearchTerm(food.name);
       }
-      const results = splitList(combinedResults);
-      setFoodData(results[0]);
-      setSecondColumnData(results[1]);
+      setFoods(combinedResults);
+    }
+  };
+
+  const getFilteredFoodNames = () => {
+    if (foodNames) {
+      const selectedFilters = categories.filter(category => category.selected).map(category => category.group);
+      return foodNames.filter(({ group }) => selectedFilters.find(filter => group.match(`^(${filter})(.*)`)));
     }
   };
 
   return (
     <>
-      <SearchFoodSet action={updateResults} context='getFoodData'/>
-      {foodData && <Results list={foodData} title={`Nutritional values per 100g of '${searchTerm}'`}/>}
-      {secondColumnData && <Results list={secondColumnData}/>}
+      <div className={classes.search}>
+        <AutoComplete
+          values={getFilteredFoodNames()}
+          label='Type food'
+          noMatchText='No food matched!!'
+          labelProp='foodName'
+          context='getNutrients'
+          loading={loading}
+          onChange={setSelectedFood}
+          strict={true}
+        />
+        <ButtonWithSpinner
+          className={classes.button}
+          context='getFoodsByNutrient'
+          action={updateResults}
+          disabled={!selectedFood}
+        >
+          Search
+        </ButtonWithSpinner>
+      </div>
+      {foods && <Results list={foods} title='Nutritional values per 100g of food'/>}
     </>
   );
 };
 
 SearchFoodByName.propTypes = {
   classes: PropTypes.object.isRequired,
+  foodNames: PropTypes.array.isRequired,
+  categories: PropTypes.array.isRequired,
+};
+
+const mapStateToProps = states => {
+  return {
+    categories: states.globalState.categories,
+    foodNames: states.globalState.foodNames,
+  };
 };
 
 const styles = {
-  table: {
+  search: {
     display: 'inline-flex',
-    marginRight: 30,
+    borderStyle: 'solid',
+    borderWidth: 'thin',
+    borderRadius: 7,
+    borderColor: 'lightgray',
+    padding: '10px 10px 10px 20px',
   },
-  title: {
-    display: 'block',
-    marginTop: 30,
-    fontFamily: 'sans-serif, arial',
-    fontSize: '1em',
-  },
-  term: {
-    fontWeight: 'bold',
+  button: {
+    margin: 10,
   },
 };
 
-export default withStyles(styles)(SearchFoodByName);
+export default connect(mapStateToProps)(withStyles(styles)(SearchFoodByName));
