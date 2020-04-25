@@ -27,6 +27,7 @@ ResultsTableHeader.propTypes = {
 const styles = {
   head: {
     backgroundColor: '#555555',
+    maxWidth: 1000,
   },
   cell: {
     padding: 9,

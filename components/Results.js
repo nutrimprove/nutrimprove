@@ -38,9 +38,9 @@ const styles = {
     fontSize: '1em',
   },
   table: {
-    display: 'inline-flex',
     marginRight: 30,
     marginTop: 20,
+    maxWidth: 1000,
   },
   term: {
     fontWeight: 'bold',

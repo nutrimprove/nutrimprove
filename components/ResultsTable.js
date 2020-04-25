@@ -18,7 +18,7 @@ const ResultsTable = ({ classes, values, columnNames, title }) => (
           <ResultsTableBody values={values} />
         </Table>
       ) : (
-        <div className={classes.noresults}>No results!!</div>
+        <div className={classes.noResults}>No results!!</div>
       )}
     </Paper>
   </div>
@@ -40,7 +40,7 @@ const styles = {
   table: {
     width: '100%',
   },
-  noresults: {
+  noResults: {
     padding: 15,
   },
   resultsTitle: {
