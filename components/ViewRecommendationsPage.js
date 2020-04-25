@@ -13,6 +13,7 @@ import { isAdmin } from '../helpers/userUtils';
 import SearchFoodSet from './SearchFoodSet';
 import { Typography } from '@material-ui/core';
 import withStyles from '@material-ui/core/styles/withStyles';
+import SearchFilters from './SearchFilters';
 
 const sectionHeader = {
   title: 'View Recommendations',
@@ -81,6 +82,7 @@ const ViewRecommendationsPage = ({ classes, userDetails }) => {
   return (
     <>
       <SectionHeader content={sectionHeader}/>
+      <SearchFilters/>
       <Typography paragraph={true} variant='subtitle1'>
         Your points: {userDetails.points || 0}
       </Typography>
