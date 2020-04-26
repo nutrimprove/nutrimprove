@@ -111,9 +111,7 @@ const ViewRecommendationsPage = ({ classes, userDetails }) => {
         context='getRecommendationsByFood'
         naked={true}
       />
-      {recommendations && (
-        <ResultsTable values={formattedRecommendations()} title={title}/>
-      )}
+      {recommendations && <ResultsTable data={formattedRecommendations()} title={title}/>}
     </>
   );
 };
