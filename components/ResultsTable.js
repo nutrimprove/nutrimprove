@@ -22,8 +22,8 @@ const ResultsTable = ({ classes, data, onRowClick, title }) => {
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
-                {columns.map(column => (
-                  <TableCell className={classes.tableHeader} key={column}>
+                {columns.map((column, index) => (
+                  <TableCell className={classes.tableHeader} key={`${column}-${index}`}>
                     {column}
                   </TableCell>
                 ))}
@@ -32,7 +32,7 @@ const ResultsTable = ({ classes, data, onRowClick, title }) => {
             <TableBody>
               {data.map((row) => (
                 <TableRow
-                  hover
+                  hover={!!onRowClick}
                   className={clsx(classes.row, onRowClick ? classes.clickable : null)}
                   tabIndex={-1}
                   key={row.nutrient}
