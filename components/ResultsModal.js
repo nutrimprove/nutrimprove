@@ -50,6 +50,8 @@ const styles = {
     bottom: '20%',
     left: '20%',
     display: 'grid',
+    borderRadius: 9,
+    paddingBottom: 10,
   },
   header: {
     padding: 20,
@@ -58,6 +60,7 @@ const styles = {
   },
   table: {
     overflow: 'auto',
+    padding: '0 18px 18px 18px',
   },
 };
 

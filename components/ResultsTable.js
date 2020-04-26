@@ -68,6 +68,12 @@ const styles = {
     color: 'white',
     fontWeight: 'bold',
     textTransform: 'capitalize',
+    '&:first-child': {
+      borderTopLeftRadius: 9,
+    },
+    '&:last-child': {
+      borderTopRightRadius: 9,
+    },
   },
   row: {
     '&:nth-of-type(even)': {
