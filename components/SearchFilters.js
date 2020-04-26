@@ -7,11 +7,14 @@ import PropTypes from 'prop-types';
 import { setCategoriesAction } from '../store/global/actions';
 import { connect } from 'react-redux';
 import withStyles from '@material-ui/core/styles/withStyles';
-import PopoverPanelWithButton from './PopoverPanelWithButton';
+import PopoverPanelWithTrigger from './PopoverPanelWithTrigger';
 import FormControl from '@material-ui/core/FormControl';
 import Button from '@material-ui/core/Button';
+import { EDAMAM_DB } from '../helpers/constants';
 
 const SearchFilters = ({ categories, setCategories, classes }) => {
+  if(EDAMAM_DB) return null;
+
   const [filters, setFilters] = useState(categories);
 
   useEffect(() => {
@@ -26,13 +29,9 @@ const SearchFilters = ({ categories, setCategories, classes }) => {
     ));
   };
 
-  const setAll = () => {
-    setFilters(() => filters.map(filter => ({ ...filter, selected: true })));
-  };
+  const setAll = () => setFilters(() => filters.map(filter => ({ ...filter, selected: true })));
 
-  const setNone = () => {
-    setFilters(filters.map(filter => ({ ...filter, selected: false })));
-  };
+  const setNone = () => setFilters(filters.map(filter => ({ ...filter, selected: false })));
 
   const splitList = () => {
     const list = [...filters];
@@ -61,7 +60,7 @@ const SearchFilters = ({ categories, setCategories, classes }) => {
     ));
 
   return (
-    <PopoverPanelWithButton buttonText='Filter by category' title='Select which categories to include in search'>
+    <PopoverPanelWithTrigger triggerText='Filter by category' title='Select which categories to include in search'>
       <FormControl classes={{root: classes.control}} component="fieldset" margin='dense'>
         {filters && splitList(filters).map(list =>
           <FormGroup key={uniqueId()} classes={{root: classes.column}}>
@@ -75,7 +74,7 @@ const SearchFilters = ({ categories, setCategories, classes }) => {
         </div>
         }
       </FormControl>
-    </PopoverPanelWithButton>
+    </PopoverPanelWithTrigger>
   );
 };
 

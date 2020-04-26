@@ -8,6 +8,8 @@ import Tab from '@material-ui/core/Tab';
 import TabContainer from './TabContainer';
 import SearchFoodByNutrient from './SearchFoodByNutrient';
 import SearchFoodByName from './SearchFoodByName';
+import { EDAMAM_DB } from '../helpers/constants';
+import SearchEdamamFoodByName from './SearchEdamamFoodByName';
 
 const sectionHeader = {
   title: 'Search food',
@@ -21,10 +23,19 @@ const SearchFoodPage = ({ classes }) => {
     setTab(tab);
   };
 
-  return (
+  const tabbedPanelEdamam = () => (
     <>
-      <SectionHeader content={sectionHeader}/>
-      <SearchFilters/>
+      <Tabs indicatorColor='primary' value={tab} onChange={tabChange}>
+        <Tab className={classes.tab} label='Search by name'/>
+      </Tabs>
+      <TabContainer value={tab} index={0}>
+        <SearchEdamamFoodByName/>
+      </TabContainer>
+    </>
+  );
+
+  const tabbedPanel = () => (
+    <>
       <Tabs indicatorColor='primary' value={tab} onChange={tabChange}>
         <Tab className={classes.tab} label='Search by name'/>
         <Tab className={classes.tab} label='Search by Nutrient'/>
@@ -35,6 +46,14 @@ const SearchFoodPage = ({ classes }) => {
       <TabContainer value={tab} index={1}>
         <SearchFoodByNutrient/>
       </TabContainer>
+    </>
+  );
+
+  return (
+    <>
+      <SectionHeader content={sectionHeader}/>
+      <SearchFilters/>
+      {EDAMAM_DB ? tabbedPanelEdamam() : tabbedPanel()}
     </>
   );
 };

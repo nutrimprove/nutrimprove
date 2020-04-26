@@ -39,6 +39,23 @@ const mapSearchResults = results => {
   }));
 };
 
+const parseNutrients = nutrients => {
+  const nutrientsObj = [];
+  const keys = Object.keys(nutrients);
+  keys.map(key => {
+    const nutrient = nutrients[key];
+    if (!isNaN(nutrient.quantity) && nutrient.quantity > 0) {
+      nutrientsObj.push({
+        nutrient: nutrient.label,
+        quantity: `${Number.parseFloat(nutrient.quantity).toFixed(2)} ${
+          nutrient.unit
+          }`,
+      });
+    }
+  });
+  return nutrientsObj;
+};
+
 // Function to generate applicable groups and subgroups to use for CoFID foods search
 const getFoodGroups = groups => {
   if (!groups) return;
@@ -52,17 +69,4 @@ const getFoodGroups = groups => {
   return subgroups;
 };
 
-const splitList = list => {
-  if (!list || list.length === 0) return;
-  const result = [];
-  if (list.length > 6) {
-    const total = list.length;
-    const slicePosition = (total % 2) % 2 === 0 ? total / 2 : total / 2 + 1;
-    const secondHalf = list.splice(slicePosition, list.length);
-    result.push(list, secondHalf);
-    console.log('=== utils.js #63 === ( result ) =======>', result);
-    return result;
-  }
-};
-
-export { getTime, emptyFood, fullTrim, lowerCaseCompare, mapSearchResults, getFoodGroups, splitList };
+export { getTime, emptyFood, fullTrim, lowerCaseCompare, mapSearchResults, getFoodGroups, parseNutrients };
