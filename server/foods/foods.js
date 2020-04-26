@@ -61,10 +61,14 @@ const getNutrients = async (nutrientGroups) => {
   return nutrientsList;
 };
 
-const getFoodsByNutrient = async (nutrient, limit) => {
+const getFoodsByNutrient = async (nutrient, limit, filters) => {
   const numberOfRecords = limit && Number(limit) ? Number(limit) : 100;
+  const foodGroups = getFoodGroups(filters.split(','));
   const FoodsConnection = await getFoodsConnection();
   const query = {};
+  if(foodGroups && foodGroups.length > 0) {
+    query.group = { $in: foodGroups };
+  }
   query[`${nutrient}.quantity`] = { $gt: 0 };
   const sort = {};
   sort[nutrient] = -1;

@@ -9,7 +9,7 @@ import { parseNutrients } from '../helpers/utils';
 import ResultsTable from './ResultsTable';
 import ResultsModal from './ResultsModal';
 
-const SearchFoodByNutrient = ({ classes }) => {
+const SearchFoodByNutrient = ({ classes, categories }) => {
   const [nutrient, setNutrient] = useState();
   const [nutrients, setNutrients] = useState([]);
   const [foods, setFoods] = useState();
@@ -25,6 +25,14 @@ const SearchFoodByNutrient = ({ classes }) => {
     })();
   }, []);
 
+  const selectedFilters = () => categories.filter(category => category.selected).map(category => category.group);
+
+  const getFilteredFoodNames = () => {
+    if (foods) {
+      return foods.filter(({ group }) => selectedFilters.find(filter => group.match(`^(${filter})(.*)`)));
+    }
+  };
+
   const formatFoods = foods =>
     foods.map(food => {
       const foodObj = food[nutrient.group][nutrient.name];
@@ -35,12 +43,13 @@ const SearchFoodByNutrient = ({ classes }) => {
       return {
         name: food.foodName,
         [nutrient.label]: `${quantity} ${foodObj.unit}`,
+        group: food.group,
       };
     });
 
   const getFoods = async () => {
     const nutrientKey = `${nutrient.group}.${nutrient.name}`;
-    const foods = await getFoodsByNutrient(nutrientKey);
+    const foods = await getFoodsByNutrient({nutrient: nutrientKey, filters: selectedFilters()});
     setFoods(formatFoods(foods));
   };
 
@@ -85,6 +94,11 @@ const SearchFoodByNutrient = ({ classes }) => {
           Search
         </ButtonWithSpinner>
       </div>
+      {foods && <ResultsTable
+        data={foods}
+        title={`${nutrient && nutrient.label} per 100g of food`}
+        onRowClick={handleRowClick}
+      />}
       {detailsOpen && <ResultsModal
         data={selectedFoodDetails}
         open={detailsOpen}
@@ -92,17 +106,13 @@ const SearchFoodByNutrient = ({ classes }) => {
         title={selectedFood}
         subtitle='Nutritional information per 100g of food'
       />}
-      {foods && <ResultsTable
-        data={foods}
-        title={`${nutrient && nutrient.label} per 100g of food`}
-        onRowClick={handleRowClick}
-      />}
     </>
   );
 };
 
 SearchFoodByNutrient.propTypes = {
   classes: PropTypes.object.isRequired,
+  categories: PropTypes.array.isRequired,
 };
 
 const mapStateToProps = states => {

@@ -56,7 +56,7 @@ const parseNutrients = nutrients => {
   return nutrientsObj;
 };
 
-// Function to generate applicable groups and subgroups to use for CoFID foods search
+// Function to generate regex for applicable groups and subgroups to use in CoFID foods search
 const getFoodGroups = groups => {
   if (!groups) return;
 

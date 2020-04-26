@@ -42,10 +42,12 @@ const getNutrients = (nutrientGroups) => {
   );
 };
 
-const getFoodsByNutrient = (nutrient, limit = 100) =>
-  trackPromise(
-    getRequest(`${foodApiEndpoint}/nutrient/${encodeURIComponent(nutrient)}?limit=${limit}`),
+const getFoodsByNutrient = ({ nutrient, limit = 100, filters }) => {
+  const filtersQuery = filters && filters.length > 0 ? `&filters=${filters.join(',')}` : '';
+  return trackPromise(
+    getRequest(`${foodApiEndpoint}/nutrient/${encodeURIComponent(nutrient)}?limit=${limit}${filtersQuery}`),
     'getFoodsByNutrient',
   );
+}
 
 export { getFoodsByCategories, getFoodById, getFoodByName,getAllFoodNames, getFoodsByNutrient, getNutrients };

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { getNutritionData } from '../interfaces/api/nutrition';
 import withStyles from '@material-ui/core/styles/withStyles';
-import Results from './Results';
 import AutoComplete from './AutoComplete';
 import ButtonWithSpinner from './ButtonWithSpinner';
 import PropTypes from 'prop-types';
