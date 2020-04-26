@@ -22,9 +22,9 @@ const getFoodById = async id => {
   return FoodsConnection.findOne({ foodCode: id });
 };
 
-const getFoodByName = async id => {
+const getFoodByName = async name => {
   const FoodsConnection = await getFoodsConnection();
-  return FoodsConnection.findOne({ foodCode: id });
+  return FoodsConnection.findOne({ foodName: name });
 };
 
 const getAllFoodNames = async () => {

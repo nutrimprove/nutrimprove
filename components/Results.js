@@ -3,7 +3,7 @@ import React from 'react';
 import withStyles from '@material-ui/core/styles/withStyles';
 import PropTypes from 'prop-types';
 
-const Results = ({ list, title, classes }) => (
+const Results = ({ list, title, onRowClick, classes }) => (
   <>
     {title && (
       <div className={classes.title}>
@@ -11,7 +11,7 @@ const Results = ({ list, title, classes }) => (
       </div>
     )}
     <div className={classes.table}>
-      <ResultsTable values={list}/>
+      <ResultsTable values={list} onRowClick={onRowClick}/>
     </div>
   </>
 );
@@ -20,6 +20,7 @@ Results.propTypes = {
   classes: PropTypes.object.isRequired,
   list: PropTypes.array.isRequired,
   title: PropTypes.string.isRequired,
+  onRowClick: PropTypes.func.isRequired,
 };
 
 const styles = {

@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import { setCategoriesAction } from '../store/global/actions';
 import { connect } from 'react-redux';
 import withStyles from '@material-ui/core/styles/withStyles';
-import PopoverPanelWithTrigger from './PopoverPanelWithTrigger';
+import PopoverPanelWithButton from './PopoverPanelWithButton';
 import FormControl from '@material-ui/core/FormControl';
 import Button from '@material-ui/core/Button';
 import { EDAMAM_DB } from '../helpers/constants';
@@ -60,7 +60,7 @@ const SearchFilters = ({ categories, setCategories, classes }) => {
     ));
 
   return (
-    <PopoverPanelWithTrigger triggerText='Filter by category' title='Select which categories to include in search'>
+    <PopoverPanelWithButton buttonText='Filter by category' title='Select which categories to include in search'>
       <FormControl classes={{root: classes.control}} component="fieldset" margin='dense'>
         {filters && splitList(filters).map(list =>
           <FormGroup key={uniqueId()} classes={{root: classes.column}}>
@@ -74,7 +74,7 @@ const SearchFilters = ({ categories, setCategories, classes }) => {
         </div>
         }
       </FormControl>
-    </PopoverPanelWithTrigger>
+    </PopoverPanelWithButton>
   );
 };
 

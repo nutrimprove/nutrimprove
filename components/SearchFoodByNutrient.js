@@ -3,14 +3,19 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import ButtonWithSpinner from './ButtonWithSpinner';
-import { getFoodsByNutrient, getNutrients } from '../interfaces/api/foods';
+import { getFoodByName, getFoodsByNutrient, getNutrients } from '../interfaces/api/foods';
 import AutoComplete from './AutoComplete';
-import Results from './Results';
+import { parseNutrients } from '../helpers/utils';
+import ResultsTable from './ResultsTable';
+import ResultsModal from './ResultsModal';
 
 const SearchFoodByNutrient = ({ classes }) => {
   const [nutrient, setNutrient] = useState();
   const [nutrients, setNutrients] = useState([]);
   const [foods, setFoods] = useState();
+  const [selectedFood, setSelectedFood] = useState('');
+  const [selectedFoodDetails, setSelectedFoodDetails] = useState();
+  const [detailsOpen, setDetailsOpen] = useState(false);
   const loading = nutrients.length === 0;
 
   useEffect(() => {
@@ -39,6 +44,24 @@ const SearchFoodByNutrient = ({ classes }) => {
     setFoods(formatFoods(foods));
   };
 
+  const handleRowClick = async ({ currentTarget }) => {
+    const foodName = currentTarget.firstChild.innerText;
+    setSelectedFood(foodName);
+    const food = await getFoodByName(foodName);
+    if (food) {
+      const proximates = parseNutrients(food.proximates);
+      const vitamins = parseNutrients(food.vitamins);
+      const minerals = parseNutrients(food.inorganics);
+      const combinedResults = [...proximates, ...vitamins, ...minerals];
+      setSelectedFoodDetails(combinedResults);
+      setDetailsOpen(true);
+    }
+  };
+
+  const handleCloseModal = () => {
+    setDetailsOpen(false);
+  };
+
   return (
     <>
       <div className={classes.search}>
@@ -62,7 +85,18 @@ const SearchFoodByNutrient = ({ classes }) => {
           Search
         </ButtonWithSpinner>
       </div>
-      {foods && <Results list={foods} title='Nutritional values per 100g of food'/>}
+      {detailsOpen && <ResultsModal
+        data={selectedFoodDetails}
+        open={detailsOpen}
+        onClose={handleCloseModal}
+        title={selectedFood}
+        subtitle='Nutritional information per 100g of food'
+      />}
+      {foods && <ResultsTable
+        data={foods}
+        title={`${nutrient && nutrient.label} per 100g of food`}
+        onRowClick={handleRowClick}
+      />}
     </>
   );
 };
@@ -85,6 +119,14 @@ const styles = {
     borderRadius: 7,
     borderColor: 'lightgray',
     padding: '10px 10px 10px 20px',
+  },
+  table: {
+    marginTop: 20,
+    maxHeight: 600,
+    overflow: 'auto',
+    '& tbody tr': {
+      cursor: 'pointer',
+    },
   },
   button: {
     margin: 10,

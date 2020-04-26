@@ -7,10 +7,11 @@ import ButtonWithSpinner from './ButtonWithSpinner';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { parseNutrients } from '../helpers/utils';
+import ResultsTable from './ResultsTable';
 
 const SearchFoodByName = ({ categories, foodNames, classes }) => {
   const [selectedFood, setSelectedFood] = useState();
-  const [foods, setFoods] = useState();
+  const [data, setData] = useState();
   const loading = foodNames.length === 0;
 
   const updateResults = async () => {
@@ -20,7 +21,7 @@ const SearchFoodByName = ({ categories, foodNames, classes }) => {
       const vitamins = parseNutrients(data.vitamins);
       const minerals = parseNutrients(data.inorganics);
       const combinedResults = [...proximates, ...vitamins, ...minerals];
-      setFoods(combinedResults);
+      setData(combinedResults);
     }
   };
 
@@ -53,7 +54,7 @@ const SearchFoodByName = ({ categories, foodNames, classes }) => {
           Search
         </ButtonWithSpinner>
       </div>
-      {foods && <Results list={foods} title='Nutritional values per 100g of food'/>}
+      {data && <ResultsTable data={data} title='Nutritional values per 100g of food'/>}
     </>
   );
 };
