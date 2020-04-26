@@ -8,7 +8,7 @@ const spreadUrlParams = (params) => {
   return urlParams.map(param => `/${param}`).join('');
 };
 
-const getFoods = (name, context = 'getFoods', categories = []) => {
+const getFoodsByCategories = (name, context = 'getFoods', categories = []) => {
   const subgroups = spreadUrlParams(categories);
   return trackPromise(
     getRequest(`${foodApiEndpoint}/name/${encodeURIComponent(name)}${subgroups}`),
@@ -16,15 +16,21 @@ const getFoods = (name, context = 'getFoods', categories = []) => {
   );
 };
 
-const getFood = (id, context = 'getFoodData') =>
+const getFoodById = (id, context = 'getFoodData') =>
   trackPromise(
     getRequest(`${foodApiEndpoint}/id/${encodeURIComponent(id)}`),
     context,
   );
 
+const getFoodByName = (id, context = 'getFoodData') =>
+  trackPromise(
+    getRequest(`${foodApiEndpoint}/name/${encodeURIComponent(id)}`),
+    context,
+  );
+
 const getAllFoodNames = () =>
   trackPromise(
-    getRequest(`${foodApiEndpoint}`),
+    getRequest(`${foodApiEndpoint}/names`),
     'getAllFoodNames',
   );
 
@@ -38,8 +44,8 @@ const getNutrients = (nutrientGroups) => {
 
 const getFoodsByNutrient = (nutrient, limit = 100) =>
   trackPromise(
-    getRequest(`${foodApiEndpoint}/bynutrient/${encodeURIComponent(nutrient)}?limit=${limit}`),
+    getRequest(`${foodApiEndpoint}/nutrient/${encodeURIComponent(nutrient)}?limit=${limit}`),
     'getFoodsByNutrient',
   );
 
-export { getFoods, getFood, getAllFoodNames, getFoodsByNutrient, getNutrients };
+export { getFoodsByCategories, getFoodById, getFoodByName,getAllFoodNames, getFoodsByNutrient, getNutrients };

@@ -4,7 +4,7 @@ import { getFoodGroups } from '../../helpers/utils';
 
 const getFoodsConnection = () => connect('foods', new Schema(), 'cofid');
 
-const getFoods = async (food) => {
+const getFoodsByCategories = async (food) => {
   const name = food.shift();
   const regex = new RegExp(`.*${decodeURIComponent(name)}.*`, 'i');
   const categories = getFoodGroups(food);
@@ -17,7 +17,12 @@ const getFoods = async (food) => {
   return FoodsConnection.find(query);
 };
 
-const getFood = async id => {
+const getFoodById = async id => {
+  const FoodsConnection = await getFoodsConnection();
+  return FoodsConnection.findOne({ foodCode: id });
+};
+
+const getFoodByName = async id => {
   const FoodsConnection = await getFoodsConnection();
   return FoodsConnection.findOne({ foodCode: id });
 };
@@ -68,4 +73,4 @@ const getFoodsByNutrient = async (nutrient, limit) => {
   return FoodsConnection.find(query, projection).sort(sort).limit(numberOfRecords);
 };
 
-export { getFoods, getFood, getAllFoodNames, getNutrients, getFoodsByNutrient };
+export { getFoodsByCategories, getFoodById, getFoodByName, getAllFoodNames, getNutrients, getFoodsByNutrient };

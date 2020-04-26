@@ -12,14 +12,10 @@ import ErrorIcon from '@material-ui/icons/Error';
 import LoadingSpinner from './LoadingSpinner';
 import IconButton from '@material-ui/core/IconButton';
 import { usePromiseTracker } from 'react-promise-tracker';
-import searchFoods from '../interfaces/api/search';
+import { getSearchedTerms } from '../interfaces/api/edamamFoods';
 import { EDAMAM_DB, INPUT_TRIGGER_TIME } from '../helpers/constants';
 import { Tooltip } from '@material-ui/core';
-import {
-  fullTrim,
-  lowerCaseCompare,
-  mapSearchResults,
-} from '../helpers/utils';
+import { fullTrim, lowerCaseCompare, mapSearchResults } from '../helpers/utils';
 import { connect } from 'react-redux';
 
 const renderInput = inputProps => {
@@ -125,7 +121,7 @@ const SearchInputField = ({ classes, foodKey, foodAction, isValid, categories, f
 
         let search;
         if (EDAMAM_DB) {
-          search = await searchFoods(input, context, selectedFilters);
+          search = await getSearchedTerms(input, context, selectedFilters);
         } else {
           search = foodNames
             .filter(({foodName}) => foodName.toLowerCase().includes(input.toLowerCase()))
