@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { getNutritionData } from '../interfaces/api/nutrition';
 import withStyles from '@material-ui/core/styles/withStyles';
-import Results from './Results';
 import AutoComplete from './AutoComplete';
 import ButtonWithSpinner from './ButtonWithSpinner';
 import PropTypes from 'prop-types';
 import { getSearchedTerms } from '../interfaces/api/edamamFoods';
 import { mapSearchResults, parseNutrients } from '../helpers/utils';
+import ResultsTable from './ResultsTable';
 
 const mergeEdamamResults = (nutrients, dailyValues) => {
   const combined = [...nutrients];
@@ -79,7 +79,7 @@ const SearchFoodByName = ({ classes }) => {
           Search
         </ButtonWithSpinner>
       </div>
-      {foods && <Results list={foods} title='Nutritional values per 100g of food'/>}
+      {foods && <ResultsTable data={foods} title='Nutritional values per 100g of food'/>}
     </>
   );
 };
