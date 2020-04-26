@@ -20,9 +20,8 @@ const ResultsTableBody = ({ values, classes }) => (
     {values.map((row, index) => (
       <TableRow
         key={index}
-        style={
-          index % 2 ? { background: '#f8f8f8' } : { background: 'white' }
-        }
+        hover
+        className={classes.root}
       >
         {Object.values(row).map((value, vIndex) => (
           <TableCell key={vIndex} className={classes.cell}>
@@ -43,6 +42,15 @@ const styles = {
   cell: {
     padding: '7px 20px 7px 10px',
     minWidth: 80,
+  },
+  root: {
+    '&:nth-of-type(even)': {
+      backgroundColor: '#f8f8f8',
+    },
+    '&:$hover:hover': {
+      backgroundColor: '#E9EEFF',
+      cursor: 'pointer',
+    },
   },
 };
 
