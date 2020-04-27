@@ -13,7 +13,7 @@ import Button from '@material-ui/core/Button';
 import { EDAMAM_DB } from '../helpers/constants';
 
 const SearchFilters = ({ categories, setCategories, classes }) => {
-  if(EDAMAM_DB) return null;
+  if (EDAMAM_DB) return null;
 
   const [filters, setFilters] = useState(categories.all);
 
@@ -67,20 +67,24 @@ const SearchFilters = ({ categories, setCategories, classes }) => {
       />
     ));
 
+  const hasFilters = () => {
+    return categories.all.length !== categories.selectedGroups.length && categories.selectedGroups.length > 0;
+  };
+
   return (
-    <PopoverPanelWithButton buttonText='Filter by category' title='Select which categories to include in search'>
-      <FormControl classes={{root: classes.control}} component="fieldset" margin='dense'>
-        {filters && splitList(filters).map(list =>
-          <FormGroup key={uniqueId()} classes={{root: classes.column}}>
-            {filters && renderFilters(list)}
+    <PopoverPanelWithButton buttonText={hasFilters() ? 'Filtered by category' : 'Filter by category'}
+                            buttonEffect={hasFilters()}
+                            title='Select which categories to include in search'>
+      <FormControl classes={{ root: classes.control }} component="fieldset" margin='dense'>
+        {splitList(filters).map(list =>
+          <FormGroup key={uniqueId()} classes={{ root: classes.column }}>
+            {renderFilters(list)}
           </FormGroup>,
         )}
-        {filters &&
         <div className={classes.filterButtons}>
           <Button variant='outlined' color='primary' className={classes.button} onClick={setAll}>All</Button>
           <Button variant='outlined' color='primary' className={classes.button} onClick={setNone}>None</Button>
         </div>
-        }
       </FormControl>
     </PopoverPanelWithButton>
   );
