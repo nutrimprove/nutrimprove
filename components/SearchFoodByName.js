@@ -46,7 +46,7 @@ const SearchFoodByName = ({ categories, foodNames, classes }) => {
         />
         <ButtonWithSpinner
           className={classes.button}
-          context='getFoodsByNutrient'
+          context='getFoodData'
           action={updateResults}
           disabled={!selectedFood}
         >
