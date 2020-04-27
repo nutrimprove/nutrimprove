@@ -6,6 +6,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import Typography from '@material-ui/core/Typography';
 import ResultsTable from './ResultsTable';
 import { withStyles } from '@material-ui/core';
+import LoadingPanel from './LoadingPanel';
 
 const ResultsModal = ({ data, title, subtitle, open, onClose, classes }) => (
   <Modal open={open} onClose={onClose}>
@@ -22,7 +23,7 @@ const ResultsModal = ({ data, title, subtitle, open, onClose, classes }) => (
         </div>
       </div>
       <div className={classes.table}>
-        <ResultsTable data={data}/>
+        {data ? <ResultsTable data={data}/> : <LoadingPanel />}
       </div>
     </div>
   </Modal>
@@ -32,9 +33,9 @@ ResultsModal.propTypes = {
   classes: PropTypes.object.isRequired,
   open: PropTypes.bool.isRequired,
   title: PropTypes.string,
-  data: PropTypes.array.isRequired,
+  data: PropTypes.array,
   subtitle: PropTypes.string,
-  onClose: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
 };
 
 const styles = {
