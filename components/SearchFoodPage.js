@@ -35,8 +35,8 @@ const SearchFoodPage = ({ classes }) => {
   );
 
   const tabbedPanel = () => (
-    <>
-      <Tabs indicatorColor='primary' value={tab} onChange={tabChange}>
+    <div className={classes.tabContent}>
+      <Tabs indicatorColor='secondary' value={tab} onChange={tabChange}>
         <Tab className={classes.tab} label='Search by name'/>
         <Tab className={classes.tab} label='Search by Nutrient'/>
       </Tabs>
@@ -46,7 +46,7 @@ const SearchFoodPage = ({ classes }) => {
       <TabContainer value={tab} index={1}>
         <SearchFoodByNutrient/>
       </TabContainer>
-    </>
+    </div>
   );
 
   return (
@@ -64,13 +64,22 @@ SearchFoodPage.propTypes = {
 
 const styles = {
   tab: {
-    backgroundColor: 'white',
-    color: '#3f51b5',
-    borderColor: 'lightgray',
+    '&:not(.Mui-selected)': {
+      backgroundColor: '#3F51B5',
+      color: 'lightgrey',
+    },
+    '&.Mui-selected': {
+      backgroundColor: '#3F51B5',
+      color: 'white',
+    },
+    borderColor: 'lightgrey',
     borderStyle: 'solid',
     borderWidth: 1,
     borderRadius: '9px 9px 0 0',
-    fontSize: 'small',
+    fontSize: '0.7em',
+  },
+  tabContent: {
+    marginTop: 15,
   },
   container: {
     borderColor: 'red',

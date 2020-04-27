@@ -39,7 +39,7 @@ const styles = {
     height: 40,
     lineHeight: 'normal',
     marginRight: 20,
-    fontSize: '0.8em',
+    fontSize: '0.7em',
     minWidth: 200,
   },
 };

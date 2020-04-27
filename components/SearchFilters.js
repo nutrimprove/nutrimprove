@@ -67,20 +67,22 @@ const SearchFilters = ({ categories, setCategories, classes }) => {
       />
     ));
 
+  const hasFilters = () => {
+    return categories.all.length !== categories.selectedGroups.length && categories.selectedGroups.length > 0;
+  };
+
   return (
-    <PopoverPanelWithButton buttonText='Filter by category' title='Select which categories to include in search'>
+    <PopoverPanelWithButton buttonText={hasFilters() ? 'Filtered by category' : 'Filter by category'} buttonEffect={hasFilters()} title='Select which categories to include in search'>
       <FormControl classes={{root: classes.control}} component="fieldset" margin='dense'>
-        {filters && splitList(filters).map(list =>
+        {splitList(filters).map(list =>
           <FormGroup key={uniqueId()} classes={{root: classes.column}}>
-            {filters && renderFilters(list)}
+            {renderFilters(list)}
           </FormGroup>,
         )}
-        {filters &&
         <div className={classes.filterButtons}>
           <Button variant='outlined' color='primary' className={classes.button} onClick={setAll}>All</Button>
           <Button variant='outlined' color='primary' className={classes.button} onClick={setNone}>None</Button>
         </div>
-        }
       </FormControl>
     </PopoverPanelWithButton>
   );

@@ -9,11 +9,11 @@ import { withStyles } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 
-const PopoverPanelWithButton = ({ buttonText, title, children, classes }) => (
+const PopoverPanelWithButton = ({ buttonText, title, buttonEffect, children, classes }) => (
   <PopupState variant="popover" popupId="popover">
     {(popupState) => (
       <div>
-        <Button variant="contained" color="primary" className={classes.button} {...bindTrigger(popupState)}>
+        <Button variant={buttonEffect ? 'contained' : 'outlined'} color='primary' className={classes.button} {...bindTrigger(popupState)}>
           {buttonText}
         </Button>
         <Popover
@@ -45,6 +45,7 @@ const PopoverPanelWithButton = ({ buttonText, title, children, classes }) => (
 PopoverPanelWithButton.propTypes = {
   title: PropTypes.string.isRequired,
   buttonText: PropTypes.string.isRequired,
+  buttonEffect: PropTypes.bool,
   children: PropTypes.node.isRequired,
   classes: PropTypes.object.isRequired,
 };
@@ -52,6 +53,8 @@ PopoverPanelWithButton.propTypes = {
 const styles = {
   button: {
     marginBottom: 20,
+    fontSize: '0.7em',
+    height: 40,
   },
   closeIcon: {
     float: 'right',
@@ -60,6 +63,9 @@ const styles = {
   container: {
     display: 'flex',
     padding: '15px 10px 20px 20px',
+  },
+  buttonEffect : {
+    color: 'yellow',
   },
   title: {
     marginTop: 20,
