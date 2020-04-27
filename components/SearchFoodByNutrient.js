@@ -16,7 +16,6 @@ const SearchFoodByNutrient = ({ classes, categories }) => {
   const [selectedFood, setSelectedFood] = useState('');
   const [selectedFoodDetails, setSelectedFoodDetails] = useState();
   const [detailsOpen, setDetailsOpen] = useState(false);
-  const loading = nutrients.length === 0;
 
   useEffect(() => {
     (async () => {
@@ -48,6 +47,7 @@ const SearchFoodByNutrient = ({ classes, categories }) => {
   const handleRowClick = async ({ currentTarget }) => {
     const foodName = currentTarget.firstChild.innerText;
     setSelectedFood(foodName);
+    setDetailsOpen(true);
     const food = await getFoodByName(foodName);
     if (food) {
       const proximates = parseNutrients(food.proximates);
@@ -55,7 +55,6 @@ const SearchFoodByNutrient = ({ classes, categories }) => {
       const minerals = parseNutrients(food.inorganics);
       const combinedResults = [...proximates, ...vitamins, ...minerals];
       setSelectedFoodDetails(combinedResults);
-      setDetailsOpen(true);
     }
   };
 
@@ -73,7 +72,7 @@ const SearchFoodByNutrient = ({ classes, categories }) => {
           noMatchText='No nutrient matched!!'
           labelProp='label'
           context='getNutrients'
-          loading={loading}
+          loading={nutrients.length === 0}
           onChange={setNutrient}
           openOnFocus={true}
         />
