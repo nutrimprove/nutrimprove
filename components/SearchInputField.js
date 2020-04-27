@@ -116,7 +116,7 @@ const SearchInputField = ({ classes, foodKey, foodAction, isValid, categories, f
     const updateState = async input => {
       clearTimeout(timeout);
       timeout = setTimeout(async () => {
-        const selectedFilters = categories.filter(category => category.selected).map(category => category.group);
+        const selectedFilters = categories.selectedGroups;
         setHasFilters(selectedFilters.length !== 0 && selectedFilters.length !== categories.length);
 
         let search;
@@ -304,7 +304,7 @@ SearchInputField.propTypes = {
   foodAction: PropTypes.func,
   foodKey: PropTypes.string,
   isValid: PropTypes.bool,
-  categories: PropTypes.array,
+  categories: PropTypes.object.isRequired,
   foodNames: PropTypes.array,
 };
 
