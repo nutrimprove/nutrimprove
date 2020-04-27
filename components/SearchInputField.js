@@ -329,7 +329,7 @@ const styles = theme => ({
   },
   dropdown: {
     position: 'absolute',
-    zIndex: 1,
+    zIndex: 100,
     marginTop: theme.spacing(1),
     left: 0,
     right: 0,
