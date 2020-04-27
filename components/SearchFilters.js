@@ -15,10 +15,14 @@ import { EDAMAM_DB } from '../helpers/constants';
 const SearchFilters = ({ categories, setCategories, classes }) => {
   if(EDAMAM_DB) return null;
 
-  const [filters, setFilters] = useState(categories);
+  const [filters, setFilters] = useState(categories.all);
 
   useEffect(() => {
-    setCategories(filters);
+    const selectedFilters = filters.filter(filter => filter.selected).map(category => category.group);
+    setCategories({
+      all: filters,
+      selectedGroups: selectedFilters,
+    });
   }, [filters]);
 
   const updateFilters = (event) => {
@@ -29,9 +33,13 @@ const SearchFilters = ({ categories, setCategories, classes }) => {
     ));
   };
 
-  const setAll = () => setFilters(() => filters.map(filter => ({ ...filter, selected: true })));
+  const setAll = () => {
+    setFilters(filters.map(filter => ({ ...filter, selected: true })));
+  };
 
-  const setNone = () => setFilters(filters.map(filter => ({ ...filter, selected: false })));
+  const setNone = () => {
+    setFilters(filters.map(filter => ({ ...filter, selected: false })));
+  };
 
   const splitList = () => {
     const list = [...filters];
@@ -79,7 +87,7 @@ const SearchFilters = ({ categories, setCategories, classes }) => {
 };
 
 SearchFilters.propTypes = {
-  categories: PropTypes.array,
+  categories: PropTypes.object.isRequired,
   setCategories: PropTypes.func.isRequired,
   classes: PropTypes.object.isRequired,
 };

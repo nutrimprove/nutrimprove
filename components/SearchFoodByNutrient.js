@@ -25,14 +25,6 @@ const SearchFoodByNutrient = ({ classes, categories }) => {
     })();
   }, []);
 
-  const selectedFilters = () => categories.filter(category => category.selected).map(category => category.group);
-
-  const getFilteredFoodNames = () => {
-    if (foods) {
-      return foods.filter(({ group }) => selectedFilters.find(filter => group.match(`^(${filter})(.*)`)));
-    }
-  };
-
   const formatFoods = foods =>
     foods.map(food => {
       const foodObj = food[nutrient.group][nutrient.name];
@@ -49,7 +41,7 @@ const SearchFoodByNutrient = ({ classes, categories }) => {
 
   const getFoods = async () => {
     const nutrientKey = `${nutrient.group}.${nutrient.name}`;
-    const foods = await getFoodsByNutrient({nutrient: nutrientKey, filters: selectedFilters()});
+    const foods = await getFoodsByNutrient({nutrient: nutrientKey, filters: categories.selectedGroups});
     setFoods(formatFoods(foods));
   };
 
@@ -112,7 +104,7 @@ const SearchFoodByNutrient = ({ classes, categories }) => {
 
 SearchFoodByNutrient.propTypes = {
   classes: PropTypes.object.isRequired,
-  categories: PropTypes.array.isRequired,
+  categories: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = states => {

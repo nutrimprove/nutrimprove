@@ -9,6 +9,7 @@ import TableRow from '@material-ui/core/TableRow';
 import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
+import { uniqueId } from 'lodash/util';
 
 const ResultsTable = ({ classes, data, onRowClick, title }) => {
   const columns = Object.keys(data[0]);
@@ -35,11 +36,11 @@ const ResultsTable = ({ classes, data, onRowClick, title }) => {
                   hover={!!onRowClick}
                   className={clsx(classes.row, onRowClick ? classes.clickable : null)}
                   tabIndex={-1}
-                  key={row.nutrient}
+                  key={uniqueId()}
                   onClick={onRowClick}
                 >
                   {columns.map(column => (
-                    <TableCell key={`${row.nutrient}-${column}`}>
+                    <TableCell key={uniqueId()}>
                       {row[column]}
                     </TableCell>
                   ))}
@@ -56,7 +57,7 @@ ResultsTable.propTypes = {
   classes: PropTypes.object.isRequired,
   data: PropTypes.array.isRequired,
   title: PropTypes.string,
-  onRowClick: PropTypes.func.isRequired,
+  onRowClick: PropTypes.func,
 };
 
 const styles = {

@@ -26,7 +26,7 @@ const SearchFoodByName = ({ categories, foodNames, classes }) => {
 
   const getFilteredFoodNames = () => {
     if (foodNames) {
-      const selectedFilters = categories.filter(category => category.selected).map(category => category.group);
+      const selectedFilters = categories.selectedGroups;
       return foodNames.filter(({ group }) => selectedFilters.find(filter => group.match(`^(${filter})(.*)`)));
     }
   };
@@ -61,7 +61,7 @@ const SearchFoodByName = ({ categories, foodNames, classes }) => {
 SearchFoodByName.propTypes = {
   classes: PropTypes.object.isRequired,
   foodNames: PropTypes.array.isRequired,
-  categories: PropTypes.array.isRequired,
+  categories: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = states => {
