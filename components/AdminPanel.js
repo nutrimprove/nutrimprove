@@ -17,6 +17,7 @@ import { isAdmin, isOwner, userRoleToString } from '../helpers/userUtils';
 import { ROLES } from '../helpers/constants';
 import { updateDB } from '../interfaces/api/db';
 import { withStyles } from '@material-ui/core';
+import LoadingPanel from './LoadingPanel';
 
 const enableDB = process.env.ENABLE_UPDATE_DB;
 
@@ -26,7 +27,7 @@ const sectionHeader = {
 };
 
 const queries = {
-  GET_ALL: 'All Users',
+  GET_ALL: 'Users',
   APPROVED: 'Approved Users',
   NOT_APPROVED: 'Users Waiting Approval',
 };
@@ -128,22 +129,19 @@ const AdminPanel = ({ userDetails, classes }) => {
       <SectionHeader content={sectionHeader} />
       <ButtonWithSpinner
         action={() => setUserQuery(queries.GET_ALL)}
-        disabled={!users || userQuery === queries.GET_ALL}
-        context='getall'
+        disabled={userQuery === queries.GET_ALL}
       >
         All Users
       </ButtonWithSpinner>
       <ButtonWithSpinner
         action={() => setUserQuery(queries.NOT_APPROVED)}
-        disabled={!users || userQuery === queries.NOT_APPROVED}
-        context='notapproved'
+        disabled={userQuery === queries.NOT_APPROVED}
       >
         Waiting Approval
       </ButtonWithSpinner>
       <ButtonWithSpinner
         action={() => setUserQuery(queries.APPROVED)}
-        disabled={!users || userQuery === queries.APPROVED}
-        context='approved'
+        disabled={userQuery === queries.APPROVED}
       >
         Approved Users
       </ButtonWithSpinner>
@@ -169,7 +167,7 @@ const AdminPanel = ({ userDetails, classes }) => {
           </ButtonWithSpinner>
         </>
       )}
-      {users && <ResultsTable data={users} title={userQuery} />}
+      {users ? <ResultsTable data={users} title={userQuery} /> : <LoadingPanel />}
     </>
   );
 };
