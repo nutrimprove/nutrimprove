@@ -1,9 +1,9 @@
-import { getFoods } from '../../../../server/foods/foods';
+import { getFoodByName } from '../../../../server/foods/foods';
 
 const getCollectionResults = async (req, res) => {
-  const { food, categories } = req.query;
+  const { name } = req.query;
+  const result = await getFoodByName(name);
 
-  const result = await getFoods(food, categories);
   return result
     ? res.status(200).json(result)
     : res.status(404);

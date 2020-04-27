@@ -23,7 +23,7 @@ ButtonWithSpinner.propTypes = {
   children: PropTypes.node,
   context: PropTypes.string,
   colour: PropTypes.string,
-  className: PropTypes.object,
+  className: PropTypes.string,
 };
 
 export default ButtonWithSpinner;

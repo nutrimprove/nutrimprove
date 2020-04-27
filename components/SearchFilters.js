@@ -10,12 +10,19 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import PopoverPanelWithButton from './PopoverPanelWithButton';
 import FormControl from '@material-ui/core/FormControl';
 import Button from '@material-ui/core/Button';
+import { EDAMAM_DB } from '../helpers/constants';
 
 const SearchFilters = ({ categories, setCategories, classes }) => {
-  const [filters, setFilters] = useState(categories);
+  if(EDAMAM_DB) return null;
+
+  const [filters, setFilters] = useState(categories.all);
 
   useEffect(() => {
-    setCategories(filters);
+    const selectedFilters = filters.filter(filter => filter.selected).map(category => category.group);
+    setCategories({
+      all: filters,
+      selectedGroups: selectedFilters,
+    });
   }, [filters]);
 
   const updateFilters = (event) => {
@@ -27,7 +34,7 @@ const SearchFilters = ({ categories, setCategories, classes }) => {
   };
 
   const setAll = () => {
-    setFilters(() => filters.map(filter => ({ ...filter, selected: true })));
+    setFilters(filters.map(filter => ({ ...filter, selected: true })));
   };
 
   const setNone = () => {
@@ -80,7 +87,7 @@ const SearchFilters = ({ categories, setCategories, classes }) => {
 };
 
 SearchFilters.propTypes = {
-  categories: PropTypes.array,
+  categories: PropTypes.object.isRequired,
   setCategories: PropTypes.func.isRequired,
   classes: PropTypes.object.isRequired,
 };
