@@ -167,7 +167,7 @@ const AdminPanel = ({ userDetails, classes }) => {
           </ButtonWithSpinner>
         </>
       )}
-      {users ? <ResultsTable data={users} title={userQuery} /> : <LoadingPanel />}
+      {users ? <ResultsTable data={users} title={`${users.length} ${userQuery}`} /> : <LoadingPanel />}
     </>
   );
 };
