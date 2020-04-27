@@ -12,43 +12,47 @@ import clsx from 'clsx';
 import { uniqueId } from 'lodash/util';
 
 const ResultsTable = ({ classes, data, onRowClick, title }) => {
-  const columns = Object.keys(data[0]);
+  let columns;
+
+  if (data && data.length > 0) {
+    columns = Object.keys(data[0]);
+  }
 
   return (
     <>
       {title && <Typography variant='body1' align='center' className={classes.title}>
         {title}
       </Typography>}
-        <Paper className={classes.root}>
-          <Table stickyHeader aria-label="sticky table">
-            <TableHead>
-              <TableRow>
-                {columns.map((column, index) => (
-                  <TableCell className={classes.tableHeader} key={`${column}-${index}`}>
-                    {column}
+      {columns && <Paper className={classes.root}>
+        <Table stickyHeader aria-label="sticky table">
+          <TableHead>
+            <TableRow>
+              {columns.map((column, index) => (
+                <TableCell className={classes.tableHeader} key={`${column}-${index}`}>
+                  {column}
+                </TableCell>
+              ))}
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {data.map((row) => (
+              <TableRow
+                hover={!!onRowClick}
+                className={clsx(classes.row, onRowClick ? classes.clickable : null)}
+                tabIndex={-1}
+                key={uniqueId()}
+                onClick={onRowClick}
+              >
+                {columns.map(column => (
+                  <TableCell key={uniqueId()}>
+                    {row[column]}
                   </TableCell>
                 ))}
               </TableRow>
-            </TableHead>
-            <TableBody>
-              {data.map((row) => (
-                <TableRow
-                  hover={!!onRowClick}
-                  className={clsx(classes.row, onRowClick ? classes.clickable : null)}
-                  tabIndex={-1}
-                  key={uniqueId()}
-                  onClick={onRowClick}
-                >
-                  {columns.map(column => (
-                    <TableCell key={uniqueId()}>
-                      {row[column]}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </Paper>
+            ))}
+          </TableBody>
+        </Table>
+      </Paper>}
     </>
   );
 };
