@@ -35,11 +35,28 @@ const mapSearchResults = results => {
   return results.map(item => ({
     food_id: item.foodCode,
     food_name: item.foodName,
+    food_group: item.group,
   }));
 };
 
+const parseNutrients = nutrients => {
+  const nutrientsObj = [];
+  const keys = Object.keys(nutrients);
+  keys.map(key => {
+    const nutrient = nutrients[key];
+    if (!isNaN(nutrient.quantity) && nutrient.quantity > 0) {
+      nutrientsObj.push({
+        nutrient: nutrient.label,
+        quantity: `${Number.parseFloat(nutrient.quantity).toFixed(2)} ${
+          nutrient.unit
+          }`,
+      });
+    }
+  });
+  return nutrientsObj;
+};
 
-// Function to extract groups and subgroups from a CoFID food record
+// Function to generate regex for applicable groups and subgroups to use in CoFID foods search
 const getFoodGroups = groups => {
   if (!groups) return;
 
@@ -52,4 +69,4 @@ const getFoodGroups = groups => {
   return subgroups;
 };
 
-export { getTime, emptyFood, fullTrim, lowerCaseCompare, mapSearchResults, getFoodGroups};
+export { getTime, emptyFood, fullTrim, lowerCaseCompare, mapSearchResults, getFoodGroups, parseNutrients };

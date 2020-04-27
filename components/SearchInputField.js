@@ -12,8 +12,8 @@ import ErrorIcon from '@material-ui/icons/Error';
 import LoadingSpinner from './LoadingSpinner';
 import IconButton from '@material-ui/core/IconButton';
 import { usePromiseTracker } from 'react-promise-tracker';
-import searchFoods from '../interfaces/api/search';
-import { INPUT_TRIGGER_TIME } from '../helpers/constants';
+import { getSearchedTerms } from '../interfaces/api/edamamFoods';
+import { EDAMAM_DB, INPUT_TRIGGER_TIME } from '../helpers/constants';
 import { Tooltip } from '@material-ui/core';
 import { fullTrim, lowerCaseCompare, mapSearchResults } from '../helpers/utils';
 import { connect } from 'react-redux';
@@ -100,7 +100,7 @@ renderSuggestion.propTypes = {
 
 let timeout = null;
 
-const SearchInputField = ({ classes, foodKey, foodAction, isValid, categories }) => {
+const SearchInputField = ({ classes, foodKey, foodAction, isValid, categories, foodNames }) => {
     const [food, setFood] = useState();
     const [charCount, setCharCount] = useState(0);
     const [notFound, setNotFound] = useState();
@@ -114,14 +114,20 @@ const SearchInputField = ({ classes, foodKey, foodAction, isValid, categories })
     }, [food]);
 
     const updateState = async input => {
-
       clearTimeout(timeout);
       timeout = setTimeout(async () => {
-        const selectedFilters = categories.filter(category => category.selected).map(category => category.group);
-        setHasFilters(selectedFilters.length !== categories.length);
-        const search = await searchFoods(input, context, selectedFilters);
-        const mappedSearchResults = mapSearchResults(search);
+        const selectedFilters = categories.selectedGroups;
+        setHasFilters(selectedFilters.length !== 0 && selectedFilters.length !== categories.length);
 
+        let search;
+        if (EDAMAM_DB) {
+          search = await getSearchedTerms(input, context, selectedFilters);
+        } else {
+          search = foodNames
+            .filter(({foodName}) => foodName.toLowerCase().includes(input.toLowerCase()))
+            .filter(({group}) => selectedFilters.find(filter => group.match(`^(${filter})(.*)`)));
+        }
+        const mappedSearchResults = mapSearchResults(search);
         if (mappedSearchResults) {
           const suggestions = mappedSearchResults.map(food => ({
             food_name: food.food_name,
@@ -156,11 +162,10 @@ const SearchInputField = ({ classes, foodKey, foodAction, isValid, categories })
 
     function onInputChange(input) {
       setNotFound(false);
+      resetField();
       setCharCount(input && input.length ? input.length : 0);
       if (input && input.length > 2) {
         updateState(input);
-      } else {
-        resetField();
       }
     }
 
@@ -299,12 +304,14 @@ SearchInputField.propTypes = {
   foodAction: PropTypes.func,
   foodKey: PropTypes.string,
   isValid: PropTypes.bool,
-  categories: PropTypes.array,
+  categories: PropTypes.object.isRequired,
+  foodNames: PropTypes.array,
 };
 
 const mapStateToProps = states => {
   return {
     categories: states.globalState.categories,
+    foodNames: states.globalState.foodNames,
   };
 };
 
@@ -322,16 +329,13 @@ const styles = theme => ({
   },
   dropdown: {
     position: 'absolute',
-    zIndex: 1,
+    zIndex: 100,
     marginTop: theme.spacing(1),
     left: 0,
     right: 0,
     maxHeight: 230,
     width: 'fit-content',
     overflow: 'auto',
-  },
-  chip: {
-    margin: `${theme.spacing(0.5)}px ${theme.spacing(0.25)}px`,
   },
   inputRoot: {
     flexWrap: 'wrap',
@@ -343,11 +347,6 @@ const styles = theme => ({
     backgroundColor: '#ffffff',
     color: '#000000',
     padding: 10,
-  },
-  invalidInput: {
-    width: 'auto',
-    flexGrow: 1,
-    color: 'firebrick',
   },
   checkIcon: {
     color: 'limegreen',

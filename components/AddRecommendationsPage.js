@@ -1,19 +1,7 @@
-import SearchInputField from './SearchInputField';
 import React, { useState } from 'react';
-import RemoveIcon from './RemoveIcon';
-import MainButton from './MainButton';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { emptyFood, getTime } from '../helpers/utils';
-import {
-  addFoodAction,
-  addRecommendedFoodAction,
-  editFoodAction,
-  editRecommendedFoodAction,
-  removeAllFoodsAndRecommendationsAction,
-  removeFoodAction,
-  removeRecommendedFoodAction,
-} from '../store/addRecommendation/actions';
 import { addUserPointsAction } from '../store/global/actions';
 import { postRecommendations } from '../interfaces/api/recommendations';
 import { difference, uniqBy } from 'lodash';
@@ -26,70 +14,54 @@ import { Typography } from '@material-ui/core';
 import Link from '@material-ui/core/Link';
 import { calcPoints } from '../helpers/userUtils';
 import SearchFilters from './SearchFilters';
-
-const maxFoodFields = 4;
-const maxRecommendationFields = 4;
-const defaultAddRecsButtonText = 'Add recommendation(s)';
+import RepeatableFoodsPanel from './RepeatableFoodsPanel';
+import {
+  addFoodAction,
+  addRecommendedFoodAction,
+  editFoodAction,
+  editRecommendedFoodAction,
+  removeAllFoodsAndRecommendationsAction,
+  removeFoodAction,
+  removeRecommendedFoodAction,
+} from '../store/addRecommendation/actions';
 
 const sectionHeader = {
   title: 'Add Recommendations',
-  subtitle:
-    'Choose the foods and the recommendations you would like to provide',
+  subtitle: 'Choose the foods and the recommendations you would like to provide',
 };
 
 const AddRecommendationsPage = ({
-  foods,
-  recommendations,
-  addEmptyRecommendedFood,
-  addEmptyFood,
-  removeFood,
-  removeRecommendedFood,
-  removeAllFoods,
-  userDetails,
-  saveFood,
-  saveRecommendedFood,
-  addUserPoints,
-  classes,
-}) => {
+                                  foods,
+                                  recommendations,
+                                  addEmptyRecommendedFood,
+                                  addEmptyFood,
+                                  removeFood,
+                                  removeRecommendedFood,
+                                  removeAllFoods,
+                                  userDetails,
+                                  saveFood,
+                                  saveRecommendedFood,
+                                  addUserPoints,
+                                  classes,
+                                }) => {
   const [validation, setValidation] = useState(false);
   const [status, setStatus] = useState([]);
 
-  const { promiseInProgress: savingRecommendations } = usePromiseTracker({
-    area: 'postRecommendations',
-  });
-  const { promiseInProgress: loadingRecs } = usePromiseTracker({
-    area: 'getSearchTerms-rec',
-  });
-  const { promiseInProgress: loadingFoods } = usePromiseTracker({
-    area: 'getSearchTerms-food',
-  });
+  const { promiseInProgress: savingRecommendations } = usePromiseTracker({ area: 'postRecommendations', });
+  const { promiseInProgress: loadingRecs } = usePromiseTracker({ area: 'getSearchTerms-rec', });
+  const { promiseInProgress: loadingFoods } = usePromiseTracker({ area: 'getSearchTerms-food', });
   const loadingSearchTerms = loadingRecs || loadingFoods;
-  const addRecommendationDisabled = recommendations.length >= maxRecommendationFields;
-  const addFoodDisabled = foods.length >= maxFoodFields;
   const addRecommendationsDisabled = loadingSearchTerms || savingRecommendations;
-
-  if (foods.length === 0) {
-    addEmptyFood();
-  }
-
-  if (recommendations.length === 0) {
-    addEmptyRecommendedFood();
-  }
 
   const isValid = food => {
     if (!validation) {
       return !!food && food.id ? true : null;
     }
-
     if (!food || !food.id || !food.name) return false;
 
-    const allFoodIds = foods
-      .concat(recommendations)
-      .map(item => item.name);
+    const allFoodIds = foods.concat(recommendations).map(item => item.name);
     const sameIds = allFoodIds.filter(id => id === food.name);
-    return (
-      food.id.length > 0 && food.name.length > 2 && sameIds.length <= 1
-    );
+    return food.id.length > 0 && food.name.length > 2 && sameIds.length <= 1;
   };
 
   const setFood = food => {
@@ -104,54 +76,21 @@ const AddRecommendationsPage = ({
     }
   };
 
-  const renderRemoveIcon = (food, isRecommendation) => {
-    return isRecommendation ? (
-      <RemoveIcon foodItem={food} action={removeRecommendedFood} />
-    ) : (
-      <RemoveIcon foodItem={food} action={removeFood} />
-    );
-  };
-
-  /**
-   * @param foods foods to render in input fields
-   * @param isRecommendation if the food is a recommendation
-   * @returns {*}
-   */
-  const renderField = ({ foods, isRecommendation }) =>
-    foods.map(food => (
-      <div key={food.key} className={classes.searchfood}>
-        <SearchInputField
-          isValid={isValid(food)}
-          foodAction={isRecommendation ? setRecommendation : setFood}
-          foodKey={food.key}
-        />
-        {foods.length <= 1 ? (
-          <RemoveIcon />
-        ) : (
-          renderRemoveIcon(food, isRecommendation)
-        )}
-      </div>
-    ));
-
   const validateFields = () => {
     const allFoods = foods.concat(recommendations);
     const emptyFields = allFoods.filter(food => !food.id);
-    const duplicatedFoods = difference(
-      allFoods,
-      uniqBy(allFoods, 'id'),
-      'id'
-    );
+    const duplicatedFoods = difference(allFoods, uniqBy(allFoods, 'id'), 'id');
     return duplicatedFoods.length === 0 && emptyFields.length === 0;
   };
 
   const updateStatus = newStatus => {
     if (Array.isArray(newStatus)) {
       const statusToAppend = [];
-      newStatus.map((statusLine, index) => {
+      newStatus.map((statusLine, index) =>
         index === 0
           ? statusToAppend.push(`${getTime()} - ${statusLine}`)
-          : statusToAppend.push(statusLine);
-      });
+          : statusToAppend.push(statusLine)
+      );
       setStatus([...statusToAppend, '', ...status]);
     } else {
       setStatus([`${getTime()} - ${newStatus}`, '', ...status]);
@@ -163,123 +102,82 @@ const AddRecommendationsPage = ({
 
     if (!validateFields()) {
       setValidation(true);
-      updateStatus(
-        'No duplicate nor empty fields are allowed when inserting recommendations!'
-      );
+      updateStatus('No duplicate nor empty fields are allowed when inserting recommendations!',);
       return;
     }
 
     for (const food of foods) {
       for (const recommendation of recommendations) {
         recommendationsPayload.push({
-          food: {
-            id: food.id,
-            name: food.name,
-          },
-          recommendation: {
-            id: recommendation.id,
-            name: recommendation.name,
-          },
+          food: { id: food.id, name: food.name },
+          recommendation: { id: recommendation.id, name: recommendation.name },
           contributors: [{ id: userDetails.email }],
         });
       }
     }
 
     const result = await postRecommendations(recommendationsPayload);
+    if (!result) return;
 
-    if (result) {
-      const recCount = recommendationsPayload.length;
-      const insertedCount = result.inserted ? result.inserted.length : 0;
-      const incrementedCount = result.incremented
-        ? result.incremented.length
-        : 0;
-      const duplicatesCount = result.duplicates
-        ? result.duplicates.length
-        : 0;
+    const recCount = recommendationsPayload.length;
+    const insertedCount = result.inserted ? result.inserted.length : 0;
+    const incrementedCount = result.incremented ? result.incremented.length : 0;
+    const duplicatesCount = result.duplicates ? result.duplicates.length : 0;
 
-      if (insertedCount + incrementedCount === recCount) {
-        // Reset fields if all combinations were stored successfully
-        removeAllFoods();
-        setValidation(false);
+    if (insertedCount + incrementedCount === recCount) {
+      // Reset fields if all combinations were stored successfully
+      removeAllFoods();
+      setValidation(false);
 
-        const addedPoints = calcPoints({
-          added: insertedCount,
-          incremented: incrementedCount,
-        });
+      const addedPoints = calcPoints({ added: insertedCount, incremented: incrementedCount });
+      addUserPoints(addedPoints);
 
-        addUserPoints(addedPoints);
+      const recommendationString = insertedCount === 1 ? 'recommendation' : 'recommendations';
+      let status = `${insertedCount} new ${recommendationString} added to the database!`;
 
-        const recommendationString =
-          insertedCount === 1 ? 'recommendation' : 'recommendations';
-
-        let status = `${insertedCount} new ${recommendationString} added to the database!`;
-
-        if (result.incremented) {
-          status =
-            status +
-            ` Added your contribution to ${incrementedCount} already present.`;
-        }
-        status += ` +${addedPoints} points`;
-        updateStatus(status);
+      if (result.incremented) {
+        status = status + ` Added your contribution to ${incrementedCount} already present.`;
+      }
+      status += ` +${addedPoints} points`;
+      updateStatus(status);
+    } else {
+      if (duplicatesCount > 0) {
+        const duplicatesList = result.duplicates.map(dup => `${dup.food.name} -> ${dup.recommendation.name}`,);
+        updateStatus([
+          'Some recommendations have already been submitted by you!',
+          'Please remove these before submitting again:',
+          ...duplicatesList,
+        ]);
       } else {
-        if (duplicatesCount > 0) {
-          const duplicatesList = result.duplicates.map(
-            dup => `${dup.food.name} -> ${dup.recommendation.name}`
-          );
-          updateStatus([
-            'Some recommendations have already been submitted by you!',
-            'Please remove these before submitting again:',
-            ...duplicatesList,
-          ]);
-        } else {
-          updateStatus([
-            'Something went wrong when saving record(s) to database.',
-            'Please refresh and try again. If it persists please contact us!',
-          ]);
-        }
+        updateStatus([
+          'Something went wrong when saving record(s) to database.',
+          'Please refresh and try again. If it persists please contact us!',
+        ]);
       }
     }
-
-    return result;
   };
 
   return (
     <>
-      <SectionHeader content={sectionHeader} />
+      <SectionHeader content={sectionHeader}/>
       <Typography paragraph={true} variant='subtitle2'>
-        Please refer to the <Link href={'/help#add_recs'}>Help page</Link>{' '}
-        for instructions.
+        Please refer to the <Link href={'/help#add_recs'}>Help page</Link>
+        {' '}for instructions.
       </Typography>
-      <SearchFilters />
+      <SearchFilters/>
       <div className={classes.main}>
-        <div className={classes.fieldBox}>
-          <Typography className={classes.fieldtitle} component='h4'>
-            Choose food(s):
-          </Typography>
-          <div id='foods_input'>
-            {renderField({ foods, isRecommendation: false })}
-            <MainButton action={addEmptyFood} disabled={addFoodDisabled}>
-              Add
-            </MainButton>
-          </div>
-        </div>
-        <div className={classes.fieldBox}>
-          <Typography className={classes.fieldtitle} component='h4'>
-            Healthier alternative(s):
-          </Typography>
-          <div id='recommendations_input'>
-            {renderField({
-              foods: recommendations,
-              isRecommendation: true,
-            })}
-            <MainButton
-              action={addEmptyRecommendedFood}
-              disabled={addRecommendationDisabled}
-            >
-              Add
-            </MainButton>
-          </div>
-        </div>
+        <RepeatableFoodsPanel title='Choose food(s):'
+                              foods={foods}
+                              addEmptyField={addEmptyFood}
+                              setFood={setFood}
+                              removeField={removeFood}
+                              isValid={isValid}/>
+        <RepeatableFoodsPanel title='Healthier alternative(s):'
+                              foods={recommendations}
+                              addEmptyField={addEmptyRecommendedFood}
+                              setFood={setRecommendation}
+                              removeField={removeRecommendedFood}
+                              isValid={isValid}/>
       </div>
       <div className={classes.submit}>
         <ButtonWithSpinner
@@ -287,10 +185,10 @@ const AddRecommendationsPage = ({
           disabled={addRecommendationsDisabled}
           context='postRecommendations'
         >
-          {defaultAddRecsButtonText}
+          Add recommendation(s)
         </ButtonWithSpinner>
       </div>
-      {status.length > 0 ? <Status status={status} /> : null}
+      {status.length > 0 ? <Status status={status}/> : null}
     </>
   );
 };
@@ -332,9 +230,6 @@ const styles = {
   fieldtitle: {
     marginBottom: 20,
   },
-  searchfood: {
-    display: '-webkit-box',
-  },
   main: {
     display: 'flex',
   },
@@ -353,11 +248,9 @@ const mapStateToProps = states => {
 
 const mapDispatchToProps = dispatch => ({
   removeFood: food => dispatch(removeFoodAction(food)),
-  removeRecommendedFood: food =>
-    dispatch(removeRecommendedFoodAction(food)),
+  removeRecommendedFood: food => dispatch(removeRecommendedFoodAction(food)),
   addEmptyFood: () => dispatch(addFoodAction(emptyFood())),
-  addEmptyRecommendedFood: () =>
-    dispatch(addRecommendedFoodAction(emptyFood())),
+  addEmptyRecommendedFood: () => dispatch(addRecommendedFoodAction(emptyFood())),
   removeAllFoods: () => dispatch(removeAllFoodsAndRecommendationsAction()),
   saveFood: food => dispatch(editFoodAction(food)),
   saveRecommendedFood: food => dispatch(editRecommendedFoodAction(food)),
@@ -366,5 +259,5 @@ const mapDispatchToProps = dispatch => ({
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(withStyles(styles)(AddRecommendationsPage));

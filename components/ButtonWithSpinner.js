@@ -9,8 +9,9 @@ const ButtonWithSpinner = ({
   context,
   colour,
   children,
+  className,
 }) => (
-  <MainButton action={action} disabled={disabled} colour={colour}>
+  <MainButton action={action} disabled={disabled} colour={colour} className={className}>
     {children}
     <LoadingSpinner context={context} colour='white' />
   </MainButton>
@@ -19,9 +20,10 @@ const ButtonWithSpinner = ({
 ButtonWithSpinner.propTypes = {
   action: PropTypes.func,
   disabled: PropTypes.bool,
-  children: PropTypes.any,
+  children: PropTypes.node,
   context: PropTypes.string,
   colour: PropTypes.string,
+  className: PropTypes.string,
 };
 
 export default ButtonWithSpinner;
