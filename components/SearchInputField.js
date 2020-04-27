@@ -13,9 +13,13 @@ import LoadingSpinner from './LoadingSpinner';
 import IconButton from '@material-ui/core/IconButton';
 import { usePromiseTracker } from 'react-promise-tracker';
 import searchFoods from '../interfaces/api/search';
-import { INPUT_TRIGGER_TIME } from '../helpers/constants';
+import { EDAMAM_DB, INPUT_TRIGGER_TIME } from '../helpers/constants';
 import { Tooltip } from '@material-ui/core';
-import { fullTrim, lowerCaseCompare, mapSearchResults } from '../helpers/utils';
+import {
+  fullTrim,
+  lowerCaseCompare,
+  mapSearchResults,
+} from '../helpers/utils';
 import { connect } from 'react-redux';
 
 const renderInput = inputProps => {
@@ -100,7 +104,7 @@ renderSuggestion.propTypes = {
 
 let timeout = null;
 
-const SearchInputField = ({ classes, foodKey, foodAction, isValid, categories }) => {
+const SearchInputField = ({ classes, foodKey, foodAction, isValid, categories, foodNames }) => {
     const [food, setFood] = useState();
     const [charCount, setCharCount] = useState(0);
     const [notFound, setNotFound] = useState();
@@ -118,9 +122,16 @@ const SearchInputField = ({ classes, foodKey, foodAction, isValid, categories })
       timeout = setTimeout(async () => {
         const selectedFilters = categories.filter(category => category.selected).map(category => category.group);
         setHasFilters(selectedFilters.length !== 0 && selectedFilters.length !== categories.length);
-        const search = await searchFoods(input, context, selectedFilters);
-        const mappedSearchResults = mapSearchResults(search);
 
+        let search;
+        if (EDAMAM_DB) {
+          search = await searchFoods(input, context, selectedFilters);
+        } else {
+          search = foodNames
+            .filter(({foodName}) => foodName.toLowerCase().includes(input.toLowerCase()))
+            .filter(({group}) => selectedFilters.find(filter => group.match(`^(${filter})(.*)`)));
+        }
+        const mappedSearchResults = mapSearchResults(search);
         if (mappedSearchResults) {
           const suggestions = mappedSearchResults.map(food => ({
             food_name: food.food_name,
@@ -298,11 +309,13 @@ SearchInputField.propTypes = {
   foodKey: PropTypes.string,
   isValid: PropTypes.bool,
   categories: PropTypes.array,
+  foodNames: PropTypes.array,
 };
 
 const mapStateToProps = states => {
   return {
     categories: states.globalState.categories,
+    foodNames: states.globalState.foodNames,
   };
 };
 

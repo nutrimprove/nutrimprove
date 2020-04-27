@@ -22,9 +22,9 @@ const getFood = async id => {
   return FoodsConnection.findOne({ foodCode: id });
 };
 
-const getAllFoods = async () => {
+const getAllFoodNames = async () => {
   const FoodsConnection = await getFoodsConnection();
-  return FoodsConnection.find({});
+  return FoodsConnection.find({}, { foodCode: 1, foodName: 1, group: 1, _id: 0 });
 };
 
-export { getFoods, getFood, getAllFoods };
+export { getFoods, getFood, getAllFoodNames };

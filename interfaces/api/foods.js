@@ -17,4 +17,10 @@ const getFood = (id, context = 'getFoodData') =>
     context
   );
 
-export { getFoods, getFood };
+const getAllFoodNames = (context = 'getAllFoodNames') =>
+  trackPromise(
+    getRequest(`${foodApiEndpoint}/names`),
+    context
+  );
+
+export { getFoods, getFood, getAllFoodNames };

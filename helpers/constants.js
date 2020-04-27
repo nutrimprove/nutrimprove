@@ -4,10 +4,9 @@ const ROLES = {
   ADMIN: 5,
   CONTRIBUTOR: 100,
 };
-const INPUT_TRIGGER_TIME = 700;
 const MIN_WIDTH = 960;
 const EDAMAM_DB = false;
-
+const INPUT_TRIGGER_TIME = EDAMAM_DB ? 700 : 300;
 const CATEGORIES = [
   { group: 'A', name: 'Cereals and cereal products', selected: true },
   { group: 'B', name: 'Milk and milk products', selected: true },
