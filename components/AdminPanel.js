@@ -169,7 +169,7 @@ const AdminPanel = ({ userDetails, classes }) => {
           </ButtonWithSpinner>
         </>
       )}
-      {users && <ResultsTable values={users} title={userQuery} />}
+      {users && <ResultsTable data={users} title={userQuery} />}
     </>
   );
 };
