@@ -13,6 +13,7 @@ import Typography from '@material-ui/core/Typography';
 const SearchFoodByNutrient = ({ classes, categories }) => {
   const [nutrient, setNutrient] = useState();
   const [nutrients, setNutrients] = useState([]);
+  const [tableTitle, setTableTitle] = useState();
   const [foods, setFoods] = useState();
   const [selectedFood, setSelectedFood] = useState('');
   const [selectedFoodDetails, setSelectedFoodDetails] = useState();
@@ -42,6 +43,7 @@ const SearchFoodByNutrient = ({ classes, categories }) => {
   const getFoods = async () => {
     const nutrientKey = `${nutrient.group}.${nutrient.name}`;
     const foods = await getFoodsByNutrient({nutrient: nutrientKey, filters: categories.selectedGroups});
+    setTableTitle(`${nutrient && nutrient.label} per 100g of food`);
     setFoods(formatFoods(foods));
   };
 
@@ -89,7 +91,7 @@ const SearchFoodByNutrient = ({ classes, categories }) => {
       </div>
       {foods && <ResultsTable
         data={foods}
-        title={`${nutrient && nutrient.label} per 100g of food`}
+        title={tableTitle}
         onRowClick={handleRowClick}
       />}
       {detailsOpen && <ResultsModal
