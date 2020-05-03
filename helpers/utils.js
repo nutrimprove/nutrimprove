@@ -47,7 +47,8 @@ const parseNutrients = ({nutrients, filterEmptyValues = true, addKey = false}) =
     const { quantity, label, unit } = nutrient;
     const filter = filterEmptyValues ? !isNaN(quantity) && quantity > 0 : true;
     if (filter) {
-      const value = !quantity || isNaN(quantity) ? 0 : Number.parseFloat(quantity).toFixed(2);
+      const decimalPlaces = label === 'kcal' ? 0 : 2;
+      const value = !quantity || isNaN(quantity) ? 0 : Number.parseFloat(quantity).toFixed(decimalPlaces);
       const valueWithUnit = quantity && quantity === 'Tr' ? 'traces' : `${value} ${unit}`;
       const nutrientObject = { nutrient: label, quantity: valueWithUnit };
       if (addKey) {
