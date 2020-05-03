@@ -13,7 +13,7 @@ const TabbedPanel = ({ tabs, classes }) => {
   };
 
   return (
-    <div className={classes.tabContent}>
+    <div className={classes.content}>
       <Tabs indicatorColor='secondary' value={tabOption} onChange={tabChange}>
         {tabs.map(tab => (
           <Tab key={tab.label} className={classes.tab} label={tab.label}/>
@@ -34,7 +34,7 @@ TabbedPanel.propTypes = {
 };
 
 const styles = {
-  tabContent: {
+  content: {
     marginTop: 10,
   },
   tab: {
