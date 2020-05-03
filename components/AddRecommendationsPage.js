@@ -25,9 +25,17 @@ import {
   removeRecommendedFoodAction,
 } from '../store/addRecommendation/actions';
 
+const helpMessage = (
+  <>
+    Please refer to the <Link href={'/help#add_recs'}>Help page</Link>
+    {' '}for instructions.
+  </>
+);
+
 const sectionHeader = {
   title: 'Add Recommendations',
   subtitle: 'Choose the foods and the recommendations you would like to provide',
+  messages: [helpMessage],
 };
 
 const AddRecommendationsPage = ({
@@ -47,9 +55,9 @@ const AddRecommendationsPage = ({
   const [validation, setValidation] = useState(false);
   const [status, setStatus] = useState([]);
 
-  const { promiseInProgress: savingRecommendations } = usePromiseTracker({ area: 'postRecommendations', });
-  const { promiseInProgress: loadingRecs } = usePromiseTracker({ area: 'getSearchTerms-rec', });
-  const { promiseInProgress: loadingFoods } = usePromiseTracker({ area: 'getSearchTerms-food', });
+  const { promiseInProgress: savingRecommendations } = usePromiseTracker({ area: 'postRecommendations' });
+  const { promiseInProgress: loadingRecs } = usePromiseTracker({ area: 'getSearchTerms-rec' });
+  const { promiseInProgress: loadingFoods } = usePromiseTracker({ area: 'getSearchTerms-food' });
   const loadingSearchTerms = loadingRecs || loadingFoods;
   const addRecommendationsDisabled = loadingSearchTerms || savingRecommendations;
 
@@ -89,7 +97,7 @@ const AddRecommendationsPage = ({
       newStatus.map((statusLine, index) =>
         index === 0
           ? statusToAppend.push(`${getTime()} - ${statusLine}`)
-          : statusToAppend.push(statusLine)
+          : statusToAppend.push(statusLine),
       );
       setStatus([...statusToAppend, '', ...status]);
     } else {
@@ -102,7 +110,7 @@ const AddRecommendationsPage = ({
 
     if (!validateFields()) {
       setValidation(true);
-      updateStatus('No duplicate nor empty fields are allowed when inserting recommendations!',);
+      updateStatus('No duplicate nor empty fields are allowed when inserting recommendations!');
       return;
     }
 
@@ -142,7 +150,7 @@ const AddRecommendationsPage = ({
       updateStatus(status);
     } else {
       if (duplicatesCount > 0) {
-        const duplicatesList = result.duplicates.map(dup => `${dup.food.name} -> ${dup.recommendation.name}`,);
+        const duplicatesList = result.duplicates.map(dup => `${dup.food.name} -> ${dup.recommendation.name}`);
         updateStatus([
           'Some recommendations have already been submitted by you!',
           'Please remove these before submitting again:',
@@ -160,10 +168,6 @@ const AddRecommendationsPage = ({
   return (
     <>
       <SectionHeader content={sectionHeader}/>
-      <Typography paragraph={true} variant='subtitle2'>
-        Please refer to the <Link href={'/help#add_recs'}>Help page</Link>
-        {' '}for instructions.
-      </Typography>
       <SearchFilters/>
       <div className={classes.main}>
         <RepeatableFoodsPanel title='Choose food(s):'

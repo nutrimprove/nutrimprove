@@ -7,25 +7,20 @@ const styles = {
   header: {
     marginBottom: '30px',
     fontFamily: 'sans-serif, arial',
-    backgroundColor: 'lightyellow',
-    padding: '10px 0 5px 10px',
+    backgroundColor: '#fafafd',
+    padding: '10px',
     border: 'solid 1px lightgrey',
     borderRadius: 9,
+    fontSize: '0.9em',
+    fontWeight: 200,
+    lineHeight: '1.5em',
+    textAlign: 'center',
   },
   title: {
-    fontSize: '1.5em',
+    fontSize: '1.3em',
     marginBottom: 10,
     fontFamily: 'tahome, sans-serif, arial',
-    fontWeight: 300,
-  },
-  subtitle: {
-    fontSize: '1em',
-    fontFamily: 'sans-serif, arial',
-    fontWeight: 200,
-  },
-  messages: {
-    fontSize: '1em',
-    marginTop: 10,
+    fontWeight: 400,
   },
   fetchButton: {
     verticalAlign: 'bottom',
@@ -37,8 +32,8 @@ const SectionHeader = ({ content, classes }) => {
   return (
     <div className={classes.header}>
       <div className={classes.title}>{content && content.title}</div>
-      <div className={classes.subtitle}>{content && content.subtitle}</div>
-      <div className={classes.messages}>
+      <div>{content && content.subtitle}</div>
+      <div>
         {content &&
           content.messages &&
           content.messages.map(message => (
