@@ -73,6 +73,7 @@ const styles = {
     color: 'white',
     fontWeight: 'bold',
     textTransform: 'capitalize',
+    minWidth: 130,
     '&:first-child': {
       borderTopLeftRadius: 9,
     },
