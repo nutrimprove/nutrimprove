@@ -53,6 +53,7 @@ const styles = {
     display: 'grid',
     borderRadius: 9,
     paddingBottom: 10,
+    minHeight: 400,
   },
   header: {
     padding: 20,

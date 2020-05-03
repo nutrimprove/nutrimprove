@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { parseNutrients } from '../helpers/utils';
 import ResultsTable from './ResultsTable';
+import Typography from '@material-ui/core/Typography';
 
 const SearchFoodByName = ({ categories, foodNames, classes }) => {
   const [selectedFood, setSelectedFood] = useState();
@@ -33,6 +34,7 @@ const SearchFoodByName = ({ categories, foodNames, classes }) => {
 
   return (
     <>
+      <Typography variant='subtitle2' paragraph={true}>Search for a food to display its nutritional data</Typography>
       <div className={classes.search}>
         <AutoComplete
           values={getFilteredFoodNames()}
