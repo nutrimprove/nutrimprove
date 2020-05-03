@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Typography, withStyles } from '@material-ui/core';
 import SectionHeader from './SectionHeader';
 import Link from '@material-ui/core/Link';
-import Section from './Section';
+import ContentSection from './ContentSection';
 import BackToMainPageLink from './BackToMainPageLink';
 import { PROJECT_NAME, MIN_WIDTH } from '../helpers/constants';
 
@@ -33,7 +33,7 @@ const HelpPage = ({ classes }) => (
       </div>
     </div>
 
-    <Section id='search_food' title='Search Food'>
+    <ContentSection id='search_food' title='Search Food'>
       <img
         className={classes.image}
         src='/searchfood.png'
@@ -97,9 +97,9 @@ const HelpPage = ({ classes }) => (
         Loading times may vary depending on your Internet connection or the
         database load.
       </Typography>
-    </Section>
+    </ContentSection>
 
-    <Section id='view_recs' title='View Recommendations'>
+    <ContentSection id='view_recs' title='View Recommendations'>
       <img
         className={classes.image}
         src='/viewrecs.png'
@@ -120,9 +120,9 @@ const HelpPage = ({ classes }) => (
         near future (eg: ability to view all recommendations inserted by
         all contributors, ability to search a food in recommendations, etc)
       </Typography>
-    </Section>
+    </ContentSection>
 
-    <Section id='add_recs' title='Add Recommendations'>
+    <ContentSection id='add_recs' title='Add Recommendations'>
       <img
         className={classes.image}
         src='/addrecs.png'
@@ -218,7 +218,7 @@ const HelpPage = ({ classes }) => (
       <Typography variant='body1'>
         {'Doritos –> Sweet Potato Crisp'}
       </Typography>
-    </Section>
+    </ContentSection>
     <BackToMainPageLink />
   </div>
 );

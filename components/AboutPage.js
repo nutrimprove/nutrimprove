@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Typography, withStyles } from '@material-ui/core';
 import SectionHeader from './SectionHeader';
 import Link from '@material-ui/core/Link';
-import Section from './Section';
+import ContentSection from './ContentSection';
 import BackToMainPageLink from './BackToMainPageLink';
 import { MIN_WIDTH, PROJECT_NAME } from '../helpers/constants';
 
@@ -17,7 +17,7 @@ const AboutPage = ({ classes }) => {
     <div className={classes.content}>
       <SectionHeader content={content} />
 
-      <Section>
+      <ContentSection>
         <Typography>
           NutrImprove is an initiative that aims to curate the world&apos;s
           largest database of nutritional recommendations.
@@ -48,7 +48,7 @@ const AboutPage = ({ classes }) => {
           please contact us via email on:
         </Typography>
         <Link>nutrimprove@gmail.com</Link>
-      </Section>
+      </ContentSection>
       <BackToMainPageLink />
     </div>
   );

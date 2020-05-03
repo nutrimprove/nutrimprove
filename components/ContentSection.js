@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
 
-const Section = ({ classes, id, title, children }) => {
+const ContentSection = ({ classes, id, title, children }) => {
   const sectionStyle = title
     ? classes.section
     : `${classes.section} ${classes.allRadius}`;
@@ -18,7 +18,7 @@ const Section = ({ classes, id, title, children }) => {
   );
 };
 
-Section.propTypes = {
+ContentSection.propTypes = {
   content: PropTypes.object.isRequired,
   classes: PropTypes.object.isRequired,
   title: PropTypes.string,
@@ -47,4 +47,4 @@ const styles = {
   },
 };
 
-export default withStyles(styles)(Section);
+export default withStyles(styles)(ContentSection);
