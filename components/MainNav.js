@@ -13,8 +13,8 @@ import { isAdmin } from '../helpers/userUtils';
 import { MIN_WIDTH } from '../helpers/constants';
 import TabContainer from './TabContainer';
 
-const Content = ({ classes, userDetails }) => {
-  const [tab, setTab] = useState(0);
+const MainNav = ({ classes, userDetails }) => {
+  const [tab, setTab] = useState(2);
 
   const tabChange = (event, tab) => {
     setTab(tab);
@@ -48,7 +48,7 @@ const Content = ({ classes, userDetails }) => {
   );
 };
 
-Content.propTypes = {
+MainNav.propTypes = {
   classes: PropTypes.object.isRequired,
   userDetails: PropTypes.object.isRequired,
 };
@@ -74,4 +74,4 @@ const mapStateToProps = states => {
 export default connect(
   mapStateToProps,
   null,
-)(withStyles(styles)(Content));
+)(withStyles(styles)(MainNav));
