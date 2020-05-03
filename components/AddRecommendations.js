@@ -23,13 +23,12 @@ const AddRecommendations = ({ classes }) => {
   const [recommendation, setRecommendation] = useState();
   const [detailsOpen, setDetailsOpen] = useState(false);
   const [foodDetails, setFoodDetails] = useState();
-  const [recommendationDetails, setRecommendationDetails] = useState();
 
   useEffect(() => {
     (async () => {
       const [foodResult, recommendationResult] = await Promise.all([
         getFoodById('14-897'),
-        getFoodById('14-346')
+        getFoodById('14-346'),
       ]);
 
       setFood(foodResult);
@@ -41,35 +40,48 @@ const AddRecommendations = ({ classes }) => {
     if (!foodObj) return;
     const { proximates } = foodObj;
 
+    // Get only essential nutrients to display in the card
+    const nutrients = {};
+    Object.keys(proximates).map(key => {
+      const exists = essentialNutrients.some(nutrient => nutrient.name === key);
+      if (exists) {
+        nutrients[key] = proximates[key];
+      }
+    });
+
+    const parsedNutrients = parseNutrients(nutrients, false);
     return (
       <List className={classes.list}>
-        {essentialNutrients.map(nutrient => {
-          const { name, label } = nutrient;
-
-          return (
+        {parsedNutrients.map(nutrient => (
             <ListItem key={name} className={classes.item}>
-              <span className={classes.nutrient}>{label}</span>
-              <span className={classes.value}>{proximates[name].quantity} {proximates[name].unit}</span>
+              <span className={classes.nutrient}>{nutrient.nutrient}</span>
+              <span className={classes.value}>{nutrient.quantity}</span>
             </ListItem>
-          );
-        })}
+          ))}
       </List>
     );
   };
 
-  const loadFoodDetails = (foodObj, setDetailsFunction) => {
-    const {proximates, vitamins, inorganics} = foodObj;
-    setDetailsFunction(...[
-      parseNutrients(proximates),
-      parseNutrients(vitamins),
-      parseNutrients(inorganics),
-    ]);
+  const loadFoodDetails = foodObj => {
+    const { foodName, proximates, vitamins, inorganics } = foodObj;
+    setFoodDetails({
+      foodName,
+      nutrients: [
+        ...parseNutrients(proximates, false),
+        ...parseNutrients(vitamins),
+        ...parseNutrients(inorganics),
+      ],
+    });
   };
 
-  const handleShowMoreClick = () => {
+  const showFoodDetails = () => {
     setDetailsOpen(true);
-    loadFoodDetails(food, setFoodDetails);
-    loadFoodDetails(recommendation, setRecommendationDetails);
+    loadFoodDetails(food);
+  };
+
+  const showRecommendationDetails = () => {
+    setDetailsOpen(true);
+    loadFoodDetails(recommendation);
   };
 
   const handleCloseModal = () => {
@@ -90,7 +102,7 @@ const AddRecommendations = ({ classes }) => {
             variant='outlined'
             color='primary'
             className={classes.button}
-            onClick={handleShowMoreClick}
+            onClick={showFoodDetails}
           >
             Show more
           </Button>
@@ -108,17 +120,17 @@ const AddRecommendations = ({ classes }) => {
             variant='outlined'
             color='primary'
             className={classes.button}
-            onClick={handleShowMoreClick}
+            onClick={showRecommendationDetails}
           >
             Show more
           </Button>
         </CardActions>
       </Card>}
       {detailsOpen && <ResultsModal
-        data={recommendationDetails}
+        data={foodDetails.nutrients}
         open={detailsOpen}
         onClose={handleCloseModal}
-        title={food.foodName}
+        title={foodDetails.foodName}
         subtitle='Nutritional information per 100g of food'
       />}
     </div>
@@ -141,7 +153,7 @@ const styles = {
     margin: 0,
   },
   recommendation: {
-    marginLeft: 40,
+    marginLeft: 50,
   },
   title: {
     fontWeight: 600,
