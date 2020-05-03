@@ -58,7 +58,7 @@ const styles = {
     border: '1px dashed #ddd',
     padding: '30px 40px',
     borderRadius: 9,
-    backgroundColor: '#dfefff',
+    backgroundColor: '#f5f5fa',
     borderStyle: 'outset',
     height: 'fit-content',
   },

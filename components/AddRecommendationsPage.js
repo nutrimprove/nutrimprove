@@ -20,14 +20,8 @@ const sectionHeader = {
 };
 
 const tabs = [
-  {
-    label: 'By cards',
-    content: <AddRecommendations/>,
-  },
-  {
-    label: 'Bulk add',
-    content: <AddBulkRecommendations/>,
-  },
+  { label: 'By cards', content: <AddRecommendations/> },
+  { label: 'Bulk add', content: <AddBulkRecommendations/> },
 ];
 
 const AddRecommendationsPage = () => (
