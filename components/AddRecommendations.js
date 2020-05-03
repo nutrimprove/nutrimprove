@@ -49,15 +49,18 @@ const AddRecommendations = ({ classes }) => {
       }
     });
 
-    const parsedNutrients = parseNutrients(nutrients, false);
+    const parsedNutrients = parseNutrients({ nutrients, filterEmptyValues: false, addKey: true });
     return (
       <List className={classes.list}>
-        {parsedNutrients.map(nutrient => (
+        {essentialNutrients.map(nutrient => {
+          const parsedNutrient = parsedNutrients.find(parsedNutrient => parsedNutrient.key === nutrient.name);
+          return (
             <ListItem key={name} className={classes.item}>
-              <span className={classes.nutrient}>{nutrient.nutrient}</span>
-              <span className={classes.value}>{nutrient.quantity}</span>
+              <span className={classes.nutrient}>{nutrient.label}</span>
+              <span className={classes.value}>{parsedNutrient.quantity}</span>
             </ListItem>
-          ))}
+          );
+        })}
       </List>
     );
   };
@@ -67,9 +70,9 @@ const AddRecommendations = ({ classes }) => {
     setFoodDetails({
       foodName,
       nutrients: [
-        ...parseNutrients(proximates, false),
-        ...parseNutrients(vitamins),
-        ...parseNutrients(inorganics),
+        ...parseNutrients({ nutrients: proximates, filterEmptyValues: false }),
+        ...parseNutrients({ nutrients: vitamins, filterEmptyValues: false }),
+        ...parseNutrients({ nutrients: inorganics, filterEmptyValues: false }),
       ],
     });
   };

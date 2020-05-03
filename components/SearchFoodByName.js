@@ -17,9 +17,9 @@ const SearchFoodByName = ({ categories, foodNames, classes }) => {
   const updateResults = async () => {
     const data = await getNutritionData(selectedFood.foodCode);
     if (data) {
-      const proximates = parseNutrients(data.proximates);
-      const vitamins = parseNutrients(data.vitamins);
-      const minerals = parseNutrients(data.inorganics);
+      const proximates = parseNutrients({ nutrients: data.proximates });
+      const vitamins = parseNutrients({ nutrients: data.vitamins });
+      const minerals = parseNutrients({ nutrients: data.inorganics });
       const combinedResults = [...proximates, ...vitamins, ...minerals];
       setData(combinedResults);
     }

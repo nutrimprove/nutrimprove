@@ -41,7 +41,7 @@ const SearchFoodByNutrient = ({ classes, categories }) => {
 
   const getFoods = async () => {
     const nutrientKey = `${nutrient.group}.${nutrient.name}`;
-    const foods = await getFoodsByNutrient({nutrient: nutrientKey, filters: categories.selectedGroups});
+    const foods = await getFoodsByNutrient({ nutrient: nutrientKey, filters: categories.selectedGroups });
     setFoods(formatFoods(foods));
   };
 
@@ -51,9 +51,9 @@ const SearchFoodByNutrient = ({ classes, categories }) => {
     setDetailsOpen(true);
     const food = await getFoodByName(foodName);
     if (food) {
-      const proximates = parseNutrients(food.proximates);
-      const vitamins = parseNutrients(food.vitamins);
-      const minerals = parseNutrients(food.inorganics);
+      const proximates = parseNutrients({ nutrients: food.proximates });
+      const vitamins = parseNutrients({ nutrients: food.vitamins });
+      const minerals = parseNutrients({ nutrients: food.inorganics });
       const combinedResults = [...proximates, ...vitamins, ...minerals];
       setSelectedFoodDetails(combinedResults);
     }
@@ -65,7 +65,8 @@ const SearchFoodByNutrient = ({ classes, categories }) => {
 
   return (
     <>
-      <Typography variant='subtitle2' paragraph={true}>Display the foods with the highest levels of a nutrient</Typography>
+      <Typography variant='subtitle2' paragraph={true}>Display the foods with the highest levels of a
+        nutrient</Typography>
       <div className={classes.search}>
         <AutoComplete
           values={nutrients}

@@ -39,7 +39,7 @@ const mapSearchResults = results => {
   }));
 };
 
-const parseNutrients = (nutrients, filterEmptyValues = true) => {
+const parseNutrients = ({nutrients, filterEmptyValues = true, addKey = false}) => {
   const nutrientsObj = [];
   const keys = Object.keys(nutrients);
   keys.map(key => {
@@ -49,10 +49,11 @@ const parseNutrients = (nutrients, filterEmptyValues = true) => {
     if (filter) {
       const value = !quantity || isNaN(quantity) ? 0 : Number.parseFloat(quantity).toFixed(2);
       const valueWithUnit = quantity && quantity === 'Tr' ? 'traces' : `${value} ${unit}`;
-      nutrientsObj.push({
-        nutrient: label,
-        quantity: valueWithUnit,
-      });
+      const nutrientObject = { nutrient: label, quantity: valueWithUnit };
+      if (addKey) {
+        nutrientObject.key = key;
+      }
+      nutrientsObj.push(nutrientObject);
     }
   });
   return nutrientsObj;
