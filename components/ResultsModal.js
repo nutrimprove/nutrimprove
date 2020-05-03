@@ -16,7 +16,7 @@ const ResultsModal = ({ data, title, subtitle, open, onClose, classes }) => (
           <CloseIcon fontSize='small'/>
         </IconButton>
         <div className={classes.header}>
-          <Typography variant='h6'>{title}</Typography>
+          <Typography variant='h6' noWrap={true} title={title}>{title}</Typography>
           <Typography variant='subtitle2' color='textSecondary'>
             {subtitle}
           </Typography>
