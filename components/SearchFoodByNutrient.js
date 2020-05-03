@@ -8,6 +8,7 @@ import AutoComplete from './AutoComplete';
 import { parseNutrients } from '../helpers/utils';
 import ResultsTable from './ResultsTable';
 import ResultsModal from './ResultsModal';
+import Typography from '@material-ui/core/Typography';
 
 const SearchFoodByNutrient = ({ classes, categories }) => {
   const [nutrient, setNutrient] = useState();
@@ -64,6 +65,7 @@ const SearchFoodByNutrient = ({ classes, categories }) => {
 
   return (
     <>
+      <Typography variant='subtitle2' paragraph={true}>Display the foods with the highest levels of a nutrient</Typography>
       <div className={classes.search}>
         <AutoComplete
           values={nutrients}
