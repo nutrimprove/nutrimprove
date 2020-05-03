@@ -22,8 +22,7 @@ import LoadingPanel from './LoadingPanel';
 const enableDB = process.env.ENABLE_UPDATE_DB;
 
 const sectionHeader = {
-  title: 'Administration page',
-  subtitle: `Verify and revoke users' access to the app`,
+  title: 'Administration panel',
 };
 
 const queries = {
