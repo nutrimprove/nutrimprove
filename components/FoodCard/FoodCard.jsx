@@ -43,7 +43,7 @@ const FoodCard = ({ food, onShowMoreClick, onMouseOver, highlightItem, classes }
           onClick={onShowMoreClick}
           ref={ref}
         >
-          Show more
+          Detailed list
         </Button>
       </CardActions>
     </Card>
