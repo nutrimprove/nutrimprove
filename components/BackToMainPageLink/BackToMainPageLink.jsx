@@ -14,7 +14,6 @@ const BackToMainPageLink = ({ classes }) => {
 };
 
 BackToMainPageLink.propTypes = {
-  content: PropTypes.object.isRequired,
   classes: PropTypes.object.isRequired,
 };
 

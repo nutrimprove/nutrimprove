@@ -18,11 +18,10 @@ const ContentSection = ({ classes, id, title, children }) => {
 };
 
 ContentSection.propTypes = {
-  content: PropTypes.object.isRequired,
   classes: PropTypes.object.isRequired,
   title: PropTypes.string,
   id: PropTypes.string,
-  children: PropTypes.object,
+  children: PropTypes.array,
 };
 
 export default ContentSection;
