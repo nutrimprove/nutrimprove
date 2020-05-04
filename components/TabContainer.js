@@ -18,7 +18,7 @@ TabContainer.propTypes = {
 
 const styles = {
   content: {
-    padding: '24px 24px 48px 24px',
+    padding: '18px 18px 40px 18px',
   },
 };
 

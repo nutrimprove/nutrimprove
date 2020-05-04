@@ -40,7 +40,7 @@ const styles = {
     lineHeight: 'normal',
     marginRight: 20,
     fontSize: '0.7em',
-    minWidth: 200,
+    minWidth: 120,
   },
 };
 
