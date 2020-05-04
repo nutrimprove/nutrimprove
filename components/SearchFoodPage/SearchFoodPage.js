@@ -33,9 +33,7 @@ const SearchFoodPage = () => {
     <>
       <SectionHeader content={sectionHeader}/>
       <SearchFilters/>
-      {EDAMAM_DB
-        ? <TabbedPanel tabs={edamamTab}/>
-        : <TabbedPanel tabs={tabs}/>}
+      <TabbedPanel tabs={EDAMAM_DB ? edamamTab : tabs}/>
     </>
   );
 };
