@@ -2,6 +2,8 @@ import { Button, Card, CardActions, CardContent, List, ListItem, Typography, wit
 import PropTypes from 'prop-types';
 import React from 'react';
 import { parseNutrients } from '../helpers/utils';
+import clsx from 'clsx';
+import { uniqueId } from 'lodash/util';
 
 const essentialNutrients = [
   { name: 'energy', label: 'Energy' },
@@ -15,7 +17,7 @@ const essentialNutrients = [
   { name: 'Cholesterol', label: 'Cholesterol' },
 ];
 
-const FoodCard = ({ food, onShowMoreClick, classes }) => {
+const FoodCard = ({ food, onShowMoreClick, onMouseOver, highlightItem, classes }) => {
   const title = food ? food.foodName : '';
   const essentialNutrientsInfo = (foodObj) => {
     if (!foodObj) return;
@@ -36,7 +38,12 @@ const FoodCard = ({ food, onShowMoreClick, classes }) => {
         {essentialNutrients.map(nutrient => {
           const parsedNutrient = parsedNutrients.find(parsedNutrient => parsedNutrient.key === nutrient.name);
           return (
-            <ListItem key={name} className={classes.item}>
+            <ListItem
+              button key={uniqueId()}
+              data-label={nutrient.label}
+              className={clsx(classes.item, highlightItem === nutrient.label ? classes.highlight : '')}
+              onMouseOver={onMouseOver}
+            >
               <span className={classes.nutrient}>{nutrient.label}</span>
               <span className={classes.value}>{parsedNutrient.quantity}</span>
             </ListItem>
@@ -71,6 +78,8 @@ const FoodCard = ({ food, onShowMoreClick, classes }) => {
 FoodCard.propTypes = {
   food: PropTypes.object.isRequired,
   onShowMoreClick: PropTypes.func.isRequired,
+  onMouseOver: PropTypes.func,
+  highlightItem: PropTypes.string,
   classes: PropTypes.object.isRequired,
 };
 
@@ -109,6 +118,9 @@ const styles = {
   item: {
     padding: '8px 0',
     borderBottom: '1px dotted #ddd',
+  },
+  highlight: {
+    background: '#f5f5fa',
   },
   actions: {
     padding: '0 14px',
