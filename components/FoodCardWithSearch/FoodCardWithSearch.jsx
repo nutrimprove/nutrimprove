@@ -43,7 +43,7 @@ const FoodCardWithSearch = ({ classes, foodNames, categories, title, highlightIt
 
   return (
     <div className={classes.root}>
-      <Typography className={classes.title}>{title}</Typography>
+      <Typography className={classes.title} variant='subtitle1'>{title}</Typography>
       <div className={classes.search}>
         <AutoComplete
           width={260}
@@ -67,11 +67,17 @@ const FoodCardWithSearch = ({ classes, foodNames, categories, title, highlightIt
       </div>
       {nutrients && (
         <div className={classes.card}>
-          <FoodCard food={nutrients} onShowMoreClick={showFoodDetails} onMouseOver={onHover}
+          <FoodCard food={nutrients}
+                    onShowMoreClick={showFoodDetails}
+                    onMouseOver={onHover}
                     highlightItem={highlightItem}/>
         </div>)}
-      {detailsOpen && <ResultsModal data={foodDetails.nutrients} open={detailsOpen} onClose={handleCloseModal}
-                                    title={foodDetails.foodName} subtitle='Nutritional information per 100g of food'/>}
+      {detailsOpen && (
+        <ResultsModal data={foodDetails.nutrients}
+                      open={detailsOpen}
+                      onClose={handleCloseModal}
+                      title={foodDetails.foodName}
+                      subtitle='Nutritional information per 100g of food'/>)}
     </div>
   );
 };
