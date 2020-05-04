@@ -1,5 +1,5 @@
-import SearchInputField from '../../SearchInputField';
-import ButtonWithSpinner from '../../ButtonWithSpinner';
+import SearchInputField from '../SearchInputField';
+import ButtonWithSpinner from '../ButtonWithSpinner';
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import FormControl from '@material-ui/core/FormControl';

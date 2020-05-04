@@ -10,7 +10,7 @@ import { connect } from 'react-redux';
 import SectionHeader from '../SectionHeader';
 import ButtonWithSpinner from '../ButtonWithSpinner';
 import { isAdmin } from '../../helpers/userUtils';
-import SearchFoodSet from './SearchFoodSet';
+import SearchFoodSet from '../SearchFoodSet';
 import { Typography } from '@material-ui/core';
 import SearchFilters from '../SearchFilters';
 
