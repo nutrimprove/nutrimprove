@@ -4,7 +4,7 @@ import AutoComplete from '../../AutoComplete';
 import ButtonWithSpinner from '../../ButtonWithSpinner';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { parseNutrients } from '../../../helpers/utils';
+import { filterFoodNames, parseNutrients } from '../../../helpers/utils';
 import ResultsTable from '../../ResultsTable';
 import Typography from '@material-ui/core/Typography';
 
@@ -12,6 +12,7 @@ const SearchFoodByName = ({ categories, foodNames, classes }) => {
   const [selectedFood, setSelectedFood] = useState();
   const [data, setData] = useState();
   const loading = foodNames.length === 0;
+  const filteredFoodNames = filterFoodNames(foodNames, categories.selectedGroups);
 
   const updateResults = async () => {
     const data = await getNutritionData(selectedFood.foodCode);
@@ -24,19 +25,12 @@ const SearchFoodByName = ({ categories, foodNames, classes }) => {
     }
   };
 
-  const getFilteredFoodNames = () => {
-    if (foodNames) {
-      const selectedFilters = categories.selectedGroups;
-      return foodNames.filter(({ group }) => selectedFilters.find(filter => group.match(`^(${filter})(.*)`)));
-    }
-  };
-
   return (
     <>
       <Typography variant='subtitle2' paragraph={true}>Search for a food to display its nutritional data</Typography>
       <div className={classes.search}>
         <AutoComplete
-          values={getFilteredFoodNames()}
+          values={filteredFoodNames}
           label='Type food'
           noMatchText='No food matched!!'
           labelProp='foodName'

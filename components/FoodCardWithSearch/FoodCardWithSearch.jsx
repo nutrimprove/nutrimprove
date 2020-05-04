@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { getFoodById } from '../../interfaces/api/foods';
 import ResultsModal from '../ResultsModal';
-import { getMainNutrients, parseNutrients } from '../../helpers/utils';
+import { filterFoodNames, getMainNutrients, parseNutrients } from '../../helpers/utils';
 import FoodCard from '../FoodCard';
 import AutoComplete from '../AutoComplete';
 import ButtonWithSpinner from '../ButtonWithSpinner';
@@ -16,6 +16,7 @@ const FoodCardWithSearch = ({ classes, foodNames, categories, title, highlightIt
   const [nutrients, setNutrients] = useState();
   const [foodDetails, setFoodDetails] = useState();
   const loading = foodNames.length === 0;
+  const filteredFoodNames = filterFoodNames(foodNames, categories.selectedGroups);
 
   const loadCardDetails = async () => {
     const foodResult = await getFoodById(selectedFood.foodCode, context);
@@ -40,20 +41,13 @@ const FoodCardWithSearch = ({ classes, foodNames, categories, title, highlightIt
     setDetailsOpen(false);
   };
 
-  const getFilteredFoodNames = () => {
-    if (foodNames) {
-      const selectedFilters = categories.selectedGroups;
-      return foodNames.filter(({ group }) => selectedFilters.find(filter => group.match(`^(${filter})(.*)`)));
-    }
-  };
-
   return (
     <div className={classes.root}>
       <Typography className={classes.title}>{title}</Typography>
       <div className={classes.search}>
         <AutoComplete
           width={260}
-          values={getFilteredFoodNames()}
+          values={filteredFoodNames}
           label='Type food'
           noMatchText='No food matched!!'
           labelProp='foodName'

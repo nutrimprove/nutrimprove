@@ -51,7 +51,7 @@ const mapSearchResults = results => {
   }));
 };
 
-const parseNutrients = ({nutrients, filterEmptyValues = true, addKey = false}) => {
+const parseNutrients = ({ nutrients, filterEmptyValues = true, addKey = false }) => {
   const nutrientsObj = [];
   const keys = Object.keys(nutrients);
   keys.map(key => {
@@ -111,4 +111,22 @@ const getFoodGroups = groups => {
   return subgroups;
 };
 
-export { getTime, emptyFood, fullTrim, lowerCaseCompare, mapSearchResults, getFoodGroups, parseNutrients, getMainNutrients };
+const filterFoodNames = (foodNames, filters) => {
+  if (!foodNames) return;
+
+  return filters.length > 0
+    ? foodNames.filter(({ group }) => filters.find(filter => group.match(`^(${filter})(.*)`)))
+    : foodNames;
+};
+
+export {
+  getTime,
+  emptyFood,
+  fullTrim,
+  lowerCaseCompare,
+  mapSearchResults,
+  getFoodGroups,
+  parseNutrients,
+  getMainNutrients,
+  filterFoodNames,
+};
