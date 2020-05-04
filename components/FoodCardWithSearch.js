@@ -10,7 +10,7 @@ import ButtonWithSpinner from './ButtonWithSpinner';
 import { connect } from 'react-redux';
 import Typography from '@material-ui/core/Typography';
 
-const FoodCardWithSearch = ({ classes, foodNames, categories, title, highlightItem, onMouseOver }) => {
+const FoodCardWithSearch = ({ classes, foodNames, categories, title, highlightItem, onHover }) => {
   const [food, setFood] = useState();
   const [selectedFood, setSelectedFood] = useState();
   const [detailsOpen, setDetailsOpen] = useState(false);
@@ -78,7 +78,7 @@ const FoodCardWithSearch = ({ classes, foodNames, categories, title, highlightIt
       </div>
       {food && (
         <div className={classes.card}>
-          <FoodCard food={nutrients} onShowMoreClick={showFoodDetails} onMouseOver={onMouseOver}
+          <FoodCard food={nutrients} onShowMoreClick={showFoodDetails} onMouseOver={onHover}
                     highlightItem={highlightItem} onFocus
           />
         </div>)}
@@ -92,7 +92,7 @@ FoodCardWithSearch.propTypes = {
   foodNames: PropTypes.array.isRequired,
   categories: PropTypes.object.isRequired,
   title: PropTypes.string,
-  onMouseOver: PropTypes.func,
+  onHover: PropTypes.func,
   highlightItem: PropTypes.string,
   classes: PropTypes.object.isRequired,
 };

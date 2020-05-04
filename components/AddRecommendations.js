@@ -12,8 +12,8 @@ const AddRecommendations = ({ classes }) => {
 
   return (
     <div className={classes.root}>
-      <FoodCardWithSearch title={'Food'} onMouseOver={setHoveredNutrient} highlightItem={hoveredItem}/>
-      <FoodCardWithSearch title={'Recommendation'} onMouseOver={setHoveredNutrient} highlightItem={hoveredItem}/>
+      <FoodCardWithSearch title={'Food'} onHover={setHoveredNutrient} highlightItem={hoveredItem}/>
+      <FoodCardWithSearch title={'Recommendation'} onHover={setHoveredNutrient} highlightItem={hoveredItem}/>
     </div>
   );
 };
