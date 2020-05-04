@@ -47,7 +47,12 @@ const SearchFoodByNutrient = ({ classes, categories }) => {
 
   const handleRowClick = async ({ currentTarget }) => {
     const foodName = currentTarget.firstChild.innerText;
+    if (foodName === selectedFood) {
+      setDetailsOpen(true);
+      return;
+    }
     setSelectedFood(foodName);
+    setSelectedFoodDetails(null);
     setDetailsOpen(true);
     const food = await getFoodByName(foodName);
     if (food) {
