@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import SectionHeader from './SectionHeader';
+import SectionHeader from '../SectionHeader';
 import {
   approveUser,
   getAllUsers,
@@ -7,17 +7,16 @@ import {
   getNotApprovedUsers,
   revokeUser,
   updateAllUsersPoints,
-} from '../interfaces/api/users';
-import ResultsTable from './ResultsTable';
-import ButtonWithSpinner from './ButtonWithSpinner';
+} from '../../interfaces/api/users';
+import ResultsTable from '../ResultsTable';
+import ButtonWithSpinner from '../ButtonWithSpinner';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import DeleteUserButton from './DeleteUserButton';
-import { isAdmin, isOwner, userRoleToString } from '../helpers/userUtils';
-import { ROLES } from '../helpers/constants';
-import { updateDB } from '../interfaces/api/db';
-import { withStyles } from '@material-ui/core';
-import LoadingPanel from './LoadingPanel';
+import DeleteUserButton from '../DeleteUserButton';
+import { isAdmin, isOwner, userRoleToString } from '../../helpers/userUtils';
+import { ROLES } from '../../helpers/constants';
+import { updateDB } from '../../interfaces/api/db';
+import LoadingPanel from '../LoadingPanel';
 
 const enableDB = process.env.ENABLE_UPDATE_DB;
 
@@ -68,7 +67,7 @@ const AdminPanel = ({ userDetails, classes }) => {
         }}
         context={`${action}User-${user.email}`}
         disabled={!hasPermissions}
-        className={ classes.actionButton }
+        className={classes.actionButton}
       >
         {action}
       </ButtonWithSpinner>
@@ -83,7 +82,7 @@ const AdminPanel = ({ userDetails, classes }) => {
 
   const deleteButton = user => {
     if (userDetails.role === ROLES.OWNER) {
-      return <DeleteUserButton action={removeUser} user={user} className={ classes.actionButton }/>;
+      return <DeleteUserButton action={removeUser} user={user} className={classes.actionButton}/>;
     }
   };
 
@@ -125,7 +124,7 @@ const AdminPanel = ({ userDetails, classes }) => {
 
   return (
     <>
-      <SectionHeader content={sectionHeader} />
+      <SectionHeader content={sectionHeader}/>
       <ButtonWithSpinner
         action={() => setUserQuery(queries.GET_ALL)}
         disabled={userQuery === queries.GET_ALL}
@@ -166,15 +165,9 @@ const AdminPanel = ({ userDetails, classes }) => {
           </ButtonWithSpinner>
         </>
       )}
-      {users ? <ResultsTable data={users} title={`${users.length} ${userQuery}`} /> : <LoadingPanel />}
+      {users ? <ResultsTable data={users} title={`${users.length} ${userQuery}`}/> : <LoadingPanel/>}
     </>
   );
-};
-
-const styles = {
-  actionButton: {
-    minWidth: 150,
-  }
 };
 
 AdminPanel.propTypes = {
@@ -188,4 +181,4 @@ const mapStateToProps = states => {
   };
 };
 
-export default connect(mapStateToProps, null)(withStyles(styles)(AdminPanel));
+export default connect(mapStateToProps, null)(AdminPanel);

@@ -1,11 +1,11 @@
 import React from 'react';
-import SectionHeader from './SectionHeader';
-import SearchFilters from './SearchFilters';
+import SectionHeader from '../SectionHeader';
+import SearchFilters from '../SearchFilters';
 import SearchFoodByNutrient from './SearchFoodByNutrient';
 import SearchFoodByName from './SearchFoodByName';
-import { EDAMAM_DB } from '../helpers/constants';
+import { EDAMAM_DB } from '../../helpers/constants';
 import SearchEdamamFoodByName from './SearchEdamamFoodByName';
-import TabbedPanel from './TabbedPanel';
+import TabbedPanel from '../TabbedPanel';
 
 const sectionHeader = {
   title: 'Search food',

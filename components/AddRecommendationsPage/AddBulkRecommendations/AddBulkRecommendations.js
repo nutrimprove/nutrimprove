@@ -1,16 +1,15 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { emptyFood, getTime } from '../helpers/utils';
-import { addUserPointsAction } from '../store/global/actions';
-import { postRecommendations } from '../interfaces/api/recommendations';
+import { emptyFood, getTime } from '../../../helpers/utils';
+import { addUserPointsAction } from '../../../store/global/actions';
+import { postRecommendations } from '../../../interfaces/api/recommendations';
 import { difference, uniqBy } from 'lodash';
-import withStyles from '@material-ui/core/styles/withStyles';
 import { usePromiseTracker } from 'react-promise-tracker';
-import ButtonWithSpinner from './ButtonWithSpinner';
-import Status from './Status';
-import { calcPoints } from '../helpers/userUtils';
-import RepeatableFoodsPanel from './RepeatableFoodsPanel';
+import ButtonWithSpinner from '../../ButtonWithSpinner';
+import Status from '../../Status';
+import { calcPoints } from '../../../helpers/userUtils';
+import RepeatableFoodsPanel from '../../RepeatableFoodsPanel';
 import {
   addFoodAction,
   addRecommendedFoodAction,
@@ -19,7 +18,7 @@ import {
   removeAllFoodsAndRecommendationsAction,
   removeFoodAction,
   removeRecommendedFoodAction,
-} from '../store/addRecommendation/actions';
+} from '../../../store/addRecommendation/actions';
 
 const AddBulkRecommendations = ({
                                   foods,
@@ -193,15 +192,6 @@ AddBulkRecommendations.propTypes = {
   addUserPoints: PropTypes.func,
 };
 
-const styles = {
-  main: {
-    display: 'flex',
-  },
-  submit: {
-    marginTop: 10,
-  },
-};
-
 const mapStateToProps = states => {
   return {
     recommendations: states.addRecommendationState.recommendedFoods,
@@ -221,7 +211,4 @@ const mapDispatchToProps = dispatch => ({
   addUserPoints: points => dispatch(addUserPointsAction(points)),
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(withStyles(styles)(AddBulkRecommendations));
+export default connect(mapStateToProps, mapDispatchToProps)(AddBulkRecommendations);

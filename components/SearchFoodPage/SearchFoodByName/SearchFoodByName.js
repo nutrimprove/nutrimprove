@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
-import { getNutritionData } from '../interfaces/api/nutrition';
-import withStyles from '@material-ui/core/styles/withStyles';
-import AutoComplete from './AutoComplete';
-import ButtonWithSpinner from './ButtonWithSpinner';
+import { getNutritionData } from '../../../interfaces/api/nutrition';
+import AutoComplete from '../../AutoComplete';
+import ButtonWithSpinner from '../../ButtonWithSpinner';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { parseNutrients } from '../helpers/utils';
-import ResultsTable from './ResultsTable';
+import { parseNutrients } from '../../../helpers/utils';
+import ResultsTable from '../../ResultsTable';
 import Typography from '@material-ui/core/Typography';
 
 const SearchFoodByName = ({ categories, foodNames, classes }) => {
@@ -73,18 +72,4 @@ const mapStateToProps = states => {
   };
 };
 
-const styles = {
-  search: {
-    display: 'inline-flex',
-    borderStyle: 'solid',
-    borderWidth: 'thin',
-    borderRadius: 7,
-    borderColor: 'lightgray',
-    padding: '10px 10px 10px 20px',
-  },
-  button: {
-    margin: 10,
-  },
-};
-
-export default connect(mapStateToProps)(withStyles(styles)(SearchFoodByName));
+export default connect(mapStateToProps)(SearchFoodByName);

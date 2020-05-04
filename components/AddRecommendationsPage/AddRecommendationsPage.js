@@ -1,8 +1,8 @@
 import React from 'react';
-import SectionHeader from './SectionHeader';
+import SectionHeader from '../SectionHeader';
 import Link from '@material-ui/core/Link';
-import SearchFilters from './SearchFilters';
-import TabbedPanel from './TabbedPanel';
+import SearchFilters from '../SearchFilters';
+import TabbedPanel from '../TabbedPanel';
 import AddBulkRecommendations from './AddBulkRecommendations';
 import AddRecommendations from './AddRecommendations';
 

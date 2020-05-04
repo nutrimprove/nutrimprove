@@ -1,21 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Typography, withStyles } from '@material-ui/core';
-import SectionHeader from './SectionHeader';
+import { Typography } from '@material-ui/core';
+import SectionHeader from '../SectionHeader';
 import Link from '@material-ui/core/Link';
-import ContentSection from './ContentSection';
-import BackToMainPageLink from './BackToMainPageLink';
-import { MIN_WIDTH, PROJECT_NAME } from '../helpers/constants';
+import ContentSection from '../ContentSection';
+import BackToMainPageLink from '../BackToMainPageLink';
+import { PROJECT_NAME } from '../../helpers/constants';
 
 const content = {
-  title: `Help`,
-  subtitle: `How to use the ${PROJECT_NAME} web application`,
+  title: `About`,
+  subtitle: `About the ${PROJECT_NAME} project`,
 };
 
 const AboutPage = ({ classes }) => {
   return (
     <div className={classes.content}>
-      <SectionHeader content={content} />
+      <SectionHeader content={content}/>
 
       <ContentSection>
         <Typography>
@@ -49,7 +49,7 @@ const AboutPage = ({ classes }) => {
         </Typography>
         <Link>nutrimprove@gmail.com</Link>
       </ContentSection>
-      <BackToMainPageLink />
+      <BackToMainPageLink/>
     </div>
   );
 };
@@ -58,19 +58,4 @@ AboutPage.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-const styles = {
-  content: {
-    margin: 20,
-    padding: 20,
-    border: '1px solid #DDD',
-    minWidth: MIN_WIDTH,
-  },
-  footer: {
-    marginTop: 20,
-    backgroundColor: 'lightyellow',
-    padding: 10,
-    border: '1px solid #DDD',
-  },
-};
-
-export default withStyles(styles)(AboutPage);
+export default AboutPage;

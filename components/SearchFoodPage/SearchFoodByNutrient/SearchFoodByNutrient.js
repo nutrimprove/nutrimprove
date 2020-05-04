@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import withStyles from '@material-ui/core/styles/withStyles';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import ButtonWithSpinner from './ButtonWithSpinner';
-import { getFoodByName, getFoodsByNutrient, getNutrients } from '../interfaces/api/foods';
-import AutoComplete from './AutoComplete';
-import { parseNutrients } from '../helpers/utils';
-import ResultsTable from './ResultsTable';
-import ResultsModal from './ResultsModal';
+import ButtonWithSpinner from '../../ButtonWithSpinner';
+import { getFoodByName, getFoodsByNutrient, getNutrients } from '../../../interfaces/api/foods';
+import AutoComplete from '../../AutoComplete';
+import { parseNutrients } from '../../../helpers/utils';
+import ResultsTable from '../../ResultsTable';
+import ResultsModal from '../../ResultsModal';
 import Typography from '@material-ui/core/Typography';
 
 const SearchFoodByNutrient = ({ classes, categories }) => {
@@ -120,26 +119,4 @@ const mapStateToProps = states => {
   };
 };
 
-const styles = {
-  search: {
-    display: 'inline-flex',
-    borderStyle: 'solid',
-    borderWidth: 'thin',
-    borderRadius: 7,
-    borderColor: 'lightgray',
-    padding: '10px 10px 10px 20px',
-  },
-  table: {
-    marginTop: 20,
-    maxHeight: 600,
-    overflow: 'auto',
-    '& tbody tr': {
-      cursor: 'pointer',
-    },
-  },
-  button: {
-    margin: 10,
-  },
-};
-
-export default connect(mapStateToProps)(withStyles(styles)(SearchFoodByNutrient));
+export default connect(mapStateToProps)(SearchFoodByNutrient);

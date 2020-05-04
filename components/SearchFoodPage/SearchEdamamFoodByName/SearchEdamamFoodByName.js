@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { getNutritionData } from '../interfaces/api/nutrition';
-import withStyles from '@material-ui/core/styles/withStyles';
-import AutoComplete from './AutoComplete';
-import ButtonWithSpinner from './ButtonWithSpinner';
+import { getNutritionData } from '../../../interfaces/api/nutrition';
+import AutoComplete from '../../AutoComplete';
+import ButtonWithSpinner from '../../ButtonWithSpinner';
 import PropTypes from 'prop-types';
-import { getSearchedTerms } from '../interfaces/api/edamamFoods';
-import { mapSearchResults, parseNutrients } from '../helpers/utils';
-import ResultsTable from './ResultsTable';
+import { getSearchedTerms } from '../../../interfaces/api/edamamFoods';
+import { mapSearchResults, parseNutrients } from '../../../helpers/utils';
+import ResultsTable from '../../ResultsTable';
 
 const mergeEdamamResults = (nutrients, dailyValues) => {
   const combined = [...nutrients];
@@ -21,7 +20,7 @@ const mergeEdamamResults = (nutrients, dailyValues) => {
   });
 };
 
-const SearchFoodByName = ({ classes }) => {
+const SearchEdamamFoodByName = ({ classes }) => {
   const [selectedFood, setSelectedFood] = useState();
   const [searchTerms, setSearchTerms] = useState([]);
   const [searchInput, setSearchInput] = useState('');
@@ -84,22 +83,8 @@ const SearchFoodByName = ({ classes }) => {
   );
 };
 
-SearchFoodByName.propTypes = {
+SearchEdamamFoodByName.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-const styles = {
-  search: {
-    display: 'inline-flex',
-    borderStyle: 'solid',
-    borderWidth: 'thin',
-    borderRadius: 7,
-    borderColor: 'lightgray',
-    padding: '10px 10px 10px 20px',
-  },
-  button: {
-    margin: 10,
-  },
-};
-
-export default withStyles(styles)(SearchFoodByName);
+export default SearchEdamamFoodByName;

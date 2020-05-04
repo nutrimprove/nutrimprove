@@ -4,13 +4,12 @@ import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import PropTypes from 'prop-types';
-import { setCategoriesAction } from '../store/global/actions';
+import { setCategoriesAction } from '../../store/global/actions';
 import { connect } from 'react-redux';
-import withStyles from '@material-ui/core/styles/withStyles';
-import PopoverPanelWithButton from './PopoverPanelWithButton';
+import PopoverPanelWithButton from '../PopoverPanelWithButton';
 import FormControl from '@material-ui/core/FormControl';
 import Button from '@material-ui/core/Button';
-import { EDAMAM_DB } from '../helpers/constants';
+import { EDAMAM_DB } from '../../helpers/constants';
 
 const SearchFilters = ({ categories, setCategories, classes }) => {
   if (EDAMAM_DB) return null;
@@ -106,23 +105,4 @@ const mapDispatchToProps = dispatch => ({
   setCategories: filters => dispatch(setCategoriesAction(filters)),
 });
 
-const styles = {
-  category: {
-    fontSize: '0.9em',
-  },
-  filterButtons: {
-    float: 'right',
-  },
-  button: {
-    marginRight: 10,
-    marginTop: 10,
-  },
-  control: {
-    display: 'contents',
-  },
-  column: {
-    width: '-webkit-fill-available',
-  },
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(SearchFilters));
+export default connect(mapStateToProps, mapDispatchToProps)(SearchFilters);
