@@ -13,9 +13,10 @@ const SearchFoodByNutrient = ({ classes, categories }) => {
   const [nutrient, setNutrient] = useState();
   const [nutrients, setNutrients] = useState([]);
   const [foods, setFoods] = useState();
-  const [selectedFood, setSelectedFood] = useState('');
+  const [selectedFood, setSelectedFood] = useState();
   const [selectedFoodDetails, setSelectedFoodDetails] = useState();
   const [detailsOpen, setDetailsOpen] = useState(false);
+  const [resultsTitle, setResultsTitle] = useState();
 
   useEffect(() => {
     (async () => {
@@ -41,6 +42,7 @@ const SearchFoodByNutrient = ({ classes, categories }) => {
   const getFoods = async () => {
     const nutrientKey = `${nutrient.group}.${nutrient.name}`;
     const foods = await getFoodsByNutrient({ nutrient: nutrientKey, filters: categories.selectedGroups });
+    setResultsTitle(`${nutrient.label} per 100g of food`);
     setFoods(formatFoods(foods));
   };
 
@@ -67,10 +69,15 @@ const SearchFoodByNutrient = ({ classes, categories }) => {
     setDetailsOpen(false);
   };
 
+  const handleNutrientSelection = (event, value) => {
+    setNutrient(value);
+  };
+
   return (
     <>
-      <Typography variant='subtitle2' paragraph={true}>Display the foods with the highest levels of a
-        nutrient</Typography>
+      <Typography variant='subtitle2' paragraph={true}>
+        Display the foods with the highest levels of a specific nutrient
+      </Typography>
       <div className={classes.search}>
         <AutoComplete
           values={nutrients}
@@ -80,7 +87,7 @@ const SearchFoodByNutrient = ({ classes, categories }) => {
           labelProp='label'
           context='getNutrients'
           loading={nutrients.length === 0}
-          onChange={setNutrient}
+          onChange={handleNutrientSelection}
           openOnFocus={true}
         />
         <ButtonWithSpinner
@@ -94,7 +101,7 @@ const SearchFoodByNutrient = ({ classes, categories }) => {
       </div>
       {foods && <ResultsTable
         data={foods}
-        title={`${nutrient && nutrient.label} per 100g of food`}
+        title={resultsTitle}
         onRowClick={handleRowClick}
       />}
       {detailsOpen && <ResultsModal

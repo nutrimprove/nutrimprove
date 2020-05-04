@@ -39,7 +39,7 @@ const AutoComplete = ({ values, label, labelProp, noMatchText, onChange, onInput
     autoSelect={true}
     noOptionsText={noMatchText}
     openOnFocus={!strict}
-    onChange={(event, value) => onChange(value)}
+    onChange={onChange}
     onInputChange={onInputChange}
     filterOptions={filterOptions}
   />;
