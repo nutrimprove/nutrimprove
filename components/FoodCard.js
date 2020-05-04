@@ -54,7 +54,7 @@ const styles = {
   card: {
     width: 400,
     borderRadius: 7,
-    marginRight: 50,
+    margin: 'auto',
   },
   content: {
     minHeight: 288,
