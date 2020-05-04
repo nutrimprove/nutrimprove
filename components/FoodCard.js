@@ -52,7 +52,6 @@ FoodCard.propTypes = {
 
 const styles = {
   card: {
-    width: 400,
     borderRadius: 7,
     margin: 'auto',
   },
