@@ -24,8 +24,9 @@ const FoodCardWithSearch = ({ classes, foodNames, categories, title, highlightIt
     setNutrients(getMainNutrients(foodResult));
   };
 
-  const loadFoodDetails = foodObj => {
-    const { foodName, proximates, vitamins, inorganics } = foodObj;
+  const showFoodDetails = () => {
+    const { foodName, proximates, vitamins, inorganics } = food;
+    setDetailsOpen(true);
     setFoodDetails({
       foodName,
       nutrients: [
@@ -34,11 +35,6 @@ const FoodCardWithSearch = ({ classes, foodNames, categories, title, highlightIt
         ...parseNutrients({ nutrients: inorganics, filterEmptyValues: false }),
       ],
     });
-  };
-
-  const showFoodDetails = () => {
-    setDetailsOpen(true);
-    loadFoodDetails(food);
   };
 
   const handleCloseModal = () => {
@@ -76,11 +72,10 @@ const FoodCardWithSearch = ({ classes, foodNames, categories, title, highlightIt
           Search
         </ButtonWithSpinner>
       </div>
-      {food && (
+      {nutrients && (
         <div className={classes.card}>
           <FoodCard food={nutrients} onShowMoreClick={showFoodDetails} onMouseOver={onHover}
-                    highlightItem={highlightItem} onFocus
-          />
+                    highlightItem={highlightItem}/>
         </div>)}
       {detailsOpen && <ResultsModal data={foodDetails.nutrients} open={detailsOpen} onClose={handleCloseModal}
                                     title={foodDetails.foodName} subtitle='Nutritional information per 100g of food'/>}

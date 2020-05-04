@@ -20,7 +20,6 @@ const FoodCard = ({ food, onShowMoreClick, onMouseOver, highlightItem, classes }
               data-label={label}
               className={clsx(classes.item, highlightItem === label ? classes.highlight : '')}
               onMouseOver={onMouseOver}
-              onFocus
             >
               <span className={classes.nutrient}>{label}</span>
               <span className={classes.value}>{quantity}</span>

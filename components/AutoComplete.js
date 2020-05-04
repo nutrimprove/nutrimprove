@@ -12,7 +12,6 @@ const AutoComplete = ({ values, label, labelProp, noMatchText, onChange, onInput
   });
 
   return <Autocomplete
-    id='select_nutrient'
     loading={loading}
     options={values}
     groupBy={groupBy}
