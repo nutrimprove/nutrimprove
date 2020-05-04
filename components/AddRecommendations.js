@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core';
 import { getFoodById } from '../interfaces/api/foods';
@@ -12,7 +12,6 @@ const AddRecommendations = ({ classes }) => {
   const [detailsOpen, setDetailsOpen] = useState(false);
   const [leftCardNutrients, setLeftCardNutrients] = useState();
   const [rightCardNutrients, setRightCardNutrients] = useState();
-
   const [foodDetails, setFoodDetails] = useState();
   const [hoveredItem, setHoveredItem] = useState();
 
@@ -30,7 +29,7 @@ const AddRecommendations = ({ classes }) => {
     })();
   }, []);
 
-  const loadFoodDetails = useCallback(foodObj => {
+  const loadFoodDetails = foodObj => {
     const { foodName, proximates, vitamins, inorganics } = foodObj;
     setFoodDetails({
       foodName,
@@ -40,25 +39,25 @@ const AddRecommendations = ({ classes }) => {
         ...parseNutrients({ nutrients: inorganics, filterEmptyValues: false }),
       ],
     });
-  }, [foodDetails]);
+  };
 
-  const showFoodDetails = useCallback(() => {
+  const showFoodDetails = () => {
     setDetailsOpen(true);
     loadFoodDetails(food);
-  }, [detailsOpen]);
+  };
 
-  const showRecommendationDetails = useCallback(() => {
+  const showRecommendationDetails = () => {
     setDetailsOpen(true);
     loadFoodDetails(recommendation);
-  }, [detailsOpen]);
+  };
 
-  const handleCloseModal = useCallback(() => {
+  const handleCloseModal = () => {
     setDetailsOpen(false);
-  }, [detailsOpen]);
+  };
 
-  const setHoveredNutrient = useCallback(event => {
+  const setHoveredNutrient = event => {
     setHoveredItem(event.currentTarget.dataset.label);
-  }, [hoveredItem]);
+  };
 
   return (
     <div className={classes.root}>
