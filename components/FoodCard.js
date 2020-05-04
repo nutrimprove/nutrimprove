@@ -1,57 +1,11 @@
 import { Button, Card, CardActions, CardContent, List, ListItem, Typography, withStyles } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { parseNutrients } from '../helpers/utils';
 import clsx from 'clsx';
 import { uniqueId } from 'lodash/util';
 
-const essentialNutrients = [
-  { name: 'energy', label: 'Energy' },
-  { name: 'carbohydrate', label: 'Carbohydrate' },
-  { name: 'fat', label: 'Fat' },
-  { name: 'protein', label: 'Protein' },
-  { name: 'totalSugars', label: 'Total Sugar' },
-  { name: 'fibre', label: 'Fibre' },
-  { name: 'SFA', label: 'Saturated Fat' },
-  { name: 'omega3', label: 'Omega 3' },
-  { name: 'Cholesterol', label: 'Cholesterol' },
-];
-
 const FoodCard = ({ food, onShowMoreClick, onMouseOver, highlightItem, classes }) => {
   const title = food ? food.foodName : '';
-  const essentialNutrientsInfo = (foodObj) => {
-    if (!foodObj) return;
-    const { proximates } = foodObj;
-
-    // Get only essential nutrients to display in the card
-    const nutrients = {};
-    Object.keys(proximates).map(key => {
-      const exists = essentialNutrients.some(nutrient => nutrient.name === key);
-      if (exists) {
-        nutrients[key] = proximates[key];
-      }
-    });
-
-    const parsedNutrients = parseNutrients({ nutrients, filterEmptyValues: false, addKey: true });
-    return (
-      <List className={classes.list}>
-        {essentialNutrients.map(nutrient => {
-          const parsedNutrient = parsedNutrients.find(parsedNutrient => parsedNutrient.key === nutrient.name);
-          return (
-            <ListItem
-              button key={uniqueId()}
-              data-label={nutrient.label}
-              className={clsx(classes.item, highlightItem === nutrient.label ? classes.highlight : '')}
-              onMouseOver={onMouseOver}
-            >
-              <span className={classes.nutrient}>{nutrient.label}</span>
-              <span className={classes.value}>{parsedNutrient.quantity}</span>
-            </ListItem>
-          );
-        })}
-      </List>
-    );
-  };
 
   return (
     <Card className={classes.card}>
@@ -59,7 +13,20 @@ const FoodCard = ({ food, onShowMoreClick, onMouseOver, highlightItem, classes }
         {title}
       </Typography>
       <CardContent className={classes.content}>
-        {essentialNutrientsInfo(food)}
+        <List className={classes.list}>
+          {food && food.nutrients && food.nutrients.map(({ label, quantity }) => (
+            <ListItem
+              button key={uniqueId()}
+              data-label={label}
+              className={clsx(classes.item, highlightItem === label ? classes.highlight : '')}
+              onMouseOver={onMouseOver}
+              onFocus
+            >
+              <span className={classes.nutrient}>{label}</span>
+              <span className={classes.value}>{quantity}</span>
+            </ListItem>
+          ))}
+        </List>
       </CardContent>
       <CardActions className={classes.actions}>
         <Button

@@ -1,15 +1,18 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core';
 import { getFoodById } from '../interfaces/api/foods';
 import ResultsModal from './ResultsModal';
-import { parseNutrients } from '../helpers/utils';
+import { getMainNutrients, parseNutrients } from '../helpers/utils';
 import FoodCard from './FoodCard';
 
 const AddRecommendations = ({ classes }) => {
   const [food, setFood] = useState();
   const [recommendation, setRecommendation] = useState();
   const [detailsOpen, setDetailsOpen] = useState(false);
+  const [leftCardNutrients, setLeftCardNutrients] = useState();
+  const [rightCardNutrients, setRightCardNutrients] = useState();
+
   const [foodDetails, setFoodDetails] = useState();
   const [hoveredItem, setHoveredItem] = useState();
 
@@ -22,6 +25,8 @@ const AddRecommendations = ({ classes }) => {
 
       setFood(foodResult);
       setRecommendation(recommendationResult);
+      setLeftCardNutrients(getMainNutrients(foodResult));
+      setRightCardNutrients(getMainNutrients(recommendationResult));
     })();
   }, []);
 
@@ -58,19 +63,26 @@ const AddRecommendations = ({ classes }) => {
   return (
     <div className={classes.root}>
       <div className={classes.left}>
-        {/* eslint-disable-next-line jsx-a11y/mouse-events-have-key-events */}
-        {food && <FoodCard food={food} onShowMoreClick={showFoodDetails} onMouseOver={setHoveredNutrient} highlightItem={hoveredItem}/>}
+        {food && <FoodCard food={leftCardNutrients}
+                           onShowMoreClick={showFoodDetails}
+                           onMouseOver={setHoveredNutrient}
+                           highlightItem={hoveredItem}
+                           onFocus
+        />}
       </div>
       <div className={classes.right}>
-        {/* eslint-disable-next-line jsx-a11y/mouse-events-have-key-events */}
-        {recommendation && <FoodCard food={recommendation} onShowMoreClick={showRecommendationDetails} onMouseOver={setHoveredNutrient} highlightItem={hoveredItem}/>}
+        {recommendation && <FoodCard food={rightCardNutrients}
+                                     onShowMoreClick={showRecommendationDetails}
+                                     onMouseOver={setHoveredNutrient}
+                                     highlightItem={hoveredItem}
+                                     onFocus
+        />}
       </div>
-      {detailsOpen && <ResultsModal
-        data={foodDetails.nutrients}
-        open={detailsOpen}
-        onClose={handleCloseModal}
-        title={foodDetails.foodName}
-        subtitle='Nutritional information per 100g of food'
+      {detailsOpen && <ResultsModal data={foodDetails.nutrients}
+                                    open={detailsOpen}
+                                    onClose={handleCloseModal}
+                                    title={foodDetails.foodName}
+                                    subtitle='Nutritional information per 100g of food'
       />}
     </div>
   );
@@ -93,7 +105,7 @@ const styles = {
   right: {
     width: '50%',
     margin: 'auto',
-  }
+  },
 };
 
 export default withStyles(styles)(AddRecommendations);
