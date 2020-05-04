@@ -17,7 +17,7 @@ LoadingPanel.propTypes = {
 const styles = {
   panel: {
     textAlign: 'center',
-    margin: '20px 0',
+    margin: '20px auto',
   },
   text: {
     fontWeight: 400,

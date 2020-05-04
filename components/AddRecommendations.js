@@ -5,6 +5,7 @@ import { getFoodById } from '../interfaces/api/foods';
 import ResultsModal from './ResultsModal';
 import { getMainNutrients, parseNutrients } from '../helpers/utils';
 import FoodCard from './FoodCard';
+import LoadingPanel from './LoadingPanel';
 
 const AddRecommendations = ({ classes }) => {
   const [food, setFood] = useState();
@@ -61,22 +62,27 @@ const AddRecommendations = ({ classes }) => {
 
   return (
     <div className={classes.root}>
-      <div className={classes.left}>
-        {food && <FoodCard food={leftCardNutrients}
-                           onShowMoreClick={showFoodDetails}
-                           onMouseOver={setHoveredNutrient}
-                           highlightItem={hoveredItem}
-                           onFocus
-        />}
-      </div>
-      <div className={classes.right}>
-        {recommendation && <FoodCard food={rightCardNutrients}
-                                     onShowMoreClick={showRecommendationDetails}
-                                     onMouseOver={setHoveredNutrient}
-                                     highlightItem={hoveredItem}
-                                     onFocus
-        />}
-      </div>
+      {food && recommendation
+        ? <>
+          <div className={classes.left}>
+            <FoodCard food={leftCardNutrients}
+                      onShowMoreClick={showFoodDetails}
+                      onMouseOver={setHoveredNutrient}
+                      highlightItem={hoveredItem}
+                      onFocus
+            />
+          </div>
+          <div className={classes.right}>
+            <FoodCard food={rightCardNutrients}
+                      onShowMoreClick={showRecommendationDetails}
+                      onMouseOver={setHoveredNutrient}
+                      highlightItem={hoveredItem}
+                      onFocus
+            />
+          </div>
+        </>
+        : <LoadingPanel/>
+      }
       {detailsOpen && <ResultsModal data={foodDetails.nutrients}
                                     open={detailsOpen}
                                     onClose={handleCloseModal}
@@ -93,8 +99,7 @@ AddRecommendations.propTypes = {
 
 const styles = {
   root: {
-    display: 'inline-flex',
-    minHeight: 430,
+    display: 'flex',
     width: '100%',
   },
   left: {
