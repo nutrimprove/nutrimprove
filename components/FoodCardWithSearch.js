@@ -10,7 +10,7 @@ import ButtonWithSpinner from './ButtonWithSpinner';
 import { connect } from 'react-redux';
 import Typography from '@material-ui/core/Typography';
 
-const FoodCardWithSearch = ({ classes, foodNames, categories, title, highlightItem, onHover }) => {
+const FoodCardWithSearch = ({ classes, foodNames, categories, title, highlightItem, onHover, context }) => {
   const [food, setFood] = useState();
   const [selectedFood, setSelectedFood] = useState();
   const [detailsOpen, setDetailsOpen] = useState(false);
@@ -19,7 +19,7 @@ const FoodCardWithSearch = ({ classes, foodNames, categories, title, highlightIt
   const loading = foodNames.length === 0;
 
   const loadCardDetails = async () => {
-    const foodResult = await getFoodById(selectedFood.foodCode);
+    const foodResult = await getFoodById(selectedFood.foodCode, context);
     setFood(foodResult);
     setNutrients(getMainNutrients(foodResult));
   };
@@ -65,9 +65,9 @@ const FoodCardWithSearch = ({ classes, foodNames, categories, title, highlightIt
         />
         <ButtonWithSpinner
           className={classes.button}
-          context='getFoodData'
+          context={context}
           action={loadCardDetails}
-          disabled={!setSelectedFood}
+          disabled={!selectedFood}
         >
           Search
         </ButtonWithSpinner>
@@ -89,6 +89,7 @@ FoodCardWithSearch.propTypes = {
   title: PropTypes.string,
   onHover: PropTypes.func,
   highlightItem: PropTypes.string,
+  context: PropTypes.string,
   classes: PropTypes.object.isRequired,
 };
 
