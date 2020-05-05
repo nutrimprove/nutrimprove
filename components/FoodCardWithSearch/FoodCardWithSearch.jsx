@@ -22,7 +22,7 @@ const FoodCardWithSearch = ({ classes, foodNames, categories, title, highlightIt
     const foodResult = await getFoodById(selectedFood.foodCode, context);
     setFood(foodResult);
     setNutrients(getMainNutrients(foodResult));
-    foodInfo(selectedFood);
+    foodInfo(foodResult);
   };
 
   const showFoodDetails = () => {
