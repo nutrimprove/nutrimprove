@@ -1,19 +1,12 @@
 import { Button, Card, CardActions, CardContent, List, ListItem, Typography } from '@material-ui/core';
 import PropTypes from 'prop-types';
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import clsx from 'clsx';
 import { uniqueId } from 'lodash/util';
+import ScrollIntoView from '../ScrollIntoView/ScrollIntoView';
 
 const FoodCard = ({ food, onShowMoreClick, onMouseOver, highlightItem, classes }) => {
-  const ref = useRef();
   const title = food ? food.foodName : '';
-
-  useEffect(() => {
-    ref.current.scrollIntoView({
-      behavior: 'smooth',
-      block: 'start',
-    });
-  }, []);
 
   return (
     <Card className={classes.card}>
@@ -36,12 +29,12 @@ const FoodCard = ({ food, onShowMoreClick, onMouseOver, highlightItem, classes }
         </List>
       </CardContent>
       <CardActions className={classes.actions}>
+        <ScrollIntoView/>
         <Button
           variant='outlined'
           color='primary'
           className={classes.button}
           onClick={onShowMoreClick}
-          ref={ref}
         >
           Show More
         </Button>
