@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { getFoodById } from '../../interfaces/api/foods';
 import ResultsModal from '../ResultsModal';
@@ -9,7 +9,7 @@ import ButtonWithSpinner from '../ButtonWithSpinner';
 import { connect } from 'react-redux';
 import { Typography } from '@material-ui/core';
 
-const FoodCardWithSearch = ({ classes, foodNames, categories, title, highlightItem, onHover, context }) => {
+const FoodCardWithSearch = ({ classes, foodNames, categories, title, highlightItem, onHover, foodInfo, context }) => {
   const [food, setFood] = useState();
   const [selectedFood, setSelectedFood] = useState();
   const [detailsOpen, setDetailsOpen] = useState(false);
@@ -22,6 +22,7 @@ const FoodCardWithSearch = ({ classes, foodNames, categories, title, highlightIt
     const foodResult = await getFoodById(selectedFood.foodCode, context);
     setFood(foodResult);
     setNutrients(getMainNutrients(foodResult));
+    foodInfo(selectedFood);
   };
 
   const showFoodDetails = () => {
@@ -92,6 +93,7 @@ FoodCardWithSearch.propTypes = {
   title: PropTypes.string,
   onHover: PropTypes.func,
   highlightItem: PropTypes.string,
+  foodInfo: PropTypes.func,
   context: PropTypes.string,
   classes: PropTypes.object.isRequired,
 };
