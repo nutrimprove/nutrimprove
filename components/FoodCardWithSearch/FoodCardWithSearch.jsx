@@ -41,6 +41,10 @@ const FoodCardWithSearch = ({ classes, foodNames, categories, title, highlightIt
     setDetailsOpen(false);
   };
 
+  const handleFoodSelection = (event, value) => {
+    setSelectedFood(value);
+  };
+
   return (
     <div className={classes.root}>
       <Typography className={classes.title} variant='subtitle1'>{title}</Typography>
@@ -53,7 +57,7 @@ const FoodCardWithSearch = ({ classes, foodNames, categories, title, highlightIt
           labelProp='foodName'
           context='getNutrients'
           loading={loading}
-          onChange={setSelectedFood}
+          onChange={handleFoodSelection}
           strict={true}
         />
         <ButtonWithSpinner

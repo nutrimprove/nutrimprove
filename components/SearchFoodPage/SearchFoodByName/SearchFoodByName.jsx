@@ -25,6 +25,10 @@ const SearchFoodByName = ({ categories, foodNames, classes }) => {
     }
   };
 
+  const handleFoodSelection = (event, value) => {
+    setSelectedFood(value);
+  };
+
   return (
     <>
       <Typography variant='subtitle2' paragraph={true}>Search for a food to display its nutritional data</Typography>
@@ -36,7 +40,7 @@ const SearchFoodByName = ({ categories, foodNames, classes }) => {
           labelProp='foodName'
           context='getNutrients'
           loading={loading}
-          onChange={setSelectedFood}
+          onChange={handleFoodSelection}
           strict={true}
         />
         <ButtonWithSpinner
