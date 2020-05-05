@@ -7,7 +7,7 @@ import { postRecommendations } from '../../../interfaces/api/recommendations';
 import { difference, uniqBy } from 'lodash';
 import { usePromiseTracker } from 'react-promise-tracker';
 import ButtonWithSpinner from '../../ButtonWithSpinner';
-import Status from '../../Status';
+import StatusMessage from '../../StatusMessage';
 import { calcPoints } from '../../../helpers/userUtils';
 import RepeatableFoodsPanel from '../../RepeatableFoodsPanel';
 import {
@@ -172,7 +172,7 @@ const AddBulkRecommendations = ({
           Add recommendation(s)
         </ButtonWithSpinner>
       </div>
-      {status.length > 0 ? <Status status={status}/> : null}
+      {status.length > 0 ? <StatusMessage status={status}/> : null}
     </>
   );
 };

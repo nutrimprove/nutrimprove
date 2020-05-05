@@ -1,7 +1,7 @@
 export default {
   status: {
     marginTop: 30,
-    backgroundColor: '#ffffee',
+    backgroundColor: '#fafafd',
     maxHeight: 150,
     minHeight: 40,
     overflow: 'auto',

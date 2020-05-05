@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const Status = ({ classes, status }) => (
+const StatusMessage = ({ classes, status }) => (
   <>
     <div className={classes.status}>
       {status.map((line, index) => {
@@ -22,9 +22,9 @@ const Status = ({ classes, status }) => (
   </>
 );
 
-Status.propTypes = {
+StatusMessage.propTypes = {
   classes: PropTypes.object.isRequired,
   status: PropTypes.array,
 };
 
-export default Status;
+export default StatusMessage;
