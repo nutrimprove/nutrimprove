@@ -4,19 +4,42 @@ import FoodCardWithSearch from '../../FoodCardWithSearch';
 import ButtonWithSpinner from '../../ButtonWithSpinner';
 import Typography from '@material-ui/core/Typography';
 import ScrollIntoView from '../../ScrollIntoView/ScrollIntoView';
+import { parseNutrients } from '../../../helpers/utils';
+import CompareModal from '../../CompareModal';
 
 const AddRecommendations = ({ classes }) => {
   const [food, setFood] = useState();
   const [recommendedFood, setRecommendedFood] = useState();
   const [hoveredItem, setHoveredItem] = useState();
+  const [compareOpen, setCompareOpen] = useState();
+  const [comparisonData, setComparisonData] = useState();
+  const title = `Comparison`;
 
   const setHoveredNutrient = event => {
     setHoveredItem(event.currentTarget.dataset.label);
   };
 
+  const getFoodDetails = (food) => {
+    const { foodName, proximates, vitamins, inorganics } = food;
+    return {
+      foodName,
+      nutrients: [
+        ...parseNutrients({ nutrients: proximates, filterEmptyValues: false }),
+        ...parseNutrients({ nutrients: vitamins, filterEmptyValues: false }),
+        ...parseNutrients({ nutrients: inorganics, filterEmptyValues: false }),
+      ],
+    };
+  };
+
   const compareFoods = () => {
-    console.log('=== AddRecommendations.jsx #17 === ( food ) =======>', food);
-    console.log('=== AddRecommendations.jsx #17 === ( recfood ) =======>', recommendedFood);
+    setCompareOpen(true);
+    const foodDetails = getFoodDetails(food);
+    const recommendedFoodDetails = getFoodDetails(recommendedFood);
+    setComparisonData([foodDetails, recommendedFoodDetails]);
+  };
+
+  const handleCloseModal = () => {
+    setCompareOpen(false);
   };
 
   return (
@@ -45,6 +68,12 @@ const AddRecommendations = ({ classes }) => {
           <ButtonWithSpinner className={classes.button}>Add Recommendation</ButtonWithSpinner>
         </ScrollIntoView>
       )}
+      {compareOpen && (
+        <CompareModal dataSet={comparisonData}
+                      open={compareOpen}
+                      onClose={handleCloseModal}
+                      title={title}
+                      subtitle='Nutritional information per 100g of food'/>)}
     </div>
   );
 };
