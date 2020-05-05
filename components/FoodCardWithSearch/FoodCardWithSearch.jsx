@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { getFoodById } from '../../interfaces/api/foods';
-import ResultsModal from '../ResultsModal';
-import { filterFoodNames, getMainNutrients, parseNutrients } from '../../helpers/utils';
+import { filterFoodNames } from '../../helpers/utils';
 import FoodCard from '../FoodCard';
 import AutoComplete from '../AutoComplete';
 import ButtonWithSpinner from '../ButtonWithSpinner';
@@ -10,39 +9,20 @@ import { connect } from 'react-redux';
 import { Typography } from '@material-ui/core';
 
 const FoodCardWithSearch = ({ classes, foodNames, categories, title, highlightItem, onHover, foodInfo, context }) => {
-  const [food, setFood] = useState();
   const [selectedFood, setSelectedFood] = useState();
-  const [detailsOpen, setDetailsOpen] = useState(false);
-  const [nutrients, setNutrients] = useState();
-  const [foodDetails, setFoodDetails] = useState();
+
+  const [food, setFood] = useState();
+
   const loading = foodNames.length === 0;
   const filteredFoodNames = filterFoodNames(foodNames, categories.selectedGroups);
 
   const loadCardDetails = async () => {
     const foodResult = await getFoodById(selectedFood.foodCode, context);
     setFood(foodResult);
-    setNutrients(getMainNutrients(foodResult));
     foodInfo(foodResult);
   };
 
-  const showFoodDetails = () => {
-    const { foodName, proximates, vitamins, inorganics } = food;
-    setDetailsOpen(true);
-    setFoodDetails({
-      foodName,
-      nutrients: [
-        ...parseNutrients({ nutrients: proximates, filterEmptyValues: false }),
-        ...parseNutrients({ nutrients: vitamins, filterEmptyValues: false }),
-        ...parseNutrients({ nutrients: inorganics, filterEmptyValues: false }),
-      ],
-    });
-  };
-
-  const handleCloseModal = () => {
-    setDetailsOpen(false);
-  };
-
-  const handleFoodSelection = (event, value) => {
+  const handleFoodSelection = async (event, value) => {
     setSelectedFood(value);
   };
 
@@ -70,19 +50,13 @@ const FoodCardWithSearch = ({ classes, foodNames, categories, title, highlightIt
           Search
         </ButtonWithSpinner>
       </div>
-      {nutrients && (
+      {food && (
         <div className={classes.card}>
-          <FoodCard food={nutrients}
-                    onShowMoreClick={showFoodDetails}
+          <FoodCard food={food}
                     onMouseOver={onHover}
                     highlightItem={highlightItem}/>
         </div>)}
-      {detailsOpen && (
-        <ResultsModal data={foodDetails.nutrients}
-                      open={detailsOpen}
-                      onClose={handleCloseModal}
-                      title={foodDetails.foodName}
-                      subtitle='Nutritional information per 100g of food'/>)}
+
     </div>
   );
 };

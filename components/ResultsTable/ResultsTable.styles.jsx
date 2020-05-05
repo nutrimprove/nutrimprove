@@ -1,6 +1,10 @@
 export default {
-  root: {
+  results: {
     width: '100%',
+  },
+  table: {
+    overflow: 'auto',
+    padding: '0 18px 18px 18px',
   },
   tableHeader: {
     backgroundColor: '#3F51B5',

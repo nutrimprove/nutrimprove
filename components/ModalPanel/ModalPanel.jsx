@@ -4,10 +4,8 @@ import Modal from '@material-ui/core/Modal';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import Typography from '@material-ui/core/Typography';
-import ResultsTable from '../ResultsTable';
-import LoadingPanel from '../LoadingPanel';
 
-const ResultsModal = ({ data, title, subtitle, open, onClose, classes }) => (
+const ModalPanel = ({ children, title, subtitle, open, onClose, classes }) => (
   <Modal open={open} onClose={onClose}>
     <div className={classes.modal}>
       <div>
@@ -21,20 +19,18 @@ const ResultsModal = ({ data, title, subtitle, open, onClose, classes }) => (
           </Typography>
         </div>
       </div>
-      <div className={classes.table}>
-        {data ? <ResultsTable data={data}/> : <LoadingPanel/>}
-      </div>
+      {children}
     </div>
   </Modal>
 );
 
-ResultsModal.propTypes = {
+ModalPanel.propTypes = {
   classes: PropTypes.object.isRequired,
+  children: PropTypes.array.isRequired,
   open: PropTypes.bool.isRequired,
-  title: PropTypes.string,
-  data: PropTypes.array,
-  subtitle: PropTypes.string,
   onClose: PropTypes.func.isRequired,
+  title: PropTypes.string,
+  subtitle: PropTypes.string,
 };
 
-export default ResultsModal;
+export default ModalPanel;

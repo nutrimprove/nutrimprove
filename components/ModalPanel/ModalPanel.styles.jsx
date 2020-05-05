@@ -1,7 +1,8 @@
 export default {
   closeIcon: {
     float: 'right',
-    margin: 10,
+    top: 10,
+    right: 10,
   },
   modal: {
     position: 'absolute',
@@ -19,9 +20,5 @@ export default {
     padding: 20,
     fontWeight: 'bold',
     textAlign: 'center',
-  },
-  table: {
-    overflow: 'auto',
-    padding: '0 18px 18px 18px',
   },
 };

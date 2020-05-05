@@ -20,7 +20,7 @@ const setUserApproval = async (user, approval) => {
   const UserConnection = await getUserConnection();
   return UserConnection.findOneAndUpdate(
     { email: user },
-    { approved: approval }
+    { approved: approval },
   );
 };
 
@@ -65,7 +65,7 @@ const updateAllUsersPoints = async () => {
       let incrementedCount = 0;
       recommendations.forEach(recommendation => {
         const userIndex = recommendation.contributors.findIndex(
-          contributor => contributor.id === user.email
+          contributor => contributor.id === user.email,
         );
         if (userIndex !== -1) {
           if (userIndex === 0) {
@@ -94,10 +94,10 @@ const updateAllUsersPoints = async () => {
             {
               returnNewDocument: true,
               projection: { _id: 0, email: 1, points: 1 },
-            }
+            },
           );
           usersPointsResult.push(userResult);
-        })
+        }),
       ))();
   }
   return usersPointsResult;
@@ -107,6 +107,13 @@ const addUserPoints = async (user, points) => {
   const UserConnection = await getUserConnection();
   return UserConnection.findOneAndUpdate({ email: user }, [
     { $set: { points: { $add: ['$points', points] } } },
+  ]);
+};
+
+const setPreferences = async (user, preferences) => {
+  const UserConnection = await getUserConnection();
+  return UserConnection.findOneAndUpdate({ email: user }, [
+    { $set: { preferences } },
   ]);
 };
 
@@ -121,4 +128,5 @@ export {
   saveUser,
   addUserPoints,
   updateAllUsersPoints,
+  setPreferences,
 };

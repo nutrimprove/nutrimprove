@@ -12,11 +12,11 @@ const ResultsTable = ({ classes, data, onRowClick, title }) => {
   }
 
   return (
-    <>
+    <div className={classes.table}>
       {title && <Typography variant='body1' align='center' className={classes.title}>
         {title}
       </Typography>}
-      {columns && <Paper className={classes.root}>
+      {columns && <Paper className={classes.results}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>
@@ -46,7 +46,7 @@ const ResultsTable = ({ classes, data, onRowClick, title }) => {
           </TableBody>
         </Table>
       </Paper>}
-    </>
+    </div>
   );
 };
 

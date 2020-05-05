@@ -1,16 +1,5 @@
 import { uniqueId } from 'lodash';
-
-const essentialNutrients = [
-  { name: 'energy', label: 'Energy' },
-  { name: 'carbohydrate', label: 'Carbohydrate' },
-  { name: 'fat', label: 'Fat' },
-  { name: 'protein', label: 'Protein' },
-  { name: 'totalSugars', label: 'Total Sugar' },
-  { name: 'fibre', label: 'Fibre' },
-  { name: 'SFA', label: 'Saturated Fat' },
-  { name: 'omega3', label: 'Omega 3' },
-  { name: 'Cholesterol', label: 'Cholesterol' },
-];
+import { DEFAULT_CARD_NUTRIENTS } from './constants';
 
 const getTime = () => {
   const today = new Date();
@@ -72,30 +61,26 @@ const parseNutrients = ({ nutrients, filterEmptyValues = true, addKey = false })
   return nutrientsObj;
 };
 
-const getMainNutrients = (foodObj) => {
+const getCardNutrients = (foodObj, cardNutrients = DEFAULT_CARD_NUTRIENTS) => {
   if (!foodObj) return;
   const { proximates } = foodObj;
-
   // Get only essential nutrients to display in the card
   const nutrients = {};
   Object.keys(proximates).map(key => {
-    const exists = essentialNutrients.some(nutrient => nutrient.name === key);
+    const exists = cardNutrients.some(nutrient => nutrient.name === key);
     if (exists) {
       nutrients[key] = proximates[key];
     }
   });
 
   const parsedNutrients = parseNutrients({ nutrients, filterEmptyValues: false, addKey: true });
-  return {
-    foodName: foodObj.foodName,
-    nutrients: essentialNutrients.map(nutrient => {
+  return cardNutrients.map(nutrient => {
       const parsedNutrient = parsedNutrients.find(parsedNutrient => parsedNutrient.key === nutrient.name);
       return {
         label: nutrient.label,
         quantity: parsedNutrient.quantity,
       };
-    }),
-  };
+    });
 };
 
 // Function to generate regex for applicable groups and subgroups to use in CoFID foods search
@@ -127,6 +112,6 @@ export {
   mapSearchResults,
   getFoodGroups,
   parseNutrients,
-  getMainNutrients,
+  getCardNutrients,
   filterFoodNames,
 };

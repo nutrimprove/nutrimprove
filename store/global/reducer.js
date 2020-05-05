@@ -8,11 +8,17 @@ const userWithAddedPoints = (userDetails, points) => {
   }
 };
 
-export const reducer = (state = { userDetails: {}, categories: CATEGORIES, foodNames: [] }, action) => {
+export const reducer = (state = {
+  userDetails: {},
+  preferences: {},
+  categories: CATEGORIES,
+  foodNames: [],
+}, action) => {
   if (action.type === ActionsTypes.SET_USER_DETAILS) {
     return {
       ...state,
       userDetails: action.userDetails,
+      preferences: action.userDetails.preferences,
     };
   } else if (action.type === ActionsTypes.ADD_USER_POINTS) {
     return {
@@ -28,7 +34,7 @@ export const reducer = (state = { userDetails: {}, categories: CATEGORIES, foodN
     return {
       ...state,
       foodNames: action.foodNames,
-    }
+    };
   } else {
     return state;
   }

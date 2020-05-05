@@ -6,8 +6,9 @@ import { getFoodByName, getFoodsByNutrient, getNutrients } from '../../../interf
 import AutoComplete from '../../AutoComplete';
 import { parseNutrients } from '../../../helpers/utils';
 import ResultsTable from '../../ResultsTable';
-import ResultsModal from '../../ResultsModal';
 import Typography from '@material-ui/core/Typography';
+import ModalPanel from '../../ModalPanel';
+import LoadingPanel from '../../LoadingPanel';
 
 const SearchFoodByNutrient = ({ classes, categories }) => {
   const [nutrient, setNutrient] = useState();
@@ -104,13 +105,16 @@ const SearchFoodByNutrient = ({ classes, categories }) => {
         title={resultsTitle}
         onRowClick={handleRowClick}
       />}
-      {detailsOpen && <ResultsModal
-        data={selectedFoodDetails}
-        open={detailsOpen}
-        onClose={handleCloseModal}
-        title={selectedFood}
-        subtitle='Nutritional information per 100g of food'
-      />}
+      {detailsOpen && (
+        <ModalPanel
+          open={detailsOpen}
+          onClose={handleCloseModal}
+          title={selectedFood}
+          subtitle='Nutritional information per 100g of food'
+        >
+          {selectedFoodDetails ? <ResultsTable data={selectedFoodDetails}/> : <LoadingPanel/>}
+        </ModalPanel>
+      )}
     </>
   );
 };
