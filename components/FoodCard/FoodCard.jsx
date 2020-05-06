@@ -44,10 +44,6 @@ const FoodCard = ({ food, onMouseOver, highlightItem, classes, preferences, user
     });
   };
 
-  useEffect(() => {
-    console.log('=== FoodCard.jsx #45 === ( undoHistory ) =======>', undoHistory);
-  }, [undoHistory]);
-
   const handleClick = async ({ currentTarget }) => {
     const nutrientName = currentTarget.dataset.name;
     const nutrient = nutrients.find(({ name }) => name === nutrientName);
@@ -122,8 +118,6 @@ const FoodCard = ({ food, onMouseOver, highlightItem, classes, preferences, user
             <sup>*</sup>Click a nutrient in the card to change it
           </Typography>
           <div className={classes.cardLinks}>
-            {console.log('=== FoodCard.jsx #124 === ( preferences.cardNutrients ) =======>', preferences.cardNutrients)}
-            {console.log('=== FoodCard.jsx #125 === ( DEFAULT_CARD_NUTRIENTS ) =======>', DEFAULT_CARD_NUTRIENTS)}
             {!isEqual(preferences.cardNutrients, DEFAULT_CARD_NUTRIENTS) && (
               <Link component='button' onClick={resetCardNutrients} className={classes.link} title='Reset to default nutrients'>
                 Reset
