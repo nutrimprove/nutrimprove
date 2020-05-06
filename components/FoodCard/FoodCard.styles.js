@@ -52,4 +52,7 @@ export default {
   cardLinks: {
     float: 'right',
   },
+  link: {
+    margin: '0 5px',
+  },
 };

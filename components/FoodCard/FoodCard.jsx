@@ -14,13 +14,14 @@ import { setUserPreferencesAction } from '../../store/global/actions';
 import { DEFAULT_CARD_NUTRIENTS } from '../../helpers/constants';
 import { savePreferences } from '../../interfaces/api/users';
 import Link from '@material-ui/core/Link';
+import { isEqual } from 'lodash';
 
 const FoodCard = ({ food, onMouseOver, highlightItem, classes, preferences, userDetails, setUserPreferencesState }) => {
   const [foodDetails, setFoodDetails] = useState();
   const [detailsOpen, setDetailsOpen] = useState(false);
   const [changeNutrientOpen, setChangeNutrientOpen] = useState(false);
   const [nutrientToChange, setNutrientToChange] = useState();
-  const [undoHistory, setUndoHistory] = useState();
+  const [undoHistory, setUndoHistory] = useState([]);
   const [nutrients, setNutrients] = useState();
   const title = food ? food.foodName : '';
 
@@ -59,20 +60,16 @@ const FoodCard = ({ food, onMouseOver, highlightItem, classes, preferences, user
     setChangeNutrientOpen(false);
   };
 
-  // const addToUndoHistory = () => {
-  //   if (undoHistory) {
-  //     setUndoHistory([...undoHistory, preferences.cardNutrients]);
-  //   } else {
-  //     setUndoHistory([preferences.cardNutrients]);
-  //   }
-  // };
-  //
-  // const removeFromUndoHistory = () => {
-  //   const history = [...undoHistory];
-  //   const previousState = history.pop();
-  //   setUndoHistory(history);
-  //   return previousState;
-  // };
+  const addToUndoHistory = () => {
+    setUndoHistory([...undoHistory, preferences.cardNutrients]);
+  };
+
+  const removeFromUndoHistory = () => {
+    const history = [...undoHistory];
+    const previousState = history.pop();
+    setUndoHistory(history);
+    return previousState;
+  };
 
   const updatePreferences = (newPreferences) => {
     setUserPreferencesState(newPreferences);
@@ -84,21 +81,21 @@ const FoodCard = ({ food, onMouseOver, highlightItem, classes, preferences, user
     const index = nutrients.findIndex(({ name }) => name === nutrientToChange.name);
     newNutrientsList.splice(index, 1, { label: newNutrient.label, name: newNutrient.name });
     const newPreferences = { ...preferences, cardNutrients: newNutrientsList };
-    // addToUndoHistory();
+    addToUndoHistory();
     updatePreferences(newPreferences);
     setChangeNutrientOpen(false);
   };
 
-  // const resetCardNutrients = () => {
-  //   const newPreferences = { ...preferences, cardNutrients: DEFAULT_CARD_NUTRIENTS };
-  //   // addToUndoHistory();
-  //   updatePreferences(newPreferences);
-  // };
+  const resetCardNutrients = () => {
+    const newPreferences = { ...preferences, cardNutrients: DEFAULT_CARD_NUTRIENTS };
+    addToUndoHistory();
+    updatePreferences(newPreferences);
+  };
 
-  // const undo = () => {
-  //   const newPreferences = { ...preferences, cardNutrients: removeFromUndoHistory() };
-  //   updatePreferences(newPreferences);
-  // };
+  const undo = () => {
+    const newPreferences = { ...preferences, cardNutrients: removeFromUndoHistory() };
+    updatePreferences(newPreferences);
+  };
 
   return (
     <>
@@ -125,14 +122,18 @@ const FoodCard = ({ food, onMouseOver, highlightItem, classes, preferences, user
             <sup>*</sup>Click a nutrient in the card to change it
           </Typography>
           <div className={classes.cardLinks}>
-            {/*{!undoHistory && (<Link component='button' onClick={resetCardNutrients}>*/}
-            {/*  Reset*/}
-            {/*</Link>)}*/}
-            {/*{undoHistory && (*/}
-            {/*  <Link component='button' onClick={undo}>*/}
-            {/*    Undo*/}
-            {/*  </Link>*/}
-            {/*)}*/}
+            {console.log('=== FoodCard.jsx #124 === ( preferences.cardNutrients ) =======>', preferences.cardNutrients)}
+            {console.log('=== FoodCard.jsx #125 === ( DEFAULT_CARD_NUTRIENTS ) =======>', DEFAULT_CARD_NUTRIENTS)}
+            {!isEqual(preferences.cardNutrients, DEFAULT_CARD_NUTRIENTS) && (
+              <Link component='button' onClick={resetCardNutrients} className={classes.link} title='Reset to default nutrients'>
+                Reset
+              </Link>
+            )}
+            {undoHistory.length > 0 && (
+              <Link component='button' onClick={undo} className={classes.link} title='Undo last change'>
+                Undo
+              </Link>
+            )}
           </div>
         </CardContent>
         <CardActions className={classes.actions}>
