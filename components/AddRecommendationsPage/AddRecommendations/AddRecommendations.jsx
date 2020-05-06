@@ -16,7 +16,7 @@ const AddRecommendations = ({ classes }) => {
   const title = `Comparison`;
 
   const setHoveredNutrient = event => {
-    setHoveredItem(event.currentTarget.dataset.label);
+    setHoveredItem(event.currentTarget.dataset.name);
   };
 
   const getFoodDetails = (food) => {
@@ -73,7 +73,8 @@ const AddRecommendations = ({ classes }) => {
                       open={compareOpen}
                       onClose={handleCloseModal}
                       title={title}
-                      subtitle='Nutritional information per 100g of food'/>)}
+                      subtitle='Nutritional information per 100g of food'
+        />)}
     </div>
   );
 };

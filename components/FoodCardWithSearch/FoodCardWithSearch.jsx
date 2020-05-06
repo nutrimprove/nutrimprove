@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { getFoodById } from '../../interfaces/api/foods';
 import { filterFoodNames } from '../../helpers/utils';
@@ -10,9 +10,7 @@ import { Typography } from '@material-ui/core';
 
 const FoodCardWithSearch = ({ classes, foodNames, categories, title, highlightItem, onHover, foodInfo, context }) => {
   const [selectedFood, setSelectedFood] = useState();
-
   const [food, setFood] = useState();
-
   const loading = foodNames.length === 0;
   const filteredFoodNames = filterFoodNames(foodNames, categories.selectedGroups);
 
@@ -52,11 +50,9 @@ const FoodCardWithSearch = ({ classes, foodNames, categories, title, highlightIt
       </div>
       {food && (
         <div className={classes.card}>
-          <FoodCard food={food}
-                    onMouseOver={onHover}
-                    highlightItem={highlightItem}/>
-        </div>)}
-
+          <FoodCard food={food} onMouseOver={onHover} highlightItem={highlightItem}/>
+        </div>
+      )}
     </div>
   );
 };

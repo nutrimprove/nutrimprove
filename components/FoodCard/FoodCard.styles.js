@@ -49,4 +49,7 @@ export default {
     marginTop: 4,
     fontWeight: 100,
   },
+  cardLinks: {
+    float: 'right',
+  },
 };

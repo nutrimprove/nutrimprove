@@ -26,7 +26,7 @@ const ModalPanel = ({ children, title, subtitle, open, onClose, classes }) => (
 
 ModalPanel.propTypes = {
   classes: PropTypes.object.isRequired,
-  children: PropTypes.array.isRequired,
+  children: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   title: PropTypes.string,

@@ -78,6 +78,7 @@ const getCardNutrients = (foodObj, cardNutrients = DEFAULT_CARD_NUTRIENTS) => {
       const parsedNutrient = parsedNutrients.find(parsedNutrient => parsedNutrient.key === nutrient.name);
       return {
         label: nutrient.label,
+        name: nutrient.name,
         quantity: parsedNutrient.quantity,
       };
     });

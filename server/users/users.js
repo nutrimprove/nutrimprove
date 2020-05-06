@@ -110,7 +110,7 @@ const addUserPoints = async (user, points) => {
   ]);
 };
 
-const setPreferences = async (user, preferences) => {
+const savePreferences = async (user, preferences) => {
   const UserConnection = await getUserConnection();
   return UserConnection.findOneAndUpdate({ email: user }, [
     { $set: { preferences } },
@@ -128,5 +128,5 @@ export {
   saveUser,
   addUserPoints,
   updateAllUsersPoints,
-  setPreferences,
+  savePreferences,
 };

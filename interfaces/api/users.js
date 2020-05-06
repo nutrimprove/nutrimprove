@@ -51,7 +51,7 @@ const updateAllUsersPoints = () =>
     'updateAllUsersPoints',
   );
 
-const setPreferences = (user, preferences) =>
+const savePreferences = (user, preferences) =>
     postRequest(`${usersEndpoint}/preferences`, { user, preferences });
 
 export {
@@ -63,5 +63,5 @@ export {
   revokeUser,
   deleteUser,
   updateAllUsersPoints,
-  setPreferences,
+  savePreferences,
 };

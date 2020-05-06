@@ -3,34 +3,32 @@ import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { uniqueId } from 'lodash/util';
-import ScrollIntoView from '../ScrollIntoView/ScrollIntoView';
+import ScrollIntoView from '../ScrollIntoView';
 import { getCardNutrients, parseNutrients } from '../../helpers/utils';
 import { connect } from 'react-redux';
 import ResultsTable from '../ResultsTable';
 import LoadingPanel from '../LoadingPanel';
 import ModalPanel from '../ModalPanel';
+import ChangeNutrientModal from './ChangeNutrientModal';
+import { setUserPreferencesAction } from '../../store/global/actions';
+import { DEFAULT_CARD_NUTRIENTS } from '../../helpers/constants';
+import { savePreferences } from '../../interfaces/api/users';
+import Link from '@material-ui/core/Link';
 
-const FoodCard = ({ food, onMouseOver, highlightItem, classes, preferences, userDetails }) => {
+const FoodCard = ({ food, onMouseOver, highlightItem, classes, preferences, userDetails, setUserPreferencesState }) => {
   const [foodDetails, setFoodDetails] = useState();
-  const [nutrients, setNutrients] = useState();
   const [detailsOpen, setDetailsOpen] = useState(false);
   const [changeNutrientOpen, setChangeNutrientOpen] = useState(false);
   const [nutrientToChange, setNutrientToChange] = useState();
+  const [undoHistory, setUndoHistory] = useState();
+  const [nutrients, setNutrients] = useState();
   const title = food ? food.foodName : '';
 
   useEffect(() => {
-    let userCardNutrients;
-    console.log('=== FoodCard.jsx #19 === ( userDetails ) =======>', userDetails);
-    console.log('=== FoodCard.jsx #19 === ( preferences ) =======>', preferences);
-    if (preferences && preferences.cardNutrients) {
-      userCardNutrients = preferences.cardNutrients;
-      console.log('=== FoodCard.jsx #21 === ( 111 ) =======>', 111);
-    }
-    const cardNutrients = getCardNutrients(food, userCardNutrients);
-    console.log('=== FoodCard.jsx #23 === ( userCardNutrients ) =======>', userCardNutrients);
-    console.log('=== FoodCard.jsx #23 === ( cardNutrients ) =======>', cardNutrients);
-    setNutrients(cardNutrients);
-  }, []);
+    preferences
+      ? setNutrients(getCardNutrients(food, preferences.cardNutrients))
+      : setNutrients(getCardNutrients(food));
+  }, [preferences]);
 
   const showFoodDetails = () => {
     const { foodName, proximates, vitamins, inorganics } = food;
@@ -45,8 +43,13 @@ const FoodCard = ({ food, onMouseOver, highlightItem, classes, preferences, user
     });
   };
 
-  const handleClick = event => {
-    const nutrient = event.currentTarget.dataset.label;
+  useEffect(() => {
+    console.log('=== FoodCard.jsx #45 === ( undoHistory ) =======>', undoHistory);
+  }, [undoHistory]);
+
+  const handleClick = async ({ currentTarget }) => {
+    const nutrientName = currentTarget.dataset.name;
+    const nutrient = nutrients.find(({ name }) => name === nutrientName);
     setNutrientToChange(nutrient);
     setChangeNutrientOpen(true);
   };
@@ -56,6 +59,47 @@ const FoodCard = ({ food, onMouseOver, highlightItem, classes, preferences, user
     setChangeNutrientOpen(false);
   };
 
+  // const addToUndoHistory = () => {
+  //   if (undoHistory) {
+  //     setUndoHistory([...undoHistory, preferences.cardNutrients]);
+  //   } else {
+  //     setUndoHistory([preferences.cardNutrients]);
+  //   }
+  // };
+  //
+  // const removeFromUndoHistory = () => {
+  //   const history = [...undoHistory];
+  //   const previousState = history.pop();
+  //   setUndoHistory(history);
+  //   return previousState;
+  // };
+
+  const updatePreferences = (newPreferences) => {
+    setUserPreferencesState(newPreferences);
+    savePreferences(userDetails.email, newPreferences);
+  };
+
+  const handleNutrientChange = newNutrient => {
+    const newNutrientsList = nutrients.map(({ label, name }) => ({ label, name }));
+    const index = nutrients.findIndex(({ name }) => name === nutrientToChange.name);
+    newNutrientsList.splice(index, 1, { label: newNutrient.label, name: newNutrient.name });
+    const newPreferences = { ...preferences, cardNutrients: newNutrientsList };
+    // addToUndoHistory();
+    updatePreferences(newPreferences);
+    setChangeNutrientOpen(false);
+  };
+
+  // const resetCardNutrients = () => {
+  //   const newPreferences = { ...preferences, cardNutrients: DEFAULT_CARD_NUTRIENTS };
+  //   // addToUndoHistory();
+  //   updatePreferences(newPreferences);
+  // };
+
+  // const undo = () => {
+  //   const newPreferences = { ...preferences, cardNutrients: removeFromUndoHistory() };
+  //   updatePreferences(newPreferences);
+  // };
+
   return (
     <>
       <Card className={classes.card}>
@@ -64,11 +108,11 @@ const FoodCard = ({ food, onMouseOver, highlightItem, classes, preferences, user
         </Typography>
         <CardContent className={classes.content}>
           <List className={classes.list}>
-            {nutrients && nutrients.map(({ label, quantity }) => (
+            {nutrients && nutrients.map(({ label, name, quantity }) => (
               <ListItem
                 button key={uniqueId()}
-                data-label={label}
-                className={clsx(classes.item, highlightItem === label ? classes.highlight : '')}
+                data-name={name}
+                className={clsx(classes.item, highlightItem === name ? classes.highlight : '')}
                 onMouseOver={onMouseOver}
                 onClick={handleClick}
               >
@@ -80,6 +124,16 @@ const FoodCard = ({ food, onMouseOver, highlightItem, classes, preferences, user
           <Typography className={classes.caption} variant='caption'>
             <sup>*</sup>Click a nutrient in the card to change it
           </Typography>
+          <div className={classes.cardLinks}>
+            {/*{!undoHistory && (<Link component='button' onClick={resetCardNutrients}>*/}
+            {/*  Reset*/}
+            {/*</Link>)}*/}
+            {/*{undoHistory && (*/}
+            {/*  <Link component='button' onClick={undo}>*/}
+            {/*    Undo*/}
+            {/*  </Link>*/}
+            {/*)}*/}
+          </div>
         </CardContent>
         <CardActions className={classes.actions}>
           <ScrollIntoView/>
@@ -102,20 +156,21 @@ const FoodCard = ({ food, onMouseOver, highlightItem, classes, preferences, user
           {foodDetails && foodDetails.nutrients ? <ResultsTable data={foodDetails.nutrients}/> : <LoadingPanel/>}
         </ModalPanel>)}
       {changeNutrientOpen && (
-        <ModalPanel open={changeNutrientOpen} onClose={handleCloseModal}>
-          {nutrientToChange}
-        </ModalPanel>)}
+        <ChangeNutrientModal open={changeNutrientOpen} onClose={handleCloseModal} nutrientToChange={nutrientToChange}
+                             onNutrientChange={handleNutrientChange} cardNutrients={nutrients}
+        />)}
     </>
   );
 };
 
 FoodCard.propTypes = {
   food: PropTypes.object.isRequired,
-  onShowMoreClick: PropTypes.func.isRequired,
   onMouseOver: PropTypes.func,
   highlightItem: PropTypes.string,
   classes: PropTypes.object.isRequired,
   preferences: PropTypes.object,
+  userDetails: PropTypes.object,
+  setUserPreferencesState: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = states => {
@@ -125,7 +180,11 @@ const mapStateToProps = states => {
   };
 };
 
-export default connect(mapStateToProps)(FoodCard);
+const mapDispatchToProps = dispatch => ({
+  setUserPreferencesState: preferences => dispatch(setUserPreferencesAction(preferences)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(FoodCard);
 
 
 

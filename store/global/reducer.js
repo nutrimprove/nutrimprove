@@ -8,17 +8,11 @@ const userWithAddedPoints = (userDetails, points) => {
   }
 };
 
-const userWithNewPreferences = (userDetails, preferences) => {
-  if (preferences && userDetails) {
-    userDetails.preferences = preferences;
-    return userDetails;
-  }
-};
-
 export const reducer = (state = {
   userDetails: {},
   categories: CATEGORIES,
   foodNames: [],
+  preferences: {},
 }, action) => {
   if (action.type === ActionsTypes.SET_USER_DETAILS) {
     return {
@@ -28,7 +22,7 @@ export const reducer = (state = {
   } else if (action.type === ActionsTypes.SET_USER_PREFERENCES) {
     return {
       ...state,
-      userDetails: userWithNewPreferences(state.userDetails, action.preferences),
+      preferences: action.preferences,
     };
   }
     else if (action.type === ActionsTypes.ADD_USER_POINTS) {

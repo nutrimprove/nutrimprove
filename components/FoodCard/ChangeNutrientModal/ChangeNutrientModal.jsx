@@ -28,7 +28,7 @@ const ChangeNutrientModal = ({ open, onClose, nutrientToChange, onNutrientChange
   return (
     <>
       <ModalPanel open={open} onClose={onClose}>
-        {nutrientToChange}
+        {nutrientToChange.label}
         <AutoComplete
           values={nutrients}
           groupBy={(option) => option.group}
@@ -58,7 +58,7 @@ const ChangeNutrientModal = ({ open, onClose, nutrientToChange, onNutrientChange
 ChangeNutrientModal.propTypes = {
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
-  nutrientToChange: PropTypes.string.isRequired,
+  nutrientToChange: PropTypes.object.isRequired,
   onNutrientChange: PropTypes.func.isRequired,
   cardNutrients: PropTypes.array.isRequired,
 };
