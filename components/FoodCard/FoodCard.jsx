@@ -77,6 +77,9 @@ const FoodCard = ({ food, onMouseOver, highlightItem, classes, preferences, user
               </ListItem>
             ))}
           </List>
+          <Typography className={classes.caption} variant='caption'>
+            <sup>*</sup>Click a nutrient in the card to change it
+          </Typography>
         </CardContent>
         <CardActions className={classes.actions}>
           <ScrollIntoView/>

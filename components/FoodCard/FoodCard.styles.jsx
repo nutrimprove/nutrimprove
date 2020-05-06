@@ -28,6 +28,7 @@ export default {
     fontFamily: 'sans-serif, arial',
     fontSize: '0.8em',
     padding: 0,
+    marginBottom: 7,
   },
   item: {
     padding: '8px 0',
@@ -43,5 +44,9 @@ export default {
   button: {
     fontSize: '0.7em',
     height: 30,
+  },
+  caption: {
+    marginTop: 4,
+    fontWeight: 100,
   },
 };
