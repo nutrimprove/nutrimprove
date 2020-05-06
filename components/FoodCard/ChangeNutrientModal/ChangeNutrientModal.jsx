@@ -5,7 +5,7 @@ import ModalPanel from '../../ModalPanel';
 import MainButton from '../../MainButton';
 import { getNutrients } from '../../../interfaces/api/foods';
 
-const ChangeNutrientModal = ({ open, onClose, nutrientToChange, onNutrientChange, cardNutrients }) => {
+const ChangeNutrientModal = ({ open, onClose, nutrientToChange, onNutrientChange, cardNutrients, classes }) => {
   const [newNutrient, setNewNutrient] = useState();
   const [nutrients, setNutrients] = useState([]);
   const toExclude = cardNutrients.map(({ name }) => name);
@@ -27,29 +27,39 @@ const ChangeNutrientModal = ({ open, onClose, nutrientToChange, onNutrientChange
 
   return (
     <>
-      <ModalPanel open={open} onClose={onClose}>
-        {nutrientToChange.label}
-        <AutoComplete
-          values={nutrients}
-          groupBy={(option) => option.group}
-          label='Choose nutrient'
-          noMatchText='No nutrient matched!!'
-          labelProp='label'
-          context='getNutrients'
-          loading={nutrients.length === 0}
-          onChange={handleNutrientSelection}
-          openOnFocus={true}
-          getDisabledOptions={disabledOptions}
-        />
-        {newNutrient && (
-          <MainButton action={() => onNutrientChange(newNutrient)}>
-            Change
-          </MainButton>)}
-        <MainButton context='changeCardNutrient'
-                    action={onClose}
-        >
-          {newNutrient ? 'Cancel' : 'Close'}
-        </MainButton>
+      <ModalPanel open={open}
+                  onClose={onClose}
+                  title={nutrientToChange.label}
+                  subtitle={'Choose nutrient to replace it with'}
+                  style={classes.modalSize}
+      >
+        <div className={classes.content}>
+          <div className={classes.nutrient}>
+            <AutoComplete
+              values={nutrients}
+              groupBy={(option) => option.group}
+              label='Choose nutrient'
+              noMatchText='No nutrient matched!!'
+              labelProp='label'
+              context='getNutrients'
+              loading={nutrients.length === 0}
+              onChange={handleNutrientSelection}
+              openOnFocus={true}
+              getDisabledOptions={disabledOptions}
+            />
+          </div>
+          <div className={classes.buttons}>
+            {newNutrient && (
+              <MainButton action={() => onNutrientChange(newNutrient)}>
+                Change
+              </MainButton>)}
+            <MainButton context='changeCardNutrient'
+                        action={onClose}
+            >
+              {newNutrient ? 'Cancel' : 'Close'}
+            </MainButton>
+          </div>
+        </div>
       </ModalPanel>
     </>
   );
@@ -58,6 +68,7 @@ const ChangeNutrientModal = ({ open, onClose, nutrientToChange, onNutrientChange
 ChangeNutrientModal.propTypes = {
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
+  classes: PropTypes.object.isRequired,
   nutrientToChange: PropTypes.object.isRequired,
   onNutrientChange: PropTypes.func.isRequired,
   cardNutrients: PropTypes.array.isRequired,

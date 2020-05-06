@@ -4,10 +4,11 @@ import Modal from '@material-ui/core/Modal';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import Typography from '@material-ui/core/Typography';
+import clsx from 'clsx';
 
-const ModalPanel = ({ children, title, subtitle, open, onClose, classes }) => (
+const ModalPanel = ({ children, title, subtitle, open, onClose, classes, style }) => (
   <Modal open={open} onClose={onClose}>
-    <div className={classes.modal}>
+    <div className={clsx(classes.modal, style)}>
       <div>
         <IconButton classes={{ root: classes.closeIcon }} onClick={onClose} aria-label='close'>
           <CloseIcon fontSize='small'/>
@@ -30,6 +31,7 @@ ModalPanel.propTypes = {
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   title: PropTypes.string,
+  style: PropTypes.object,
   subtitle: PropTypes.string,
 };
 

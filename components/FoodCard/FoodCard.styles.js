@@ -39,7 +39,7 @@ export default {
   },
   actions: {
     padding: '0 14px',
-    marginBottom: 16,
+    marginBottom: 22,
   },
   button: {
     fontSize: '0.7em',
