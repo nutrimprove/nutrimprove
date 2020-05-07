@@ -2,7 +2,12 @@ export default {
   root: {
     display: 'inline-block',
     maxWidth: 1400,
-    margin: '0 auto',
+    '&:first-child': {
+      margin: '0 30px 0 auto',
+    },
+    '&:last-child': {
+      margin: '0 auto 0 30px',
+    }
   },
   title: {
     textAlign: 'center',
