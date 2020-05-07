@@ -31,7 +31,7 @@ ModalPanel.propTypes = {
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   title: PropTypes.string,
-  style: PropTypes.object,
+  style: PropTypes.string,
   subtitle: PropTypes.string,
 };
 
