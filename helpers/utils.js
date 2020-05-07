@@ -74,13 +74,17 @@ const getCardNutrients = (foodObj, cardNutrients = DEFAULT_CARD_NUTRIENTS) => {
   });
 
   const parsedNutrients = parseNutrients({ nutrients, filterEmptyValues: false, addKey: true });
-  return cardNutrients.map(nutrient => {
+  return cardNutrients.map((nutrient, index) => {
       const parsedNutrient = parsedNutrients.find(parsedNutrient => parsedNutrient.key === nutrient.name);
-      return {
+      const newNutrient = {
         label: nutrient.label,
         name: nutrient.name,
         quantity: parsedNutrient.quantity,
       };
+      if (nutrient.name !== DEFAULT_CARD_NUTRIENTS[index].name) {
+        newNutrient.changed = true;
+      }
+      return newNutrient;
     });
 };
 

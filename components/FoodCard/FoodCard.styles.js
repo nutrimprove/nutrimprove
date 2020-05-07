@@ -37,6 +37,9 @@ export default {
   highlight: {
     background: '#f5f5fa',
   },
+  changedItem: {
+    color: 'darkblue',
+  },
   actions: {
     padding: '0 14px',
     marginBottom: 22,

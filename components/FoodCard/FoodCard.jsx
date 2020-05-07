@@ -29,7 +29,7 @@ const FoodCard = ({ food, onMouseOver, highlightItem, classes, preferences, user
     preferences
       ? setNutrients(getCardNutrients(food, preferences.cardNutrients))
       : setNutrients(getCardNutrients(food));
-  }, [preferences]);
+  }, [food, preferences]);
 
   const showFoodDetails = () => {
     const { foodName, proximates, vitamins, inorganics } = food;
@@ -101,11 +101,14 @@ const FoodCard = ({ food, onMouseOver, highlightItem, classes, preferences, user
         </Typography>
         <CardContent className={classes.content}>
           <List className={classes.list}>
-            {nutrients && nutrients.map(({ label, name, quantity }) => (
+            {nutrients && nutrients.map(({ label, name, quantity, changed }) => (
               <ListItem
                 button key={uniqueId()}
                 data-name={name}
-                className={clsx(classes.item, highlightItem === name ? classes.highlight : '')}
+                className={clsx([classes.item,
+                  highlightItem === name ? classes.highlight : '',
+                  changed ? classes.changedItem : '',
+                ])}
                 onMouseOver={onMouseOver}
                 onClick={handleClick}
               >
