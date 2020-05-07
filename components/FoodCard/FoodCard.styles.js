@@ -38,7 +38,7 @@ export default {
     background: '#f5f5fa',
   },
   changedItem: {
-    color: 'darkblue',
+    color: '#3f51b5',
   },
   actions: {
     padding: '0 14px',
