@@ -56,20 +56,21 @@ const FoodCard = ({ food, onMouseOver, highlightItem, classes, preferences, user
     setChangeNutrientOpen(false);
   };
 
-  const addToUndoHistory = () => {
-    setUndoHistory([...undoHistory, preferences.cardNutrients]);
-  };
-
-  const removeFromUndoHistory = () => {
+  const popHistory = () => {
     const history = [...undoHistory];
     const previousState = history.pop();
     setUndoHistory(history);
     return previousState;
   };
 
-  const updatePreferences = (newPreferences) => {
+  const updatePreferences = async (newPreferences, addToUndo) => {
     setUserPreferencesState(newPreferences);
-    savePreferences(userDetails.email, newPreferences);
+    await savePreferences(userDetails.email, newPreferences);
+    if (addToUndo) {
+      preferences && preferences.cardNutrients
+      ? setUndoHistory([...undoHistory, preferences.cardNutrients])
+      : setUndoHistory([...undoHistory, DEFAULT_CARD_NUTRIENTS]);
+    }
   };
 
   const handleNutrientChange = newNutrient => {
@@ -77,19 +78,17 @@ const FoodCard = ({ food, onMouseOver, highlightItem, classes, preferences, user
     const index = nutrients.findIndex(({ name }) => name === nutrientToChange.name);
     newNutrientsList.splice(index, 1, { label: newNutrient.label, name: newNutrient.name });
     const newPreferences = { ...preferences, cardNutrients: newNutrientsList };
-    addToUndoHistory();
-    updatePreferences(newPreferences);
+    updatePreferences(newPreferences, true);
     setChangeNutrientOpen(false);
   };
 
   const resetCardNutrients = () => {
     const newPreferences = { ...preferences, cardNutrients: DEFAULT_CARD_NUTRIENTS };
-    addToUndoHistory();
-    updatePreferences(newPreferences);
+    updatePreferences(newPreferences, true);
   };
 
   const undo = () => {
-    const newPreferences = { ...preferences, cardNutrients: removeFromUndoHistory() };
+    const newPreferences = { ...preferences, cardNutrients: popHistory() };
     updatePreferences(newPreferences);
   };
 
