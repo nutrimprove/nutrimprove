@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import FoodCardWithSearch from '../../FoodCardWithSearch';
 import ButtonWithSpinner from '../../ButtonWithSpinner';
-import Typography from '@material-ui/core/Typography';
-import ScrollIntoView from '../../ScrollIntoView/ScrollIntoView';
 import { parseNutrients } from '../../../helpers/utils';
 import CompareModal from '../../CompareModal';
+import addRecommendations from '../../../helpers/addRecommendations';
+import ActionsPanel from '../../ActionsPanel';
 
 const AddRecommendations = ({ classes }) => {
   const [food, setFood] = useState();
@@ -13,7 +13,12 @@ const AddRecommendations = ({ classes }) => {
   const [hoveredItem, setHoveredItem] = useState();
   const [compareOpen, setCompareOpen] = useState();
   const [comparisonData, setComparisonData] = useState();
+  const [status, setStatus] = useState({});
   const title = `Comparison`;
+
+  useEffect(() => {
+    setStatus({});
+  }, [food, recommendedFood]);
 
   const setHoveredNutrient = event => {
     setHoveredItem(event.currentTarget.dataset.name);
@@ -38,6 +43,19 @@ const AddRecommendations = ({ classes }) => {
     setComparisonData([foodDetails, recommendedFoodDetails]);
   };
 
+  const addRecommendation = () => {
+    addRecommendations({
+      foods: [food],
+      recommendations: [recommendedFood],
+      onSuccess: message => {
+        setStatus({type: 'success', content: message});
+      },
+      onFailure: message => {
+        setStatus({type: 'fail', content: message});
+      },
+    });
+  };
+
   const handleCloseModal = () => {
     setCompareOpen(false);
   };
@@ -58,27 +76,10 @@ const AddRecommendations = ({ classes }) => {
                             foodInfo={setRecommendedFood}
         />
       </div>
-      {food && recommendedFood && (
-        food.foodCode !== recommendedFood.foodCode
-          ? (
-            <ScrollIntoView className={classes.actions}>
-              <Typography className={classes.recommendation}>
-                You consider &apos;<span className={classes.recommendedFood}>{recommendedFood.foodName}</span>&apos;
-                a healthier alternative to &apos;<span className={classes.food}>{food.foodName}</span>&apos;
-              </Typography>
-              <ButtonWithSpinner className={classes.button} action={compareFoods}>Compare</ButtonWithSpinner>
-              <ButtonWithSpinner className={classes.button}>Add Recommendation</ButtonWithSpinner>
-            </ScrollIntoView>
-          )
-          : (
-            <div className={classes.actions}>
-              <Typography className={classes.recommendation}>
-                You have selected the same food as a recommendation:
-                &apos;<b>{recommendedFood.foodName}</b>&apos;
-              </Typography>
-            </div>
-          )
-      )}
+      <ActionsPanel food={food} recommendedFood={recommendedFood} status={status}>
+        <ButtonWithSpinner className={classes.button} action={compareFoods}>Compare</ButtonWithSpinner>
+        <ButtonWithSpinner className={classes.button} action={addRecommendation} disabled={status.type === 'fail'}>Add Recommendation</ButtonWithSpinner>
+      </ActionsPanel>
       {compareOpen && (
         <CompareModal dataSet={comparisonData}
                       open={compareOpen}
