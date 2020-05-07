@@ -14,6 +14,16 @@ const FoodCardWithSearch = ({ classes, foodNames, categories, title, highlightIt
   const loading = foodNames.length === 0;
   const filteredFoodNames = filterFoodNames(foodNames, categories.selectedGroups);
 
+  // TEST CODE
+  useEffect(() => {
+    setSelectedFood({ foodCode: '13-146', foodName: 'Agar, dried', group: 'DG' });
+  }, []);
+
+  useEffect(() => {
+    if (selectedFood) loadCardDetails();
+  }, [selectedFood]);
+// End of test code
+
   const loadCardDetails = async () => {
     const foodResult = await getFoodById(selectedFood.foodCode, context);
     setFood(foodResult);

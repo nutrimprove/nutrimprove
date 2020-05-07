@@ -59,14 +59,25 @@ const AddRecommendations = ({ classes }) => {
         />
       </div>
       {food && recommendedFood && (
-        <ScrollIntoView className={classes.actions}>
-          <Typography className={classes.recommendation}>
-            You consider &apos;<span className={classes.recommendedFood}>{recommendedFood.foodName}</span>&apos;
-            a healthier alternative to &apos;<span className={classes.food}>{food.foodName}</span>&apos;
-          </Typography>
-          <ButtonWithSpinner className={classes.button} action={compareFoods}>Compare</ButtonWithSpinner>
-          <ButtonWithSpinner className={classes.button}>Add Recommendation</ButtonWithSpinner>
-        </ScrollIntoView>
+        food.foodCode !== recommendedFood.foodCode
+          ? (
+            <ScrollIntoView className={classes.actions}>
+              <Typography className={classes.recommendation}>
+                You consider &apos;<span className={classes.recommendedFood}>{recommendedFood.foodName}</span>&apos;
+                a healthier alternative to &apos;<span className={classes.food}>{food.foodName}</span>&apos;
+              </Typography>
+              <ButtonWithSpinner className={classes.button} action={compareFoods}>Compare</ButtonWithSpinner>
+              <ButtonWithSpinner className={classes.button}>Add Recommendation</ButtonWithSpinner>
+            </ScrollIntoView>
+          )
+          : (
+            <div className={classes.actions}>
+              <Typography className={classes.recommendation}>
+                You have selected the same food as a recommendation:
+                &apos;<b>{recommendedFood.foodName}</b>&apos;
+              </Typography>
+            </div>
+          )
       )}
       {compareOpen && (
         <CompareModal dataSet={comparisonData}

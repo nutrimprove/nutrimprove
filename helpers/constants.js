@@ -4,7 +4,7 @@ const ROLES = {
   ADMIN: 5,
   CONTRIBUTOR: 100,
 };
-const MIN_WIDTH = 960;
+const MIN_WIDTH = 1060;
 const EDAMAM_DB = false;
 const INPUT_TRIGGER_TIME = EDAMAM_DB ? 700 : 300;
 const CATEGORIES = {
