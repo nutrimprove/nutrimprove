@@ -121,8 +121,12 @@ const FoodCard = ({ food, onMouseOver, highlightItem, classes, preferences, user
             <sup>*</sup>Click a nutrient in the card to change it
           </Typography>
           <div className={classes.cardLinks}>
-            {!isEqual(preferences.cardNutrients, DEFAULT_CARD_NUTRIENTS) && (
-              <Link component='button' onClick={resetCardNutrients} className={classes.link} title='Reset to default nutrients'>
+            {preferences && preferences.cardNutrients && !isEqual(preferences.cardNutrients, DEFAULT_CARD_NUTRIENTS) && (
+              <Link component='button'
+                    onClick={resetCardNutrients}
+                    className={classes.link}
+                    title='Reset to default nutrients'
+              >
                 Reset
               </Link>
             )}
