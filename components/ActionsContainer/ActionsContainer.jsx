@@ -9,7 +9,7 @@ const ActionsContainer = ({ classes, children }) => (
 
 ActionsContainer.propTypes = {
   classes: PropTypes.object.isRequired,
-  children: PropTypes.array,
+  children: PropTypes.object.isRequired,
 };
 
 export default ActionsContainer;
