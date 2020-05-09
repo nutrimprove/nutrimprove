@@ -20,14 +20,9 @@ export default {
     borderRadius: 7,
     borderColor: 'lightgray',
     padding: '10px 10px 10px 20px',
-    margin: 'auto',
+    margin: '0 auto 20px',
   },
   button: {
     margin: 10,
-  },
-  card: {
-    margin: 'auto',
-    marginTop: 20,
-    width: 430,
   },
 };

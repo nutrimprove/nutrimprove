@@ -3,9 +3,15 @@ import PropTypes from 'prop-types';
 import ResultsTable from '../ResultsTable';
 import ModalPanel from '../ModalPanel';
 
-const CompareModal = ({ dataSet, title, subtitle, open, onClose, classes }) => {
+const CompareModal = ({
+                        dataSet,
+                        title = 'Food comparison',
+                        subtitle = 'Nutritional information per 100g of food',
+                        open,
+                        onClose,
+                        classes,
+                      }) => {
   const mergedData = [];
-
   // Merge both sets of data to have one table showing nutrient name and both quantities
   dataSet[0].nutrients.forEach(({ nutrient, quantity }) => {
     const secondSetNutrient = dataSet[1].nutrients.find(nutrientB => nutrientB.nutrient === nutrient);
@@ -19,7 +25,7 @@ const CompareModal = ({ dataSet, title, subtitle, open, onClose, classes }) => {
   return (
     <ModalPanel open={open} onClose={onClose} title={title} subtitle={subtitle}>
       <div className={classes.compareTables}>
-          <ResultsTable data={mergedData}/>
+        <ResultsTable data={mergedData}/>
       </div>
     </ModalPanel>
   );

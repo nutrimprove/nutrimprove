@@ -49,9 +49,7 @@ const FoodCardWithSearch = ({ classes, foodNames, categories, title, highlightIt
         </ButtonWithSpinner>
       </div>
       {food && (
-        <div className={classes.card}>
-          <FoodCard food={food} onMouseOver={onHover} highlightItem={highlightItem}/>
-        </div>
+        <FoodCard food={food} onMouseOver={onHover} highlightItem={highlightItem}/>
       )}
     </div>
   );

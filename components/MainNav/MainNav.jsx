@@ -10,9 +10,10 @@ import AdminPanel from '../AdminPanel';
 import { connect } from 'react-redux';
 import { isAdmin } from '../../helpers/userUtils';
 import TabContainer from '../TabContainer';
+import ReviewRecommendationsPage from '../ReviewRecommendationsPage';
 
 const MainNav = ({ classes, userDetails }) => {
-  const [tab, setTab] = useState(0);
+  const [tab, setTab] = useState(3);
 
   const tabChange = (event, tab) => {
     setTab(tab);
@@ -25,6 +26,7 @@ const MainNav = ({ classes, userDetails }) => {
           <Tab label='Search Food'/>
           <Tab label='View Recommendations'/>
           <Tab label='Add Recommendations'/>
+          <Tab label='Review Recommendations'/>
           {userDetails.approved && isAdmin(userDetails) && (
             <Tab label='Admin Panel'/>
           )}
@@ -40,6 +42,9 @@ const MainNav = ({ classes, userDetails }) => {
         <AddRecommendationsPage/>
       </TabContainer>
       <TabContainer value={tab} index={3}>
+        <ReviewRecommendationsPage/>
+      </TabContainer>
+      <TabContainer value={tab} index={4}>
         <AdminPanel/>
       </TabContainer>
     </div>

@@ -14,7 +14,6 @@ const AddRecommendations = ({ classes }) => {
   const [compareOpen, setCompareOpen] = useState();
   const [comparisonData, setComparisonData] = useState();
   const [status, setStatus] = useState({});
-  const title = `Comparison`;
 
   useEffect(() => {
     setStatus({});
@@ -84,8 +83,6 @@ const AddRecommendations = ({ classes }) => {
         <CompareModal dataSet={comparisonData}
                       open={compareOpen}
                       onClose={handleCloseModal}
-                      title={title}
-                      subtitle='Nutritional information per 100g of food'
         />)}
     </div>
   );

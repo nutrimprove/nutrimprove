@@ -1,5 +1,6 @@
 export default {
   closeIcon: {
+    position: 'absolute',
     float: 'right',
     top: 10,
     right: 10,
