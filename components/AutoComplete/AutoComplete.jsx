@@ -15,7 +15,7 @@ const AutoComplete = ({
                         groupBy,
                         loading,
                         context,
-                        strict = true,
+                        strict,
                         width = 300,
                       }) => {
   const filterOptions = createFilterOptions({

@@ -16,7 +16,7 @@ const SearchField = ({
                        labelProp = 'foodName',
                        noMatchText = 'No food matched!!',
                        groupBy,
-                       strict,
+                       strict = true,
                      }) => (
   <div className={classes.search}>
     <AutoComplete
@@ -49,12 +49,12 @@ SearchField.propTypes = {
   onSelection: PropTypes.func.isRequired,
   optionsContext: PropTypes.string,
   buttonContext: PropTypes.string,
-  label: PropTypes.string.isRequired,
-  labelProp: PropTypes.string.isRequired,
-  noMatchText: PropTypes.string.isRequired,
+  label: PropTypes.string,
+  labelProp: PropTypes.string,
+  noMatchText: PropTypes.string,
   onButtonClick: PropTypes.func.isRequired,
-  buttonDisabled: PropTypes.bool.isRequired,
-  strict: PropTypes.bool.isRequired,
+  buttonDisabled: PropTypes.bool,
+  strict: PropTypes.bool,
   groupBy: PropTypes.func,
 };
 
