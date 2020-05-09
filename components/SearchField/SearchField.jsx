@@ -3,24 +3,39 @@ import PropTypes from 'prop-types';
 import AutoComplete from '../AutoComplete';
 import ButtonWithSpinner from '../ButtonWithSpinner';
 
-const SearchField = ({ classes, values, loading, onChange, context, onClick, disabled }) => (
+const SearchField = ({
+                       classes,
+                       values,
+                       loading,
+                       onSelection,
+                       optionsContext,
+                       buttonContext,
+                       onButtonClick,
+                       buttonDisabled,
+                       label = 'Type food',
+                       labelProp = 'foodName',
+                       noMatchText = 'No food matched!!',
+                       groupBy,
+                       strict,
+                     }) => (
   <div className={classes.search}>
     <AutoComplete
       width={260}
       values={values}
-      label='Type food'
-      noMatchText='No food matched!!'
-      labelProp='foodName'
-      context='getNutrients'
+      label={label}
+      noMatchText={noMatchText}
+      labelProp={labelProp}
+      context={optionsContext}
       loading={loading}
-      onChange={onChange}
-      strict={true}
+      onChange={onSelection}
+      strict={strict}
+      groupBy={groupBy}
     />
     <ButtonWithSpinner
       className={classes.button}
-      context={context}
-      action={onClick}
-      disabled={disabled}
+      context={buttonContext}
+      action={onButtonClick}
+      disabled={buttonDisabled}
     >
       Search
     </ButtonWithSpinner>
@@ -31,10 +46,16 @@ SearchField.propTypes = {
   classes: PropTypes.object.isRequired,
   values: PropTypes.array.isRequired,
   loading: PropTypes.bool.isRequired,
-  onChange: PropTypes.func.isRequired,
-  context: PropTypes.string.isRequired,
-  onClick: PropTypes.func.isRequired,
-  disabled: PropTypes.bool.isRequired,
+  onSelection: PropTypes.func.isRequired,
+  optionsContext: PropTypes.string,
+  buttonContext: PropTypes.string,
+  label: PropTypes.string.isRequired,
+  labelProp: PropTypes.string.isRequired,
+  noMatchText: PropTypes.string.isRequired,
+  onButtonClick: PropTypes.func.isRequired,
+  buttonDisabled: PropTypes.bool.isRequired,
+  strict: PropTypes.bool.isRequired,
+  groupBy: PropTypes.func,
 };
 
 export default SearchField;

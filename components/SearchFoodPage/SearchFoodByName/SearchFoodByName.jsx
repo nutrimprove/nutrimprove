@@ -32,9 +32,9 @@ const SearchFoodByName = ({ categories, foodNames, classes }) => {
     <>
       <Typography variant='subtitle2' paragraph={true}>Search for a food to display its nutritional data</Typography>
       <SearchField loading={loading}
-                   onChange={handleFoodSelection}
-                   onClick={updateResults}
-                   context={'getFoodData'}
+                   onSelection={handleFoodSelection}
+                   onButtonClick={updateResults}
+                   buttonContext='getFoodData'
                    values={filteredFoodNames}
                    disabled={!selectedFood}
       />

@@ -27,11 +27,11 @@ const FoodCardWithSearch = ({ classes, foodNames, categories, title, highlightIt
     <div className={classes.root}>
       <Typography className={classes.title} variant='subtitle1'>{title}</Typography>
       <SearchField loading={loading}
-                   onChange={handleFoodSelection}
-                   onClick={loadCardDetails}
-                   context={context}
+                   onSelection={handleFoodSelection}
+                   onButtonClick={loadCardDetails}
+                   buttonContext={context}
                    values={filteredFoodNames}
-                   disabled={!selectedFood}
+                   buttonDisabled={!selectedFood}
       />
       {food && (
         <FoodCard food={food} onMouseOver={onHover} highlightItem={highlightItem}/>

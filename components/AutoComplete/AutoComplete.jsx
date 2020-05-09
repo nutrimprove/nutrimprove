@@ -4,7 +4,20 @@ import TextField from '@material-ui/core/TextField/TextField';
 import LoadingSpinner from '../LoadingSpinner';
 import { Autocomplete, createFilterOptions } from '@material-ui/lab';
 
-const AutoComplete = ({ values, label, labelProp, noMatchText, onChange, getDisabledOptions, onInputChange, groupBy, loading, context, strict = false, width = 300 }) => {
+const AutoComplete = ({
+                        values,
+                        label,
+                        labelProp,
+                        noMatchText,
+                        onChange,
+                        getDisabledOptions,
+                        onInputChange,
+                        groupBy,
+                        loading,
+                        context,
+                        strict = true,
+                        width = 300,
+                      }) => {
   const filterOptions = createFilterOptions({
     limit: strict ? 30 : null,
     startAfter: strict ? 2 : 0,

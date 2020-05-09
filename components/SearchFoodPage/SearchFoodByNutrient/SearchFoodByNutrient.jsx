@@ -9,6 +9,7 @@ import ResultsTable from '../../ResultsTable';
 import Typography from '@material-ui/core/Typography';
 import ModalPanel from '../../ModalPanel';
 import LoadingPanel from '../../LoadingPanel';
+import SearchField from '../../SearchField';
 
 const SearchFoodByNutrient = ({ classes, categories }) => {
   const [nutrient, setNutrient] = useState();
@@ -79,27 +80,19 @@ const SearchFoodByNutrient = ({ classes, categories }) => {
       <Typography variant='subtitle2' paragraph={true}>
         Display the foods with the highest levels of a specific nutrient
       </Typography>
-      <div className={classes.search}>
-        <AutoComplete
-          values={nutrients}
-          groupBy={(option) => option.group}
-          label='Choose nutrient'
-          noMatchText='No nutrient matched!!'
-          labelProp='label'
-          context='getNutrients'
-          loading={nutrients.length === 0}
-          onChange={handleNutrientSelection}
-          openOnFocus={true}
-        />
-        <ButtonWithSpinner
-          className={classes.button}
-          context='getFoodsByNutrient'
-          action={getFoods}
-          disabled={!nutrient}
-        >
-          Search
-        </ButtonWithSpinner>
-      </div>
+      <SearchField   loading={nutrients.length === 0}
+                     onSelection={handleNutrientSelection}
+                     onButtonClick={getFoods}
+                     optionsContext='getNutrients'
+                     buttonContext ='getFoodsByNutrient'
+                     values={nutrients}
+                     buttonDisabled={!nutrient}
+                     label='Choose nutrient'
+                     labelProp='label'
+                     noMatchText='No nutrient matched!!'
+                     groupBy={(option) => option.group}
+                     strict={false}
+      />
       {foods && <ResultsTable
         data={foods}
         title={resultsTitle}

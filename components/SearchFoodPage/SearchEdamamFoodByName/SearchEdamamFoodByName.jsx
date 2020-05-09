@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import { getSearchedTerms } from '../../../interfaces/api/edamamFoods';
 import { mapSearchResults, parseNutrients } from '../../../helpers/utils';
 import ResultsTable from '../../ResultsTable';
+import SearchField from '../../SearchField';
 
 const mergeEdamamResults = (nutrients, dailyValues) => {
   const combined = [...nutrients];
@@ -58,26 +59,14 @@ const SearchEdamamFoodByName = ({ classes }) => {
 
   return (
     <>
-      <div className={classes.search}>
-        <AutoComplete
-          values={searchTerms}
-          label='Type food'
-          noMatchText='No food matched!!'
-          labelProp='foodName'
-          context='getNutrients'
-          onChange={setSelectedFood}
-          strict={true}
-          onInputChange={handleInputChange}
-        />
-        <ButtonWithSpinner
-          className={classes.button}
-          context='getFoodsByNutrient'
-          action={updateResults}
-          disabled={!selectedFood}
-        >
-          Search
-        </ButtonWithSpinner>
-      </div>
+      <SearchField loading={searchTerms.length === 0}
+                   onSelection={setSelectedFood}
+                   onButtonClick={updateResults}
+                   optionsContext='getSearchTerms'
+                   buttonContext='getFoodData'
+                   values={searchTerms}
+                   disabled={!selectedFood}
+      />
       {foods && <ResultsTable data={foods} title='Nutritional values per 100g of food'/>}
     </>
   );
