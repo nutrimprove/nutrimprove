@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import { getNutritionData } from '../../../interfaces/api/nutrition';
-import AutoComplete from '../../AutoComplete';
-import ButtonWithSpinner from '../../ButtonWithSpinner';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { filterFoodNames, parseNutrients } from '../../../helpers/utils';
 import ResultsTable from '../../ResultsTable';
 import Typography from '@material-ui/core/Typography';
+import SearchField from '../../SearchField';
 
 const SearchFoodByName = ({ categories, foodNames, classes }) => {
   const [selectedFood, setSelectedFood] = useState();
@@ -32,26 +31,13 @@ const SearchFoodByName = ({ categories, foodNames, classes }) => {
   return (
     <>
       <Typography variant='subtitle2' paragraph={true}>Search for a food to display its nutritional data</Typography>
-      <div className={classes.search}>
-        <AutoComplete
-          values={filteredFoodNames}
-          label='Type food'
-          noMatchText='No food matched!!'
-          labelProp='foodName'
-          context='getNutrients'
-          loading={loading}
-          onChange={handleFoodSelection}
-          strict={true}
-        />
-        <ButtonWithSpinner
-          className={classes.button}
-          context='getFoodData'
-          action={updateResults}
-          disabled={!selectedFood}
-        >
-          Search
-        </ButtonWithSpinner>
-      </div>
+      <SearchField loading={loading}
+                   onChange={handleFoodSelection}
+                   onClick={updateResults}
+                   context={'getFoodData'}
+                   values={filteredFoodNames}
+                   disabled={!selectedFood}
+      />
       {data && <ResultsTable data={data} title='Nutritional values per 100g of food'/>}
     </>
   );

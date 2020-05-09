@@ -3,10 +3,9 @@ import PropTypes from 'prop-types';
 import { getFoodById } from '../../interfaces/api/foods';
 import { filterFoodNames } from '../../helpers/utils';
 import FoodCard from '../FoodCard';
-import AutoComplete from '../AutoComplete';
-import ButtonWithSpinner from '../ButtonWithSpinner';
 import { connect } from 'react-redux';
 import { Typography } from '@material-ui/core';
+import SearchField from '../SearchField';
 
 const FoodCardWithSearch = ({ classes, foodNames, categories, title, highlightItem, onHover, foodInfo, context }) => {
   const [selectedFood, setSelectedFood] = useState();
@@ -27,27 +26,13 @@ const FoodCardWithSearch = ({ classes, foodNames, categories, title, highlightIt
   return (
     <div className={classes.root}>
       <Typography className={classes.title} variant='subtitle1'>{title}</Typography>
-      <div className={classes.search}>
-        <AutoComplete
-          width={260}
-          values={filteredFoodNames}
-          label='Type food'
-          noMatchText='No food matched!!'
-          labelProp='foodName'
-          context='getNutrients'
-          loading={loading}
-          onChange={handleFoodSelection}
-          strict={true}
-        />
-        <ButtonWithSpinner
-          className={classes.button}
-          context={context}
-          action={loadCardDetails}
-          disabled={!selectedFood}
-        >
-          Search
-        </ButtonWithSpinner>
-      </div>
+      <SearchField loading={loading}
+                   onChange={handleFoodSelection}
+                   onClick={loadCardDetails}
+                   context={context}
+                   values={filteredFoodNames}
+                   disabled={!selectedFood}
+      />
       {food && (
         <FoodCard food={food} onMouseOver={onHover} highlightItem={highlightItem}/>
       )}

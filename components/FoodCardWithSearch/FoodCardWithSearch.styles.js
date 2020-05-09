@@ -12,17 +12,9 @@ export default {
   title: {
     textAlign: 'center',
     padding: 10,
-  },
-  search: {
-    display: 'inline-flex',
-    borderStyle: 'solid',
-    borderWidth: 'thin',
-    borderRadius: 7,
-    borderColor: 'lightgray',
-    padding: '10px 10px 10px 20px',
-    margin: '0 auto 20px',
-  },
-  button: {
-    margin: 10,
+    fontWeight: 600,
+    border: '1px solid lightgrey',
+    borderRadius: 9,
+    marginBottom: 20,
   },
 };
