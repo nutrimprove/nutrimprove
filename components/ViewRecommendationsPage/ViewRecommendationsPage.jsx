@@ -12,7 +12,7 @@ import ButtonWithSpinner from '../ButtonWithSpinner';
 import { isAdmin } from '../../helpers/userUtils';
 import SearchFoodSet from '../SearchFoodSet';
 import { Typography } from '@material-ui/core';
-import SearchFilters from '../SearchFilters';
+import Filters from '../Filters';
 
 const sectionHeader = {
   title: 'View Recommendations',
@@ -81,7 +81,7 @@ const ViewRecommendationsPage = ({ classes, userDetails }) => {
   return (
     <>
       <SectionHeader content={sectionHeader}/>
-      <SearchFilters/>
+      <Filters/>
       <Typography paragraph={true} variant='subtitle1'>
         Your points: {userDetails.points || 0}
       </Typography>

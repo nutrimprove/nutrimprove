@@ -1,7 +1,7 @@
 import React from 'react';
 import SectionHeader from '../SectionHeader';
 import Link from '@material-ui/core/Link';
-import SearchFilters from '../SearchFilters';
+import Filters from '../Filters';
 import TabbedPanel from '../TabbedPanel';
 import AddBulkRecommendations from './AddBulkRecommendations';
 import AddRecommendations from './AddRecommendations';
@@ -27,7 +27,7 @@ const tabs = [
 const AddRecommendationsPage = () => (
   <>
     <SectionHeader content={sectionHeader}/>
-    <SearchFilters/>
+    <Filters/>
     <TabbedPanel tabs={tabs}/>
   </>
 );

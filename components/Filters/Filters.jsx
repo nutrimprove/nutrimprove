@@ -11,7 +11,7 @@ import FormControl from '@material-ui/core/FormControl';
 import Button from '@material-ui/core/Button';
 import { EDAMAM_DB } from '../../helpers/constants';
 
-const SearchFilters = ({ categories, setCategories, classes }) => {
+const Filters = ({ categories, setCategories, classes }) => {
   if (EDAMAM_DB) return null;
 
   const [filters, setFilters] = useState(categories.all);
@@ -89,7 +89,7 @@ const SearchFilters = ({ categories, setCategories, classes }) => {
   );
 };
 
-SearchFilters.propTypes = {
+Filters.propTypes = {
   categories: PropTypes.object.isRequired,
   setCategories: PropTypes.func.isRequired,
   classes: PropTypes.object.isRequired,
@@ -105,4 +105,4 @@ const mapDispatchToProps = dispatch => ({
   setCategories: filters => dispatch(setCategoriesAction(filters)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(SearchFilters);
+export default connect(mapStateToProps, mapDispatchToProps)(Filters);

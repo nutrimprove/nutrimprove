@@ -1,6 +1,6 @@
 import React from 'react';
 import SectionHeader from '../SectionHeader';
-import SearchFilters from '../SearchFilters';
+import Filters from '../Filters';
 import SearchFoodByNutrient from './SearchFoodByNutrient';
 import SearchFoodByName from './SearchFoodByName';
 import { EDAMAM_DB } from '../../helpers/constants';
@@ -32,7 +32,7 @@ const SearchFoodPage = () => {
   return (
     <>
       <SectionHeader content={sectionHeader}/>
-      <SearchFilters/>
+      <Filters/>
       <TabbedPanel tabs={EDAMAM_DB ? edamamTab : tabs}/>
     </>
   );
