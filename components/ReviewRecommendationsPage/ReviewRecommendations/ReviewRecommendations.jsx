@@ -8,8 +8,11 @@ import { getFoodById } from '../../../interfaces/api/foods';
 import { Typography } from '@material-ui/core';
 import ButtonWithSpinner from '../../ButtonWithSpinner';
 import ActionsContainer from '../../ActionsContainer';
-import FoodCardWithSearch from '../../FoodCardWithSearch/FoodCardWithSearch';
 import clsx from 'clsx';
+
+const getRandom = items => {
+  return items[Math.floor(Math.random() * items.length)];
+};
 
 const ReviewRecommendations = ({ classes }) => {
   const [recommendations, setRecommendations] = useState();
@@ -19,34 +22,34 @@ const ReviewRecommendations = ({ classes }) => {
   const [hoveredItem, setHoveredItem] = useState();
   const [compareOpen, setCompareOpen] = useState();
   const [comparisonData, setComparisonData] = useState();
-  const [status, setStatus] = useState({});
 
   useEffect(() => {
     (async () => {
       const results = await getAllRecommendations();
-      if (results && results.length > 0) {
+      if (results) {
         setRecommendations(results);
-        getRecommendations(results[37]);
-        console.log('=== AddRecommendations.jsx #32 === ( results[0] ) =======>', results[37]);
       }
     })();
   }, []);
 
   useEffect(() => {
-    console.log('=== ReviewRecommendations.jsx #27 === ( recommendations ) =======>', recommendations);
-    setRecommendation();
+    if (recommendations) {
+      const rec = getRecommendation();
+      setRecommendation(rec);
+    }
   }, [recommendations]);
 
-  const getRecommendations = async (recommendation) => {
+  const getRecommendation = async () => {
+    const randomRecommendation = getRandom(recommendations);
     let foodResult;
     let recommendedFoodResult;
 
     await Promise.all([
       (async () => {
-        foodResult = await getFoodById(recommendation.food.id);
+        foodResult = await getFoodById(randomRecommendation.food.id);
       })(),
       (async () => {
-        recommendedFoodResult = await getFoodById(recommendation.recommendation.id);
+        recommendedFoodResult = await getFoodById(randomRecommendation.recommendation.id);
       })(),
     ]);
 
@@ -100,7 +103,9 @@ const ReviewRecommendations = ({ classes }) => {
           <ActionsContainer>
             <ButtonWithSpinner className={classes.button} colour='secondary' action={null}>Reject</ButtonWithSpinner>
             <ButtonWithSpinner className={classes.button} action={compareFoods}>Compare</ButtonWithSpinner>
-            <ButtonWithSpinner className={clsx(classes.button, classes.greenButton)} action={null}>Approve</ButtonWithSpinner>
+            <ButtonWithSpinner className={clsx(classes.button, classes.greenButton)} action={null}>
+              Approve
+            </ButtonWithSpinner>
           </ActionsContainer>
           {compareOpen && <CompareModal dataSet={comparisonData} open={compareOpen} onClose={handleCloseModal}/>}
         </>
