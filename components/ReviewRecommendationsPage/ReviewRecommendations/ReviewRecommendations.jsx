@@ -10,6 +10,7 @@ import ButtonWithSpinner from '../../ButtonWithSpinner';
 import ActionsContainer from '../../ActionsContainer';
 import clsx from 'clsx';
 import { usePromiseTracker } from 'react-promise-tracker';
+import LoadingPanel from '../../LoadingPanel';
 
 const getRandom = items => {
   return items[Math.floor(Math.random() * items.length)];
@@ -128,6 +129,7 @@ const ReviewRecommendations = ({ classes }) => {
         </>
       )}
       {!recommendation && !loading && <Typography className={classes.title}>No more recommendations!!</Typography>}
+      {loading && <LoadingPanel />}
     </>
   );
 };
