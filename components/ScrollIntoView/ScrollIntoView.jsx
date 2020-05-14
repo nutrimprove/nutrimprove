@@ -24,7 +24,7 @@ const ScrollIntoView = ({ position = 'start', children, ...props }) => {
 
 ScrollIntoView.propTypes = {
   position: PropTypes.string,
-  children: PropTypes.array,
+  children: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
 };
 
 export default ScrollIntoView;
