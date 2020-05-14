@@ -57,6 +57,7 @@ const addRecommendations = async recommendationsObj => {
     },
     contributors: recommendation.contributors,
     timestamp: new Date().getTime(),
+    rating: 10,
   }));
 
   const AddRecommendationsConnection = await getRecommendationsConnection();
@@ -86,6 +87,7 @@ const addRecommendations = async recommendationsObj => {
               $addToSet: {
                 contributors: { id: contributor, added_on: new Date() },
               },
+              $inc: { rating: 10 },
             },
             { multi: true }
           );
