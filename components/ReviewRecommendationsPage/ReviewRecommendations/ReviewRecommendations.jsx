@@ -5,10 +5,11 @@ import FoodCard from '../../FoodCard';
 import { parseNutrients } from '../../../helpers/utils';
 import { getAllRecommendations } from '../../../interfaces/api/recommendations';
 import { getFoodById } from '../../../interfaces/api/foods';
-import { Typography } from '@material-ui/core';
+import { Link, Typography } from '@material-ui/core';
 import ButtonWithSpinner from '../../ButtonWithSpinner';
 import ActionsContainer from '../../ActionsContainer';
 import clsx from 'clsx';
+import { usePromiseTracker } from 'react-promise-tracker';
 
 const getRandom = items => {
   return items[Math.floor(Math.random() * items.length)];
@@ -22,6 +23,7 @@ const ReviewRecommendations = ({ classes }) => {
   const [hoveredItem, setHoveredItem] = useState();
   const [compareOpen, setCompareOpen] = useState();
   const [comparisonData, setComparisonData] = useState();
+  const { promiseInProgress: loading } = usePromiseTracker({ area: 'getAllRecommendations' });
 
   useEffect(() => {
     (async () => {
@@ -33,30 +35,41 @@ const ReviewRecommendations = ({ classes }) => {
   }, []);
 
   useEffect(() => {
-    if (recommendations) {
-      const rec = getRecommendation();
-      setRecommendation(rec);
-    }
+    (async () => {
+      if (recommendations) {
+        await getRecommendation();
+      }
+    })();
   }, [recommendations]);
 
   const getRecommendation = async () => {
-    const randomRecommendation = getRandom(recommendations);
     let foodResult;
     let recommendedFoodResult;
+    const randomRecommendation = getRandom(recommendations);
+    setRecommendation(randomRecommendation);
+    if (randomRecommendation) {
+      await Promise.all([
+        (async () => {
+          foodResult = await getFoodById(randomRecommendation.food.id);
+        })(),
+        (async () => {
+          recommendedFoodResult = await getFoodById(randomRecommendation.recommendation.id);
+        })(),
+      ]);
 
-    await Promise.all([
-      (async () => {
-        foodResult = await getFoodById(randomRecommendation.food.id);
-      })(),
-      (async () => {
-        recommendedFoodResult = await getFoodById(randomRecommendation.recommendation.id);
-      })(),
-    ]);
-
-    if (foodResult && recommendedFoodResult) {
-      setFood(foodResult);
-      setRecommendedFood(recommendedFoodResult);
+      if (foodResult && recommendedFoodResult) {
+        setFood(foodResult);
+        setRecommendedFood(recommendedFoodResult);
+      }
+    } else {
+      setFood(null);
+      setRecommendedFood(null);
     }
+  };
+
+  const skipRecommendation = () => {
+    const recs = recommendations.filter(rec => rec._id !== recommendation._id);
+    setRecommendations(recs);
   };
 
   const getFoodDetails = (food) => {
@@ -101,15 +114,20 @@ const ReviewRecommendations = ({ classes }) => {
             </div>
           </div>
           <ActionsContainer>
-            <ButtonWithSpinner className={classes.button} colour='secondary' action={null}>Reject</ButtonWithSpinner>
-            <ButtonWithSpinner className={classes.button} action={compareFoods}>Compare</ButtonWithSpinner>
-            <ButtonWithSpinner className={clsx(classes.button, classes.greenButton)} action={null}>
-              Approve
-            </ButtonWithSpinner>
+            <div>
+              <ButtonWithSpinner className={classes.button} colour='secondary' action={null}>Reject</ButtonWithSpinner>
+              <ButtonWithSpinner className={classes.button} action={compareFoods}>Compare</ButtonWithSpinner>
+              <ButtonWithSpinner className={clsx(classes.button, classes.greenButton)} action={null}>
+                Approve
+              </ButtonWithSpinner>
+            </div>
+            <Link component={'button'} className={classes.skip} onClick={skipRecommendation}><Typography>Skip this
+              recommendation</Typography></Link>
           </ActionsContainer>
           {compareOpen && <CompareModal dataSet={comparisonData} open={compareOpen} onClose={handleCloseModal}/>}
         </>
       )}
+      {!recommendation && !loading && <Typography className={classes.title}>No more recommendations!!</Typography>}
     </>
   );
 };

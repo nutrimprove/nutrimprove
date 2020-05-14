@@ -30,4 +30,7 @@ export default {
       backgroundColor: 'darkgreen',
     },
   },
+  skip: {
+    marginTop: 14,
+  },
 };
