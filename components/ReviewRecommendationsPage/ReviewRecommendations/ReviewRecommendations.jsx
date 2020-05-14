@@ -98,8 +98,7 @@ const ReviewRecommendations = ({ classes }) => {
             </div>
           </div>
           <ActionsContainer>
-            <ButtonWithSpinner className={classes.button} classes={{palette: {
-              primary: 'green'}}} colour='secondary' action={null}>Reject</ButtonWithSpinner>
+            <ButtonWithSpinner className={classes.button} colour='secondary' action={null}>Reject</ButtonWithSpinner>
             <ButtonWithSpinner className={classes.button} action={compareFoods}>Compare</ButtonWithSpinner>
             <ButtonWithSpinner className={clsx(classes.button, classes.greenButton)} action={null}>Approve</ButtonWithSpinner>
           </ActionsContainer>
