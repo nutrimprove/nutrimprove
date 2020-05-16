@@ -1,11 +1,6 @@
 import { getRecommendationsConnection } from '../recommendations/recommendations';
 
-const updateDB = async (run = false) => {
-  if (!run)
-    return {
-      message:
-        'For security reasons please set the "run" flag to true before running the DB update script!',
-    };
+const addContributorsUpdate = async () => {
   const AddRecommendationsConnection = await getRecommendationsConnection();
   const result = await AddRecommendationsConnection.find({
     contributor_id: { $exists: true },
@@ -22,6 +17,28 @@ const updateDB = async (run = false) => {
   });
   console.log('Database updated!', result);
   return result;
+};
+
+const cleanTestData = async () => {
+  const AddRecommendationsConnection = await getRecommendationsConnection();
+  const result = await AddRecommendationsConnection.deleteMany({
+    $and: [
+      { contributors: { $size: 1 } },
+      { 'contributors.0.id': 'johncjesus@gmail.com' },
+    ],
+  });
+  console.log('Records deleted!', result);
+  return result;
+};
+
+const updateDB = async (run = true) => {
+  if (!run)
+    return {
+      message:
+        'For security reasons please set the "run" flag to true before running the DB update script!',
+    };
+
+  return cleanTestData();
 };
 
 export { updateDB };
