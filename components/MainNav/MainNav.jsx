@@ -13,7 +13,7 @@ import TabContainer from '../TabContainer';
 import ReviewRecommendationsPage from '../ReviewRecommendationsPage';
 
 const MainNav = ({ classes, userDetails }) => {
-  const [tab, setTab] = useState(3);
+  const [tab, setTab] = useState(0);
 
   const tabChange = (event, tab) => {
     setTab(tab);

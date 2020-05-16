@@ -25,6 +25,9 @@ const getAllRecommendations = () =>
     'getAllRecommendations',
   );
 
+const getRecommendation = id =>
+  getRequest(`${recommendationsEndpoint}/id/${id}`);
+
 const postRecommendations = payload =>
   trackPromise(
     postRequest(recommendationsEndpoint, payload),
@@ -40,6 +43,7 @@ const applyRecommendationRating = (id, rating, context = 'applyRating') =>
 export {
   postRecommendations,
   getUserRecommendations,
+  getRecommendation,
   getRecommendationsByFood,
   getAllRecommendations,
   applyRecommendationRating,

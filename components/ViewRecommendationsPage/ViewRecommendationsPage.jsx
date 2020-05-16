@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import ResultsTable from '../ResultsTable';
 import {
   getAllRecommendations,
+  getRecommendation,
   getRecommendationsByFood,
   getUserRecommendations,
 } from '../../interfaces/api/recommendations';
@@ -13,6 +14,8 @@ import { isAdmin } from '../../helpers/userUtils';
 import SearchFoodSet from '../SearchFoodSet';
 import { Typography } from '@material-ui/core';
 import Filters from '../Filters';
+import { getFoodsFromRecommendation, parseNutrients } from '../../helpers/utils';
+import CompareModal from '../CompareModal';
 
 const sectionHeader = {
   title: 'View Recommendations',
@@ -22,6 +25,8 @@ const sectionHeader = {
 const ViewRecommendationsPage = ({ classes, userDetails }) => {
   const [recommendations, setRecommendations] = useState();
   const [title, setTitle] = useState();
+  const [comparisonData, setComparisonData] = useState();
+  const [compareOpen, setCompareOpen] = useState();
 
   const loadUserRecommendations = async () => {
     const recommendations = await getUserRecommendations(
@@ -49,11 +54,38 @@ const ViewRecommendationsPage = ({ classes, userDetails }) => {
     // Sort by date of recommendation (more recent first)
     const sortedRecs = recommendations.sort((a, b) => b.timestamp - a.timestamp);
     return sortedRecs.map(recommendation => ({
+      id: recommendation._id,
       food: recommendation.food.name,
       recommendation: recommendation.recommendation.name,
       rating: recommendation.rating,
-      'Date Added': new Date(recommendation.timestamp).toLocaleDateString("en-GB")
+      'Date Added': new Date(recommendation.timestamp).toLocaleDateString('en-GB'),
     }));
+  };
+
+  const getFoodDetails = (food) => {
+    const { foodName, proximates, vitamins, inorganics } = food;
+    return {
+      foodName,
+      nutrients: [
+        ...parseNutrients({ nutrients: proximates, filterEmptyValues: false }),
+        ...parseNutrients({ nutrients: vitamins, filterEmptyValues: false }),
+        ...parseNutrients({ nutrients: inorganics, filterEmptyValues: false }),
+      ],
+    };
+  };
+
+  const handleRowClick = async ({ currentTarget }) => {
+    setComparisonData(null);
+    setCompareOpen(true);
+    const recommendation = await getRecommendation(currentTarget.dataset.id);
+    const foods = await getFoodsFromRecommendation(recommendation);
+    const food = getFoodDetails(foods[0]);
+    const recommendedFood = getFoodDetails(foods[1]);
+    setComparisonData([food, recommendedFood]);
+  };
+
+  const handleCloseModal = () => {
+    setCompareOpen(false);
   };
 
   return (
@@ -88,7 +120,8 @@ const ViewRecommendationsPage = ({ classes, userDetails }) => {
         context='getRecommendationsByFood'
         naked={true}
       />
-      {recommendations && <ResultsTable data={formattedRecommendations()} title={title}/>}
+      {recommendations && <ResultsTable data={formattedRecommendations()} title={title} onRowClick={handleRowClick}/>}
+      {compareOpen && <CompareModal dataSet={comparisonData} open={compareOpen} onClose={handleCloseModal}/>}
     </>
   );
 };

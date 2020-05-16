@@ -1,15 +1,7 @@
 import React from 'react';
 import SectionHeader from '../SectionHeader';
-import Link from '@material-ui/core/Link';
 import Filters from '../Filters';
 import ReviewRecommendations from './ReviewRecommendations';
-
-const helpMessage = (
-  <>
-    Please refer to the <Link href={'/help#add_recs'}>Help page</Link>
-    {' '}for instructions.
-  </>
-);
 
 const sectionHeader = {
   title: 'Review Recommendations',
@@ -20,7 +12,7 @@ const ReviewRecommendationsPage = () => (
   <>
     <SectionHeader content={sectionHeader}/>
     <Filters/>
-    <ReviewRecommendations />
+    <ReviewRecommendations/>
   </>
 );
 
