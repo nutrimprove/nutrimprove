@@ -45,13 +45,16 @@ const ViewRecommendationsPage = ({ classes, userDetails }) => {
     setRecommendations(recommendations);
   };
 
-  const formattedRecommendations = () =>
-    recommendations.map(recommendation => ({
+  const formattedRecommendations = () => {
+    // Sort by date of recommendation (more recent first)
+    const sortedRecs = recommendations.sort((a, b) => b.timestamp - a.timestamp);
+    return sortedRecs.map(recommendation => ({
       food: recommendation.food.name,
       recommendation: recommendation.recommendation.name,
       rating: recommendation.rating,
       'Date Added': new Date(recommendation.timestamp).toLocaleDateString("en-GB")
     }));
+  };
 
   return (
     <>
