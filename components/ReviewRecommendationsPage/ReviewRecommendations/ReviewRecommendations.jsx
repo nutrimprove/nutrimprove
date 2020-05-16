@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import CompareModal from '../../CompareModal';
 import FoodCard from '../../FoodCard';
 import { parseNutrients } from '../../../helpers/utils';
-import { getAllRecommendations } from '../../../interfaces/api/recommendations';
+import { applyRecommendationRating, getAllRecommendations } from '../../../interfaces/api/recommendations';
 import { getFoodById } from '../../../interfaces/api/foods';
 import { Link, Typography } from '@material-ui/core';
 import ButtonWithSpinner from '../../ButtonWithSpinner';
@@ -73,6 +73,24 @@ const ReviewRecommendations = ({ classes }) => {
     setRecommendations(recs);
   };
 
+  const rejectRecommendation = async () => {
+    const rejectResult = await applyRecommendationRating(recommendation._id, -10, 'rejectRecommendation');
+    if (rejectResult) {
+      skipRecommendation();
+    } else {
+      console.log('Error rejecting recommendation with ID: ', recommendation._id);
+    }
+  };
+
+  const approveRecommendation = async () => {
+    const approveResult = await applyRecommendationRating(recommendation._id, 5, 'approveRecommendation');
+    if (approveResult) {
+      skipRecommendation();
+    } else {
+      console.log('Error approving recommendation with ID: ', recommendation._id);
+    }
+  };
+
   const getFoodDetails = (food) => {
     const { foodName, proximates, vitamins, inorganics } = food;
     return {
@@ -116,14 +134,26 @@ const ReviewRecommendations = ({ classes }) => {
           </div>
           <ActionsContainer>
             <div>
-              <ButtonWithSpinner className={classes.button} colour='secondary' action={null}>Reject</ButtonWithSpinner>
+              <ButtonWithSpinner
+                className={classes.button}
+                colour='secondary'
+                action={rejectRecommendation}
+                context='rejectRecommendation'
+              >
+                Reject
+              </ButtonWithSpinner>
               <ButtonWithSpinner className={classes.button} action={compareFoods}>Compare</ButtonWithSpinner>
-              <ButtonWithSpinner className={clsx(classes.button, classes.greenButton)} action={null}>
+              <ButtonWithSpinner
+                className={clsx(classes.button, classes.greenButton)}
+                action={approveRecommendation}
+                context='approveRecommendation'
+              >
                 Approve
               </ButtonWithSpinner>
             </div>
-            <Link component={'button'} className={classes.skip} onClick={skipRecommendation}><Typography>Skip this
-              recommendation</Typography></Link>
+            <Link component={'button'} className={classes.skip} onClick={skipRecommendation}>
+              <Typography>Skip this recommendation</Typography>
+            </Link>
           </ActionsContainer>
           {compareOpen && <CompareModal dataSet={comparisonData} open={compareOpen} onClose={handleCloseModal}/>}
         </>
