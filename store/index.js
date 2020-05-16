@@ -4,6 +4,8 @@ import thunk from 'redux-thunk';
 import * as addRecommendation from './addRecommendation/reducer';
 import * as global from './global/reducer';
 
+let store;
+
 const getMiddleware = () => {
   const middleware = [];
 
@@ -33,7 +35,12 @@ function configureStore(initialState) {
     appliedMiddleware = composeWithDevTools(appliedMiddleware);
   }
 
-  return createStore(rootReducer, initialState, appliedMiddleware);
+  store = createStore(rootReducer, initialState, appliedMiddleware);
+  return store;
 }
+
+export const getStore = () => {
+  return store;
+};
 
 export const makeRootStore = initialState => configureStore(initialState);

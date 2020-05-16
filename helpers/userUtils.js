@@ -5,12 +5,13 @@ const userRoleToString = userRole => {
   return Object.keys(ROLES).find(key => ROLES[key] === userRole);
 };
 
-const setUserDetailsWithRole = async (setUserDetails, userInfo) => {
+const setUserState = async ({setUserDetails, setUserPreferences, userInfo}) => {
   if (userInfo && userInfo.email) {
     const user = await getUser(userInfo.email);
     if (user) {
-      const { role, approved, points } = user;
+      const { role, approved, points, preferences } = user;
       setUserDetails({ ...userInfo, role, approved, points });
+      setUserPreferences(preferences);
     } else {
       console.error('User not found!', userInfo.email);
     }
@@ -40,7 +41,7 @@ const calcPoints = ({ added = 0, incremented = 0 }) => {
 
 export {
   userRoleToString,
-  setUserDetailsWithRole,
+  setUserState,
   isAdmin,
   isOwner,
   isValidEmail,

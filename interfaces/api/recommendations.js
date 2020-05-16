@@ -6,29 +6,35 @@ const recommendationsEndpoint = '/api/recommendations';
 const getUserRecommendations = user =>
   trackPromise(
     getRequest(
-      `${recommendationsEndpoint}/user/${encodeURIComponent(user)}`
+      `${recommendationsEndpoint}/user/${encodeURIComponent(user)}`,
     ),
-    'getUserRecommendations'
+    'getUserRecommendations',
   );
 
 const getRecommendationsByFood = food =>
   trackPromise(
     getRequest(
-      `${recommendationsEndpoint}/food/${encodeURIComponent(food)}`
+      `${recommendationsEndpoint}/food/${encodeURIComponent(food)}`,
     ),
-    'getRecommendationsByFood'
+    'getRecommendationsByFood',
   );
 
 const getAllRecommendations = () =>
   trackPromise(
     getRequest(`${recommendationsEndpoint}/all`),
-    'getAllRecommendations'
+    'getAllRecommendations',
   );
 
 const postRecommendations = payload =>
   trackPromise(
     postRequest(recommendationsEndpoint, payload),
-    'postRecommendations'
+    'postRecommendations',
+  );
+
+const applyRecommendationRating = (id, rating, context = 'applyRating') =>
+  trackPromise(
+    postRequest(`${recommendationsEndpoint}/applyRating`, { id, rating }),
+    context,
   );
 
 export {
@@ -36,4 +42,5 @@ export {
   getUserRecommendations,
   getRecommendationsByFood,
   getAllRecommendations,
+  applyRecommendationRating,
 };

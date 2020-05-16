@@ -4,7 +4,7 @@ const ROLES = {
   ADMIN: 5,
   CONTRIBUTOR: 100,
 };
-const MIN_WIDTH = 960;
+const MIN_WIDTH = 1060;
 const EDAMAM_DB = false;
 const INPUT_TRIGGER_TIME = EDAMAM_DB ? 700 : 300;
 const CATEGORIES = {
@@ -27,5 +27,16 @@ const CATEGORIES = {
   // Will be set when filtering categories
   selectedGroups: [],
 };
+const DEFAULT_CARD_NUTRIENTS = [
+  { name: 'energy', label: 'Energy' },
+  { name: 'carbohydrate', label: 'Carbohydrate' },
+  { name: 'fat', label: 'Fat' },
+  { name: 'protein', label: 'Protein' },
+  { name: 'totalSugars', label: 'Total Sugar' },
+  { name: 'fibre', label: 'Fibre' },
+  { name: 'SFA', label: 'Saturated Fat' },
+  { name: 'omega3', label: 'Omega 3' },
+  { name: 'Cholesterol', label: 'Cholesterol' },
+];
 
-export { PROJECT_NAME, ROLES, INPUT_TRIGGER_TIME, MIN_WIDTH, EDAMAM_DB, CATEGORIES };
+export { PROJECT_NAME, ROLES, INPUT_TRIGGER_TIME, MIN_WIDTH, EDAMAM_DB, CATEGORIES, DEFAULT_CARD_NUTRIENTS };

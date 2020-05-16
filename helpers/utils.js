@@ -1,4 +1,5 @@
 import { uniqueId } from 'lodash';
+import { DEFAULT_CARD_NUTRIENTS } from './constants';
 
 const getTime = () => {
   const today = new Date();
@@ -39,21 +40,54 @@ const mapSearchResults = results => {
   }));
 };
 
-const parseNutrients = nutrients => {
+const parseNutrients = ({ nutrients, filterEmptyValues = true, addKey = false }) => {
   const nutrientsObj = [];
   const keys = Object.keys(nutrients);
   keys.map(key => {
     const nutrient = nutrients[key];
-    if (!isNaN(nutrient.quantity) && nutrient.quantity > 0) {
-      nutrientsObj.push({
-        nutrient: nutrient.label,
-        quantity: `${Number.parseFloat(nutrient.quantity).toFixed(2)} ${
-          nutrient.unit
-          }`,
-      });
+    const { quantity, label, unit } = nutrient;
+    const filter = filterEmptyValues ? !isNaN(quantity) && quantity > 0 : true;
+    if (filter) {
+      const decimalPlaces = label === 'kcal' ? 0 : 2;
+      const value = !quantity || isNaN(quantity) ? 0 : Number.parseFloat(quantity).toFixed(decimalPlaces);
+      const valueWithUnit = quantity && quantity === 'Tr' ? 'traces' : `${value} ${unit}`;
+      const nutrientObject = { nutrient: label, quantity: valueWithUnit };
+      if (addKey) {
+        nutrientObject.key = key;
+      }
+      nutrientsObj.push(nutrientObject);
     }
   });
   return nutrientsObj;
+};
+
+const getCardNutrients = (foodObj, cardNutrients = DEFAULT_CARD_NUTRIENTS) => {
+  if (!foodObj) return;
+  const { proximates, vitamins, inorganics } = foodObj;
+  const allNutrients = {...proximates, ...vitamins, ...inorganics};
+
+  // Get only essential nutrients to display in the card
+  const nutrients = {};
+  Object.keys(allNutrients).map(key => {
+    const exists = cardNutrients.some(nutrient => nutrient.name === key);
+    if (exists) {
+      nutrients[key] = allNutrients[key];
+    }
+  });
+
+  const parsedNutrients = parseNutrients({ nutrients, filterEmptyValues: false, addKey: true });
+  return cardNutrients.map((nutrient, index) => {
+      const parsedNutrient = parsedNutrients.find(parsedNutrient => parsedNutrient.key === nutrient.name);
+      const newNutrient = {
+        label: nutrient.label,
+        name: nutrient.name,
+        quantity: parsedNutrient.quantity,
+      };
+      if (nutrient.name !== DEFAULT_CARD_NUTRIENTS[index].name) {
+        newNutrient.changed = true;
+      }
+      return newNutrient;
+    });
 };
 
 // Function to generate regex for applicable groups and subgroups to use in CoFID foods search
@@ -69,4 +103,22 @@ const getFoodGroups = groups => {
   return subgroups;
 };
 
-export { getTime, emptyFood, fullTrim, lowerCaseCompare, mapSearchResults, getFoodGroups, parseNutrients };
+const filterFoodNames = (foodNames, filters) => {
+  if (!foodNames) return;
+
+  return filters.length > 0
+    ? foodNames.filter(({ group }) => filters.find(filter => group.match(`^(${filter})(.*)`)))
+    : foodNames;
+};
+
+export {
+  getTime,
+  emptyFood,
+  fullTrim,
+  lowerCaseCompare,
+  mapSearchResults,
+  getFoodGroups,
+  parseNutrients,
+  getCardNutrients,
+  filterFoodNames,
+};

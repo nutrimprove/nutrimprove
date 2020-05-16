@@ -32,6 +32,13 @@ const getRecommendationsQuery = list =>
     ],
   }));
 
+const applyRecommendationRating = async (recommendationId, rating) => {
+  const RecommendationsConnection = await getRecommendationsConnection();
+  return RecommendationsConnection.update({ _id: recommendationId },
+    { $inc: { rating } },
+  );
+};
+
 const formatResultRecs = recs =>
   recs.map(rec => ({
     food: rec.food.name,
@@ -57,6 +64,7 @@ const addRecommendations = async recommendationsObj => {
     },
     contributors: recommendation.contributors,
     timestamp: new Date().getTime(),
+    rating: 10,
   }));
 
   const AddRecommendationsConnection = await getRecommendationsConnection();
@@ -86,6 +94,7 @@ const addRecommendations = async recommendationsObj => {
               $addToSet: {
                 contributors: { id: contributor, added_on: new Date() },
               },
+              $inc: { rating: 10 },
             },
             { multi: true }
           );
@@ -112,4 +121,5 @@ export {
   getRecommendationsByFood,
   getAllRecommendations,
   addRecommendations,
+  applyRecommendationRating,
 };

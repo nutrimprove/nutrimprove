@@ -5,7 +5,7 @@ import { setUserDetailsAction } from '../store/global/actions';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import SectionHeader from '../components/SectionHeader';
-import { setUserDetailsWithRole } from '../helpers/userUtils';
+import { setUserState } from '../helpers/userUtils';
 
 const auth = new Auth();
 const content = { title: `Redirection Page!!` };
@@ -16,7 +16,7 @@ const Callback = ({ setUserDetails }) => {
       const userDetails = auth.extractInfoFromHash();
       auth.handleAuthentication().then(res => {
         if (res) {
-          setUserDetailsWithRole(setUserDetails, userDetails.user_details);
+          setUserState(setUserDetails, userDetails.user_details);
           if (typeof window !== 'undefined') {
             localStorage.setItem(
               'token',
