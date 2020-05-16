@@ -1,7 +1,7 @@
 import { applyRecommendationRating } from '../../../../server/recommendations/recommendations';
 
 const getCollectionResults = async (req, res) => {
-  if (req.method !== 'POST') return null;
+  if (req.method !== 'POST') return res.status(400).json(res.status);
 
   const { id, rating } = req.body;
   const result = await applyRecommendationRating(id, rating);

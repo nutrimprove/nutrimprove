@@ -31,10 +31,10 @@ const postRecommendations = payload =>
     'postRecommendations',
   );
 
-const applyRecommendationRating = (id, rating) =>
+const applyRecommendationRating = (id, rating, context = 'applyRating') =>
   trackPromise(
     postRequest(`${recommendationsEndpoint}/applyRating`, { id, rating }),
-    'applyRating',
+    context,
   );
 
 export {

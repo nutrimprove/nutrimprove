@@ -34,9 +34,9 @@ const getRecommendationsQuery = list =>
 
 const applyRecommendationRating = async (recommendationId, rating) => {
   const RecommendationsConnection = await getRecommendationsConnection();
-  return RecommendationsConnection.findOneAndUpdate({ 'recommendation._id': recommendationId }, [
-    { $set: { rating: { $add: ['$rating', rating] } } },
-  ]);
+  return RecommendationsConnection.update({ _id: recommendationId },
+    { $inc: { rating } },
+  );
 };
 
 const formatResultRecs = recs =>
