@@ -63,13 +63,15 @@ const parseNutrients = ({ nutrients, filterEmptyValues = true, addKey = false })
 
 const getCardNutrients = (foodObj, cardNutrients = DEFAULT_CARD_NUTRIENTS) => {
   if (!foodObj) return;
-  const { proximates } = foodObj;
+  const { proximates, vitamins, inorganics } = foodObj;
+  const allNutrients = {...proximates, ...vitamins, ...inorganics};
+
   // Get only essential nutrients to display in the card
   const nutrients = {};
-  Object.keys(proximates).map(key => {
+  Object.keys(allNutrients).map(key => {
     const exists = cardNutrients.some(nutrient => nutrient.name === key);
     if (exists) {
-      nutrients[key] = proximates[key];
+      nutrients[key] = allNutrients[key];
     }
   });
 
