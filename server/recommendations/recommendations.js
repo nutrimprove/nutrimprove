@@ -24,6 +24,11 @@ const getAllRecommendations = async () => {
   return RecommendationsConnection.find({});
 };
 
+const getRecommendation = async id => {
+  const RecommendationsConnection = await getRecommendationsConnection();
+  return RecommendationsConnection.findOne({ _id: id });
+};
+
 const getRecommendationsQuery = list =>
   list.map(rec => ({
     $and: [
@@ -120,6 +125,7 @@ export {
   getUserRecommendations,
   getRecommendationsByFood,
   getAllRecommendations,
+  getRecommendation,
   addRecommendations,
   applyRecommendationRating,
 };

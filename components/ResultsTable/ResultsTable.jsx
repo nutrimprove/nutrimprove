@@ -8,7 +8,7 @@ const ResultsTable = ({ classes, data, onRowClick, title }) => {
   let columns;
 
   if (data && data.length > 0) {
-    columns = Object.keys(data[0]);
+    columns = Object.keys(data[0]).filter(key => key !== 'id');
   }
 
   return (
@@ -35,6 +35,7 @@ const ResultsTable = ({ classes, data, onRowClick, title }) => {
                 tabIndex={-1}
                 key={uniqueId()}
                 onClick={onRowClick}
+                data-id={row.id}
               >
                 {columns.map(column => (
                   <TableCell key={uniqueId()}>

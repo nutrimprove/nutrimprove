@@ -1,5 +1,6 @@
 import { uniqueId } from 'lodash';
 import { DEFAULT_CARD_NUTRIENTS } from './constants';
+import { getFoodById } from '../interfaces/api/foods';
 
 const getTime = () => {
   const today = new Date();
@@ -64,7 +65,7 @@ const parseNutrients = ({ nutrients, filterEmptyValues = true, addKey = false })
 const getCardNutrients = (foodObj, cardNutrients = DEFAULT_CARD_NUTRIENTS) => {
   if (!foodObj) return;
   const { proximates, vitamins, inorganics } = foodObj;
-  const allNutrients = {...proximates, ...vitamins, ...inorganics};
+  const allNutrients = { ...proximates, ...vitamins, ...inorganics };
 
   // Get only essential nutrients to display in the card
   const nutrients = {};
@@ -77,17 +78,33 @@ const getCardNutrients = (foodObj, cardNutrients = DEFAULT_CARD_NUTRIENTS) => {
 
   const parsedNutrients = parseNutrients({ nutrients, filterEmptyValues: false, addKey: true });
   return cardNutrients.map((nutrient, index) => {
-      const parsedNutrient = parsedNutrients.find(parsedNutrient => parsedNutrient.key === nutrient.name);
-      const newNutrient = {
-        label: nutrient.label,
-        name: nutrient.name,
-        quantity: parsedNutrient.quantity,
-      };
-      if (nutrient.name !== DEFAULT_CARD_NUTRIENTS[index].name) {
-        newNutrient.changed = true;
-      }
-      return newNutrient;
-    });
+    const parsedNutrient = parsedNutrients.find(parsedNutrient => parsedNutrient.key === nutrient.name);
+    const newNutrient = {
+      label: nutrient.label,
+      name: nutrient.name,
+      quantity: parsedNutrient.quantity,
+    };
+    if (nutrient.name !== DEFAULT_CARD_NUTRIENTS[index].name) {
+      newNutrient.changed = true;
+    }
+    return newNutrient;
+  });
+};
+
+const getFoodsFromRecommendation = async recommendation => {
+  if (!recommendation) return null;
+
+  let food;
+  let recommendedFood;
+  await Promise.all([
+    (async () => {
+      food = await getFoodById(recommendation.food.id);
+    })(),
+    (async () => {
+      recommendedFood = await getFoodById(recommendation.recommendation.id);
+    })(),
+  ]);
+  return [food, recommendedFood];
 };
 
 // Function to generate regex for applicable groups and subgroups to use in CoFID foods search
@@ -117,6 +134,7 @@ export {
   fullTrim,
   lowerCaseCompare,
   mapSearchResults,
+  getFoodsFromRecommendation,
   getFoodGroups,
   parseNutrients,
   getCardNutrients,

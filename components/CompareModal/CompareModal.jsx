@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ResultsTable from '../ResultsTable';
 import ModalPanel from '../ModalPanel';
+import LoadingPanel from '../LoadingPanel';
 
 const CompareModal = ({
                         dataSet,
@@ -12,20 +13,22 @@ const CompareModal = ({
                         classes,
                       }) => {
   const mergedData = [];
-  // Merge both sets of data to have one table showing nutrient name and both quantities
-  dataSet[0].nutrients.forEach(({ nutrient, quantity }) => {
-    const secondSetNutrient = dataSet[1].nutrients.find(nutrientB => nutrientB.nutrient === nutrient);
-    mergedData.push({
-      nutrient,
-      [`${dataSet[0].foodName}`]: quantity,
-      [`${dataSet[1].foodName}`]: secondSetNutrient.quantity,
-    });
-  });
 
+  if (dataSet) {
+    // Merge both sets of data to have one table showing nutrient name and both quantities
+    dataSet[0].nutrients.forEach(({ nutrient, quantity }) => {
+      const secondSetNutrient = dataSet[1].nutrients.find(nutrientB => nutrientB.nutrient === nutrient);
+      mergedData.push({
+        nutrient,
+        [`${dataSet[0].foodName}`]: quantity,
+        [`${dataSet[1].foodName}`]: secondSetNutrient.quantity,
+      });
+    });
+  }
   return (
     <ModalPanel open={open} onClose={onClose} title={title} subtitle={subtitle}>
       <div className={classes.compareTables}>
-        <ResultsTable data={mergedData}/>
+        {mergedData.length > 0 ? <ResultsTable data={mergedData}/> : <LoadingPanel />}
       </div>
     </ModalPanel>
   );
