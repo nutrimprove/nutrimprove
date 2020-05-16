@@ -42,15 +42,15 @@ const AddRecommendations = ({ classes }) => {
     setComparisonData([foodDetails, recommendedFoodDetails]);
   };
 
-  const addRecommendation = () => {
-    addRecommendations({
+  const addRecommendation = async () => {
+    await addRecommendations({
       foods: [food],
       recommendations: [recommendedFood],
       onSuccess: message => {
-        setStatus({type: 'success', content: message});
+        setStatus({ type: 'success', content: message });
       },
       onFailure: message => {
-        setStatus({type: 'fail', content: message});
+        setStatus({ type: 'fail', content: message });
       },
     });
   };
@@ -77,7 +77,13 @@ const AddRecommendations = ({ classes }) => {
       </div>
       <ActionsPanel food={food} recommendedFood={recommendedFood} status={status}>
         <ButtonWithSpinner className={classes.button} action={compareFoods}>Compare</ButtonWithSpinner>
-        <ButtonWithSpinner className={classes.button} action={addRecommendation} disabled={status.type === 'fail'}>Add Recommendation</ButtonWithSpinner>
+        <ButtonWithSpinner className={classes.button}
+                           action={addRecommendation}
+                           disabled={status.type === 'fail'}
+                           context='postRecommendations'
+        >
+          Add Recommendation
+        </ButtonWithSpinner>
       </ActionsPanel>
       {compareOpen && (
         <CompareModal dataSet={comparisonData}
