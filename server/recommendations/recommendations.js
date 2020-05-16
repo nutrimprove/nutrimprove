@@ -32,6 +32,13 @@ const getRecommendationsQuery = list =>
     ],
   }));
 
+const applyRecommendationRating = async (recommendationId, rating) => {
+  const RecommendationsConnection = await getRecommendationsConnection();
+  return RecommendationsConnection.findOneAndUpdate({ 'recommendation._id': recommendationId }, [
+    { $set: { rating: { $add: ['$rating', rating] } } },
+  ]);
+};
+
 const formatResultRecs = recs =>
   recs.map(rec => ({
     food: rec.food.name,
@@ -114,4 +121,5 @@ export {
   getRecommendationsByFood,
   getAllRecommendations,
   addRecommendations,
+  applyRecommendationRating,
 };
