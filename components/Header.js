@@ -45,7 +45,7 @@ const Header = ({ classes, userDetails, setUserDetails, setFoodNames }) => {
           <Link href='/'>
             <img
               className={classes.logo}
-              src='/apple_50.png'
+              src='/apple_64.png'
               alt='Go to main page'
             />
           </Link>
