@@ -23,7 +23,7 @@ export default {
   },
   value: {
     position: 'absolute',
-    right: 0,
+    right: 8,
   },
   list: {
     fontFamily: 'sans-serif, arial',
@@ -32,7 +32,7 @@ export default {
     marginBottom: 7,
   },
   item: {
-    padding: '8px 0',
+    padding: '8px',
     borderBottom: '1px dotted #ddd',
   },
   highlight: {

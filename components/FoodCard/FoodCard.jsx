@@ -117,7 +117,7 @@ const FoodCard = ({ food, onMouseOver, highlightItem, classes, preferences, user
             ))}
           </List>
           <Typography className={classes.caption} variant='caption'>
-            <sup>*</sup>Click a nutrient in the card to change it
+            &nbsp;<sup>*</sup>&nbsp;Click a nutrient in the card to change it
           </Typography>
           <div className={classes.cardLinks}>
             {preferences && preferences.cardNutrients && !isEqual(preferences.cardNutrients, DEFAULT_CARD_NUTRIENTS) && (
