@@ -8,5 +8,7 @@ export default {
   tabs: {
     backgroundColor: '#3f51b5',
     color: 'white',
+    display: 'block',
+    height: 48,
   },
 };

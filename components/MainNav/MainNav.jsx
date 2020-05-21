@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import AppBar from '@material-ui/core/AppBar/index';
-import Tabs from '@material-ui/core/Tabs/index';
-import Tab from '@material-ui/core/Tab/index';
 import SearchFoodPage from '../SearchFoodPage';
 import ViewRecommendationsPage from '../ViewRecommendationsPage';
 import AddRecommendationsPage from '../AddRecommendationsPage';
@@ -11,40 +9,56 @@ import { connect } from 'react-redux';
 import { isAdmin } from '../../helpers/userUtils';
 import TabContainer from '../TabContainer';
 import ReviewRecommendationsPage from '../ReviewRecommendationsPage';
+import MenuDropdown from '../MenuDropdown';
+
+const menuOptionsList = [
+  [
+    { label: 'By Food Name', link: '#', value: 0 },
+    { label: 'By Nutrient', link: '#', value: 0 },
+  ],
+  [
+    { label: 'Your Recommendations', link: '#', value: 1 },
+    { label: 'All Recommendations', link: '#', value: 1 },
+  ],
+  [
+    { label: 'By Cards', link: '#', value: 2 },
+    { label: 'Bulk Add', link: '#', value: 2 },
+  ],
+
+];
 
 const MainNav = ({ classes, userDetails }) => {
-  const [tab, setTab] = useState(0);
+  const [page, setPage] = useState(0);
 
-  const tabChange = (event, tab) => {
-    setTab(tab);
+  const handleClick = item => {
+    console.log('=== MainNav.jsx #42 === ( value ) =======>', item.value);
+    setPage(item.value);
   };
 
   return (
     <div className={classes.root}>
       <AppBar position='static' className={classes.tabs}>
-        <Tabs value={tab} onChange={tabChange}>
-          <Tab label='Search Food'/>
-          <Tab label='View Recommendations'/>
-          <Tab label='Add Recommendations'/>
-          <Tab label='Review Recommendations'/>
-          {userDetails.approved && isAdmin(userDetails) && (
-            <Tab label='Admin Panel'/>
-          )}
-        </Tabs>
+        <MenuDropdown name={'Search Food'} items={menuOptionsList[0]} onClick={handleClick}/>
+        <MenuDropdown name={'View Recommendations'} items={menuOptionsList[1]} onClick={handleClick}/>
+        <MenuDropdown name={'Add Recommendations'} items={menuOptionsList[2]} onClick={handleClick}/>
+        <MenuDropdown name={'Review Recommendations'} onClick={handleClick}/>
+        {userDetails.approved && isAdmin(userDetails) && (
+          <MenuDropdown name={'Admin Panel'} onClick={handleClick}/>
+        )}
       </AppBar>
-      <TabContainer value={tab} index={0}>
+      <TabContainer value={page} index={0}>
         <SearchFoodPage/>
       </TabContainer>
-      <TabContainer value={tab} index={1}>
+      <TabContainer value={page} index={1}>
         <ViewRecommendationsPage/>
       </TabContainer>
-      <TabContainer value={tab} index={2}>
+      <TabContainer value={page} index={2}>
         <AddRecommendationsPage/>
       </TabContainer>
-      <TabContainer value={tab} index={3}>
+      <TabContainer value={page} index={3}>
         <ReviewRecommendationsPage/>
       </TabContainer>
-      <TabContainer value={tab} index={4}>
+      <TabContainer value={page} index={4}>
         <AdminPanel/>
       </TabContainer>
     </div>

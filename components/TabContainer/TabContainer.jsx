@@ -9,7 +9,7 @@ const TabContainer = ({ value, index, classes, children }) => (
 );
 
 TabContainer.propTypes = {
-  value: PropTypes.number.isRequired,
+  value: PropTypes.number,
   index: PropTypes.number.isRequired,
   classes: PropTypes.object.isRequired,
   children: PropTypes.node.isRequired,
