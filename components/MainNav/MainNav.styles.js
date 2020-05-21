@@ -11,4 +11,14 @@ export default {
     display: 'block',
     height: 48,
   },
+  button: {
+    fontSize: 14,
+    fontWeight: 500,
+    color: 'white',
+    height: '100%',
+    '&:$hover': {
+      backgroundColor: '#2f41a5',
+    },
+    padding: '0 20px',
+  },
 };

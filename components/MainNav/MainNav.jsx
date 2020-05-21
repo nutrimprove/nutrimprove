@@ -10,6 +10,7 @@ import { isAdmin } from '../../helpers/userUtils';
 import TabContainer from '../TabContainer';
 import ReviewRecommendationsPage from '../ReviewRecommendationsPage';
 import MenuDropdown from '../MenuDropdown';
+import Button from '@material-ui/core/Button';
 
 const menus = [
   {
@@ -50,9 +51,9 @@ const MainNav = ({ classes, userDetails }) => {
         {menus.map(menu => (
           <MenuDropdown key={menu.name} name={menu.name} items={menu.options} onClick={handleClick}/>
         ))}
-        <MenuDropdown name={'Review Recommendations'} onClick={handleClick}/>
+        <Button className={classes.button} onClick={() => setPage(3)}>Review Recommendations</Button>
         {userDetails.approved && isAdmin(userDetails) && (
-          <MenuDropdown name={'Admin Panel'} onClick={handleClick}/>
+          <Button className={classes.button} onClick={() => setPage(4)}>Admin Panel</Button>
         )}
       </AppBar>
       <TabContainer value={page} index={0}>
