@@ -5,7 +5,7 @@ import LoadingSpinner from '../LoadingSpinner';
 import { Autocomplete, createFilterOptions } from '@material-ui/lab';
 
 const AutoComplete = ({
-                        values,
+                        values = [],
                         label,
                         labelProp,
                         noMatchText,
@@ -25,7 +25,7 @@ const AutoComplete = ({
   });
 
   return <Autocomplete
-    loading={loading || !values}
+    loading={loading || values.length === 0}
     options={values}
     groupBy={groupBy}
     getOptionLabel={(option) => option[labelProp]}
@@ -63,7 +63,7 @@ AutoComplete.propTypes = {
   loading: PropTypes.bool,
   context: PropTypes.string,
   label: PropTypes.string,
-  values: PropTypes.array.isRequired,
+  values: PropTypes.array,
   onChange: PropTypes.func,
   onInputChange: PropTypes.func,
   getDisabledOptions: PropTypes.func,

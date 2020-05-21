@@ -45,8 +45,8 @@ const SearchField = ({
 
 SearchField.propTypes = {
   classes: PropTypes.object.isRequired,
-  values: PropTypes.array.isRequired,
-  loading: PropTypes.bool.isRequired,
+  values: PropTypes.array,
+  loading: PropTypes.bool,
   onSelection: PropTypes.func.isRequired,
   optionsContext: PropTypes.string,
   buttonContext: PropTypes.string,
