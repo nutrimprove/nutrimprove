@@ -10,6 +10,7 @@ const SearchField = ({
                        onSelection,
                        optionsContext,
                        buttonContext,
+                       buttonText = 'Search',
                        onButtonClick,
                        buttonDisabled,
                        label = 'Type food',
@@ -37,7 +38,7 @@ const SearchField = ({
       action={onButtonClick}
       disabled={buttonDisabled}
     >
-      Search
+      {buttonText}
     </ButtonWithSpinner>
   </div>
 );
@@ -49,6 +50,7 @@ SearchField.propTypes = {
   onSelection: PropTypes.func.isRequired,
   optionsContext: PropTypes.string,
   buttonContext: PropTypes.string,
+  buttonText: PropTypes.string,
   label: PropTypes.string,
   labelProp: PropTypes.string,
   noMatchText: PropTypes.string,
