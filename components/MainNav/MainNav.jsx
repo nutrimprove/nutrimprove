@@ -11,19 +11,28 @@ import TabContainer from '../TabContainer';
 import ReviewRecommendationsPage from '../ReviewRecommendationsPage';
 import MenuDropdown from '../MenuDropdown';
 
-const menuOptionsList = [
-  [
-    { label: 'By Food Name', link: '#', value: 0 },
-    { label: 'By Nutrient', link: '#', value: 0 },
-  ],
-  [
-    { label: 'Your Recommendations', link: '#', value: 1 },
-    { label: 'All Recommendations', link: '#', value: 1 },
-  ],
-  [
-    { label: 'By Cards', link: '#', value: 2 },
-    { label: 'Bulk Add', link: '#', value: 2 },
-  ],
+const menus = [
+  {
+    name: 'Search Food',
+    options: [
+      { label: 'By Food Name', link: '#', value: 0 },
+      { label: 'By Nutrient', link: '#', value: 0 },
+    ],
+  },
+  {
+    name: 'View Recommendations',
+    options: [
+      { label: 'Your Recommendations', link: '#', value: 1 },
+      { label: 'All Recommendations', link: '#', value: 1 },
+    ],
+  },
+  {
+    name: 'Add Recommendations',
+    options: [
+      { label: 'By Cards', link: '#', value: 2 },
+      { label: 'Bulk Add', link: '#', value: 2 },
+    ],
+  },
 
 ];
 
@@ -38,9 +47,9 @@ const MainNav = ({ classes, userDetails }) => {
   return (
     <div className={classes.root}>
       <AppBar position='static' className={classes.tabs}>
-        <MenuDropdown name={'Search Food'} items={menuOptionsList[0]} onClick={handleClick}/>
-        <MenuDropdown name={'View Recommendations'} items={menuOptionsList[1]} onClick={handleClick}/>
-        <MenuDropdown name={'Add Recommendations'} items={menuOptionsList[2]} onClick={handleClick}/>
+        {menus.map(menu => (
+          <MenuDropdown key={menu.name} name={menu.name} items={menu.options} onClick={handleClick}/>
+        ))}
         <MenuDropdown name={'Review Recommendations'} onClick={handleClick}/>
         {userDetails.approved && isAdmin(userDetails) && (
           <MenuDropdown name={'Admin Panel'} onClick={handleClick}/>
