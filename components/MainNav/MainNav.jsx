@@ -1,47 +1,70 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import AppBar from '@material-ui/core/AppBar/index';
-import SearchFoodPage from '../SearchFoodPage';
-import ViewRecommendationsPage from '../ViewRecommendationsPage';
-import AddRecommendationsPage from '../AddRecommendationsPage';
-import AdminPanel from '../AdminPanel';
 import { connect } from 'react-redux';
 import { isAdmin } from '../../helpers/userUtils';
-import TabContainer from '../TabContainer';
-import ReviewRecommendationsPage from '../ReviewRecommendationsPage';
 import MenuDropdown from '../MenuDropdown';
 import Button from '@material-ui/core/Button';
+import ReviewRecommendationsPage from '../ReviewRecommendationsPage';
+import AdminPanel from '../AdminPanel';
+import YourRecommendations from '../ViewRecommendations/YourRecommendations';
+import AllRecommendations from '../ViewRecommendations/AllRecommendations';
+import SearchFoodByName from '../SearchFood/SearchFoodByName';
+import SearchFoodByNutrient from '../SearchFood/SearchFoodByNutrient';
+import AddRecommendations from '../AddRecommendations/AddRecommendations';
+import AddBulkRecommendations from '../AddRecommendations/AddBulkRecommendations';
 
 const menus = [
   {
     name: 'Search Food',
     options: [
-      { label: 'By Food Name', link: '#', value: 0 },
-      { label: 'By Nutrient', link: '#', value: 0 },
+      { label: 'By Food Name', value: 0 },
+      { label: 'By Nutrient', value: 1 },
     ],
   },
   {
     name: 'View Recommendations',
     options: [
-      { label: 'Your Recommendations', link: '#', value: 1 },
-      { label: 'All Recommendations', link: '#', value: 1 },
+      { label: 'Your Recommendations', value: 2 },
+      { label: 'All Recommendations', value: 3 },
     ],
   },
   {
     name: 'Add Recommendations',
     options: [
-      { label: 'By Cards', link: '#', value: 2 },
-      { label: 'Bulk Add', link: '#', value: 2 },
+      { label: 'By Cards', value: 4 },
+      { label: 'Bulk Add', value: 5 },
     ],
   },
-
 ];
+
+const renderComponent = index => {
+  switch (index) {
+    case 0:
+      return <SearchFoodByName/>;
+    case 1:
+      return <SearchFoodByNutrient/>;
+    case 2:
+      return <YourRecommendations/>;
+    case 3:
+      return <AllRecommendations/>;
+    case 4:
+      return <AddRecommendations/>;
+    case 5:
+      return <AddBulkRecommendations/>;
+    case 6:
+      return <ReviewRecommendationsPage/>;
+    case 7:
+      return <AdminPanel/>;
+    default:
+      return null;
+  }
+};
 
 const MainNav = ({ classes, userDetails }) => {
   const [page, setPage] = useState(0);
 
   const handleClick = item => {
-    console.log('=== MainNav.jsx #42 === ( value ) =======>', item.value);
     setPage(item.value);
   };
 
@@ -51,26 +74,14 @@ const MainNav = ({ classes, userDetails }) => {
         {menus.map(menu => (
           <MenuDropdown key={menu.name} name={menu.name} items={menu.options} onClick={handleClick}/>
         ))}
-        <Button className={classes.button} onClick={() => setPage(3)}>Review Recommendations</Button>
+        <Button className={classes.button} onClick={() => setPage(6)}>Review Recommendations</Button>
         {userDetails.approved && isAdmin(userDetails) && (
-          <Button className={classes.button} onClick={() => setPage(4)}>Admin Panel</Button>
+          <Button className={classes.button} onClick={() => setPage(7)}>Admin Panel</Button>
         )}
       </AppBar>
-      <TabContainer value={page} index={0}>
-        <SearchFoodPage/>
-      </TabContainer>
-      <TabContainer value={page} index={1}>
-        <ViewRecommendationsPage/>
-      </TabContainer>
-      <TabContainer value={page} index={2}>
-        <AddRecommendationsPage/>
-      </TabContainer>
-      <TabContainer value={page} index={3}>
-        <ReviewRecommendationsPage/>
-      </TabContainer>
-      <TabContainer value={page} index={4}>
-        <AdminPanel/>
-      </TabContainer>
+      <div className={classes.content}>
+        {renderComponent(page)}
+      </div>
     </div>
   );
 };

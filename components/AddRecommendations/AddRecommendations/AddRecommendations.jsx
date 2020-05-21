@@ -6,6 +6,14 @@ import { parseNutrients } from '../../../helpers/utils';
 import CompareModal from '../../CompareModal';
 import addRecommendations from '../../../helpers/addRecommendations';
 import ActionsPanel from '../../ActionsPanel';
+import SectionHeader from '../../SectionHeader';
+import Filters from '../../Filters';
+
+const sectionHeader = {
+  title: 'Add Recommendations',
+  subtitle: 'Choose the foods and the recommendations you would like to provide',
+};
+
 
 const AddRecommendations = ({ classes }) => {
   const [food, setFood] = useState();
@@ -61,6 +69,8 @@ const AddRecommendations = ({ classes }) => {
 
   return (
     <div>
+      <SectionHeader content={sectionHeader}/>
+      <Filters/>
       <div className={classes.cards}>
         <FoodCardWithSearch title='Food'
                             onHover={setHoveredNutrient}

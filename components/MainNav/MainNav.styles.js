@@ -21,4 +21,7 @@ export default {
     },
     padding: '0 20px',
   },
+  content: {
+    padding: '18px 18px 40px 18px',
+  },
 };

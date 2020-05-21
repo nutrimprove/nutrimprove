@@ -22,5 +22,6 @@ export default {
     backgroundColor: '#3f51b5',
     borderRadius: '0 0 7px 7px',
     marginLeft: 1,
+    zIndex: 1000,
   },
 };

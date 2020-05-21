@@ -19,6 +19,22 @@ import {
   removeFoodAction,
   removeRecommendedFoodAction,
 } from '../../../store/addRecommendation/actions';
+import SectionHeader from '../../SectionHeader';
+import Filters from '../../Filters';
+import Link from '@material-ui/core/Link';
+
+const helpMessage = (
+  <>
+    Please refer to the <Link href={'/help#add_recs'}>Help page</Link>
+    {' '}for instructions.
+  </>
+);
+
+const sectionHeader = {
+  title: 'Bulk Add Recommendations',
+  subtitle: 'Choose the foods and the recommendations you would like to provide in an N to N relation',
+  messages: [helpMessage],
+};
 
 const AddBulkRecommendations = ({
                                   foods,
@@ -149,6 +165,8 @@ const AddBulkRecommendations = ({
 
   return (
     <>
+      <SectionHeader content={sectionHeader}/>
+      <Filters/>
       <div className={classes.main}>
         <RepeatableFoodsPanel title='Choose food(s):'
                               foods={foods}

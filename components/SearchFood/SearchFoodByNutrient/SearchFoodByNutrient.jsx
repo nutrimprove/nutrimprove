@@ -10,6 +10,14 @@ import Typography from '@material-ui/core/Typography';
 import ModalPanel from '../../ModalPanel';
 import LoadingPanel from '../../LoadingPanel';
 import SearchField from '../../SearchField';
+import SectionHeader from '../../SectionHeader';
+import Filters from '../../Filters';
+
+const sectionHeader = {
+  title: 'Search Foods by Nutrient',
+  subtitle: 'List the foods with the highest level of a specific nutrient (use the filters to refine your search)',
+};
+
 
 const SearchFoodByNutrient = ({ classes, categories }) => {
   const [nutrient, setNutrient] = useState();
@@ -77,9 +85,8 @@ const SearchFoodByNutrient = ({ classes, categories }) => {
 
   return (
     <>
-      <Typography variant='subtitle2' paragraph={true}>
-        Display the foods with the highest levels of a specific nutrient
-      </Typography>
+      <SectionHeader content={sectionHeader}/>
+      <Filters/>
       <SearchField   loading={nutrients.length === 0}
                      onSelection={handleNutrientSelection}
                      onButtonClick={getFoods}

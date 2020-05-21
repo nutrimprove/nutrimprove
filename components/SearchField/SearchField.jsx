@@ -5,6 +5,7 @@ import ButtonWithSpinner from '../ButtonWithSpinner';
 
 const SearchField = ({
                        classes,
+                       width = 360,
                        values,
                        loading,
                        onSelection,
@@ -13,6 +14,7 @@ const SearchField = ({
                        buttonText = 'Search',
                        onButtonClick,
                        buttonDisabled,
+                       showButton = true,
                        label = 'Type food',
                        labelProp = 'foodName',
                        noMatchText = 'No food matched!!',
@@ -21,7 +23,7 @@ const SearchField = ({
                      }) => (
   <div className={classes.search}>
     <AutoComplete
-      width={260}
+      width={width}
       values={values}
       label={label}
       noMatchText={noMatchText}
@@ -32,25 +34,27 @@ const SearchField = ({
       strict={strict}
       groupBy={groupBy}
     />
-    <ButtonWithSpinner
+    {showButton && <ButtonWithSpinner
       className={classes.button}
       context={buttonContext}
       action={onButtonClick}
       disabled={buttonDisabled}
     >
       {buttonText}
-    </ButtonWithSpinner>
+    </ButtonWithSpinner>}
   </div>
 );
 
 SearchField.propTypes = {
   classes: PropTypes.object.isRequired,
+  width: PropTypes.number,
   values: PropTypes.array,
   loading: PropTypes.bool,
   onSelection: PropTypes.func.isRequired,
   optionsContext: PropTypes.string,
   buttonContext: PropTypes.string,
   buttonText: PropTypes.string,
+  showButton: PropTypes.bool,
   label: PropTypes.string,
   labelProp: PropTypes.string,
   noMatchText: PropTypes.string,
