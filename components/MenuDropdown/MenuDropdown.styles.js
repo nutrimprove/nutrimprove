@@ -7,7 +7,7 @@ export default {
     '&:$hover': {
       backgroundColor: '#1f3195',
     },
-    padding: '0 40px',
+    padding: '0 30px',
   },
   link: {
     display: 'block',
@@ -24,9 +24,13 @@ export default {
     backgroundColor: '#3f51b5',
     borderRadius: '0 0 7px 7px',
     marginLeft: 1,
+    boxShadow: '2px 2px 8px 0px rgba(0,0,0,0.3)',
   },
   divider: {
     border: '1px dotted #1f3195',
     margin: 0,
+  },
+  icon: {
+    marginTop: 6,
   },
 };

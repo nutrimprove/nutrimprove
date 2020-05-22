@@ -7,6 +7,8 @@ import Popper from '@material-ui/core/Popper';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
 import PropTypes from 'prop-types';
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
+import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
 
 const MenuDropdown = ({ name, items, onClick, classes }) => {
   const [open, setOpen] = useState(false);
@@ -60,6 +62,7 @@ const MenuDropdown = ({ name, items, onClick, classes }) => {
         className={classes.name}
       >
         {name}
+        <span className={classes.icon}>{open ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />}</span>
       </Button>
       {items && items.length > 0 && <Popper style={{ minWidth: getWidth() }}
                                             open={open}
