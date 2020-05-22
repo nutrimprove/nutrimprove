@@ -87,7 +87,7 @@ const ViewRecommendations = ({ recommendations, title }) => {
                    onSelection={handleSelection}
                    onButtonClick={filterByFood}
                    values={foodNames}
-                   disabled={!filter}
+                   buttonDisabled={!filter}
                    buttonText='Filter'
       />
       {filteredList && <ResultsTable data={filteredList} title={filteredTitle || title} onRowClick={handleRowClick}/>}

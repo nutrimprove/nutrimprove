@@ -17,7 +17,6 @@ const sectionHeader = {
 const SearchFoodByName = ({ categories, foodNames, classes }) => {
   const [selectedFood, setSelectedFood] = useState();
   const [data, setData] = useState();
-  const loading = foodNames.length === 0;
   const filteredFoodNames = filterFoodNames(foodNames, categories.selectedGroups);
 
   const updateResults = async () => {
@@ -39,12 +38,12 @@ const SearchFoodByName = ({ categories, foodNames, classes }) => {
     <>
       <SectionHeader content={sectionHeader}/>
       <Filters/>
-      <SearchField loading={loading}
+      <SearchField loading={!filteredFoodNames}
                    onSelection={handleFoodSelection}
                    onButtonClick={updateResults}
                    buttonContext='getFoodData'
                    values={filteredFoodNames}
-                   disabled={!selectedFood}
+                   buttonDisabled={!selectedFood}
       />
       {data && <ResultsTable data={data} title='Nutritional values per 100g of food'/>}
     </>

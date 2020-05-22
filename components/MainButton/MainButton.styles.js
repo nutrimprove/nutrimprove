@@ -6,6 +6,5 @@ export default {
     margin: '0 10px',
     fontSize: '0.7em',
     minWidth: 120,
-    zIndex: -1,
   },
 };
