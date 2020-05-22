@@ -27,7 +27,8 @@ export default {
     boxShadow: '2px 2px 8px 0px rgba(0,0,0,0.3)',
   },
   divider: {
-    border: '1px dotted #1f3195',
+    border: '0 0 1px 0',
+    borderColor: '#5f71c5',
     margin: 0,
   },
   icon: {
