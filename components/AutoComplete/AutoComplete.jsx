@@ -29,7 +29,7 @@ const AutoComplete = ({
     options={values}
     groupBy={groupBy}
     getOptionLabel={(option) => option[labelProp]}
-    style={{ width }}
+    style={{ width, zIndex: -1 }}
     disabled={loading}
     getOptionDisabled={getDisabledOptions}
     renderInput={(params) =>
