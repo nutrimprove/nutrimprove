@@ -10,6 +10,7 @@ export default {
     color: 'white',
     display: 'block',
     height: 48,
+    position: 'relative',
   },
   button: {
     fontSize: 14,
