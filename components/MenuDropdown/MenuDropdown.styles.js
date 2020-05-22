@@ -5,23 +5,28 @@ export default {
     color: 'white',
     height: '100%',
     '&:$hover': {
-      backgroundColor: '#2f41a5',
+      backgroundColor: '#1f3195',
     },
-    padding: '0 20px',
+    padding: '0 40px',
   },
   link: {
     display: 'block',
     fontSize: 14,
-    padding: 10,
+    textAlign: 'center',
+    padding: '12px 20px',
     color: 'white',
+    backgroundColor: '#3f51b5',
     '&:$hover': {
-      backgroundColor: '#2f41a5',
+      backgroundColor: '#1f3195',
     },
   },
   container: {
     backgroundColor: '#3f51b5',
     borderRadius: '0 0 7px 7px',
     marginLeft: 1,
-    zIndex: 1000,
+  },
+  divider: {
+    border: '1px dotted #1f3195',
+    margin: 0,
   },
 };

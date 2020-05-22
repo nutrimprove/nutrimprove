@@ -71,20 +71,26 @@ const MenuDropdown = ({ name, items, onClick, classes }) => {
         {({ TransitionProps, placement }) => (
           <Grow
             {...TransitionProps}
+            timeout={200}
             style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}
           >
             <Paper className={classes.container}>
               <ClickAwayListener onClickAway={handleClose}>
                 <MenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
-                  {items && items.map(item => (
-                    <MenuItem key={item.label}
-                              onClick={() => handleClick(item)}
-                              button={true}
-                              className={classes.link}
-                    >
-                      {item.label}
-                    </MenuItem>
-                  ))}
+                  {items && items.map(item => {
+                    if (item && item.divider) {
+                      return <hr className={classes.divider}/>
+                    } else {
+                    return (
+                      <MenuItem key={item.label}
+                                onClick={() => handleClick(item)}
+                                button={true}
+                                className={classes.link}
+                      >
+                        {item.label}
+                      </MenuItem>
+                    );
+                  }})}
                 </MenuList>
               </ClickAwayListener>
             </Paper>

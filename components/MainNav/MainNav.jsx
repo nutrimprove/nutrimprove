@@ -23,17 +23,15 @@ const menus = [
     ],
   },
   {
-    name: 'View Recommendations',
+    name: 'Recommendations',
     options: [
-      { label: 'Your Recommendations', value: 2 },
-      { label: 'All Recommendations', value: 3 },
-    ],
-  },
-  {
-    name: 'Add Recommendations',
-    options: [
-      { label: 'By Cards', value: 4 },
-      { label: 'Bulk Add', value: 5 },
+      { label: 'View Your Recommendations', value: 2 },
+      { label: 'View All Recommendations', value: 3 },
+      { divider: true },
+      { label: 'Add Recomemndations', value: 4 },
+      { label: 'Bulk Add Recommendations', value: 5 },
+      { divider: true },
+      { label: 'Review Recommendations', value: 6 },
     ],
   },
 ];
@@ -74,7 +72,6 @@ const MainNav = ({ classes, userDetails }) => {
         {menus.map(menu => (
           <MenuDropdown key={menu.name} name={menu.name} items={menu.options} onClick={handleClick}/>
         ))}
-        <Button className={classes.button} onClick={() => setPage(6)}>Review Recommendations</Button>
         {userDetails.approved && isAdmin(userDetails) && (
           <Button className={classes.button} onClick={() => setPage(7)}>Admin Panel</Button>
         )}
