@@ -80,9 +80,9 @@ const MenuDropdown = ({ name, items, onClick, classes }) => {
             <Paper className={classes.container}>
               <ClickAwayListener onClickAway={handleClose}>
                 <MenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
-                  {items && items.map(item => {
+                  {items && items.map((item, index) => {
                     if (item && item.divider) {
-                      return <hr className={classes.divider}/>
+                      return <hr key={index} className={classes.divider}/>
                     } else {
                     return (
                       <MenuItem key={item.label}
