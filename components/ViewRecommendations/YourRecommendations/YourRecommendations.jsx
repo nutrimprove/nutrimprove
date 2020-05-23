@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { getAllRecommendations } from '../../../interfaces/api/recommendations';
+import { getUserRecommendations } from '../../../interfaces/api/recommendations';
 import SectionHeader from '../../SectionHeader';
 import ViewRecommendations from '../ViewRecommendations';
+import { useSelector } from 'react-redux';
 
 const sectionHeader = {
   title: 'Your Recommendations',
@@ -9,12 +10,13 @@ const sectionHeader = {
 };
 
 const YourRecommendations = () => {
+  const user = useSelector(({globalState}) => globalState.userDetails.name);
   const [recommendations, setRecommendations] = useState();
   const [title, setTitle] = useState();
 
   useEffect(() => {
     (async () => {
-      const recommendations = await getAllRecommendations();
+      const recommendations = await getUserRecommendations(user);
       setTitle(`Your recommendations (${recommendations.length})`);
       setRecommendations(recommendations);
     })();
