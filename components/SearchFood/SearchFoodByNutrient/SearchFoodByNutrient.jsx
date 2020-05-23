@@ -1,25 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import ButtonWithSpinner from '../../ButtonWithSpinner';
 import { getFoodByName, getFoodsByNutrient, getNutrients } from '../../../interfaces/api/foods';
-import AutoComplete from '../../AutoComplete';
 import { parseNutrients } from '../../../helpers/utils';
 import ResultsTable from '../../ResultsTable';
-import Typography from '@material-ui/core/Typography';
 import ModalPanel from '../../ModalPanel';
 import LoadingPanel from '../../LoadingPanel';
 import SearchField from '../../SearchField';
 import SectionHeader from '../../SectionHeader';
 import Filters from '../../Filters';
+import { useSelector } from 'react-redux';
 
 const sectionHeader = {
   title: 'Search Foods by Nutrient',
   subtitle: 'List the foods with the highest level of a specific nutrient (use the filters to refine your search)',
 };
 
-
-const SearchFoodByNutrient = ({ classes, categories }) => {
+const SearchFoodByNutrient = () => {
+  const { categories } = useSelector(state => state.globalState);
   const [nutrient, setNutrient] = useState();
   const [nutrients, setNutrients] = useState([]);
   const [foods, setFoods] = useState();
@@ -87,18 +83,18 @@ const SearchFoodByNutrient = ({ classes, categories }) => {
     <>
       <SectionHeader content={sectionHeader}/>
       <Filters/>
-      <SearchField   loading={nutrients.length === 0}
-                     onSelection={handleNutrientSelection}
-                     onButtonClick={getFoods}
-                     optionsContext='getNutrients'
-                     buttonContext ='getFoodsByNutrient'
-                     values={nutrients}
-                     buttonDisabled={!nutrient}
-                     label='Choose nutrient'
-                     labelProp='label'
-                     noMatchText='No nutrient matched!!'
-                     groupBy={(option) => option.group}
-                     strict={false}
+      <SearchField loading={nutrients.length === 0}
+                   onSelection={handleNutrientSelection}
+                   onButtonClick={getFoods}
+                   optionsContext='getNutrients'
+                   buttonContext='getFoodsByNutrient'
+                   values={nutrients}
+                   buttonDisabled={!nutrient}
+                   label='Choose nutrient'
+                   labelProp='label'
+                   noMatchText='No nutrient matched!!'
+                   groupBy={(option) => option.group}
+                   strict={false}
       />
       {foods && <ResultsTable
         data={foods}
@@ -119,15 +115,4 @@ const SearchFoodByNutrient = ({ classes, categories }) => {
   );
 };
 
-SearchFoodByNutrient.propTypes = {
-  classes: PropTypes.object.isRequired,
-  categories: PropTypes.object.isRequired,
-};
-
-const mapStateToProps = states => {
-  return {
-    categories: states.globalState.categories,
-  };
-};
-
-export default connect(mapStateToProps)(SearchFoodByNutrient);
+export default SearchFoodByNutrient;

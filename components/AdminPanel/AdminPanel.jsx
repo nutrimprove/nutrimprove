@@ -10,7 +10,7 @@ import {
 } from '../../interfaces/api/users';
 import ResultsTable from '../ResultsTable';
 import ButtonWithSpinner from '../ButtonWithSpinner';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import DeleteUserButton from '../DeleteUserButton';
 import { isAdmin, isOwner, userRoleToString } from '../../helpers/userUtils';
@@ -40,7 +40,8 @@ const updatePoints = async () => {
   console.log('Update all users points result:', result);
 };
 
-const AdminPanel = ({ userDetails, classes }) => {
+const AdminPanel = ({ classes }) => {
+  const userDetails = useSelector(({ globalState }) => globalState.userDetails);
   const [users, setUsers] = useState();
   const [userQuery, setUserQuery] = useState();
 
@@ -171,14 +172,7 @@ const AdminPanel = ({ userDetails, classes }) => {
 };
 
 AdminPanel.propTypes = {
-  userDetails: PropTypes.object.isRequired,
   classes: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = states => {
-  return {
-    userDetails: states.globalState.userDetails,
-  };
-};
-
-export default connect(mapStateToProps, null)(AdminPanel);
+export default AdminPanel;

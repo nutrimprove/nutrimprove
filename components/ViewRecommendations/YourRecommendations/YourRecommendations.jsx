@@ -10,7 +10,7 @@ const sectionHeader = {
 };
 
 const YourRecommendations = () => {
-  const user = useSelector(({globalState}) => globalState.userDetails.name);
+  const user = useSelector(({ globalState }) => globalState.userDetails.name);
   const [recommendations, setRecommendations] = useState();
   const [title, setTitle] = useState();
 

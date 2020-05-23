@@ -15,7 +15,7 @@ import { getSearchedTerms } from '../../interfaces/api/edamamFoods';
 import { EDAMAM_DB, INPUT_TRIGGER_TIME } from '../../helpers/constants';
 import { Tooltip } from '@material-ui/core';
 import { fullTrim, lowerCaseCompare, mapSearchResults } from '../../helpers/utils';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 const renderInput = inputProps => {
   const {
@@ -99,7 +99,8 @@ renderSuggestion.propTypes = {
 
 let timeout = null;
 
-const SearchInputField = ({ classes, foodKey, foodAction, isValid, categories, foodNames }) => {
+const SearchInputField = ({ classes, foodKey, foodAction, isValid }) => {
+    const { categories, foodNames } = useSelector(state => state.globalState);
     const [food, setFood] = useState();
     const [charCount, setCharCount] = useState(0);
     const [notFound, setNotFound] = useState();
@@ -303,15 +304,6 @@ SearchInputField.propTypes = {
   foodAction: PropTypes.func,
   foodKey: PropTypes.string,
   isValid: PropTypes.bool,
-  categories: PropTypes.object.isRequired,
-  foodNames: PropTypes.array,
 };
 
-const mapStateToProps = states => {
-  return {
-    categories: states.globalState.categories,
-    foodNames: states.globalState.foodNames,
-  };
-};
-
-export default connect(mapStateToProps)(SearchInputField);
+export default SearchInputField;
