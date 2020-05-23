@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { getFoodsFromRecommendation, parseNutrients } from '../../../helpers/utils';
 import CompareModal from '../../CompareModal';
 import SearchField from '../../SearchField';
+import LoadingPanel from '../../LoadingPanel';
 
 const formatRecommendations = recommendations => {
   // Sort by date of recommendation (more recent first)
@@ -28,6 +29,7 @@ const ViewRecommendations = ({ recommendations, title }) => {
   const [filteredTitle, setFilteredTitle] = useState();
 
   useEffect(() => {
+    if (!recommendations) return;
     const formattedRecommendations = formatRecommendations(recommendations);
     const foods = [];
     formattedRecommendations.forEach(rec => {
@@ -90,6 +92,7 @@ const ViewRecommendations = ({ recommendations, title }) => {
                    buttonDisabled={!filter}
                    buttonText='Filter'
       />
+      {!recommendations && <LoadingPanel/>}
       {filteredList && <ResultsTable data={filteredList} title={filteredTitle || title} onRowClick={handleRowClick}/>}
       {compareOpen && <CompareModal dataSet={comparisonData} open={compareOpen} onClose={handleCloseModal}/>}
     </>
