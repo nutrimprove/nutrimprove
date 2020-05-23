@@ -8,5 +8,21 @@ export default {
   tabs: {
     backgroundColor: '#3f51b5',
     color: 'white',
+    display: 'block',
+    height: 48,
+    position: 'relative',
+  },
+  button: {
+    fontSize: 14,
+    fontWeight: 500,
+    color: 'white',
+    height: '100%',
+    '&:$hover': {
+      backgroundColor: '#2f41a5',
+    },
+    padding: '0 20px',
+  },
+  content: {
+    padding: '18px 18px 40px 18px',
   },
 };

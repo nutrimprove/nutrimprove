@@ -31,6 +31,7 @@ const FoodCardWithSearch = ({ classes, foodNames, categories, title, highlightIt
                    onButtonClick={loadCardDetails}
                    buttonContext={context}
                    values={filteredFoodNames}
+                   width={260}
                    buttonDisabled={!selectedFood}
       />
       {food && (

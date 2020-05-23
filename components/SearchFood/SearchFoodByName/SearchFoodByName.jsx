@@ -6,11 +6,17 @@ import { filterFoodNames, parseNutrients } from '../../../helpers/utils';
 import ResultsTable from '../../ResultsTable';
 import Typography from '@material-ui/core/Typography';
 import SearchField from '../../SearchField';
+import SectionHeader from '../../SectionHeader';
+import Filters from '../../Filters';
+
+const sectionHeader = {
+  title: 'Search Food by Name',
+  subtitle: 'Search for a food to display its nutritional data (use the filters to refine your search)',
+};
 
 const SearchFoodByName = ({ categories, foodNames, classes }) => {
   const [selectedFood, setSelectedFood] = useState();
   const [data, setData] = useState();
-  const loading = foodNames.length === 0;
   const filteredFoodNames = filterFoodNames(foodNames, categories.selectedGroups);
 
   const updateResults = async () => {
@@ -30,13 +36,14 @@ const SearchFoodByName = ({ categories, foodNames, classes }) => {
 
   return (
     <>
-      <Typography variant='subtitle2' paragraph={true}>Search for a food to display its nutritional data</Typography>
-      <SearchField loading={loading}
+      <SectionHeader content={sectionHeader}/>
+      <Filters/>
+      <SearchField loading={!filteredFoodNames}
                    onSelection={handleFoodSelection}
                    onButtonClick={updateResults}
                    buttonContext='getFoodData'
                    values={filteredFoodNames}
-                   disabled={!selectedFood}
+                   buttonDisabled={!selectedFood}
       />
       {data && <ResultsTable data={data} title='Nutritional values per 100g of food'/>}
     </>

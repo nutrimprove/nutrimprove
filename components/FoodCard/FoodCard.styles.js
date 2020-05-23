@@ -59,4 +59,10 @@ export default {
   link: {
     margin: '0 5px',
   },
+  subtitle: {
+    display: 'block',
+    fontSize: 11,
+    textAlign: 'center',
+    fontWeight: 300,
+  },
 };

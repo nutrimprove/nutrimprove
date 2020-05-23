@@ -4,8 +4,10 @@ import TextField from '@material-ui/core/TextField/TextField';
 import LoadingSpinner from '../LoadingSpinner';
 import { Autocomplete, createFilterOptions } from '@material-ui/lab';
 
+const fontSize = 14;
+
 const AutoComplete = ({
-                        values,
+                        values = [],
                         label,
                         labelProp,
                         noMatchText,
@@ -25,11 +27,12 @@ const AutoComplete = ({
   });
 
   return <Autocomplete
-    loading={loading || !values}
+    loading={loading || values.length === 0}
     options={values}
     groupBy={groupBy}
     getOptionLabel={(option) => option[labelProp]}
     style={{ width }}
+    ListboxProps={{ style: { fontSize } }}
     disabled={loading}
     getOptionDisabled={getDisabledOptions}
     renderInput={(params) =>
@@ -39,6 +42,7 @@ const AutoComplete = ({
         {...params}
         InputProps={{
           ...params.InputProps,
+          style: { fontSize },
           endAdornment: (
             <>
               {loading ? <LoadingSpinner context={context}/> : null}
@@ -63,7 +67,7 @@ AutoComplete.propTypes = {
   loading: PropTypes.bool,
   context: PropTypes.string,
   label: PropTypes.string,
-  values: PropTypes.array.isRequired,
+  values: PropTypes.array,
   onChange: PropTypes.func,
   onInputChange: PropTypes.func,
   getDisabledOptions: PropTypes.func,

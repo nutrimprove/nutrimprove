@@ -1,52 +1,84 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import AppBar from '@material-ui/core/AppBar/index';
-import Tabs from '@material-ui/core/Tabs/index';
-import Tab from '@material-ui/core/Tab/index';
-import SearchFoodPage from '../SearchFoodPage';
-import ViewRecommendationsPage from '../ViewRecommendationsPage';
-import AddRecommendationsPage from '../AddRecommendationsPage';
-import AdminPanel from '../AdminPanel';
 import { connect } from 'react-redux';
 import { isAdmin } from '../../helpers/userUtils';
-import TabContainer from '../TabContainer';
+import MenuDropdown from '../MenuDropdown';
+import Button from '@material-ui/core/Button';
 import ReviewRecommendationsPage from '../ReviewRecommendationsPage';
+import AdminPanel from '../AdminPanel';
+import YourRecommendations from '../ViewRecommendations/YourRecommendations';
+import AllRecommendations from '../ViewRecommendations/AllRecommendations';
+import SearchFoodByName from '../SearchFood/SearchFoodByName';
+import SearchFoodByNutrient from '../SearchFood/SearchFoodByNutrient';
+import AddRecommendations from '../AddRecommendations/AddRecommendations';
+import AddBulkRecommendations from '../AddRecommendations/AddBulkRecommendations';
+
+const menus = [
+  {
+    name: 'Search Food',
+    options: [
+      { label: 'By Food Name', value: 0 },
+      { label: 'By Nutrient', value: 1 },
+    ],
+  },
+  {
+    name: 'Recommendations',
+    options: [
+      { label: 'View Your Recommendations', value: 2 },
+      { label: 'View All Recommendations', value: 3 },
+      { divider: true },
+      { label: 'Add Recomemndations', value: 4 },
+      { label: 'Bulk Add Recommendations', value: 5 },
+      { divider: true },
+      { label: 'Review Recommendations', value: 6 },
+    ],
+  },
+];
+
+const renderComponent = index => {
+  switch (index) {
+    case 0:
+      return <SearchFoodByName/>;
+    case 1:
+      return <SearchFoodByNutrient/>;
+    case 2:
+      return <YourRecommendations/>;
+    case 3:
+      return <AllRecommendations/>;
+    case 4:
+      return <AddRecommendations/>;
+    case 5:
+      return <AddBulkRecommendations/>;
+    case 6:
+      return <ReviewRecommendationsPage/>;
+    case 7:
+      return <AdminPanel/>;
+    default:
+      return null;
+  }
+};
 
 const MainNav = ({ classes, userDetails }) => {
-  const [tab, setTab] = useState(0);
+  const [page, setPage] = useState(0);
 
-  const tabChange = (event, tab) => {
-    setTab(tab);
+  const handleClick = item => {
+    setPage(item.value);
   };
 
   return (
     <div className={classes.root}>
       <AppBar position='static' className={classes.tabs}>
-        <Tabs value={tab} onChange={tabChange}>
-          <Tab label='Search Food'/>
-          <Tab label='View Recommendations'/>
-          <Tab label='Add Recommendations'/>
-          <Tab label='Review Recommendations'/>
-          {userDetails.approved && isAdmin(userDetails) && (
-            <Tab label='Admin Panel'/>
-          )}
-        </Tabs>
+        {menus.map(menu => (
+          <MenuDropdown key={menu.name} name={menu.name} items={menu.options} onClick={handleClick}/>
+        ))}
+        {userDetails.approved && isAdmin(userDetails) && (
+          <Button className={classes.button} onClick={() => setPage(7)}>Admin Panel</Button>
+        )}
       </AppBar>
-      <TabContainer value={tab} index={0}>
-        <SearchFoodPage/>
-      </TabContainer>
-      <TabContainer value={tab} index={1}>
-        <ViewRecommendationsPage/>
-      </TabContainer>
-      <TabContainer value={tab} index={2}>
-        <AddRecommendationsPage/>
-      </TabContainer>
-      <TabContainer value={tab} index={3}>
-        <ReviewRecommendationsPage/>
-      </TabContainer>
-      <TabContainer value={tab} index={4}>
-        <AdminPanel/>
-      </TabContainer>
+      <div className={classes.content}>
+        {renderComponent(page)}
+      </div>
     </div>
   );
 };

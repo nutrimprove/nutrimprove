@@ -11,7 +11,6 @@ const sectionHeader = {
 const ReviewRecommendationsPage = () => (
   <>
     <SectionHeader content={sectionHeader}/>
-    <Filters/>
     <ReviewRecommendations/>
   </>
 );
