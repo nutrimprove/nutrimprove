@@ -26,7 +26,7 @@ const YourRecommendations = () => {
     <>
       <SectionHeader content={sectionHeader}/>
       {/* <Filters/> */}
-      {recommendations && <ViewRecommendations title={title} recommendations={recommendations}/>}
+      <ViewRecommendations title={title} recommendations={recommendations}/>
     </>
   );
 };
