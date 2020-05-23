@@ -97,6 +97,7 @@ const FoodCard = ({ food, onMouseOver, highlightItem, classes, preferences, user
       <Card className={classes.card}>
         <Typography className={classes.title} color="textSecondary" title={title} noWrap={true}>
           {title}
+          <span className={classes.subtitle}>Nutritional values per 100g of food</span>
         </Typography>
         <CardContent className={classes.content}>
           <List className={classes.list}>
