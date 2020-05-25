@@ -1,6 +1,5 @@
 import React from 'react';
 import SectionHeader from '../SectionHeader';
-import Filters from '../Filters';
 import ReviewRecommendations from './ReviewRecommendations';
 
 const sectionHeader = {

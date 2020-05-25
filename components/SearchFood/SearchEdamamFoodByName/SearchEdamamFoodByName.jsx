@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { getNutritionData } from '../../../interfaces/api/nutrition';
-import AutoComplete from '../../AutoComplete';
-import ButtonWithSpinner from '../../ButtonWithSpinner';
-import PropTypes from 'prop-types';
 import { getSearchedTerms } from '../../../interfaces/api/edamamFoods';
 import { mapSearchResults, parseNutrients } from '../../../helpers/utils';
 import ResultsTable from '../../ResultsTable';
@@ -21,7 +18,7 @@ const mergeEdamamResults = (nutrients, dailyValues) => {
   });
 };
 
-const SearchEdamamFoodByName = ({ classes }) => {
+const SearchEdamamFoodByName = () => {
   const [selectedFood, setSelectedFood] = useState();
   const [searchTerms, setSearchTerms] = useState([]);
   const [searchInput, setSearchInput] = useState('');
@@ -42,10 +39,6 @@ const SearchEdamamFoodByName = ({ classes }) => {
       }
     })();
   }, [searchInput]);
-
-  const handleInputChange = (event, value) => {
-    setSearchInput(value);
-  };
 
   const updateResults = async () => {
     const data = await getNutritionData(selectedFood.foodCode);
@@ -70,10 +63,6 @@ const SearchEdamamFoodByName = ({ classes }) => {
       {foods && <ResultsTable data={foods} title='Nutritional values per 100g of food'/>}
     </>
   );
-};
-
-SearchEdamamFoodByName.propTypes = {
-  classes: PropTypes.object.isRequired,
 };
 
 export default SearchEdamamFoodByName;

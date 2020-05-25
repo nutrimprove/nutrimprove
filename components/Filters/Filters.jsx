@@ -1,24 +1,28 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { uniqueId } from 'lodash/util';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import PropTypes from 'prop-types';
 import { setCategoriesAction } from '../../store/global/actions';
-import { connect } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import PopoverPanelWithButton from '../PopoverPanelWithButton';
 import FormControl from '@material-ui/core/FormControl';
 import Button from '@material-ui/core/Button';
 import { EDAMAM_DB } from '../../helpers/constants';
 import Link from '@material-ui/core/Link';
 
-const Filters = ({ categories, setCategories, classes }) => {
+const Filters = ({ classes }) => {
   if (EDAMAM_DB) return null;
 
+  const categories = useSelector(({ globalState }) => globalState.categories);
+  const dispatch = useDispatch();
+  const setCategories = useCallback(filters => dispatch(setCategoriesAction(filters)), []);
   const [filters, setFilters] = useState(categories.all);
 
   useEffect(() => {
     const selectedFilters = filters.filter(filter => filter.selected).map(category => category.group);
+
     setCategories({
       all: filters,
       selectedGroups: selectedFilters,
@@ -94,19 +98,7 @@ const Filters = ({ categories, setCategories, classes }) => {
 };
 
 Filters.propTypes = {
-  categories: PropTypes.object.isRequired,
-  setCategories: PropTypes.func.isRequired,
   classes: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = states => {
-  return {
-    categories: states.globalState.categories,
-  };
-};
-
-const mapDispatchToProps = dispatch => ({
-  setCategories: filters => dispatch(setCategoriesAction(filters)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Filters);
+export default Filters;
