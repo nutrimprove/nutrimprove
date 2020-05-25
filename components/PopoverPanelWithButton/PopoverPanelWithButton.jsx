@@ -16,6 +16,7 @@ const PopoverPanelWithButton = ({ buttonText, title, buttonEffect, children, cla
                 color='primary'
                 className={classes.button}
                 {...bindTrigger(popupState)}
+                data-testid='triggerButton'
         >
           {buttonText}
         </Button>
@@ -29,6 +30,7 @@ const PopoverPanelWithButton = ({ buttonText, title, buttonEffect, children, cla
             vertical: 'top',
             horizontal: 'left',
           }}
+          data-testid='filtersPopup'
         >
           <IconButton classes={{ root: classes.closeIcon }} onClick={popupState.close} aria-label='close'>
             <CloseIcon fontSize='small'/>
