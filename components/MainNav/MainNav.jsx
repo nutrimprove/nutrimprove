@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import AppBar from '@material-ui/core/AppBar/index';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { isAdmin } from '../../helpers/userUtils';
 import MenuDropdown from '../MenuDropdown';
 import Button from '@material-ui/core/Button';
@@ -59,7 +59,8 @@ const renderComponent = index => {
   }
 };
 
-const MainNav = ({ classes, userDetails }) => {
+const MainNav = ({ classes }) => {
+  const userDetails = useSelector(({globalState}) => globalState.userDetails);
   const [page, setPage] = useState(0);
 
   const handleClick = item => {
@@ -85,13 +86,6 @@ const MainNav = ({ classes, userDetails }) => {
 
 MainNav.propTypes = {
   classes: PropTypes.object.isRequired,
-  userDetails: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = states => {
-  return {
-    userDetails: states.globalState.userDetails,
-  };
-};
-
-export default connect(mapStateToProps, null)(MainNav);
+export default MainNav;

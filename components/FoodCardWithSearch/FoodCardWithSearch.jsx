@@ -3,11 +3,12 @@ import PropTypes from 'prop-types';
 import { getFoodById } from '../../interfaces/api/foods';
 import { filterFoodNames } from '../../helpers/utils';
 import FoodCard from '../FoodCard';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Typography } from '@material-ui/core';
 import SearchField from '../SearchField';
 
-const FoodCardWithSearch = ({ classes, foodNames, categories, title, highlightItem, onHover, foodInfo, context }) => {
+const FoodCardWithSearch = ({ classes, title, highlightItem, onHover, foodInfo, context }) => {
+  const { foodNames, categories } = useSelector(state => state.globalState);
   const [selectedFood, setSelectedFood] = useState();
   const [food, setFood] = useState();
   const loading = foodNames.length === 0;
@@ -42,8 +43,6 @@ const FoodCardWithSearch = ({ classes, foodNames, categories, title, highlightIt
 };
 
 FoodCardWithSearch.propTypes = {
-  foodNames: PropTypes.array.isRequired,
-  categories: PropTypes.object.isRequired,
   title: PropTypes.string,
   onHover: PropTypes.func,
   highlightItem: PropTypes.string,
@@ -52,11 +51,4 @@ FoodCardWithSearch.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = states => {
-  return {
-    categories: states.globalState.categories,
-    foodNames: states.globalState.foodNames,
-  };
-};
-
-export default connect(mapStateToProps)(FoodCardWithSearch);
+export default FoodCardWithSearch;

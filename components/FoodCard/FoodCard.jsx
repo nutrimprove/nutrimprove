@@ -1,11 +1,11 @@
 import { Button, Card, CardActions, CardContent, List, ListItem, Typography } from '@material-ui/core';
 import PropTypes from 'prop-types';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { uniqueId } from 'lodash/util';
 import ScrollIntoView from '../ScrollIntoView';
 import { getCardNutrients, parseNutrients } from '../../helpers/utils';
-import { connect } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import ResultsTable from '../ResultsTable';
 import LoadingPanel from '../LoadingPanel';
 import ModalPanel from '../ModalPanel';
@@ -16,7 +16,10 @@ import { savePreferences } from '../../interfaces/api/users';
 import Link from '@material-ui/core/Link';
 import { isEqual } from 'lodash';
 
-const FoodCard = ({ food, onMouseOver, highlightItem, classes, preferences, userDetails, setUserPreferencesState }) => {
+const FoodCard = ({ food, onMouseOver, highlightItem, classes }) => {
+  const { preferences, userDetails } = useSelector(state => state.globalState);
+  const dispatch = useDispatch();
+  const setUserPreferences = useCallback(preferences => dispatch(setUserPreferencesAction(preferences)), []);
   const [foodDetails, setFoodDetails] = useState();
   const [detailsOpen, setDetailsOpen] = useState(false);
   const [changeNutrientOpen, setChangeNutrientOpen] = useState(false);
@@ -64,12 +67,12 @@ const FoodCard = ({ food, onMouseOver, highlightItem, classes, preferences, user
   };
 
   const updatePreferences = async (newPreferences, addToUndo) => {
-    setUserPreferencesState(newPreferences);
+    setUserPreferences(newPreferences);
     await savePreferences(userDetails.email, newPreferences);
     if (addToUndo) {
       preferences && preferences.cardNutrients
-      ? setUndoHistory([...undoHistory, preferences.cardNutrients])
-      : setUndoHistory([...undoHistory, DEFAULT_CARD_NUTRIENTS]);
+        ? setUndoHistory([...undoHistory, preferences.cardNutrients])
+        : setUndoHistory([...undoHistory, DEFAULT_CARD_NUTRIENTS]);
     }
   };
 
@@ -170,24 +173,6 @@ FoodCard.propTypes = {
   onMouseOver: PropTypes.func,
   highlightItem: PropTypes.string,
   classes: PropTypes.object.isRequired,
-  preferences: PropTypes.object,
-  userDetails: PropTypes.object,
-  setUserPreferencesState: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = states => {
-  return {
-    preferences: states.globalState.preferences,
-    userDetails: states.globalState.userDetails,
-  };
-};
-
-const mapDispatchToProps = dispatch => ({
-  setUserPreferencesState: preferences => dispatch(setUserPreferencesAction(preferences)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(FoodCard);
-
-
-
-
+export default FoodCard;

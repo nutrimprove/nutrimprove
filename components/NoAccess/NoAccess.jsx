@@ -2,7 +2,7 @@ import React from 'react';
 import SectionHeader from '../SectionHeader';
 import PropTypes from 'prop-types';
 import { PROJECT_NAME } from '../../helpers/constants';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 const content = {
   title: PROJECT_NAME,
@@ -10,7 +10,9 @@ const content = {
   message: '',
 };
 
-const NoAccess = ({ classes, userDetails }) => {
+const NoAccess = ({ classes }) => {
+  const { userDetails } = useSelector(state => state.globalState);
+
   if (userDetails.email) {
     if (!userDetails.email_verified) {
       content.subtitle = 'Please verify your email account';
@@ -36,16 +38,6 @@ const NoAccess = ({ classes, userDetails }) => {
 
 NoAccess.propTypes = {
   classes: PropTypes.object.isRequired,
-  userDetails: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = (states, ownProps) => {
-  return {
-    userDetails: states.globalState.userDetails,
-  };
-};
-
-export default connect(
-  mapStateToProps,
-  null,
-)(NoAccess);
+export default NoAccess;

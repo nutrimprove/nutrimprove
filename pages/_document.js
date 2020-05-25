@@ -12,7 +12,7 @@ export default class MyDocument extends Document {
         </body>
       </Html>
     );
-  }ß
+  }
 }
 
 MyDocument.getInitialProps = async (ctx) => {
