@@ -1,8 +1,8 @@
-import React from 'react';
-import PropTypes from 'prop-types';
 import TextField from '@material-ui/core/TextField/TextField';
-import LoadingSpinner from '../LoadingSpinner';
 import { Autocomplete, createFilterOptions } from '@material-ui/lab';
+import PropTypes from 'prop-types';
+import React from 'react';
+import LoadingSpinner from '../LoadingSpinner';
 
 const fontSize = 14;
 

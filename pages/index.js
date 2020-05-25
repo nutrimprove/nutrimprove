@@ -1,16 +1,16 @@
-import React from 'react';
-import NoAccess from '../components/NoAccess';
-import MainNav from '../components/MainNav';
+import LoadingPanel from 'components/LoadingPanel';
+import MainNav from 'components/MainNav';
+import NoAccess from 'components/NoAccess';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import React from 'react';
 import { usePromiseTracker } from 'react-promise-tracker';
-import LoadingPanel from '../components/LoadingPanel';
+import { connect } from 'react-redux';
 
 const renderContent = userDetails =>
   userDetails && userDetails.email_verified && userDetails.approved ? (
-    <MainNav />
+    <MainNav/>
   ) : (
-    <NoAccess user={userDetails} />
+    <NoAccess user={userDetails}/>
   );
 
 const Index = ({ userDetails }) => {
@@ -18,7 +18,7 @@ const Index = ({ userDetails }) => {
 
   return (
     <>
-      {promiseInProgress ? <LoadingPanel /> : renderContent(userDetails)}
+      {promiseInProgress ? <LoadingPanel/> : renderContent(userDetails)}
     </>
   );
 };

@@ -1,11 +1,11 @@
+import { getUser } from 'interfaces/api/users';
 import { ROLES } from './constants';
-import { getUser } from '../interfaces/api/users';
 
 const userRoleToString = userRole => {
   return Object.keys(ROLES).find(key => ROLES[key] === userRole);
 };
 
-const setUserState = async ({setUserDetails, setUserPreferences, userInfo}) => {
+const setUserState = async ({ setUserDetails, setUserPreferences, userInfo }) => {
   if (userInfo && userInfo.email) {
     const user = await getUser(userInfo.email);
     if (user) {

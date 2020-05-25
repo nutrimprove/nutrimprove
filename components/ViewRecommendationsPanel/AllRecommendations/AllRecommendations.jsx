@@ -1,6 +1,6 @@
+import SectionHeader from 'components/SectionHeader';
+import { getAllRecommendations } from 'interfaces/api/recommendations';
 import React, { useEffect, useState } from 'react';
-import { getAllRecommendations } from '../../../interfaces/api/recommendations';
-import SectionHeader from '../../SectionHeader';
 import ViewRecommendations from '../ViewRecommendations/ViewRecommendations';
 
 const sectionHeader = {

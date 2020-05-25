@@ -1,7 +1,7 @@
 import { Typography } from '@material-ui/core';
-import MainButton from '../MainButton';
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
+import MainButton from '../MainButton';
 import RemoveIcon from '../RemoveIcon';
 import SearchInputField from '../SearchInputField';
 

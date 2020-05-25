@@ -1,21 +1,17 @@
-import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
-import { deburr, uniqueId } from 'lodash';
-import Downshift from 'downshift';
-import TextField from '@material-ui/core/TextField';
-import Paper from '@material-ui/core/Paper';
-import MenuItem from '@material-ui/core/MenuItem';
-import ClearIcon from '@material-ui/icons/Clear';
+import { IconButton, MenuItem, Paper, TextField, Tooltip } from '@material-ui/core';
 import CheckIcon from '@material-ui/icons/CheckCircle';
+import ClearIcon from '@material-ui/icons/Clear';
 import ErrorIcon from '@material-ui/icons/Error';
-import LoadingSpinner from '../LoadingSpinner';
-import IconButton from '@material-ui/core/IconButton';
+import Downshift from 'downshift';
+import { EDAMAM_DB, INPUT_TRIGGER_TIME } from 'helpers/constants';
+import { fullTrim, lowerCaseCompare, mapSearchResults } from 'helpers/utils';
+import { getSearchedTerms } from 'interfaces/api/edamamFoods';
+import { deburr, uniqueId } from 'lodash';
+import PropTypes from 'prop-types';
+import React, { useEffect, useState } from 'react';
 import { usePromiseTracker } from 'react-promise-tracker';
-import { getSearchedTerms } from '../../interfaces/api/edamamFoods';
-import { EDAMAM_DB, INPUT_TRIGGER_TIME } from '../../helpers/constants';
-import { Tooltip } from '@material-ui/core';
-import { fullTrim, lowerCaseCompare, mapSearchResults } from '../../helpers/utils';
 import { useSelector } from 'react-redux';
+import LoadingSpinner from '../LoadingSpinner';
 
 const renderInput = inputProps => {
   const {

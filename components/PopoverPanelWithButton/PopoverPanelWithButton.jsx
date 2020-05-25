@@ -1,12 +1,8 @@
-import Button from '@material-ui/core/Button';
-import PopupState, { bindPopover, bindTrigger } from 'material-ui-popup-state';
-import Popover from '@material-ui/core/Popover';
-import Box from '@material-ui/core/Box';
+import { Box, Button, IconButton, Popover, Typography } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
-import React from 'react';
+import PopupState, { bindPopover, bindTrigger } from 'material-ui-popup-state';
 import PropTypes from 'prop-types';
-import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
+import React from 'react';
 
 const PopoverPanelWithButton = ({ buttonText, title, buttonEffect, children, classes }) => (
   <PopupState variant="popover" popupId="popover">

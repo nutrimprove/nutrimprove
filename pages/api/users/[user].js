@@ -1,8 +1,5 @@
-import {
-  getUser,
-  saveUser,
-} from '../../../server/users/users';
-import { isValidEmail } from '../../../helpers/userUtils';
+import { isValidEmail } from 'helpers/userUtils';
+import { getUser, saveUser } from 'server/users/users';
 
 const getCollectionResults = async (req, res) => {
   const { user } = req.query;

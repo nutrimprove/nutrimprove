@@ -1,6 +1,6 @@
 import auth0 from 'auth0-js';
-import { AUTH_CONFIG } from './auth0-variables';
 import jwtDecode from 'jwt-decode';
+import { AUTH_CONFIG } from './auth0-variables';
 import extractUser from './extractUser';
 
 const getCallbackUrl = () => {
@@ -17,7 +17,7 @@ const getQueryParams = () => {
     /([^(?|#)=&]+)(=([^&]*))?/g,
     ($0, $1, $2, $3) => {
       params[$1] = $3;
-    }
+    },
   );
   return params;
 };
@@ -63,7 +63,7 @@ class Auth {
         } else if (err) {
           console.log(err);
           alert(
-            `Error: ${err.error}. Check the console for further details.`
+            `Error: ${err.error}. Check the console for further details.`,
           );
           resolve(false);
           window.location.replace('/callback');
@@ -100,7 +100,7 @@ class Auth {
         this.logout();
         console.log(err);
         alert(
-          `Could not get a new token (${err.error}: ${err.error_description}).`
+          `Could not get a new token (${err.error}: ${err.error_description}).`,
         );
       }
     });

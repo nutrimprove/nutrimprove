@@ -1,16 +1,16 @@
-import React from 'react';
+import HelpPage from 'components/HelpPage';
+import NoAccess from 'components/NoAccess';
 import PropTypes from 'prop-types';
+import React from 'react';
 import { connect } from 'react-redux';
-import NoAccess from '../components/NoAccess';
-import HelpPage from '../components/HelpPage';
 
 const Help = ({ userDetails }) => {
   return userDetails &&
-    userDetails.email_verified &&
-    userDetails.approved ? (
-    <HelpPage />
+  userDetails.email_verified &&
+  userDetails.approved ? (
+    <HelpPage/>
   ) : (
-    <NoAccess user={userDetails} />
+    <NoAccess user={userDetails}/>
   );
 };
 
@@ -26,5 +26,5 @@ const mapStateToProps = (states, ownProps) => {
 
 export default connect(
   mapStateToProps,
-  null
+  null,
 )(Help);

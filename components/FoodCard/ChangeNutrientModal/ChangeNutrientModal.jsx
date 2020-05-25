@@ -1,9 +1,9 @@
+import AutoComplete from 'components/AutoComplete';
+import MainButton from 'components/MainButton';
+import ModalPanel from 'components/ModalPanel';
+import { getNutrients } from 'interfaces/api/foods';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
-import AutoComplete from '../../AutoComplete';
-import ModalPanel from '../../ModalPanel';
-import MainButton from '../../MainButton';
-import { getNutrients } from '../../../interfaces/api/foods';
 
 const ChangeNutrientModal = ({ open, onClose, nutrientToChange, onNutrientChange, cardNutrients, classes }) => {
   const [newNutrient, setNewNutrient] = useState();

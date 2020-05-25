@@ -8,6 +8,7 @@ export default {
   button: {
     marginRight: 10,
     marginTop: 10,
+    minWidth: 100,
   },
   control: {
     display: 'contents',

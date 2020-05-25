@@ -48,6 +48,6 @@ const getFoodsByNutrient = ({ nutrient, limit = 100, filters }) => {
     getRequest(`${foodApiEndpoint}/nutrient/${encodeURIComponent(nutrient)}?limit=${limit}${filtersQuery}`),
     'getFoodsByNutrient',
   );
-}
+};
 
-export { getFoodsByCategories, getFoodById, getFoodByName,getAllFoodNames, getFoodsByNutrient, getNutrients };
+export { getFoodsByCategories, getFoodById, getFoodByName, getAllFoodNames, getFoodsByNutrient, getNutrients };

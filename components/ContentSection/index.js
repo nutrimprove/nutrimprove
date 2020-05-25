@@ -1,5 +1,5 @@
 import { withStyles } from '@material-ui/core';
-import styles from './ContentSection.styles';
 import ContentSection from './ContentSection';
+import styles from './ContentSection.styles';
 
 export default withStyles(styles)(ContentSection);

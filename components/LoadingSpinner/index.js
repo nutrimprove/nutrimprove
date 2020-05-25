@@ -1,5 +1,5 @@
 import { withStyles } from '@material-ui/core';
-import styles from './LoadingSpinner.styles';
 import LoadingSpinner from './LoadingSpinner';
+import styles from './LoadingSpinner.styles';
 
 export default withStyles(styles)(LoadingSpinner);

@@ -1,5 +1,5 @@
-import { ActionsTypes } from './actions';
 import { CATEGORIES } from '../../helpers/constants';
+import { ActionsTypes } from './actions';
 
 const userWithAddedPoints = (userDetails, points) => {
   if (points > 0 && userDetails && userDetails.points) {
@@ -24,8 +24,7 @@ export const reducer = (state = {
       ...state,
       preferences: action.preferences,
     };
-  }
-    else if (action.type === ActionsTypes.ADD_USER_POINTS) {
+  } else if (action.type === ActionsTypes.ADD_USER_POINTS) {
     return {
       ...state,
       userDetails: userWithAddedPoints(state.userDetails, action.points),

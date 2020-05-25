@@ -1,7 +1,6 @@
-import React from 'react';
+import { Link, Typography } from '@material-ui/core';
 import PropTypes from 'prop-types';
-import { Typography } from '@material-ui/core';
-import Link from '@material-ui/core/Link';
+import React from 'react';
 
 const BackToMainPageLink = ({ classes }) => {
   return (

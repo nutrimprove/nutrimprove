@@ -1,7 +1,7 @@
-import React from 'react';
-import { usePromiseTracker } from 'react-promise-tracker';
-import Loader from 'react-loader-spinner';
 import PropTypes from 'prop-types';
+import React from 'react';
+import Loader from 'react-loader-spinner';
+import { usePromiseTracker } from 'react-promise-tracker';
 
 const LoadingSpinner = ({
                           classes,

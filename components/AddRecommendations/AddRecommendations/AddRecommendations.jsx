@@ -1,19 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import ActionsPanel from 'components/ActionsPanel';
+import ButtonWithSpinner from 'components/ButtonWithSpinner';
+import CompareModal from 'components/CompareModal';
+import Filters from 'components/Filters';
+import FoodCardWithSearch from 'components/FoodCardWithSearch';
+import SectionHeader from 'components/SectionHeader';
+import addRecommendations from 'helpers/addRecommendations';
+import { parseNutrients } from 'helpers/utils';
 import PropTypes from 'prop-types';
-import FoodCardWithSearch from '../../FoodCardWithSearch';
-import ButtonWithSpinner from '../../ButtonWithSpinner';
-import { parseNutrients } from '../../../helpers/utils';
-import CompareModal from '../../CompareModal';
-import addRecommendations from '../../../helpers/addRecommendations';
-import ActionsPanel from '../../ActionsPanel';
-import SectionHeader from '../../SectionHeader';
-import Filters from '../../Filters';
+import React, { useEffect, useState } from 'react';
 
 const sectionHeader = {
   title: 'Add Recommendations',
   subtitle: 'Choose the foods and the recommendations you would like to provide',
 };
-
 
 const AddRecommendations = ({ classes }) => {
   const [food, setFood] = useState();

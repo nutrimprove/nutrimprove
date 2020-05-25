@@ -21,7 +21,7 @@ const searchTermSchema = new mongoose.Schema(
       },
     ],
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 export default searchTermSchema;

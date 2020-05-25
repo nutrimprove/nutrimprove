@@ -1,11 +1,10 @@
-import React from 'react';
+import { Link, Typography } from '@material-ui/core';
+import { PROJECT_NAME } from 'helpers/constants';
 import PropTypes from 'prop-types';
-import { Typography } from '@material-ui/core';
-import SectionHeader from '../SectionHeader';
-import Link from '@material-ui/core/Link';
-import ContentSection from '../ContentSection';
+import React from 'react';
 import BackToMainPageLink from '../BackToMainPageLink';
-import { PROJECT_NAME } from '../../helpers/constants';
+import ContentSection from '../ContentSection';
+import SectionHeader from '../SectionHeader';
 
 const content = {
   title: `About`,

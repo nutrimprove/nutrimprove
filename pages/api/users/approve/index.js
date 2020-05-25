@@ -1,4 +1,4 @@
-import { setUserApproval } from '../../../../server/users/users';
+import { setUserApproval } from 'server/users/users';
 
 const getCollectionResults = async (req, res) => {
   const { user, approval } = req.body;

@@ -1,8 +1,8 @@
-import connect from '../connect';
+import { calcPoints } from 'helpers/userUtils';
 import { remove } from 'lodash';
-import { calcPoints } from '../../helpers/userUtils';
-import recommendationsSchema from './recommendationsSchema';
+import connect from '../connect';
 import { addUserPoints } from '../users/users';
+import recommendationsSchema from './recommendationsSchema';
 
 const getRecommendationsConnection = () =>
   connect('recommendations', recommendationsSchema, 'recommendations');
@@ -79,7 +79,7 @@ const addRecommendations = async recommendationsObj => {
     .then(async duplicateDocs => {
       if (duplicateDocs.length === 0) {
         const results = await AddRecommendationsConnection.insertMany(
-          recommendations
+          recommendations,
         );
 
         await addPoints(contributor, results.length);
@@ -87,7 +87,7 @@ const addRecommendations = async recommendationsObj => {
       } else {
         // Get recommendations already added by current user (removes from duplicateDocs)
         const duplicates = remove(duplicateDocs, recommendation =>
-          recommendation.contributors.find(({ id }) => id === contributor)
+          recommendation.contributors.find(({ id }) => id === contributor),
         );
 
         let updated;
@@ -101,13 +101,13 @@ const addRecommendations = async recommendationsObj => {
               },
               $inc: { rating: 10 },
             },
-            { multi: true }
+            { multi: true },
           );
         }
 
         if (updated && updated.nModified !== duplicateDocs.length) {
           throw Error(
-            `Number of documents updated: ${updated.nModified}, expected: ${duplicateDocs.length}`
+            `Number of documents updated: ${updated.nModified}, expected: ${duplicateDocs.length}`,
           );
         }
 

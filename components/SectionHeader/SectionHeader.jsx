@@ -1,6 +1,6 @@
-import React from 'react';
-import PropTypes from 'prop-types';
 import { uniqueId } from 'lodash';
+import PropTypes from 'prop-types';
+import React from 'react';
 
 const SectionHeader = ({ content, classes }) => {
   return (

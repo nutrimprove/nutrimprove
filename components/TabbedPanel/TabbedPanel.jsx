@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import { Tab, Tabs } from '@material-ui/core';
+import PropTypes from 'prop-types';
+import React, { useState } from 'react';
 import TabContainer from '../TabContainer';
 
 const TabbedPanel = ({ tabs, classes }) => {

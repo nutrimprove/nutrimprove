@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import { getFoodById } from '../../interfaces/api/foods';
-import { filterFoodNames } from '../../helpers/utils';
-import FoodCard from '../FoodCard';
-import { useSelector } from 'react-redux';
 import { Typography } from '@material-ui/core';
+import { filterFoodNames } from 'helpers/utils';
+import { getFoodById } from 'interfaces/api/foods';
+import PropTypes from 'prop-types';
+import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
+import FoodCard from '../FoodCard';
 import SearchField from '../SearchField';
 
 const FoodCardWithSearch = ({ classes, title, highlightItem, onHover, foodInfo, context }) => {

@@ -1,9 +1,8 @@
-import SearchInputField from '../SearchInputField';
-import ButtonWithSpinner from '../ButtonWithSpinner';
-import React, { useState } from 'react';
+import { FormControl, FormGroup } from '@material-ui/core';
 import PropTypes from 'prop-types';
-import FormControl from '@material-ui/core/FormControl';
-import FormGroup from '@material-ui/core/FormGroup';
+import React, { useState } from 'react';
+import ButtonWithSpinner from '../ButtonWithSpinner';
+import SearchInputField from '../SearchInputField';
 
 const SearchFoodSet = ({ classes, action, context, naked }) => {
   const [food, setFood] = useState(null);

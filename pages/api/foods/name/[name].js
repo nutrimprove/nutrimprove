@@ -1,4 +1,4 @@
-import { getFoodByName } from '../../../../server/foods/foods';
+import { getFoodByName } from 'server/foods/foods';
 
 const getCollectionResults = async (req, res) => {
   const { name } = req.query;

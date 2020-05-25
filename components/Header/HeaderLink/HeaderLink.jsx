@@ -1,6 +1,6 @@
 import { Link, Typography } from '@material-ui/core';
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
 
 const HeaderLink = ({ action, children }) => (
   <Typography variant='button' color='inherit'>

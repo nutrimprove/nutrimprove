@@ -1,11 +1,11 @@
-import React, { useEffect } from 'react';
-import Auth from '../interfaces/auth/Auth';
+import SectionHeader from 'components/SectionHeader';
+import { setUserState } from 'helpers/userUtils';
+import Auth from 'interfaces/auth/Auth';
 import Router from 'next/router';
-import { setUserDetailsAction } from '../store/global/actions';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import SectionHeader from '../components/SectionHeader';
-import { setUserState } from '../helpers/userUtils';
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
+import { setUserDetailsAction } from 'store/global/actions';
 
 const auth = new Auth();
 const content = { title: `Redirection Page!!` };
@@ -20,7 +20,7 @@ const Callback = ({ setUserDetails }) => {
           if (typeof window !== 'undefined') {
             localStorage.setItem(
               'token',
-              JSON.stringify(userDetails.token)
+              JSON.stringify(userDetails.token),
             );
           }
         }
@@ -33,7 +33,7 @@ const Callback = ({ setUserDetails }) => {
 
   return (
     <>
-      <SectionHeader content={content} />
+      <SectionHeader content={content}/>
     </>
   );
 };
