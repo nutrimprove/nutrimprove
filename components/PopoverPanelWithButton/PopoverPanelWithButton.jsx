@@ -12,8 +12,11 @@ const PopoverPanelWithButton = ({ buttonText, title, buttonEffect, children, cla
   <PopupState variant="popover" popupId="popover">
     {(popupState) => (
       <div>
-        <Button variant={buttonEffect ? 'contained' : 'outlined'} color='primary'
-                className={classes.button} {...bindTrigger(popupState)}>
+        <Button variant={buttonEffect ? 'contained' : 'outlined'}
+                color='primary'
+                className={classes.button}
+                {...bindTrigger(popupState)}
+        >
           {buttonText}
         </Button>
         <Popover
