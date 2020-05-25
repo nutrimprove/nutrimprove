@@ -15,4 +15,11 @@ export default {
   column: {
     width: '-webkit-fill-available',
   },
+  container: {
+    display: 'flex',
+  },
+  reset: {
+    height: 40,
+    padding: '10px 20px',
+  },
 };

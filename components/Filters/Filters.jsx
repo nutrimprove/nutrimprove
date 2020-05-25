@@ -10,6 +10,7 @@ import PopoverPanelWithButton from '../PopoverPanelWithButton';
 import FormControl from '@material-ui/core/FormControl';
 import Button from '@material-ui/core/Button';
 import { EDAMAM_DB } from '../../helpers/constants';
+import Link from '@material-ui/core/Link';
 
 const Filters = ({ categories, setCategories, classes }) => {
   if (EDAMAM_DB) return null;
@@ -71,21 +72,24 @@ const Filters = ({ categories, setCategories, classes }) => {
   };
 
   return (
-    <PopoverPanelWithButton buttonText={hasFilters() ? 'Filtered by category' : 'Filter by category'}
-                            buttonEffect={hasFilters()}
-                            title='Select which categories to include in search'>
-      <FormControl classes={{ root: classes.control }} component="fieldset" margin='dense'>
-        {splitList(filters).map(list =>
-          <FormGroup key={uniqueId()} classes={{ root: classes.column }}>
-            {renderFilters(list)}
-          </FormGroup>,
-        )}
-        <div className={classes.filterButtons}>
-          <Button variant='outlined' color='primary' className={classes.button} onClick={setAll}>All</Button>
-          <Button variant='outlined' color='primary' className={classes.button} onClick={setNone}>None</Button>
-        </div>
-      </FormControl>
-    </PopoverPanelWithButton>
+    <div className={classes.container}>
+      <PopoverPanelWithButton buttonText={hasFilters() ? 'Filtered by category' : 'Filter by category'}
+                              buttonEffect={hasFilters()}
+                              title='Select which categories to include in search'>
+        <FormControl classes={{ root: classes.control }} component="fieldset" margin='dense'>
+          {splitList(filters).map(list =>
+            <FormGroup key={uniqueId()} classes={{ root: classes.column }}>
+              {renderFilters(list)}
+            </FormGroup>,
+          )}
+          <div className={classes.filterButtons}>
+            <Button variant='outlined' color='primary' className={classes.button} onClick={setAll}>All</Button>
+            <Button variant='outlined' color='primary' className={classes.button} onClick={setNone}>None</Button>
+          </div>
+        </FormControl>
+      </PopoverPanelWithButton>
+      {hasFilters() && <Link component={'button'} className={classes.reset} onClick={setNone}>Reset Filters</Link>}
+    </div>
   );
 };
 

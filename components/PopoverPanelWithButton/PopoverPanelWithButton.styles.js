@@ -3,6 +3,7 @@ export default {
     marginBottom: 20,
     fontSize: '0.7em',
     height: 40,
+    minWidth: 175,
   },
   closeIcon: {
     float: 'right',
