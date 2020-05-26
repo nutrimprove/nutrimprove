@@ -1,6 +1,6 @@
 import React from 'react';
-import Filters from '../../../components/Filters';
-import { renderWithRedux } from '../../../helpers/testUtils';
+import Filters from 'components/Filters';
+import { renderWithRedux } from 'helpers/testUtils';
 import { screen, fireEvent } from '@testing-library/dom';
 import '@testing-library/jest-dom/extend-expect'
 
