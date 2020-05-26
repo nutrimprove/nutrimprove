@@ -68,7 +68,7 @@ const MainNav = ({ classes }) => {
 
   return (
     <div className={classes.root}>
-      <AppBar position='static' className={classes.tabs}>
+      <AppBar position='static' classes={{ root: classes.menuBar}}>
         {menus.map(menu => (
           <MenuDropdown key={menu.name} name={menu.name} items={menu.options} onClick={handleClick}/>
         ))}
