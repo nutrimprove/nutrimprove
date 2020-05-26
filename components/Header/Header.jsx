@@ -3,37 +3,18 @@ import { EDAMAM_DB } from 'helpers/constants';
 import { getAllFoodNames } from 'interfaces/api/foods';
 import { getUser } from 'interfaces/api/users';
 import Auth from 'interfaces/auth/Auth';
-import { isEmpty } from 'lodash';
 import PropTypes from 'prop-types';
-import React, { useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { getStore } from 'store';
+import React, { useCallback, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { setFoodNamesAction, setUserDetailsAction, setUserPreferencesAction } from 'store/global/actions';
 import HeaderLink from './HeaderLink';
 
 const auth = new Auth();
-const dispatch = (action) => getStore().dispatch(action);
 
-const setUserState = async userInfo => {
-  if (userInfo && userInfo.email) {
-    const user = await getUser(userInfo.email);
-    if (user) {
-      const { role, approved, points, preferences } = user;
-      dispatch(setUserDetailsAction({ ...userInfo, role, approved, points }));
-      dispatch(setUserPreferencesAction(preferences));
-    } else {
-      console.error('User not found!', userInfo.email);
-    }
-  } else {
-    console.error('UserInfo object not valid!', userInfo);
-  }
-};
-
-const processAuth = async () => {
+const userAuthentication = async () => {
   const userInfoFromStorage = auth.extractUserFromToken();
   if (userInfoFromStorage) {
-    await setUserState(userInfoFromStorage);
-    return;
+    return userInfoFromStorage;
   }
 
   try {
@@ -49,7 +30,7 @@ const processAuth = async () => {
         }
       }
     });
-    await setUserState(userInfo.user_details);
+    return userInfo.user_details;
   } catch (e) {
     console.warn(`Not Logged In!`);
   }
@@ -57,13 +38,26 @@ const processAuth = async () => {
 
 const Header = ({ classes }) => {
   const { userDetails } = useSelector(state => state.globalState);
+  const dispatch = useDispatch();
+  const setFoodNames = useCallback(foodNames => dispatch(setFoodNamesAction(foodNames)), []);
 
   useEffect(() => {
     (async () => {
-      await processAuth();
-      if (!EDAMAM_DB && !isEmpty(userDetails)) {
+      const userInfo = await userAuthentication();
+      if (!userInfo) return;
+
+      const user = await getUser(userInfo.email);
+      if (user) {
+        const { role, approved, points, preferences } = user;
+        dispatch(setUserDetailsAction({ ...userInfo, role, approved, points }));
+        dispatch(setUserPreferencesAction(preferences));
+      } else {
+        console.error('User not found!', userInfo.email);
+      }
+
+      if (!EDAMAM_DB) {
         const foodNames = await getAllFoodNames();
-        dispatch(setFoodNamesAction(foodNames));
+        setFoodNames(foodNames);
       }
     })();
   }, []);
