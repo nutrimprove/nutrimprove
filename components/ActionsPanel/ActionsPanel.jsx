@@ -19,27 +19,27 @@ const ActionsPanel = ({ food, recommendedFood, status, classes, children }) => {
         </Typography>
       </ActionsContainer>
     );
-  } else {
-    return (
-      <ScrollIntoView>
-        <ActionsContainer>
-          <Typography className={classes.recommendation}>
-            You consider &apos;<span className={classes.recommendedFood}>{recommendedFood.foodName}</span>&apos;
-            a healthier alternative to &apos;<span className={classes.food}>{food.foodName}</span>&apos;
-          </Typography>
-          {children}
-          <div className={classes.status}>
-            {messages && messages.map(line =>
-              <Typography
-                className={clsx(status.type === 'success' ? classes.success : classes.fail)}
-                key={uniqueId()}>{line}
-              </Typography>,
-            )}
-          </div>
-        </ActionsContainer>
-      </ScrollIntoView>
-    );
   }
+
+  return (
+    <ScrollIntoView>
+      <ActionsContainer>
+        <Typography className={classes.recommendation}>
+          You consider &apos;<span className={classes.recommendedFood}>{recommendedFood.foodName}</span>&apos;
+          a healthier alternative to &apos;<span className={classes.food}>{food.foodName}</span>&apos;
+        </Typography>
+        {children}
+        <div className={classes.status}>
+          {messages && messages.map(line =>
+            <Typography
+              className={clsx(status.type === 'success' ? classes.success : classes.fail)}
+              key={uniqueId()}>{line}
+            </Typography>,
+          )}
+        </div>
+      </ActionsContainer>
+    </ScrollIntoView>
+  );
 };
 
 ActionsPanel.propTypes = {
