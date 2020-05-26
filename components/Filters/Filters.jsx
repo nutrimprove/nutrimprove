@@ -17,18 +17,12 @@ const Filters = ({ classes }) => {
 
   useEffect(() => {
     const selectedFilters = filters.filter(filter => filter.selected).map(category => category.group);
-
-    setCategories({
-      all: filters,
-      selectedGroups: selectedFilters,
-    });
+    setCategories({ all: filters, selectedGroups: selectedFilters });
   }, [filters]);
 
   const updateFilters = (event) => {
     setFilters(filters.map(filter =>
-      filter.group === event.target.name
-        ? { ...filter, selected: event.target.checked }
-        : filter,
+      filter.group === event.target.name ? { ...filter, selected: event.target.checked } : filter,
     ));
   };
 
@@ -42,8 +36,7 @@ const Filters = ({ classes }) => {
 
   const splitList = () => {
     const list = [...filters];
-    const half = Math.ceil(list.length / 2);
-    const firstHalf = list.splice(0, half);
+    const firstHalf = list.splice(0, Math.ceil(list.length / 2));
     return [[...firstHalf], [...list]];
   };
 
@@ -74,7 +67,9 @@ const Filters = ({ classes }) => {
     <div className={classes.container}>
       <PopoverPanelWithButton buttonText={hasFilters() ? 'Filtered by category' : 'Filter by category'}
                               buttonEffect={hasFilters()}
-                              title='Select which categories to include in search'>
+                              title='Select which categories to include in search'
+                              data-testid='filtersButton'
+      >
         <FormControl classes={{ root: classes.control }} component="fieldset" margin='dense'>
           {splitList(filters).map(list =>
             <FormGroup key={uniqueId()} classes={{ root: classes.column }}>
