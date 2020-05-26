@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import RemoveIcon from '../RemoveIcon';
 import SearchInputField from '../SearchInputField';
 
-const maxFields = 4;
+const maxFields = 10;
 
 const RepeatableFoodsPanel = ({ classes, title, addEmptyField, foods = [], setFood, removeField, isValid }) => {
   const addButtonDisabled = foods.length >= maxFields;
