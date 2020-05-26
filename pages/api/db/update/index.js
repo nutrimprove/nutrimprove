@@ -1,4 +1,4 @@
-import { updateDB } from '../../../../server/db/db';
+import { updateDB } from 'server/db/db';
 
 const getCollectionResults = async (req, res) => {
   if (req.method !== 'POST') return null;

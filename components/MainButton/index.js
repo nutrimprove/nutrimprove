@@ -1,5 +1,5 @@
 import { withStyles } from '@material-ui/core';
-import styles from './MainButton.styles';
 import MainButton from './MainButton';
+import styles from './MainButton.styles';
 
 export default withStyles(styles)(MainButton);

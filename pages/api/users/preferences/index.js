@@ -1,4 +1,4 @@
-import { savePreferences } from '../../../../server/users/users';
+import { savePreferences } from 'server/users/users';
 
 const getCollectionResults = async (req, res) => {
   const { user, preferences } = req.body;

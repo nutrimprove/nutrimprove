@@ -1,4 +1,4 @@
-import { getUserRecommendations } from '../../../../server/recommendations/recommendations';
+import { getUserRecommendations } from 'server/recommendations/recommendations';
 
 const getCollectionResults = async (req, res) => {
   const { user } = req.query;

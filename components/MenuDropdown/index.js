@@ -1,5 +1,5 @@
 import { withStyles } from '@material-ui/core';
-import styles from './MenuDropdown.styles';
 import MenuDropdown from './MenuDropdown';
+import styles from './MenuDropdown.styles';
 
 export default withStyles(styles)(MenuDropdown);

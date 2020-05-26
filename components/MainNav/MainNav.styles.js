@@ -5,12 +5,12 @@ export default {
     flexGrow: 1,
     minWidth: MIN_WIDTH,
   },
-  tabs: {
+  menuBar: {
     backgroundColor: '#3f51b5',
     color: 'white',
-    display: 'block',
     height: 48,
     position: 'relative',
+    display: 'block',
   },
   button: {
     fontSize: 14,

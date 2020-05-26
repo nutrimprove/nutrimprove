@@ -1,5 +1,5 @@
 import { withStyles } from '@material-ui/core';
-import styles from './HelpPage.styles';
 import HelpPage from './HelpPage';
+import styles from './HelpPage.styles';
 
 export default withStyles(styles)(HelpPage);

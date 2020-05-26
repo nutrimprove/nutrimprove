@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import SectionHeader from '../SectionHeader';
+import { ROLES } from 'helpers/constants';
+import { isAdmin, isOwner, userRoleToString } from 'helpers/userUtils';
+import { updateDB } from 'interfaces/api/db';
 import {
   approveUser,
   getAllUsers,
@@ -7,16 +8,15 @@ import {
   getNotApprovedUsers,
   revokeUser,
   updateAllUsersPoints,
-} from '../../interfaces/api/users';
-import ResultsTable from '../ResultsTable';
-import ButtonWithSpinner from '../ButtonWithSpinner';
-import { useSelector } from 'react-redux';
+} from 'interfaces/api/users';
 import PropTypes from 'prop-types';
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import ButtonWithSpinner from '../ButtonWithSpinner';
 import DeleteUserButton from '../DeleteUserButton';
-import { isAdmin, isOwner, userRoleToString } from '../../helpers/userUtils';
-import { ROLES } from '../../helpers/constants';
-import { updateDB } from '../../interfaces/api/db';
 import LoadingPanel from '../LoadingPanel';
+import ResultsTable from '../ResultsTable';
+import SectionHeader from '../SectionHeader';
 
 const enableDB = process.env.ENABLE_UPDATE_DB;
 

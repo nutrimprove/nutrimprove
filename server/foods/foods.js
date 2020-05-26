@@ -1,6 +1,6 @@
-import connect from '../connect';
+import { getFoodGroups } from 'helpers/utils';
 import { Schema } from 'mongoose';
-import { getFoodGroups } from '../../helpers/utils';
+import connect from '../connect';
 
 const getFoodsConnection = () => connect('foods', new Schema(), 'cofid');
 
@@ -65,7 +65,7 @@ const getFoodsByNutrient = async (nutrient, limit, filters) => {
   const numberOfRecords = limit && Number(limit) ? Number(limit) : 100;
   const FoodsConnection = await getFoodsConnection();
   const query = {};
-  if(filters && filters.length > 0) {
+  if (filters && filters.length > 0) {
     const foodGroups = getFoodGroups(filters.split(','));
     query.group = { $in: foodGroups };
   }

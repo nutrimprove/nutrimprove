@@ -19,7 +19,7 @@ const editFoodItemArray = (foods, foodToChange) => {
 
 export const reducer = (
   state = { recommendedFoods: [], foods: [] },
-  action
+  action,
 ) => {
   if (action.type === ActionsTypes.ADD_FOOD) {
     return {
@@ -40,7 +40,7 @@ export const reducer = (
   } else if (action.type === ActionsTypes.EDIT_RECOMMENDED_FOOD) {
     const recommendedFoods = editFoodItemArray(
       state.recommendedFoods,
-      action.food
+      action.food,
     );
     return {
       ...state,
@@ -55,7 +55,7 @@ export const reducer = (
     return {
       ...state,
       recommendedFoods: state.recommendedFoods.filter(
-        food => food.key !== action.food.key
+        food => food.key !== action.food.key,
       ),
     };
   } else if (

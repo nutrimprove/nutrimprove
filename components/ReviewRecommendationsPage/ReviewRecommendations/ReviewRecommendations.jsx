@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
-import CompareModal from '../../CompareModal';
-import FoodCard from '../../FoodCard';
-import { parseNutrients } from '../../../helpers/utils';
-import { applyRecommendationRating, getAllRecommendations } from '../../../interfaces/api/recommendations';
-import { getFoodById } from '../../../interfaces/api/foods';
 import { Link, Typography } from '@material-ui/core';
-import ButtonWithSpinner from '../../ButtonWithSpinner';
-import ActionsContainer from '../../ActionsContainer';
 import clsx from 'clsx';
+import ActionsContainer from 'components/ActionsContainer';
+import ButtonWithSpinner from 'components/ButtonWithSpinner';
+import CompareModal from 'components/CompareModal';
+import FoodCard from 'components/FoodCard';
+import LoadingPanel from 'components/LoadingPanel';
+import { parseNutrients } from 'helpers/utils';
+import { getFoodById } from 'interfaces/api/foods';
+import { applyRecommendationRating, getAllRecommendations } from 'interfaces/api/recommendations';
+import PropTypes from 'prop-types';
+import React, { useEffect, useState } from 'react';
 import { usePromiseTracker } from 'react-promise-tracker';
-import LoadingPanel from '../../LoadingPanel';
 
 const getRandom = items => {
   return items[Math.floor(Math.random() * items.length)];
@@ -159,7 +159,7 @@ const ReviewRecommendations = ({ classes }) => {
         </>
       )}
       {!recommendation && !loading && <Typography className={classes.title}>No more recommendations!!</Typography>}
-      {loading && <LoadingPanel />}
+      {loading && <LoadingPanel/>}
     </>
   );
 };

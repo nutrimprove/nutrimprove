@@ -1,7 +1,4 @@
-import {
-  getApprovedUsers,
-  getNotApprovedUsers,
-} from '../../../../server/users/users';
+import { getApprovedUsers, getNotApprovedUsers } from 'server/users/users';
 
 const getCollectionResults = async (req, res) => {
   const { approved } = req.query;

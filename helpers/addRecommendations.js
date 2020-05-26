@@ -1,7 +1,7 @@
+import { postRecommendations } from 'interfaces/api/recommendations';
+import { getStore } from 'store';
+import { addUserPointsAction } from 'store/global/actions';
 import { calcPoints } from './userUtils';
-import { getStore } from '../store';
-import { postRecommendations } from '../interfaces/api/recommendations';
-import { addUserPointsAction } from '../store/global/actions';
 
 const dispatch = (action) => getStore().dispatch(action);
 
@@ -48,7 +48,7 @@ const addRecommendations = async ({ foods, recommendations, onSuccess, onFailure
         status = [
           'Recommendation already submitted by you!',
           'Please choose another combination before submitting again',
-          ];
+        ];
       } else {
         const duplicatesList = result.duplicates.map(dup => `${dup.food.name} -> ${dup.recommendation.name}`);
         status = [

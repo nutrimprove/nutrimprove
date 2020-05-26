@@ -1,4 +1,4 @@
-import { getNutrients } from '../../../../server/foods/foods';
+import { getNutrients } from 'server/foods/foods';
 
 const getCollectionResults = async (req, res) => {
   const { nutrientGroups } = req.query;

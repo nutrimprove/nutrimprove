@@ -1,6 +1,6 @@
+import { getFoodById } from 'interfaces/api/foods';
 import { uniqueId } from 'lodash';
 import { DEFAULT_CARD_NUTRIENTS } from './constants';
-import { getFoodById } from '../interfaces/api/foods';
 
 const getTime = () => {
   const today = new Date();

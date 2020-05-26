@@ -1,9 +1,9 @@
+import ResultsTable from 'components/ResultsTable';
+import SearchField from 'components/SearchField';
+import { mapSearchResults, parseNutrients } from 'helpers/utils';
+import { getSearchedTerms } from 'interfaces/api/edamamFoods';
+import { getNutritionData } from 'interfaces/api/nutrition';
 import React, { useEffect, useState } from 'react';
-import { getNutritionData } from '../../../interfaces/api/nutrition';
-import { getSearchedTerms } from '../../../interfaces/api/edamamFoods';
-import { mapSearchResults, parseNutrients } from '../../../helpers/utils';
-import ResultsTable from '../../ResultsTable';
-import SearchField from '../../SearchField';
 
 const mergeEdamamResults = (nutrients, dailyValues) => {
   const combined = [...nutrients];

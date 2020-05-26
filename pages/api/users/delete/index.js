@@ -1,4 +1,4 @@
-import { deleteUser } from '../../../../server/users/users';
+import { deleteUser } from 'server/users/users';
 
 const getCollectionResults = async (req, res) => {
   const { user } = req.body;

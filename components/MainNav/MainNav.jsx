@@ -1,18 +1,17 @@
-import React, { useState } from 'react';
+import { AppBar, Button } from '@material-ui/core';
+import { isAdmin } from 'helpers/userUtils';
 import PropTypes from 'prop-types';
-import AppBar from '@material-ui/core/AppBar/index';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { isAdmin } from '../../helpers/userUtils';
-import MenuDropdown from '../MenuDropdown';
-import Button from '@material-ui/core/Button';
-import ReviewRecommendationsPage from '../ReviewRecommendationsPage';
+import AddBulkRecommendations from '../AddRecommendations/AddBulkRecommendations';
+import AddRecommendations from '../AddRecommendations/AddRecommendations';
 import AdminPanel from '../AdminPanel';
-import YourRecommendations from '../ViewRecommendations/YourRecommendations';
-import AllRecommendations from '../ViewRecommendations/AllRecommendations';
+import MenuDropdown from '../MenuDropdown';
+import ReviewRecommendationsPage from '../ReviewRecommendationsPage';
 import SearchFoodByName from '../SearchFood/SearchFoodByName';
 import SearchFoodByNutrient from '../SearchFood/SearchFoodByNutrient';
-import AddRecommendations from '../AddRecommendations/AddRecommendations';
-import AddBulkRecommendations from '../AddRecommendations/AddBulkRecommendations';
+import AllRecommendations from '../ViewRecommendationsPanel/AllRecommendations';
+import YourRecommendations from '../ViewRecommendationsPanel/YourRecommendations';
 
 const menus = [
   {
@@ -60,7 +59,7 @@ const renderComponent = index => {
 };
 
 const MainNav = ({ classes }) => {
-  const userDetails = useSelector(({globalState}) => globalState.userDetails);
+  const userDetails = useSelector(({ globalState }) => globalState.userDetails);
   const [page, setPage] = useState(0);
 
   const handleClick = item => {
@@ -69,7 +68,7 @@ const MainNav = ({ classes }) => {
 
   return (
     <div className={classes.root}>
-      <AppBar position='static' className={classes.tabs}>
+      <AppBar position='static' classes={{ root: classes.menuBar}}>
         {menus.map(menu => (
           <MenuDropdown key={menu.name} name={menu.name} items={menu.options} onClick={handleClick}/>
         ))}

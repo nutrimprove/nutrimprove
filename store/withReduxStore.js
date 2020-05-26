@@ -44,7 +44,7 @@ export default App => {
     }
 
     render() {
-      return <App {...this.props} store={this.store} />;
+      return <App {...this.props} store={this.store}/>;
     }
   };
 };

@@ -1,5 +1,5 @@
 import { withStyles } from '@material-ui/core';
-import styles from './SearchEdamamFoodByName.styles';
 import SearchEdamamFoodByName from './SearchEdamamFoodByName';
+import styles from './SearchEdamamFoodByName.styles';
 
 export default withStyles(styles)(SearchEdamamFoodByName);

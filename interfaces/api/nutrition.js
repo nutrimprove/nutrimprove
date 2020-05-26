@@ -1,4 +1,4 @@
-import { EDAMAM_DB } from '../../helpers/constants';
+import { EDAMAM_DB } from 'helpers/constants';
 import { getNutritionalData } from './edamamFoods';
 import { getFoodById } from './foods';
 

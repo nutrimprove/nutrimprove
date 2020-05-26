@@ -1,11 +1,11 @@
 import { Typography } from '@material-ui/core';
-import MainButton from '../MainButton';
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
+import MainButton from '../MainButton';
 import RemoveIcon from '../RemoveIcon';
 import SearchInputField from '../SearchInputField';
 
-const maxFields = 4;
+const maxFields = 10;
 
 const RepeatableFoodsPanel = ({ classes, title, addEmptyField, foods = [], setFood, removeField, isValid }) => {
   const addButtonDisabled = foods.length >= maxFields;

@@ -1,5 +1,5 @@
-import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
+import React, { useEffect, useRef } from 'react';
 
 const ScrollIntoView = ({ position = 'start', children, ...props }) => {
   const ref = useRef();

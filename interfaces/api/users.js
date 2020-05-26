@@ -52,7 +52,7 @@ const updateAllUsersPoints = () =>
   );
 
 const savePreferences = (user, preferences) =>
-    postRequest(`${usersEndpoint}/preferences`, { user, preferences });
+  postRequest(`${usersEndpoint}/preferences`, { user, preferences });
 
 export {
   getUser,

@@ -1,13 +1,13 @@
-import React, { useCallback, useEffect } from 'react';
-import PropTypes from 'prop-types';
 import { AppBar, Link, Toolbar, Typography } from '@material-ui/core';
-import Auth from '../../interfaces/auth/Auth';
-import { setFoodNamesAction, setUserDetailsAction, setUserPreferencesAction } from '../../store/global/actions';
+import { EDAMAM_DB } from 'helpers/constants';
+import { setUserState } from 'helpers/userUtils';
+import { getAllFoodNames } from 'interfaces/api/foods';
+import Auth from 'interfaces/auth/Auth';
+import PropTypes from 'prop-types';
+import React, { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { setFoodNamesAction, setUserDetailsAction, setUserPreferencesAction } from 'store/global/actions';
 import HeaderLink from './HeaderLink';
-import { setUserState } from '../../helpers/userUtils';
-import { EDAMAM_DB } from '../../helpers/constants';
-import { getAllFoodNames } from '../../interfaces/api/foods';
 
 const auth = new Auth();
 

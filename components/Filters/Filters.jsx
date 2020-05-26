@@ -1,16 +1,11 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import { Button, Checkbox, FormControl, FormControlLabel, FormGroup, Link } from '@material-ui/core';
+import PopoverPanelWithButton from 'components/PopoverPanelWithButton';
+import { EDAMAM_DB } from 'helpers/constants';
 import { uniqueId } from 'lodash/util';
-import FormGroup from '@material-ui/core/FormGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
 import PropTypes from 'prop-types';
-import { setCategoriesAction } from '../../store/global/actions';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import PopoverPanelWithButton from '../PopoverPanelWithButton';
-import FormControl from '@material-ui/core/FormControl';
-import Button from '@material-ui/core/Button';
-import { EDAMAM_DB } from '../../helpers/constants';
-import Link from '@material-ui/core/Link';
+import { setCategoriesAction } from 'store/global/actions';
 
 const Filters = ({ classes }) => {
   if (EDAMAM_DB) return null;
