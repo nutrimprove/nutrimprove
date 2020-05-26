@@ -1,8 +1,8 @@
-import React from 'react';
 import PropTypes from 'prop-types';
-import ResultsTable from '../ResultsTable';
-import ModalPanel from '../ModalPanel';
+import React from 'react';
 import LoadingPanel from '../LoadingPanel';
+import ModalPanel from '../ModalPanel';
+import ResultsTable from '../ResultsTable';
 
 const CompareModal = ({
                         dataSet,
@@ -28,7 +28,7 @@ const CompareModal = ({
   return (
     <ModalPanel open={open} onClose={onClose} title={title} subtitle={subtitle}>
       <div className={classes.compareTables}>
-        {mergedData.length > 0 ? <ResultsTable data={mergedData}/> : <LoadingPanel />}
+        {mergedData.length > 0 ? <ResultsTable data={mergedData}/> : <LoadingPanel/>}
       </div>
     </ModalPanel>
   );

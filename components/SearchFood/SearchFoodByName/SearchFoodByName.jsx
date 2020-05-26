@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
-import { getNutritionData } from '../../../interfaces/api/nutrition';
+import Filters from 'components/Filters';
+import ResultsTable from 'components/ResultsTable';
+import SearchField from 'components/SearchField';
+import SectionHeader from 'components/SectionHeader';
+import { filterFoodNames, parseNutrients } from 'helpers/utils';
+import { getNutritionData } from 'interfaces/api/nutrition';
 import PropTypes from 'prop-types';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { filterFoodNames, parseNutrients } from '../../../helpers/utils';
-import ResultsTable from '../../ResultsTable';
-import SearchField from '../../SearchField';
-import SectionHeader from '../../SectionHeader';
-import Filters from '../../Filters';
 
 const sectionHeader = {
   title: 'Search Food by Name',

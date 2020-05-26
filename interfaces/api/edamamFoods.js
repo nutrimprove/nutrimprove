@@ -10,14 +10,14 @@ const edamamApiAuthParams = `app_key=8a2617ec655417bd43fd2b3df4b85a30&app_id=652
 const getSearchedTerms = (searchTerm, context = 'getSearchTerms') =>
   trackPromise(
     getRequest(`${searchTermsEndpoint}/${encodeURIComponent(searchTerm)}`),
-    context
+    context,
   );
 
 const fetchEdamamFoods = name =>
   getRequest(
     `${edamamFoodApiEndpoint}?ingr=${encodeURIComponent(
-      name
-    )}&${edamamApiAuthParams}&category=${edamamCategory}`
+      name,
+    )}&${edamamApiAuthParams}&category=${edamamCategory}`,
   ).then(res => res.hints);
 
 const getNutritionalData = foodId =>
@@ -32,7 +32,7 @@ const getNutritionalData = foodId =>
         },
       ],
     }),
-    'getFoodData'
+    'getFoodData',
   );
 
 export { getSearchedTerms, fetchEdamamFoods, getNutritionalData };

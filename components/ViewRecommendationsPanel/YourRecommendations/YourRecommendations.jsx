@@ -1,8 +1,8 @@
+import SectionHeader from 'components/SectionHeader';
+import { getUserRecommendations } from 'interfaces/api/recommendations';
 import React, { useEffect, useState } from 'react';
-import { getUserRecommendations } from '../../../interfaces/api/recommendations';
-import SectionHeader from '../../SectionHeader';
-import ViewRecommendations from '../ViewRecommendations';
 import { useSelector } from 'react-redux';
+import ViewRecommendations from '../ViewRecommendations';
 
 const sectionHeader = {
   title: 'Your Recommendations',

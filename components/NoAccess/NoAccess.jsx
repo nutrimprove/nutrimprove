@@ -1,8 +1,8 @@
-import React from 'react';
-import SectionHeader from '../SectionHeader';
+import { PROJECT_NAME } from 'helpers/constants';
 import PropTypes from 'prop-types';
-import { PROJECT_NAME } from '../../helpers/constants';
+import React from 'react';
 import { useSelector } from 'react-redux';
+import SectionHeader from '../SectionHeader';
 
 const content = {
   title: PROJECT_NAME,

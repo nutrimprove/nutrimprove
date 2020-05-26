@@ -1,6 +1,6 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import LoadingSpinner from '../LoadingSpinner';
-import PropTypes from 'prop-types';
 
 const LoadingPanel = ({ classes }) => (
   <div className={classes.panel}>

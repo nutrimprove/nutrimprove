@@ -1,10 +1,10 @@
 import Typography from '@material-ui/core/Typography';
-import React from 'react';
-import PropTypes from 'prop-types';
-import ScrollIntoView from '../ScrollIntoView';
-import { uniqueId } from 'lodash/util';
 import clsx from 'clsx';
+import { uniqueId } from 'lodash/util';
+import PropTypes from 'prop-types';
+import React from 'react';
 import ActionsContainer from '../ActionsContainer';
+import ScrollIntoView from '../ScrollIntoView';
 
 const ActionsPanel = ({ food, recommendedFood, status, classes, children }) => {
   if (!food || !recommendedFood) return null;

@@ -1,5 +1,5 @@
 import { withStyles } from '@material-ui/core';
-import styles from './ActionsContainer.styles';
 import ActionsContainer from './ActionsContainer';
+import styles from './ActionsContainer.styles';
 
 export default withStyles(styles)(ActionsContainer);

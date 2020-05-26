@@ -1,7 +1,7 @@
+import { calcPoints } from 'helpers/userUtils';
 import connect from '../connect';
-import usersSchema from './usersSchema';
-import { calcPoints } from '../../helpers/userUtils';
 import { getAllRecommendations } from '../recommendations/recommendations';
+import usersSchema from './usersSchema';
 
 const getUserConnection = () => connect('users', usersSchema, 'users');
 

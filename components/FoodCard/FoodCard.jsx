@@ -1,20 +1,19 @@
-import { Button, Card, CardActions, CardContent, List, ListItem, Typography } from '@material-ui/core';
+import { Button, Card, CardActions, CardContent, Link, List, ListItem, Typography } from '@material-ui/core';
+import clsx from 'clsx';
+import { DEFAULT_CARD_NUTRIENTS } from 'helpers/constants';
+import { getCardNutrients, parseNutrients } from 'helpers/utils';
+import { savePreferences } from 'interfaces/api/users';
+import { isEqual } from 'lodash';
+import { uniqueId } from 'lodash/util';
 import PropTypes from 'prop-types';
 import React, { useCallback, useEffect, useState } from 'react';
-import clsx from 'clsx';
-import { uniqueId } from 'lodash/util';
-import ScrollIntoView from '../ScrollIntoView';
-import { getCardNutrients, parseNutrients } from '../../helpers/utils';
 import { useDispatch, useSelector } from 'react-redux';
-import ResultsTable from '../ResultsTable';
+import { setUserPreferencesAction } from 'store/global/actions';
 import LoadingPanel from '../LoadingPanel';
 import ModalPanel from '../ModalPanel';
+import ResultsTable from '../ResultsTable';
+import ScrollIntoView from '../ScrollIntoView';
 import ChangeNutrientModal from './ChangeNutrientModal';
-import { setUserPreferencesAction } from '../../store/global/actions';
-import { DEFAULT_CARD_NUTRIENTS } from '../../helpers/constants';
-import { savePreferences } from '../../interfaces/api/users';
-import Link from '@material-ui/core/Link';
-import { isEqual } from 'lodash';
 
 const FoodCard = ({ food, onMouseOver, highlightItem, classes }) => {
   const { preferences, userDetails } = useSelector(state => state.globalState);

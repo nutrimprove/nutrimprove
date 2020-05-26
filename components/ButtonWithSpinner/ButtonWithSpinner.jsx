@@ -1,19 +1,19 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
 import LoadingSpinner from '../LoadingSpinner';
 import MainButton from '../MainButton';
 
 const ButtonWithSpinner = ({
-  action,
-  disabled,
-  context,
-  colour,
-  children,
-  className,
-}) => (
+                             action,
+                             disabled,
+                             context,
+                             colour,
+                             children,
+                             className,
+                           }) => (
   <MainButton action={action} disabled={disabled} colour={colour} className={className}>
     {children}
-    <LoadingSpinner context={context} colour='white' />
+    <LoadingSpinner context={context} colour='white'/>
   </MainButton>
 );
 

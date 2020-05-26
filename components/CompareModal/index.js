@@ -1,5 +1,5 @@
 import { withStyles } from '@material-ui/core';
-import styles from './CompareModal.styles';
 import CompareModal from './CompareModal';
+import styles from './CompareModal.styles';
 
 export default withStyles(styles)(CompareModal);

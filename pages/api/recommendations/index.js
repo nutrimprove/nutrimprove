@@ -1,4 +1,4 @@
-import { addRecommendations } from '../../../server/recommendations/recommendations';
+import { addRecommendations } from 'server/recommendations/recommendations';
 
 const getCollectionResults = async (req, res) => {
   if (req.method !== 'POST') return null;

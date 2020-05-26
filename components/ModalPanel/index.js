@@ -1,5 +1,5 @@
 import { withStyles } from '@material-ui/core';
-import styles from './ModalPanel.styles';
 import ModalPanel from './ModalPanel';
+import styles from './ModalPanel.styles';
 
 export default withStyles(styles)(ModalPanel);

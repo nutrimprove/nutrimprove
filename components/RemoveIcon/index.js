@@ -1,5 +1,5 @@
 import { withStyles } from '@material-ui/core';
-import styles from './RemoveIcon.styles';
 import RemoveIcon from './RemoveIcon';
+import styles from './RemoveIcon.styles';
 
 export default withStyles(styles)(RemoveIcon);

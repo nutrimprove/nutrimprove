@@ -1,5 +1,5 @@
 import { withStyles } from '@material-ui/core';
-import styles from './AddRecommendations.styles';
 import AddRecommendations from './AddRecommendations';
+import styles from './AddRecommendations.styles';
 
 export default withStyles(styles)(AddRecommendations);

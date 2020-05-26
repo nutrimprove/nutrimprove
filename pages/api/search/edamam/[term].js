@@ -1,5 +1,5 @@
-import { addSearchTerm, getSearchTerm } from '../../../../server/search/search';
-import { fetchEdamamFoods } from '../../../../interfaces/api/edamamFoods';
+import { fetchEdamamFoods } from 'interfaces/api/edamamFoods';
+import { addSearchTerm, getSearchTerm } from 'server/search/search';
 
 const formatSearchTerm = (searchTerm, foods) => {
   const searchTermObj = {

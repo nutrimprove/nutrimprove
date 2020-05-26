@@ -5,7 +5,7 @@ const getRequest = endpoint =>
     .get(endpoint)
     .then(res => res.data)
     .catch(error =>
-      console.error(`ERROR connecting to '${endpoint}': ${error}`)
+      console.error(`ERROR connecting to '${endpoint}': ${error}`),
     );
 
 const postRequest = (endpoint, payload) =>
@@ -13,7 +13,7 @@ const postRequest = (endpoint, payload) =>
     .post(endpoint, payload)
     .then(res => res.data)
     .catch(error =>
-      console.error(`ERROR connecting to '${endpoint}': ${error}`)
+      console.error(`ERROR connecting to '${endpoint}': ${error}`),
     );
 
 export { getRequest, postRequest };

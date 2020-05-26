@@ -1,12 +1,12 @@
+import Filters from 'components/Filters';
+import LoadingPanel from 'components/LoadingPanel';
+import ModalPanel from 'components/ModalPanel';
+import ResultsTable from 'components/ResultsTable';
+import SearchField from 'components/SearchField';
+import SectionHeader from 'components/SectionHeader';
+import { parseNutrients } from 'helpers/utils';
+import { getFoodByName, getFoodsByNutrient, getNutrients } from 'interfaces/api/foods';
 import React, { useEffect, useState } from 'react';
-import { getFoodByName, getFoodsByNutrient, getNutrients } from '../../../interfaces/api/foods';
-import { parseNutrients } from '../../../helpers/utils';
-import ResultsTable from '../../ResultsTable';
-import ModalPanel from '../../ModalPanel';
-import LoadingPanel from '../../LoadingPanel';
-import SearchField from '../../SearchField';
-import SectionHeader from '../../SectionHeader';
-import Filters from '../../Filters';
 import { useSelector } from 'react-redux';
 
 const sectionHeader = {

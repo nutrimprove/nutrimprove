@@ -1,14 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react';
-import Button from '@material-ui/core/Button';
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import Grow from '@material-ui/core/Grow';
-import Paper from '@material-ui/core/Paper';
-import Popper from '@material-ui/core/Popper';
-import MenuItem from '@material-ui/core/MenuItem';
-import MenuList from '@material-ui/core/MenuList';
-import PropTypes from 'prop-types';
+import { Button, ClickAwayListener, Grow, MenuItem, MenuList, Paper, Popper } from '@material-ui/core';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
+import PropTypes from 'prop-types';
+import React, { useEffect, useRef, useState } from 'react';
 
 const MenuDropdown = ({ name, items, onClick, classes }) => {
   const [open, setOpen] = useState(false);
@@ -62,7 +56,7 @@ const MenuDropdown = ({ name, items, onClick, classes }) => {
         className={classes.name}
       >
         {name}
-        <span className={classes.icon}>{open ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />}</span>
+        <span className={classes.icon}>{open ? <ArrowDropUpIcon/> : <ArrowDropDownIcon/>}</span>
       </Button>
       {items && items.length > 0 && <Popper style={{ minWidth: getWidth() }}
                                             open={open}
@@ -82,18 +76,19 @@ const MenuDropdown = ({ name, items, onClick, classes }) => {
                 <MenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
                   {items && items.map((item, index) => {
                     if (item && item.divider) {
-                      return <hr key={index} className={classes.divider}/>
+                      return <hr key={index} className={classes.divider}/>;
                     } else {
-                    return (
-                      <MenuItem key={item.label}
-                                onClick={() => handleClick(item)}
-                                button={true}
-                                className={classes.link}
-                      >
-                        {item.label}
-                      </MenuItem>
-                    );
-                  }})}
+                      return (
+                        <MenuItem key={item.label}
+                                  onClick={() => handleClick(item)}
+                                  button={true}
+                                  className={classes.link}
+                        >
+                          {item.label}
+                        </MenuItem>
+                      );
+                    }
+                  })}
                 </MenuList>
               </ClickAwayListener>
             </Paper>

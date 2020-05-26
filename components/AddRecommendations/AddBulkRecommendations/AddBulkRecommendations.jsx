@@ -1,15 +1,17 @@
-import React, { useState } from 'react';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import { emptyFood, getTime } from '../../../helpers/utils';
-import { addUserPointsAction } from '../../../store/global/actions';
-import { postRecommendations } from '../../../interfaces/api/recommendations';
+import Link from '@material-ui/core/Link';
+import ButtonWithSpinner from 'components/ButtonWithSpinner';
+import Filters from 'components/Filters';
+import RepeatableFoodsPanel from 'components/RepeatableFoodsPanel';
+import SectionHeader from 'components/SectionHeader';
+import StatusMessage from 'components/StatusMessage';
+import { calcPoints } from 'helpers/userUtils';
+import { emptyFood, getTime } from 'helpers/utils';
+import { postRecommendations } from 'interfaces/api/recommendations';
 import { difference, uniqBy } from 'lodash';
+import PropTypes from 'prop-types';
+import React, { useState } from 'react';
 import { usePromiseTracker } from 'react-promise-tracker';
-import ButtonWithSpinner from '../../ButtonWithSpinner';
-import StatusMessage from '../../StatusMessage';
-import { calcPoints } from '../../../helpers/userUtils';
-import RepeatableFoodsPanel from '../../RepeatableFoodsPanel';
+import { connect } from 'react-redux';
 import {
   addFoodAction,
   addRecommendedFoodAction,
@@ -18,10 +20,8 @@ import {
   removeAllFoodsAndRecommendationsAction,
   removeFoodAction,
   removeRecommendedFoodAction,
-} from '../../../store/addRecommendation/actions';
-import SectionHeader from '../../SectionHeader';
-import Filters from '../../Filters';
-import Link from '@material-ui/core/Link';
+} from 'store/addRecommendation/actions';
+import { addUserPointsAction } from 'store/global/actions';
 
 const helpMessage = (
   <>

@@ -1,8 +1,8 @@
-import React from 'react';
 import { Paper, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@material-ui/core';
-import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { uniqueId } from 'lodash/util';
+import PropTypes from 'prop-types';
+import React from 'react';
 
 const ResultsTable = ({ classes, data, onRowClick, title }) => {
   let columns;

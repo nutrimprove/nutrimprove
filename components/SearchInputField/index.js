@@ -1,5 +1,5 @@
 import { withStyles } from '@material-ui/core';
-import styles from './SearchInputField.styles';
 import SearchInputField from './SearchInputField';
+import styles from './SearchInputField.styles';
 
 export default withStyles(styles)(SearchInputField);

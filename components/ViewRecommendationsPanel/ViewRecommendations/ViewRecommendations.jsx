@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import ResultsTable from '../../ResultsTable';
-import { getRecommendation } from '../../../interfaces/api/recommendations';
 import PropTypes from 'prop-types';
-import { getFoodsFromRecommendation, parseNutrients } from '../../../helpers/utils';
-import CompareModal from '../../CompareModal';
-import SearchField from '../../SearchField';
-import LoadingPanel from '../../LoadingPanel';
+import React, { useEffect, useState } from 'react';
+import { getFoodsFromRecommendation, parseNutrients } from 'helpers/utils';
+import { getRecommendation } from 'interfaces/api/recommendations';
+import CompareModal from 'components/CompareModal';
+import LoadingPanel from 'components/LoadingPanel';
+import ResultsTable from 'components/ResultsTable';
+import SearchField from 'components/SearchField';
 
 const formatRecommendations = recommendations => {
   // Sort by date of recommendation (more recent first)
