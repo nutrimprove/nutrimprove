@@ -3,55 +3,65 @@ import { EDAMAM_DB } from 'helpers/constants';
 import { getAllFoodNames } from 'interfaces/api/foods';
 import { getUser } from 'interfaces/api/users';
 import Auth from 'interfaces/auth/Auth';
+import { isEmpty } from 'lodash';
 import PropTypes from 'prop-types';
 import React, { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { getStore } from 'store';
-import { useDispatch, useSelector } from 'react-redux';
 import { setFoodNamesAction, setUserDetailsAction, setUserPreferencesAction } from 'store/global/actions';
 import HeaderLink from './HeaderLink';
 
 const auth = new Auth();
 const dispatch = (action) => getStore().dispatch(action);
 
-const processAuth = () => {
+const setUserState = async userInfo => {
+  if (userInfo && userInfo.email) {
+    const user = await getUser(userInfo.email);
+    if (user) {
+      const { role, approved, points, preferences } = user;
+      dispatch(setUserDetailsAction({ ...userInfo, role, approved, points }));
+      dispatch(setUserPreferencesAction(preferences));
+    } else {
+      console.error('User not found!', userInfo.email);
+    }
+  } else {
+    console.error('UserInfo object not valid!', userInfo);
+  }
+};
+
+const processAuth = async () => {
+  const userInfoFromStorage = auth.extractUserFromToken();
+  if (userInfoFromStorage) {
+    await setUserState(userInfoFromStorage);
+    return;
+  }
+
   try {
-    const userDetails = auth.extractInfoFromHash();
-    const { user_details: userInfo } = userDetails;
+    const userInfo = auth.extractInfoFromHash();
     auth.handleAuthentication().then(async res => {
       if (res) {
-        if (userInfo && userInfo.email) {
-          const user = await getUser(userInfo.email);
-          if (user) {
-            const { role, approved, points, preferences } = user;
-            dispatch(setUserDetailsAction({ ...userInfo, role, approved, points }));
-            dispatch(setUserPreferencesAction(preferences));
-          } else {
-            console.error('User not found!', userInfo.email);
-          }
-        } else {
-          console.error('UserInfo object not valid!', userInfo);
-        }
         if (typeof window !== 'undefined') {
           localStorage.setItem(
             'token',
-            JSON.stringify(userDetails.token),
+            JSON.stringify(userInfo.token),
           );
+          history.replaceState({}, '', '/');
         }
       }
     });
+    await setUserState(userInfo.user_details);
   } catch (e) {
-    console.warn(`No authentication found!`);
+    console.warn(`Not Logged In!`);
   }
 };
 
 const Header = ({ classes }) => {
   const { userDetails } = useSelector(state => state.globalState);
-  const dispatch = useDispatch();
 
   useEffect(() => {
     (async () => {
       await processAuth();
-      if (!EDAMAM_DB) {
+      if (!EDAMAM_DB && !isEmpty(userDetails)) {
         const foodNames = await getAllFoodNames();
         dispatch(setFoodNamesAction(foodNames));
       }

@@ -66,7 +66,7 @@ class Auth {
             `Error: ${err.error}. Check the console for further details.`,
           );
           resolve(false);
-          window.location.replace('/callback');
+          window.location.replace(getCallbackUrl());
         }
       });
     });
