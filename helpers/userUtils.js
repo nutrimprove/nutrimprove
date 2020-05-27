@@ -1,23 +1,7 @@
-import { getUser } from 'interfaces/api/users';
 import { ROLES } from './constants';
 
 const userRoleToString = userRole => {
   return Object.keys(ROLES).find(key => ROLES[key] === userRole);
-};
-
-const setUserState = async ({ setUserDetails, setUserPreferences, userInfo }) => {
-  if (userInfo && userInfo.email) {
-    const user = await getUser(userInfo.email);
-    if (user) {
-      const { role, approved, points, preferences } = user;
-      setUserDetails({ ...userInfo, role, approved, points });
-      setUserPreferences(preferences);
-    } else {
-      console.error('User not found!', userInfo.email);
-    }
-  } else {
-    console.error('UserInfo object not valid!', userInfo);
-  }
 };
 
 const isAdmin = user => {
@@ -41,7 +25,6 @@ const calcPoints = ({ added = 0, incremented = 0 }) => {
 
 export {
   userRoleToString,
-  setUserState,
   isAdmin,
   isOwner,
   isValidEmail,

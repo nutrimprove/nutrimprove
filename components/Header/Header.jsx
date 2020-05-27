@@ -1,7 +1,7 @@
 import { AppBar, Link, Toolbar, Typography } from '@material-ui/core';
 import { EDAMAM_DB } from 'helpers/constants';
-import { setUserState } from 'helpers/userUtils';
 import { getAllFoodNames } from 'interfaces/api/foods';
+import { getUser } from 'interfaces/api/users';
 import Auth from 'interfaces/auth/Auth';
 import PropTypes from 'prop-types';
 import React, { useCallback, useEffect } from 'react';
@@ -11,17 +11,50 @@ import HeaderLink from './HeaderLink';
 
 const auth = new Auth();
 
+const userAuthentication = async () => {
+  const userInfoFromStorage = auth.extractUserFromToken();
+  if (userInfoFromStorage) {
+    return userInfoFromStorage;
+  }
+
+  try {
+    const userInfo = auth.extractInfoFromHash();
+    auth.handleAuthentication().then(async res => {
+      if (res) {
+        if (typeof window !== 'undefined') {
+          localStorage.setItem(
+            'token',
+            JSON.stringify(userInfo.token),
+          );
+          history.replaceState({}, '', '/');
+        }
+      }
+    });
+    return userInfo.user_details;
+  } catch (e) {
+    console.warn(`Not Logged In!`);
+  }
+};
+
 const Header = ({ classes }) => {
   const { userDetails } = useSelector(state => state.globalState);
   const dispatch = useDispatch();
-  const setUserPreferences = useCallback(preferences => dispatch(setUserPreferencesAction(preferences)), []);
-  const setUserDetails = useCallback(details => dispatch(setUserDetailsAction(details)), []);
   const setFoodNames = useCallback(foodNames => dispatch(setFoodNamesAction(foodNames)), []);
 
   useEffect(() => {
     (async () => {
-      const userInfo = auth.extractUserFromToken();
-      setUserState({ setUserDetails, setUserPreferences, userInfo });
+      const userInfo = await userAuthentication();
+      if (!userInfo) return;
+
+      const user = await getUser(userInfo.email);
+      if (user) {
+        const { role, approved, points, preferences } = user;
+        dispatch(setUserDetailsAction({ ...userInfo, role, approved, points }));
+        dispatch(setUserPreferencesAction(preferences));
+      } else {
+        console.error('User not found!', userInfo.email);
+      }
+
       if (!EDAMAM_DB) {
         const foodNames = await getAllFoodNames();
         setFoodNames(foodNames);
