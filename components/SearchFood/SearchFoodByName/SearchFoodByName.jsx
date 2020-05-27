@@ -50,8 +50,4 @@ const SearchFoodByName = () => {
   );
 };
 
-SearchFoodByName.propTypes = {
-  classes: PropTypes.object.isRequired,
-};
-
 export default SearchFoodByName;
