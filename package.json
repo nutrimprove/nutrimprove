@@ -9,6 +9,7 @@
     "deploy": "now",
     "test": "jest",
     "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
     "lint": "eslint . --fix",
     "prettier": "prettier \"**/*.+(js|jsx|json|yml|yaml|css|less|scss|ts|tsx|md|mdx|graphql)\"",
     "format": "yarn prettier -- --write",
@@ -73,11 +74,22 @@
     "lint-staged": "^9.2.5",
     "nodemon": "^1.19.2",
     "now": "^17.1.1",
-    "prettier": "^1.18.2"
+    "prettier": "^1.18.2",
+    "react-test-renderer": "^16.13.1"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
+  "jest": {
+    "testPathIgnorePatterns": [
+      "<rootDir>/.next/",
+      "<rootDir>/node_modules/"
+    ],
+    "moduleNameMapper": {
+      "^@[/](.+)": "<rootDir>/src/$1",
+      "^components[/](.+)": "<rootDir>/components/$1",
+      "^helpers[/](.+)": "<rootDir>/helpers/$1",
+      "^store[/](.+)": "<rootDir>/store/$1"
+    },
+    "collectCoverageFrom": [
+      "**/*.{js,jsx}"
+    ]
   }
 }
