@@ -24,7 +24,9 @@ const ReviewRecommendations = ({ classes }) => {
   const [hoveredItem, setHoveredItem] = useState();
   const [compareOpen, setCompareOpen] = useState();
   const [comparisonData, setComparisonData] = useState();
-  const { promiseInProgress: loading } = usePromiseTracker({ area: 'getAllRecommendations' });
+  const { promiseInProgress: loadingRecommendations } = usePromiseTracker({ area: 'getAllRecommendations' });
+  const { promiseInProgress: loadingFoodData } = usePromiseTracker({ area: 'getFoodData' });
+  const loading = loadingRecommendations || loadingFoodData;
 
   useEffect(() => {
     (async () => {
