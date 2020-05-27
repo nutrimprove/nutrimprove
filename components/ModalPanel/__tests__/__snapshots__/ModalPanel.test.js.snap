@@ -5,7 +5,6 @@ exports[`Modal Panel is rendered 1`] = `
   style="padding-right: 0px; overflow: hidden;"
 >
   <div
-    data-testid="modalPanel"
     role="presentation"
     style="position: fixed; z-index: 1300; right: 0px; bottom: 0px; top: 0px; left: 0px;"
   >
@@ -51,13 +50,11 @@ exports[`Modal Panel is rendered 1`] = `
         >
           <h6
             class="MuiTypography-root MuiTypography-h6 MuiTypography-noWrap"
-            data-testid="title"
           >
             Modal title
           </h6>
           <h6
             class="MuiTypography-root MuiTypography-subtitle2 MuiTypography-colorTextSecondary"
-            data-testid="subtitle"
           >
             Modal subtitle
           </h6>
