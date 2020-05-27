@@ -9,10 +9,8 @@ class MyApp extends App {
     const { Component, pageProps, store } = this.props;
     return (
       <Provider store={store}>
-        <div id='root'>
-          <Header/>
-          <Component {...pageProps} />
-        </div>
+        <Header/>
+        <Component {...pageProps} />
       </Provider>
     );
   }
