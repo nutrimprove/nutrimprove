@@ -1,4 +1,4 @@
-import { IconButton, Modal } from '@material-ui/core';
+import { IconButton, Modal, Typography } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
