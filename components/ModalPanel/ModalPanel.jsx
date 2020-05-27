@@ -5,15 +5,15 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 const ModalPanel = ({ children, title, subtitle, open, onClose, classes, style }) => (
-  <Modal open={open} onClose={onClose}>
+  <Modal open={open} onClose={onClose} data-testid='modalPanel'>
     <div className={clsx(classes.modal, style)}>
       <div>
         <IconButton classes={{ root: classes.closeIcon }} onClick={onClose} aria-label='close'>
           <CloseIcon fontSize='small'/>
         </IconButton>
         <div className={classes.header}>
-          <Typography variant='h6' noWrap={true} title={title}>{title}</Typography>
-          <Typography variant='subtitle2' color='textSecondary'>
+          <Typography variant='h6' noWrap={true} data-testid='title'>{title}</Typography>
+          <Typography variant='subtitle2' data-testid='subtitle' color='textSecondary'>
             {subtitle}
           </Typography>
         </div>
