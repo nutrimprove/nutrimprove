@@ -1,4 +1,5 @@
 import { AppBar, Button } from '@material-ui/core';
+import Typography from '@material-ui/core/Typography';
 import MenuDropdown from 'components/MenuDropdown';
 import { isAdmin } from 'helpers/userUtils';
 import Link from 'next/link';
@@ -31,22 +32,20 @@ const menus = [
 const MainNav = ({ classes }) => {
   const userDetails = useSelector(({ globalState }) => globalState.userDetails);
 
-  if (!userDetails) return null;
-
   return (
     <AppBar position='static' classes={{ root: classes.menuBar }}>
-      <div className={classes.container}>
-      {menus.map(menu => (
-        <MenuDropdown key={menu.name} menu={menu}/>
-      ))}
-      {userDetails.approved && isAdmin(userDetails) && (
-        <Link href="/admin-panel">
-          <Button className={classes.button}>
-            Admin Panel
-          </Button>
-        </Link>
-      )}
-      </div>
+      {!userDetails || !userDetails.email
+        ? <Typography className={classes.welcomeText}>Welcome to Nutrimprove</Typography>
+        : (
+          <div className={classes.container}>
+            {menus.map(menu => (
+              <MenuDropdown key={menu.name} menu={menu}/>
+            ))}
+            {userDetails.approved && isAdmin(userDetails) && (
+              <MenuDropdown menu={{name: 'Admin Panel', link: '/admin-panel'}}/>
+            )}
+          </div>
+        )}
     </AppBar>
   );
 };

@@ -3,7 +3,7 @@ import { MIN_WIDTH } from 'helpers/constants';
 export default {
   logo: {
     width: 50,
-    marginRight: 10,
+    margin: '0 18px',
   },
   toolbar: {
     height: 60,

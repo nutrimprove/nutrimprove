@@ -11,6 +11,9 @@ const MenuDropdown = ({ menu, classes }) => {
   const { name, options } = menu;
 
   const handleToggle = () => {
+    if (!options) {
+      Router.push(menu.link);
+    }
     setOpen((prevOpen) => !prevOpen);
   };
 
@@ -58,7 +61,7 @@ const MenuDropdown = ({ menu, classes }) => {
         className={classes.name}
       >
         {name}
-        <span className={classes.icon}>{open ? <ArrowDropUpIcon/> : <ArrowDropDownIcon/>}</span>
+        {options && <span className={classes.icon}>{open ? <ArrowDropUpIcon/> : <ArrowDropDownIcon/>}</span>}
       </Button>
       {options && options.length > 0 && <Popper style={{ minWidth: getWidth() }}
                                                 open={open}
@@ -101,9 +104,7 @@ const MenuDropdown = ({ menu, classes }) => {
 };
 
 MenuDropdown.propTypes = {
-  items: PropTypes.array,
   menu: PropTypes.object.isRequired,
-  onClick: PropTypes.func.isRequired,
   classes: PropTypes.object.isRequired,
 };
 

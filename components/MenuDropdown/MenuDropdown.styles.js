@@ -2,6 +2,7 @@ export default {
   name: {
     fontSize: 14,
     fontWeight: 500,
+    padding: 22,
     color: 'white',
     height: '100%',
     '&:$hover': {
@@ -32,5 +33,6 @@ export default {
   },
   icon: {
     marginTop: 6,
+    marginRight: -10,
   },
 };
