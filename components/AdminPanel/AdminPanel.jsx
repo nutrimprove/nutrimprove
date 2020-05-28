@@ -20,10 +20,6 @@ import SectionHeader from '../SectionHeader';
 
 const enableDB = process.env.ENABLE_UPDATE_DB;
 
-const sectionHeader = {
-  title: 'Administration panel',
-};
-
 const queries = {
   GET_ALL: 'Users',
   APPROVED: 'Approved Users',
@@ -125,7 +121,6 @@ const AdminPanel = ({ classes }) => {
 
   return (
     <>
-      <SectionHeader content={sectionHeader}/>
       <ButtonWithSpinner
         action={() => setUserQuery(queries.GET_ALL)}
         disabled={userQuery === queries.GET_ALL}

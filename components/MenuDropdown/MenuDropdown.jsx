@@ -1,12 +1,14 @@
 import { Button, ClickAwayListener, Grow, MenuItem, MenuList, Paper, Popper } from '@material-ui/core';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
+import Router from 'next/router';
 import PropTypes from 'prop-types';
 import React, { useEffect, useRef, useState } from 'react';
 
-const MenuDropdown = ({ name, items, onClick, classes }) => {
+const MenuDropdown = ({ menu, classes }) => {
   const [open, setOpen] = useState(false);
   const anchorRef = useRef(null);
+  const { name, options } = menu;
 
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen);
@@ -32,9 +34,9 @@ const MenuDropdown = ({ name, items, onClick, classes }) => {
     }
   };
 
-  const handleClick = item => {
-    onClick(item);
+  const handleClick = (page) => {
     setOpen(false);
+    Router.push(page);
   };
 
   // return focus to the button when we transitioned from !open -> open
@@ -58,12 +60,12 @@ const MenuDropdown = ({ name, items, onClick, classes }) => {
         {name}
         <span className={classes.icon}>{open ? <ArrowDropUpIcon/> : <ArrowDropDownIcon/>}</span>
       </Button>
-      {items && items.length > 0 && <Popper style={{ minWidth: getWidth() }}
-                                            open={open}
-                                            anchorEl={anchorRef.current}
-                                            role={undefined}
-                                            transition
-                                            disablePortal
+      {options && options.length > 0 && <Popper style={{ minWidth: getWidth() }}
+                                                open={open}
+                                                anchorEl={anchorRef.current}
+                                                role={undefined}
+                                                transition
+                                                disablePortal
       >
         {({ TransitionProps, placement }) => (
           <Grow
@@ -74,20 +76,19 @@ const MenuDropdown = ({ name, items, onClick, classes }) => {
             <Paper className={classes.container}>
               <ClickAwayListener onClickAway={handleClose}>
                 <MenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
-                  {items && items.map((item, index) => {
-                    if (item && item.divider) {
+                  {options.map((item, index) => {
+                    if (item.divider) {
                       return <hr key={index} className={classes.divider}/>;
-                    } else {
-                      return (
-                        <MenuItem key={item.label}
-                                  onClick={() => handleClick(item)}
-                                  button={true}
-                                  className={classes.link}
-                        >
-                          {item.label}
-                        </MenuItem>
-                      );
                     }
+                    return (
+                      <MenuItem key={item.label}
+                                onClick={() => handleClick(item.link)}
+                                button={true}
+                                className={classes.link}
+                      >
+                        {item.label}
+                      </MenuItem>
+                    );
                   })}
                 </MenuList>
               </ClickAwayListener>
@@ -101,7 +102,7 @@ const MenuDropdown = ({ name, items, onClick, classes }) => {
 
 MenuDropdown.propTypes = {
   items: PropTypes.array,
-  name: PropTypes.string.isRequired,
+  menu: PropTypes.object.isRequired,
   onClick: PropTypes.func.isRequired,
   classes: PropTypes.object.isRequired,
 };
