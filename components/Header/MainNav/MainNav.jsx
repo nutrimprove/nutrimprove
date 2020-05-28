@@ -1,6 +1,6 @@
 import { AppBar } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
-import MenuButton from 'components/MenuButton';
+import MenuButton from 'components/Header/MainNav/MenuButton';
 import { isAdmin } from 'helpers/userUtils';
 import PropTypes from 'prop-types';
 import React from 'react';
