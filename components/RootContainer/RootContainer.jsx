@@ -11,7 +11,7 @@ const RootContainer = ({ classes, children }) => {
 
 RootContainer.propTypes = {
   classes: PropTypes.object.isRequired,
-  children: PropTypes.object.isRequired,
+  children: PropTypes.array.isRequired,
 };
 
 export default RootContainer;

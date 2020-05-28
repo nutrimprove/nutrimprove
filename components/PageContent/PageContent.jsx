@@ -9,7 +9,7 @@ const PageContent = ({ children, classes }) => (
 );
 
 PageContent.propTypes = {
-  children: PropTypes.array.isRequired,
+  children: PropTypes.object.isRequired,
   classes: PropTypes.object.isRequired,
 };
 
