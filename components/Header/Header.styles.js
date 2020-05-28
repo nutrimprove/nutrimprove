@@ -1,6 +1,9 @@
 import { MIN_WIDTH } from 'helpers/constants';
 
 export default {
+  header: {
+    margin: 'auto',
+  },
   logo: {
     width: 50,
     margin: '0 18px',
@@ -12,10 +15,11 @@ export default {
     },
     width: MIN_WIDTH,
     margin: '0 auto',
+    padding: 0,
   },
   right: {
     position: 'absolute',
-    right: 10,
+    right: 0,
     '& img': {
       maxWidth: 45,
       maxHeight: 45,

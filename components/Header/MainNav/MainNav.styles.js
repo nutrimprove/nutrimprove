@@ -21,7 +21,7 @@ export default {
   container: {
     width: MIN_WIDTH,
     margin: '0 auto',
-    padding: '0 20px',
+    padding: 0,
     height: '100%',
   },
   button: {
