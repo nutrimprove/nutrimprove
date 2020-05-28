@@ -5,7 +5,7 @@ import Router from 'next/router';
 import PropTypes from 'prop-types';
 import React, { useEffect, useRef, useState } from 'react';
 
-const MenuDropdown = ({ menu, classes }) => {
+const MenuButton = ({ menu, classes }) => {
   const [open, setOpen] = useState(false);
   const anchorRef = useRef(null);
   const { name, options } = menu;
@@ -103,9 +103,9 @@ const MenuDropdown = ({ menu, classes }) => {
   );
 };
 
-MenuDropdown.propTypes = {
+MenuButton.propTypes = {
   menu: PropTypes.object.isRequired,
   classes: PropTypes.object.isRequired,
 };
 
-export default MenuDropdown;
+export default MenuButton;
