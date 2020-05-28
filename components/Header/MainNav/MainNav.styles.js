@@ -1,16 +1,18 @@
-import { MIN_WIDTH } from '../../helpers/constants';
+import { MIN_WIDTH } from 'helpers/constants';
 
 export default {
-  root: {
-    flexGrow: 1,
-    minWidth: MIN_WIDTH,
-  },
   menuBar: {
     backgroundColor: '#3f51b5',
     color: 'white',
     height: 48,
     position: 'relative',
     display: 'block',
+    margin: '0 auto',
+  },
+  container: {
+    width: MIN_WIDTH,
+    margin: '0 auto',
+    padding: '0 20px',
   },
   button: {
     fontSize: 14,

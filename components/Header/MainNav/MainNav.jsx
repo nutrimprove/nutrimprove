@@ -1,10 +1,10 @@
 import { AppBar, Button } from '@material-ui/core';
+import MenuDropdown from 'components/MenuDropdown';
 import { isAdmin } from 'helpers/userUtils';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { useSelector } from 'react-redux';
-import MenuDropdown from '../MenuDropdown';
 
 const menus = [
   {
@@ -31,21 +31,23 @@ const menus = [
 const MainNav = ({ classes }) => {
   const userDetails = useSelector(({ globalState }) => globalState.userDetails);
 
+  if (!userDetails) return null;
+
   return (
-    <div className={classes.root}>
-      <AppBar position='static' classes={{ root: classes.menuBar }}>
-        {menus.map(menu => (
-          <MenuDropdown key={menu.name} menu={menu}/>
-        ))}
-        {userDetails.approved && isAdmin(userDetails) && (
-          <Link href="/admin-panel">
-            <Button className={classes.button}>
-              Admin Panel
-            </Button>
-          </Link>
-        )}
-      </AppBar>
-    </div>
+    <AppBar position='static' classes={{ root: classes.menuBar }}>
+      <div className={classes.container}>
+      {menus.map(menu => (
+        <MenuDropdown key={menu.name} menu={menu}/>
+      ))}
+      {userDetails.approved && isAdmin(userDetails) && (
+        <Link href="/admin-panel">
+          <Button className={classes.button}>
+            Admin Panel
+          </Button>
+        </Link>
+      )}
+      </div>
+    </AppBar>
   );
 };
 

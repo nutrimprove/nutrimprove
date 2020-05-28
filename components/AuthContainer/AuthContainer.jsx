@@ -7,7 +7,7 @@ const AuthContainer = ({ children }) => {
   const { userDetails } = useSelector(({ globalState }) => globalState);
 
   if (!userDetails || !userDetails.email_verified || !userDetails.approved) {
-    return <NoAccess user={userDetails}/>;
+    return <NoAccess userDetails={userDetails}/>;
   }
 
   return (

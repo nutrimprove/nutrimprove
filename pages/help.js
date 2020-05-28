@@ -1,4 +1,4 @@
-import HelpPage from 'components/HelpPage';
+import HelpPage from 'components/Help';
 import NoAccess from 'components/NoAccess';
 import PropTypes from 'prop-types';
 import React from 'react';

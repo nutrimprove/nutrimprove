@@ -3,16 +3,16 @@ import { PROJECT_NAME } from 'helpers/constants';
 import PropTypes from 'prop-types';
 import React from 'react';
 import BackToMainPageLink from '../BackToMainPageLink';
-import ContentSection from '../ContentSection';
 import SectionHeader from '../SectionHeader';
+import ContentSection from './ContentSection';
 
 const content = {
   title: `Help`,
   subtitle: `How to use the ${PROJECT_NAME} web application`,
 };
 
-const HelpPage = ({ classes }) => (
-  <div className={classes.content}>
+const Help = ({ classes }) => (
+  <>
     <SectionHeader content={content}/>
     <div>
       <Typography variant={'subtitle1'}>
@@ -219,11 +219,11 @@ const HelpPage = ({ classes }) => (
       </Typography>
     </ContentSection>
     <BackToMainPageLink/>
-  </div>
+  </>
 );
 
-HelpPage.propTypes = {
+Help.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default HelpPage;
+export default Help;

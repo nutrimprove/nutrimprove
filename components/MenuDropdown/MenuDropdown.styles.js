@@ -7,7 +7,6 @@ export default {
     '&:$hover': {
       backgroundColor: '#1f3195',
     },
-    padding: '0 30px',
   },
   link: {
     display: 'block',

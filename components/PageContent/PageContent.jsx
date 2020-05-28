@@ -1,10 +1,11 @@
+import Paper from '@material-ui/core/Paper';
 import PropTypes from 'prop-types';
 import React from 'react';
 
 const PageContent = ({ children, classes }) => (
-  <div className={classes.content}>
+  <Paper className={classes.content}>
     {children}
-  </div>
+  </Paper>
 );
 
 PageContent.propTypes = {
