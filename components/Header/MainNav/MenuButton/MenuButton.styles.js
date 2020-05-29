@@ -5,7 +5,7 @@ export default {
     padding: 22,
     color: 'white',
     height: '100%',
-    '&:$hover': {
+    '&:hover': {
       backgroundColor: '#1f3195',
     },
   },
@@ -16,7 +16,7 @@ export default {
     padding: '12px 20px',
     color: 'white',
     backgroundColor: '#3f51b5',
-    '&:$hover': {
+    '&:hover': {
       backgroundColor: '#1f3195',
     },
   },

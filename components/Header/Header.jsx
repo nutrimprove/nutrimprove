@@ -20,7 +20,7 @@ const userAuthentication = async () => {
 
   try {
     const userInfo = auth.extractInfoFromHash();
-    auth.handleAuthentication().then(async res => {
+    await auth.handleAuthentication().then(res => {
       if (res) {
         if (typeof window !== 'undefined') {
           localStorage.setItem(

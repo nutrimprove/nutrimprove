@@ -1,5 +1,6 @@
 import auth0 from 'auth0-js';
 import jwtDecode from 'jwt-decode';
+import { trackPromise } from 'react-promise-tracker';
 import { AUTH_CONFIG } from './auth0-variables';
 import extractUser from './extractUser';
 
@@ -54,7 +55,7 @@ class Auth {
   };
 
   handleAuthentication() {
-    return new Promise(resolve => {
+    return trackPromise(new Promise(resolve => {
       this.auth0.parseHash((err, authResult) => {
         const userDetails = this.extractInfoFromHash();
         if (authResult && authResult.accessToken && authResult.idToken) {
@@ -69,7 +70,7 @@ class Auth {
           window.location.replace(getCallbackUrl());
         }
       });
-    });
+    }), 'authentication');
   }
 
   extractUserFromToken() {

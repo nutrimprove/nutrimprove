@@ -28,9 +28,6 @@ export default {
     fontSize: 14,
     fontWeight: 500,
     color: 'white',
-    '&:$hover': {
-      backgroundColor: '#1f3195',
-    },
     padding: '0 20px',
   },
 };

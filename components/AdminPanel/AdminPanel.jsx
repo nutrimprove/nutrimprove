@@ -16,7 +16,6 @@ import ButtonWithSpinner from '../ButtonWithSpinner';
 import DeleteUserButton from '../DeleteUserButton';
 import LoadingPanel from '../LoadingPanel';
 import ResultsTable from '../ResultsTable';
-import SectionHeader from '../SectionHeader';
 
 const enableDB = process.env.ENABLE_UPDATE_DB;
 
