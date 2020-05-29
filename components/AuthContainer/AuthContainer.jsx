@@ -1,5 +1,4 @@
 import NoAccess from 'components/NoAccess';
-import { withRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { useSelector } from 'react-redux';
@@ -28,4 +27,4 @@ AuthContainer.propTypes = {
   router: PropTypes.object.isRequired,
 };
 
-export default withRouter(AuthContainer);
+export default AuthContainer;
