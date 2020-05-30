@@ -19,6 +19,8 @@ const formatRecommendations = recommendations => {
   }));
 };
 
+const hasFood = (foods, food) => !!foods.some(({ foodName }) => foodName === food.foodName);
+
 const ViewRecommendations = ({ recommendations, title }) => {
   const [list, setList] = useState();
   const [filteredList, setFilteredList] = useState();
@@ -33,12 +35,18 @@ const ViewRecommendations = ({ recommendations, title }) => {
     const formattedRecommendations = formatRecommendations(recommendations);
     const foods = [];
     formattedRecommendations.forEach(rec => {
-      foods.push({ foodName: rec.food });
-      foods.push({ foodName: rec.recommendation });
+      const food = { foodName: rec.food };
+      const recommendedFood = { foodName: rec.recommendation };
+      if (!hasFood(foods, food)) {
+        foods.push(food);
+      }
+      if (!hasFood(foods, recommendedFood)) {
+        foods.push(recommendedFood);
+      }
     });
+    setFoodNames(foods);
     setList(formattedRecommendations);
     setFilteredList(formattedRecommendations);
-    setFoodNames(foods);
   }, [recommendations]);
 
   const getFoodDetails = (food) => {

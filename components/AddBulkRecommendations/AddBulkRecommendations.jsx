@@ -1,8 +1,6 @@
-import Link from '@material-ui/core/Link';
 import ButtonWithSpinner from 'components/ButtonWithSpinner';
 import Filters from 'components/Filters';
 import RepeatableFoodsPanel from 'components/RepeatableFoodsPanel';
-import SectionHeader from 'components/SectionHeader';
 import StatusMessage from 'components/StatusMessage';
 import { calcPoints } from 'helpers/userUtils';
 import { emptyFood, getTime } from 'helpers/utils';
