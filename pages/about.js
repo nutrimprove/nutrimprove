@@ -1,4 +1,4 @@
-import AboutPage from 'components/AboutPage';
+import AboutPage from 'components/About';
 import React from 'react';
 
 const About = () => <AboutPage/>;

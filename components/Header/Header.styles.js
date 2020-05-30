@@ -1,23 +1,25 @@
-import { MIN_WIDTH } from '../../helpers/constants';
+import { MIN_WIDTH } from 'helpers/constants';
 
 export default {
   header: {
-    flexGrow: 1,
-    minWidth: MIN_WIDTH,
+    margin: 'auto',
   },
   logo: {
     width: 50,
-    marginRight: 10,
+    margin: '0 18px',
   },
   toolbar: {
     height: 60,
     '& a': {
-      marginLeft: '20px',
+      marginRight: '20px',
     },
+    width: MIN_WIDTH,
+    margin: '0 auto',
+    padding: 0,
   },
-  userinfo: {
+  right: {
     position: 'absolute',
-    right: 30,
+    right: 0,
     '& img': {
       maxWidth: 45,
       maxHeight: 45,

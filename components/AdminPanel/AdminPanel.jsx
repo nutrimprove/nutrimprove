@@ -16,13 +16,8 @@ import ButtonWithSpinner from '../ButtonWithSpinner';
 import DeleteUserButton from '../DeleteUserButton';
 import LoadingPanel from '../LoadingPanel';
 import ResultsTable from '../ResultsTable';
-import SectionHeader from '../SectionHeader';
 
 const enableDB = process.env.ENABLE_UPDATE_DB;
-
-const sectionHeader = {
-  title: 'Administration panel',
-};
 
 const queries = {
   GET_ALL: 'Users',
@@ -125,7 +120,6 @@ const AdminPanel = ({ classes }) => {
 
   return (
     <>
-      <SectionHeader content={sectionHeader}/>
       <ButtonWithSpinner
         action={() => setUserQuery(queries.GET_ALL)}
         disabled={userQuery === queries.GET_ALL}

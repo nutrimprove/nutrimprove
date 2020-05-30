@@ -1,7 +1,6 @@
 import { PROJECT_NAME } from 'helpers/constants';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { useSelector } from 'react-redux';
 import SectionHeader from '../SectionHeader';
 
 const content = {
@@ -10,9 +9,7 @@ const content = {
   message: '',
 };
 
-const NoAccess = ({ classes }) => {
-  const { userDetails } = useSelector(state => state.globalState);
-
+const NoAccess = ({ userDetails }) => {
   if (userDetails.email) {
     if (!userDetails.email_verified) {
       content.subtitle = 'Please verify your email account';
@@ -30,14 +27,14 @@ const NoAccess = ({ classes }) => {
   }
 
   return (
-    <div className={classes.content}>
-      <SectionHeader content={content}/>
-    </div>
+    <>
+      {userDetails && <SectionHeader content={content}/>}
+    </>
   );
 };
 
 NoAccess.propTypes = {
-  classes: PropTypes.object.isRequired,
+  userDetails: PropTypes.object.isRequired,
 };
 
 export default NoAccess;

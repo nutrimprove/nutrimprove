@@ -1,4 +1,5 @@
 import { AppBar, Link, Toolbar, Typography } from '@material-ui/core';
+import MainNav from 'components/Header/MainNav';
 import { EDAMAM_DB } from 'helpers/constants';
 import { getAllFoodNames } from 'interfaces/api/foods';
 import { getUser } from 'interfaces/api/users';
@@ -19,7 +20,7 @@ const userAuthentication = async () => {
 
   try {
     const userInfo = auth.extractInfoFromHash();
-    auth.handleAuthentication().then(async res => {
+    await auth.handleAuthentication().then(res => {
       if (res) {
         if (typeof window !== 'undefined') {
           localStorage.setItem(
@@ -92,17 +93,19 @@ const Header = ({ classes }) => {
               <Link href='/about'>About</Link>
               {username() && <Link href='/help'>Help</Link>}
             </Typography>
+
+          </div>
+          <div id='user' className={classes.right}>
+            {username()}
             {username() ? (
               <HeaderLink action={handleLogout}>Logout</HeaderLink>
             ) : (
               <HeaderLink action={handleLogin}>Login</HeaderLink>
             )}
           </div>
-          <div id='user' className={classes.userinfo}>
-            {username()}
-          </div>
         </Toolbar>
       </AppBar>
+      <MainNav/>
     </div>
   );
 };
