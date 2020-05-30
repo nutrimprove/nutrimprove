@@ -3,7 +3,6 @@ export default {
     width: '100%',
   },
   table: {
-    overflow: 'auto',
     padding: '0 18px 18px 18px',
   },
   tableHeader: {
