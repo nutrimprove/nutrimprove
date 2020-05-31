@@ -15,7 +15,7 @@ const formatRecommendations = recommendations => {
     food: recommendation.food.name,
     recommendation: recommendation.recommendation.name,
     rating: recommendation.rating,
-    'Date Added': new Date(recommendation.timestamp).toLocaleDateString('en-GB'),
+    'Date Added': recommendation.timestamp,
   }));
 };
 
@@ -101,7 +101,12 @@ const ViewRecommendations = ({ recommendations, title }) => {
                    buttonText='Filter'
       />
       {!recommendations && <LoadingPanel/>}
-      {filteredList && <ResultsTable data={filteredList} title={filteredTitle || title} onRowClick={handleRowClick}/>}
+      {filteredList && <ResultsTable data={filteredList}
+                                     title={filteredTitle || title}
+                                     onRowClick={handleRowClick}
+                                     sortColumns={['food', 'recommendation', 'rating', 'date added']}
+                                     sortOnLoad='date added'
+      />}
       {compareOpen && <CompareModal dataSet={comparisonData} open={compareOpen} onClose={handleCloseModal}/>}
     </>
   );
