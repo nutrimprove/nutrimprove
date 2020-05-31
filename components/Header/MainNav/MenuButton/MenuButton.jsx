@@ -1,6 +1,6 @@
 import { Button, ClickAwayListener, Grow, MenuItem, MenuList, Paper, Popper } from '@material-ui/core';
-import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
-import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
+import ExpandLessIcon from '@material-ui/icons/ExpandLess';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Router from 'next/router';
 import PropTypes from 'prop-types';
 import React, { useEffect, useRef, useState } from 'react';
@@ -61,7 +61,7 @@ const MenuButton = ({ menu, classes }) => {
         className={classes.name}
       >
         {name}
-        {options && <span className={classes.icon}>{open ? <ArrowDropUpIcon/> : <ArrowDropDownIcon/>}</span>}
+        {options && <span className={classes.icon}>{open ? <ExpandLessIcon/> : <ExpandMoreIcon/>}</span>}
       </Button>
       {options && options.length > 0 && <Popper style={{ minWidth: getWidth() }}
                                                 open={open}
