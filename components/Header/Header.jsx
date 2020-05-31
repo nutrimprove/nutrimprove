@@ -91,7 +91,8 @@ const Header = ({ classes }) => {
           <div id='links'>
             <Typography variant='button' color='inherit'>
               <Link href='/about'>About</Link>
-              {username() && <Link href='/help'>Help</Link>}
+              {/* {username() && <Link href='/help'>Help</Link>} */}
+              {username() && <Link href='/release-notes'>Release Notes</Link>}
             </Typography>
 
           </div>
