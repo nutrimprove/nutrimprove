@@ -10,7 +10,6 @@ const CompareModal = ({
                         subtitle = 'Nutritional information per 100g of food',
                         open,
                         onClose,
-                        classes,
                       }) => {
   const mergedData = [];
 
@@ -33,7 +32,6 @@ const CompareModal = ({
 };
 
 CompareModal.propTypes = {
-  classes: PropTypes.object.isRequired,
   open: PropTypes.bool.isRequired,
   title: PropTypes.string,
   dataSet: PropTypes.array,
