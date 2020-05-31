@@ -14,6 +14,7 @@ export default {
     fontWeight: 'bold',
     textTransform: 'capitalize',
     minWidth: 130,
+    userSelect: 'none',
     '&:first-child': {
       borderTopLeftRadius: 9,
     },
@@ -33,5 +34,11 @@ export default {
     marginTop: 25,
     marginBottom: 20,
     fontWeight: 'bold',
+  },
+  sortIcon: {
+    position: 'absolute',
+  },
+  pointer: {
+    cursor: 'pointer',
   },
 };

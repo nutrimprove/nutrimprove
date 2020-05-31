@@ -93,6 +93,7 @@ const SearchFoodByNutrient = () => {
         data={foods}
         title={resultsTitle}
         onRowClick={handleRowClick}
+        sortColumns={[0, 1, 2]}
       />}
       {detailsOpen && (
         <ModalPanel
@@ -101,7 +102,7 @@ const SearchFoodByNutrient = () => {
           title={selectedFood}
           subtitle='Nutritional information per 100g of food'
         >
-          {selectedFoodDetails ? <ResultsTable data={selectedFoodDetails} scrollable/> : <LoadingPanel/>}
+          {selectedFoodDetails ? <ResultsTable data={selectedFoodDetails} scrollable sortColumns={['nutrient']}/> : <LoadingPanel/>}
         </ModalPanel>
       )}
     </>

@@ -37,7 +37,7 @@ const SearchFoodByName = () => {
                    values={filteredFoodNames}
                    buttonDisabled={!selectedFood}
       />
-      {data && <ResultsTable data={data} title='Nutritional values per 100g of food'/>}
+      {data && <ResultsTable data={data} title='Nutritional values per 100g of food' sortColumns={['nutrient']}/>}
     </>
   );
 };
