@@ -41,6 +41,8 @@ const mapSearchResults = results => {
   }));
 };
 
+const capitalise = string => string.charAt(0).toUpperCase() + string.slice(1);
+
 const parseNutrients = ({ nutrients, filterEmptyValues = true, addKey = false }) => {
   const nutrientsObj = [];
   const keys = Object.keys(nutrients);
@@ -52,7 +54,7 @@ const parseNutrients = ({ nutrients, filterEmptyValues = true, addKey = false })
       const decimalPlaces = label === 'kcal' ? 0 : 2;
       const value = !quantity || isNaN(quantity) ? 0 : Number.parseFloat(quantity).toFixed(decimalPlaces);
       const valueWithUnit = quantity && quantity === 'Tr' ? 'traces' : `${value} ${unit}`;
-      const nutrientObject = { nutrient: label, quantity: valueWithUnit };
+      const nutrientObject = { nutrient: capitalise(label), quantity: valueWithUnit };
       if (addKey) {
         nutrientObject.key = key;
       }

@@ -26,7 +26,7 @@ const CompareModal = ({
   }
   return (
     <ModalPanel open={open} onClose={onClose} title={title} subtitle={subtitle}>
-      {mergedData.length > 0 ? <ResultsTable data={mergedData} scrollable/> : <LoadingPanel/>}
+      {mergedData.length > 0 ? <ResultsTable data={mergedData} scrollable sortColumns={['nutrient']}/> : <LoadingPanel/>}
     </ModalPanel>
   );
 };

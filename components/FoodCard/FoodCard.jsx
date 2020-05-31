@@ -141,12 +141,7 @@ const FoodCard = ({ food, onMouseOver, highlightItem, classes }) => {
         </CardContent>
         <CardActions className={classes.actions}>
           <ScrollIntoView/>
-          <Button
-            variant='outlined'
-            color='primary'
-            className={classes.button}
-            onClick={showFoodDetails}
-          >
+          <Button variant='outlined' color='primary' className={classes.button} onClick={showFoodDetails}>
             Show More
           </Button>
         </CardActions>
@@ -157,11 +152,17 @@ const FoodCard = ({ food, onMouseOver, highlightItem, classes }) => {
                     title={foodDetails.foodName}
                     subtitle='Nutritional information per 100g of food'
         >
-          {foodDetails && foodDetails.nutrients ? <ResultsTable data={foodDetails.nutrients}/> : <LoadingPanel/>}
+          {foodDetails && foodDetails.nutrients
+            ? <ResultsTable data={foodDetails.nutrients} scrollable={true} sortColumns={['nutrient']}/>
+            : <LoadingPanel/>
+          }
         </ModalPanel>)}
       {changeNutrientOpen && (
-        <ChangeNutrientModal open={changeNutrientOpen} onClose={handleCloseModal} nutrientToChange={nutrientToChange}
-                             onNutrientChange={handleNutrientChange} cardNutrients={nutrients}
+        <ChangeNutrientModal open={changeNutrientOpen}
+                             onClose={handleCloseModal}
+                             nutrientToChange={nutrientToChange}
+                             onNutrientChange={handleNutrientChange}
+                             cardNutrients={nutrients}
         />)}
     </>
   );
