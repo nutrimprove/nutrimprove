@@ -10,7 +10,6 @@ const CompareModal = ({
                         subtitle = 'Nutritional information per 100g of food',
                         open,
                         onClose,
-                        classes,
                       }) => {
   const mergedData = [];
 
@@ -27,15 +26,12 @@ const CompareModal = ({
   }
   return (
     <ModalPanel open={open} onClose={onClose} title={title} subtitle={subtitle}>
-      <div className={classes.compareTables}>
-        {mergedData.length > 0 ? <ResultsTable data={mergedData}/> : <LoadingPanel/>}
-      </div>
+      {mergedData.length > 0 ? <ResultsTable data={mergedData} scrollable/> : <LoadingPanel/>}
     </ModalPanel>
   );
 };
 
 CompareModal.propTypes = {
-  classes: PropTypes.object.isRequired,
   open: PropTypes.bool.isRequired,
   title: PropTypes.string,
   dataSet: PropTypes.array,

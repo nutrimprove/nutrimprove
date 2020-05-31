@@ -3,7 +3,10 @@ export default {
     width: '100%',
   },
   table: {
-    padding: '0 18px 18px 18px',
+    padding: '0 0 18px 18px',
+  },
+  scrollable: {
+    overflow: 'auto',
   },
   tableHeader: {
     backgroundColor: '#3F51B5',

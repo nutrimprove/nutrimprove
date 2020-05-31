@@ -16,6 +16,9 @@ export default {
     borderRadius: 9,
     paddingBottom: 10,
     minHeight: 400,
+    '&:focus': {
+      outline: 'none',
+    },
   },
   header: {
     padding: 20,

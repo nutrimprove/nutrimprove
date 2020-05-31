@@ -101,7 +101,7 @@ const SearchFoodByNutrient = () => {
           title={selectedFood}
           subtitle='Nutritional information per 100g of food'
         >
-          {selectedFoodDetails ? <ResultsTable data={selectedFoodDetails}/> : <LoadingPanel/>}
+          {selectedFoodDetails ? <ResultsTable data={selectedFoodDetails} scrollable/> : <LoadingPanel/>}
         </ModalPanel>
       )}
     </>
