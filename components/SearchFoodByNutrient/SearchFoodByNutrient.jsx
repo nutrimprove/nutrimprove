@@ -93,6 +93,7 @@ const SearchFoodByNutrient = () => {
         data={foods}
         title={resultsTitle}
         onRowClick={handleRowClick}
+        inModal={false}
       />}
       {detailsOpen && (
         <ModalPanel
