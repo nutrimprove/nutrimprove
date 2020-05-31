@@ -4,7 +4,7 @@ import { uniqueId } from 'lodash/util';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-const ResultsTable = ({ classes, data, onRowClick, title, inModal = true }) => {
+const ResultsTable = ({ classes, data, onRowClick, title, scrollable }) => {
   let columns;
 
   if (data && data.length > 0) {
@@ -12,7 +12,7 @@ const ResultsTable = ({ classes, data, onRowClick, title, inModal = true }) => {
   }
 
   return (
-    <div className={clsx(classes.table, inModal ? classes.modal : null)}>
+    <div className={clsx(classes.table, scrollable ? classes.scrollable : null)}>
       {title && <Typography variant='body1' align='center' className={classes.title}>
         {title}
       </Typography>}
@@ -55,7 +55,7 @@ ResultsTable.propTypes = {
   classes: PropTypes.object.isRequired,
   data: PropTypes.array.isRequired,
   title: PropTypes.string,
-  inModal: PropTypes.bool,
+  scrollable: PropTypes.bool,
   onRowClick: PropTypes.func,
 };
 

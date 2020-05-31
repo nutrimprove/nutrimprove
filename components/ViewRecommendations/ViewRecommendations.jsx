@@ -101,7 +101,7 @@ const ViewRecommendations = ({ recommendations, title }) => {
                    buttonText='Filter'
       />
       {!recommendations && <LoadingPanel/>}
-      {filteredList && <ResultsTable data={filteredList} title={filteredTitle || title} onRowClick={handleRowClick} inModal={false}/>}
+      {filteredList && <ResultsTable data={filteredList} title={filteredTitle || title} onRowClick={handleRowClick}/>}
       {compareOpen && <CompareModal dataSet={comparisonData} open={compareOpen} onClose={handleCloseModal}/>}
     </>
   );

@@ -27,9 +27,7 @@ const CompareModal = ({
   }
   return (
     <ModalPanel open={open} onClose={onClose} title={title} subtitle={subtitle}>
-      <div className={classes.compareTables}>
-        {mergedData.length > 0 ? <ResultsTable data={mergedData}/> : <LoadingPanel/>}
-      </div>
+      {mergedData.length > 0 ? <ResultsTable data={mergedData} scrollable/> : <LoadingPanel/>}
     </ModalPanel>
   );
 };

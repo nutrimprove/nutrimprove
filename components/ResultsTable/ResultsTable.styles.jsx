@@ -5,7 +5,7 @@ export default {
   table: {
     padding: '0 0 18px 18px',
   },
-  modal: {
+  scrollable: {
     overflow: 'auto',
   },
   tableHeader: {
