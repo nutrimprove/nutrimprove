@@ -13,6 +13,7 @@ const versionLogs = [
   {
     version: '0.12',
     changes: [
+      'Added Google Analytics',
       `Ability to sort results by column on most tables`,
       `Updated menu dropdown icons`,
       'Sticky header on tables outside of modals',
