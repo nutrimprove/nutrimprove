@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import BackToMainPageLink from '../BackToMainPageLink';
 import SectionHeader from '../SectionHeader';
-import ContentSection from './ContentSection';
+import ContentSection from '../ContentSection';
 
 const content = {
   title: `Help`,
