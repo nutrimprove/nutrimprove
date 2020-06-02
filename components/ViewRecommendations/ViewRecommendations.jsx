@@ -28,7 +28,6 @@ const ViewRecommendations = ({ recommendations, title }) => {
   const [compareOpen, setCompareOpen] = useState();
   const [filter, setFilter] = useState();
   const [foodNames, setFoodNames] = useState();
-  const [filteredTitle, setFilteredTitle] = useState();
 
   useEffect(() => {
     if (!recommendations) return;
@@ -46,7 +45,7 @@ const ViewRecommendations = ({ recommendations, title }) => {
     });
     setFoodNames(foods);
     setList(formattedRecommendations);
-    setFilteredList(formattedRecommendations);
+    setFilteredList({ list: formattedRecommendations });
   }, [recommendations]);
 
   const getFoodDetails = (food) => {
@@ -76,8 +75,7 @@ const ViewRecommendations = ({ recommendations, title }) => {
       setFilter(item.foodName);
     } else {
       setFilter(null);
-      setFilteredList(list);
-      setFilteredTitle(null);
+      setFilteredList({ list });
     }
   };
 
@@ -87,8 +85,8 @@ const ViewRecommendations = ({ recommendations, title }) => {
 
   const filterByFood = () => {
     const filteredRecommendations = list.filter(({ food, recommendation }) => food === filter || recommendation === filter);
-    setFilteredList(filteredRecommendations);
-    setFilteredTitle(`${filteredRecommendations.length} recommendations (out of ${list.length})`);
+    const title = `${filteredRecommendations.length} recommendations (out of ${list.length})`;
+    setFilteredList({ title, list: filteredRecommendations });
   };
 
   return (
@@ -101,11 +99,11 @@ const ViewRecommendations = ({ recommendations, title }) => {
                    buttonText='Filter'
       />
       {!recommendations && <LoadingPanel/>}
-      {filteredList && <ResultsTable data={filteredList}
-                                     title={filteredTitle || title}
-                                     onRowClick={handleRowClick}
-                                     sortColumns={['food', 'recommendation', 'rating', 'date added']}
-                                     sortOnLoad='date added'
+      {filteredList && filteredList.list && <ResultsTable data={filteredList.list}
+                                                          title={filteredList.title || title}
+                                                          onRowClick={handleRowClick}
+                                                          sortColumns={['food', 'recommendation', 'rating', 'date added']}
+                                                          sortOnLoad='date added'
       />}
       {compareOpen && <CompareModal dataSet={comparisonData} open={compareOpen} onClose={handleCloseModal}/>}
     </>

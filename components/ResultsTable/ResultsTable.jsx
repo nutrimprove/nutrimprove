@@ -10,6 +10,10 @@ const ResultsTable = ({ classes, data, onRowClick, title, scrollable, sortOnLoad
   const [order, setOrder] = useState({ column: null, order: null });
   const [tableData, setTableData] = useState(data);
 
+  useEffect(() => {
+    setTableData(data);
+  }, [data]);
+
   let columns;
   if (data && data.length > 0) {
     columns = Object.keys(data[0]).filter(key => key !== 'id').map(key => key);
