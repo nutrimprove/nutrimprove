@@ -1,12 +1,17 @@
-const trackPageView = url => {
-  try {
-    window.gtag('config', 'UA-XXXXXXXX-X', {
-      page_location: url,
-    });
-  } catch (error) {
-    // silences the error in dev mode
-    // and/or if gtag fails to load
-  }
+import { GA_TRACKING_ID } from 'helpers/constants';
+
+// https://developers.google.com/analytics/devguides/collection/gtagjs/pages
+export const pageview = (url) => {
+  window.gtag('config', GA_TRACKING_ID, {
+    page_path: url,
+  })
 };
 
-export { trackPageView };
+// https://developers.google.com/analytics/devguides/collection/gtagjs/events
+export const event = ({ action, category, label, value }) => {
+  window.gtag('event', action, {
+    event_category: category,
+    event_label: label,
+    value: value,
+  })
+};
