@@ -35,7 +35,7 @@ export default class MyDocument extends Document {
         enhanceApp: (App) => (props) => sheets.collect(<App {...props} />),
       });
 
-    const isProduction = process.env.NODE_ENV === 'production' && process.env.PRODUCTION === true;
+    const isProduction = process.env.NODE_ENV === 'production' && process.env.PRODUCTION === 'true';
     console.log('=== _document.js #39 === ( isProduction ) =======>', isProduction);
     console.log('=== _document.js #40 === ( process.env.PRODUCTION ) =======>', process.env.PRODUCTION);
     console.log(`=== _document.js #41 === ( process.env.NODE_ENV === 'production' ) =======>`, process.env.NODE_ENV === 'production');
