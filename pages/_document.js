@@ -35,7 +35,7 @@ export default class MyDocument extends Document {
         enhanceApp: (App) => (props) => sheets.collect(<App {...props} />),
       });
 
-    const isProduction = process.env.NODE_ENV === 'production' && process.env.PRODUCTION === true;
+    const isProduction = process.env.NODE_ENV === 'production' && process.env.PRODUCTION === 'true';
     const initialProps = await Document.getInitialProps(ctx);
 
     return {
