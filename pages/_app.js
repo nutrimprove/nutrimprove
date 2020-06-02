@@ -2,7 +2,7 @@ import AuthContainer from 'components/AuthContainer';
 import Header from 'components/Header';
 import PageContent from 'components/PageContent';
 import RootContainer from 'components/RootContainer';
-import { trackPageView } from 'helpers/analytics';
+import * as gtag from 'helpers/analytics';
 import Router from 'next/router';
 import PropTypes from 'prop-types';
 import React, { useEffect } from 'react';
@@ -11,9 +11,13 @@ import withReduxStore from 'store/withReduxStore';
 
 const MyApp = ({ Component, pageProps, store }) => {
   useEffect(() => {
-    Router.onRouteChangeComplete = url => {
-      trackPageView(url);
+    const handleRouteChange = url => {
+      gtag.pageview(url)
     };
+    Router.events.on('routeChangeComplete', handleRouteChange)
+    return () => {
+      Router.events.off('routeChangeComplete', handleRouteChange)
+    }
   }, []);
 
   return (
