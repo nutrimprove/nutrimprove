@@ -31,6 +31,14 @@ export default {
     },
   },
   skip: {
+    position: 'relative',
     marginTop: 14,
+    padding: 3,
+    width: 250,
+  },
+  spinner: {
+    right: 0,
+    top: 0,
+    position: 'absolute',
   },
 };

@@ -4,8 +4,8 @@ import ActionsContainer from 'components/ActionsContainer';
 import ButtonWithSpinner from 'components/ButtonWithSpinner';
 import CompareModal from 'components/CompareModal';
 import FoodCard from 'components/FoodCard';
-import LoadingOverlay from 'components/LoadingOverlay';
 import LoadingPanel from 'components/LoadingPanel';
+import LoadingSpinner from 'components/LoadingSpinner';
 import { parseNutrients } from 'helpers/utils';
 import { getFoodById } from 'interfaces/api/foods';
 import { applyRecommendationRating, getAllRecommendations } from 'interfaces/api/recommendations';
@@ -122,7 +122,6 @@ const ReviewRecommendations = ({ classes }) => {
 
   return (
     <>
-      {loadingFoodData && <LoadingOverlay delay={200}/>}
       {loadingRecommendations && <LoadingPanel/>}
       {food && recommendedFood && (
         <>
@@ -155,8 +154,10 @@ const ReviewRecommendations = ({ classes }) => {
                 Approve
               </ButtonWithSpinner>
             </div>
-            <Link component={'button'} className={classes.skip} onClick={skipRecommendation}>
+            <Link component='button' className={classes.skip} onClick={skipRecommendation}>
               <Typography>Skip this recommendation</Typography>
+              {loadingFoodData && <span className={classes.spinner}><LoadingSpinner force={true}/></span>}
+
             </Link>
           </ActionsContainer>
           {compareOpen && <CompareModal dataSet={comparisonData} open={compareOpen} onClose={handleCloseModal}/>}
