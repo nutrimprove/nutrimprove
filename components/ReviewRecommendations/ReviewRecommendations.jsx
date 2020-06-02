@@ -4,6 +4,7 @@ import ActionsContainer from 'components/ActionsContainer';
 import ButtonWithSpinner from 'components/ButtonWithSpinner';
 import CompareModal from 'components/CompareModal';
 import FoodCard from 'components/FoodCard';
+import LoadingOverlay from 'components/LoadingOverlay';
 import LoadingPanel from 'components/LoadingPanel';
 import { parseNutrients } from 'helpers/utils';
 import { getFoodById } from 'interfaces/api/foods';
@@ -26,7 +27,6 @@ const ReviewRecommendations = ({ classes }) => {
   const [comparisonData, setComparisonData] = useState();
   const { promiseInProgress: loadingRecommendations } = usePromiseTracker({ area: 'getAllRecommendations' });
   const { promiseInProgress: loadingFoodData } = usePromiseTracker({ area: 'getFoodData' });
-  const loading = loadingRecommendations || loadingFoodData;
 
   useEffect(() => {
     (async () => {
@@ -122,6 +122,8 @@ const ReviewRecommendations = ({ classes }) => {
 
   return (
     <>
+      {loadingFoodData && <LoadingOverlay delay={200}/>}
+      {loadingRecommendations && <LoadingPanel/>}
       {food && recommendedFood && (
         <>
           <div className={classes.cards}>
@@ -160,8 +162,8 @@ const ReviewRecommendations = ({ classes }) => {
           {compareOpen && <CompareModal dataSet={comparisonData} open={compareOpen} onClose={handleCloseModal}/>}
         </>
       )}
-      {!recommendation && !loading && <Typography className={classes.title}>No more recommendations!!</Typography>}
-      {loading && <LoadingPanel/>}
+      {!recommendation && !loadingRecommendations &&
+      <Typography className={classes.title}>No more recommendations!!</Typography>}
     </>
   );
 };
