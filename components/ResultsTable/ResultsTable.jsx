@@ -44,7 +44,6 @@ const ResultsTable = ({ classes, data, onRowClick, title, scrollable, sortOnLoad
     const sortBy = Object.keys(data[0]).find(key => key.toLowerCase() === column.toLowerCase());
     const sortedData = orderBy(data, [sortBy], [sortObject.order]);
     setTableData(sortedData);
-    console.log('=== ResultsTable.jsx #44 === ( sortedData ) =======>', sortedData);
   };
 
   return (
