@@ -26,7 +26,6 @@ const ReviewRecommendations = ({ classes }) => {
   const [compareOpen, setCompareOpen] = useState();
   const [comparisonData, setComparisonData] = useState();
   const { promiseInProgress: loadingRecommendations } = usePromiseTracker({ area: 'getAllRecommendations' });
-  const { promiseInProgress: loadingFoodData } = usePromiseTracker({ area: 'getFoodData' });
 
   useEffect(() => {
     (async () => {
@@ -156,7 +155,7 @@ const ReviewRecommendations = ({ classes }) => {
             </div>
             <Link component='button' className={classes.skip} onClick={skipRecommendation}>
               <Typography>Skip this recommendation</Typography>
-              {loadingFoodData && <span className={classes.spinner}><LoadingSpinner force={true}/></span>}
+              <span className={classes.spinner}><LoadingSpinner context='getFoodData'/></span>
 
             </Link>
           </ActionsContainer>
