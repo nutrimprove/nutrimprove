@@ -5,6 +5,7 @@ import ButtonWithSpinner from 'components/ButtonWithSpinner';
 import CompareModal from 'components/CompareModal';
 import FoodCard from 'components/FoodCard';
 import LoadingPanel from 'components/LoadingPanel';
+import LoadingSpinner from 'components/LoadingSpinner';
 import { parseNutrients } from 'helpers/utils';
 import { getFoodById } from 'interfaces/api/foods';
 import { applyRecommendationRating, getAllRecommendations } from 'interfaces/api/recommendations';
@@ -25,8 +26,6 @@ const ReviewRecommendations = ({ classes }) => {
   const [compareOpen, setCompareOpen] = useState();
   const [comparisonData, setComparisonData] = useState();
   const { promiseInProgress: loadingRecommendations } = usePromiseTracker({ area: 'getAllRecommendations' });
-  const { promiseInProgress: loadingFoodData } = usePromiseTracker({ area: 'getFoodData' });
-  const loading = loadingRecommendations || loadingFoodData;
 
   useEffect(() => {
     (async () => {
@@ -122,6 +121,7 @@ const ReviewRecommendations = ({ classes }) => {
 
   return (
     <>
+      {loadingRecommendations && <LoadingPanel/>}
       {food && recommendedFood && (
         <>
           <div className={classes.cards}>
@@ -153,15 +153,17 @@ const ReviewRecommendations = ({ classes }) => {
                 Approve
               </ButtonWithSpinner>
             </div>
-            <Link component={'button'} className={classes.skip} onClick={skipRecommendation}>
+            <Link component='button' className={classes.skip} onClick={skipRecommendation}>
               <Typography>Skip this recommendation</Typography>
+              <span className={classes.spinner}><LoadingSpinner context='getFoodData'/></span>
+
             </Link>
           </ActionsContainer>
           {compareOpen && <CompareModal dataSet={comparisonData} open={compareOpen} onClose={handleCloseModal}/>}
         </>
       )}
-      {!recommendation && !loading && <Typography className={classes.title}>No more recommendations!!</Typography>}
-      {loading && <LoadingPanel/>}
+      {!recommendation && !loadingRecommendations &&
+      <Typography className={classes.title}>No more recommendations!!</Typography>}
     </>
   );
 };
