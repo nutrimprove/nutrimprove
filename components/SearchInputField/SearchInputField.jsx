@@ -96,7 +96,8 @@ renderSuggestion.propTypes = {
 let timeout = null;
 
 const SearchInputField = ({ classes, foodKey, foodAction, isValid }) => {
-    const { categories, foodNames } = useSelector(state => state.globalState);
+    const categories = useSelector(({ globalState }) => globalState.categories);
+    const foodNames = useSelector(({ globalState }) => globalState.foodNames);
     const [food, setFood] = useState();
     const [charCount, setCharCount] = useState(0);
     const [notFound, setNotFound] = useState();

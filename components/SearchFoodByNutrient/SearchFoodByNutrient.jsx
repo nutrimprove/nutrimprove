@@ -9,7 +9,7 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 const SearchFoodByNutrient = () => {
-  const { categories } = useSelector(state => state.globalState);
+  const categories = useSelector(({globalState}) => globalState.categories);
   const [nutrient, setNutrient] = useState();
   const [nutrients, setNutrients] = useState([]);
   const [foods, setFoods] = useState();

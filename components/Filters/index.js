@@ -1,5 +1,5 @@
 import { withStyles } from '@material-ui/core';
-import SearchFilters from './Filters';
+import Filters from './Filters';
 import styles from './Filters.styles';
 
-export default withStyles(styles)(SearchFilters);
+export default withStyles(styles)(Filters);

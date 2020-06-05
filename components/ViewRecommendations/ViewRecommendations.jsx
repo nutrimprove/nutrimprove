@@ -29,8 +29,6 @@ const ViewRecommendations = ({ recommendations, title }) => {
   const [filter, setFilter] = useState();
   const [foodNames, setFoodNames] = useState();
 
-  console.log(`=== ViewRecommendations.jsx #32 === ( recommendations ) =======>`, recommendations);
-
   useEffect(() => {
     if (!recommendations) return;
     const formattedRecommendations = formatRecommendations(recommendations);

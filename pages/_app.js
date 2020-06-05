@@ -1,5 +1,4 @@
 import Header from 'components/Header';
-import NoAccess from 'components/NoAccess';
 import PageContent from 'components/PageContent';
 import RootContainer from 'components/RootContainer';
 import * as gtag from 'helpers/analytics';
@@ -7,15 +6,11 @@ import Router, { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import React, { useEffect } from 'react';
 import { Provider } from 'react-redux';
-import { AuthProvider, useAuth } from 'react-use-auth';
+import { AuthProvider } from 'react-use-auth';
 import withReduxStore from 'store/withReduxStore';
 
-const noAuthPages = ['/auth0_callback', '/about'];
-
 const MyApp = ({ Component, pageProps, store }) => {
-  const { isAuthenticated } = useAuth();
   const router = useRouter();
-  const allow = isAuthenticated() || noAuthPages.includes(router.route);
 
   useEffect(() => {
     // Google Analytics
@@ -28,8 +23,6 @@ const MyApp = ({ Component, pageProps, store }) => {
     };
   }, []);
 
-  console.log(`=== _app.js #31 === ( allow ) =======>`, allow);
-
   return (
     <AuthProvider
       navigate={router.push}
@@ -40,7 +33,7 @@ const MyApp = ({ Component, pageProps, store }) => {
         <RootContainer>
           <Header/>
           <PageContent>
-            {allow ? <Component {...pageProps}/> : <NoAccess/>}
+            <Component {...pageProps}/>
           </PageContent>
         </RootContainer>
       </Provider>

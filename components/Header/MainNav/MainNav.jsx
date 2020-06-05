@@ -1,10 +1,8 @@
 import { AppBar } from '@material-ui/core';
 import MenuButton from 'components/Header/MainNav/MenuButton';
-import LoadingSpinner from 'components/LoadingSpinner';
 import { isAdmin } from 'helpers/userUtils';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { usePromiseTracker } from 'react-promise-tracker';
 import { useSelector } from 'react-redux';
 
 const menus = [
@@ -35,8 +33,9 @@ const adminOption = {
 };
 
 const MainNav = ({ classes }) => {
-  const { userDetails } = useSelector(state => state.globalState);
+  const userDetails = useSelector(({ globalState }) => globalState.userDetails);
   const { isLoggedIn, approved } = userDetails;
+
 
   console.log(`=== MainNav.jsx #39 === ( userDetails ) =======>`, userDetails);
 

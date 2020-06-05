@@ -8,7 +8,8 @@ import FoodCard from '../FoodCard';
 import SearchField from '../SearchField';
 
 const FoodCardWithSearch = ({ classes, title, highlightItem, onHover, foodInfo, context }) => {
-  const { foodNames, categories } = useSelector(state => state.globalState);
+  const categories = useSelector(({ globalState }) => globalState.categories);
+  const foodNames = useSelector(({ globalState }) => globalState.foodNames);
   const [selectedFood, setSelectedFood] = useState();
   const [food, setFood] = useState();
   const loading = foodNames.length === 0;

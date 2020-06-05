@@ -1,6 +1,6 @@
 import { Button, Checkbox, FormControl, FormControlLabel, FormGroup, Link } from '@material-ui/core';
 import PopoverPanelWithButton from 'components/PopoverPanelWithButton';
-import { EDAMAM_DB } from 'helpers/constants';
+import { CATEGORIES, EDAMAM_DB } from 'helpers/constants';
 import { uniqueId } from 'lodash/util';
 import PropTypes from 'prop-types';
 import React, { useCallback, useEffect, useState } from 'react';
@@ -60,7 +60,7 @@ const Filters = ({ classes }) => {
     ));
 
   const hasFilters = () => {
-    return categories.all.length !== categories.selectedGroups.length && categories.selectedGroups.length > 0;
+    return CATEGORIES.length !== filters.length && filters.length > 0;
   };
 
   return (
