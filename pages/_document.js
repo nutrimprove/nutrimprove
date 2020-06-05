@@ -1,32 +1,10 @@
 import { ServerStyleSheets } from '@material-ui/core/styles';
+import { GA_TRACKING_ID } from 'helpers/constants';
 import Document, { Head, Html, Main, NextScript } from 'next/document';
 import React from 'react';
 
 export default class MyDocument extends Document {
   static async getInitialProps(ctx) {
-    // Resolution order
-    //
-    // On the server:
-    // 1. app.getInitialProps
-    // 2. page.getInitialProps
-    // 3. document.getInitialProps
-    // 4. app.render
-    // 5. page.render
-    // 6. document.render
-    //
-    // On the server with error:
-    // 1. document.getInitialProps
-    // 2. app.render
-    // 3. page.render
-    // 4. document.render
-    //
-    // On the client
-    // 1. app.getInitialProps
-    // 2. page.getInitialProps
-    // 3. app.render
-    // 4. page.render
-
-    // Render app and page and get the context of the page with collected side effects.
     const sheets = new ServerStyleSheets();
     const originalRenderPage = ctx.renderPage;
 
@@ -49,11 +27,13 @@ export default class MyDocument extends Document {
   setGoogleTags() {
     return {
       __html: `
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'UA-168058659-2');
-      `,
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${GA_TRACKING_ID}', {
+              page_path: window.location.pathname,
+            });
+          `,
     };
   }
 
@@ -62,20 +42,18 @@ export default class MyDocument extends Document {
 
     return (
       <Html lang="en">
-        <Head/>
+        <Head>
+          {/* Global Site Tag (gtag.js) - Google Analytics */}
+          {isProduction && (
+            <>
+              <script async src={`https://www.googletagmanager.com/gtag/js?id=${GA_TRACKING_ID}`}/>
+              <script dangerouslySetInnerHTML={this.setGoogleTags()}/>
+            </>
+          )}
+        </Head>
         <body>
         <Main/>
         <NextScript/>
-        {isProduction && (
-          <>
-            <script
-              async
-              src="https://www.googletagmanager.com/gtag/js?id=UA-168058659-2"
-            />
-            {/* We call the function above to inject the contents of the script tag */}
-            <script dangerouslySetInnerHTML={this.setGoogleTags()}/>
-          </>
-        )}
         </body>
       </Html>
     );
