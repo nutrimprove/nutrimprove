@@ -70,7 +70,6 @@ const ResultsTable = ({ classes, data, onRowClick, title, scrollable, sortOnLoad
                           : <ArrowDropDownIcon/>
                       )}
                     </span>
-
                   </TableCell>
                 );
               })}

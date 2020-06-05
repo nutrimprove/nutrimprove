@@ -16,21 +16,17 @@ const RootContainer = ({ classes, children }) => {
 
   useEffect(() => {
     (async () => {
-      if (!EDAMAM_DB && isAuthenticated()) {
-        const foodNames = await getAllFoodNames();
-        setFoodNames(foodNames);
-      }
-    })();
-  }, []);
-
-  useEffect(() => {
-    (async () => {
       if (user.email) {
         const userDetails = await getUser(user.email);
         if (userDetails) {
           const { role, approved, points, preferences, email } = userDetails;
           setUserDetails({ email, role, approved, points, isLoggedIn: isAuthenticated() });
           setUserPreferences(preferences);
+
+          if (!EDAMAM_DB) {
+            const foodNames = await getAllFoodNames();
+            setFoodNames(foodNames);
+          }
         }
       }
     })();
