@@ -88,7 +88,9 @@ const ResultsTable = ({ classes, data, onRowClick, title, scrollable, sortOnLoad
               >
                 {columns.map((column) => (
                   <TableCell key={`${row}-${column}`}>
-                    {column.toLowerCase().includes('date') ? new Date(row[column]).toLocaleDateString() : row[column]}
+                    <>
+                      {column.toLowerCase().includes('date') ? new Date(row[column]).toLocaleDateString() : row[column]}
+                    </>
                   </TableCell>
                 ))}
               </TableRow>
