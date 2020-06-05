@@ -10,6 +10,8 @@ import { setFoodNamesAction, setUserDetailsAction, setUserPreferencesAction } fr
 const RootContainer = ({ classes, children }) => {
   const dispatch = useDispatch();
   const setFoodNames = useCallback(foodNames => dispatch(setFoodNamesAction(foodNames)), []);
+  const setUserDetails = useCallback(userDetails => dispatch(setUserDetailsAction(userDetails)), []);
+  const setUserPreferences = useCallback(userPreferences => dispatch(setUserPreferencesAction(userPreferences)), []);
   const { isAuthenticated, user } = useAuth();
 
   useEffect(() => {
@@ -26,9 +28,9 @@ const RootContainer = ({ classes, children }) => {
       if (user.email) {
         const userDetails = await getUser(user.email);
         if (userDetails) {
-          const { role, approved, points, preferences } = userDetails;
-          dispatch(setUserDetailsAction({ ...userDetails, role, approved, points, isLoggedIn: isAuthenticated() }));
-          dispatch(setUserPreferencesAction(preferences));
+          const { role, approved, points, preferences, email } = userDetails;
+          setUserDetails({ email, role, approved, points, isLoggedIn: isAuthenticated() });
+          setUserPreferences(preferences);
         }
       }
     })();

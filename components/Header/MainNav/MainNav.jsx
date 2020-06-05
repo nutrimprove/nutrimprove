@@ -36,9 +36,6 @@ const MainNav = ({ classes }) => {
   const userDetails = useSelector(({ globalState }) => globalState.userDetails);
   const { isLoggedIn, approved } = userDetails;
 
-
-  console.log(`=== MainNav.jsx #39 === ( userDetails ) =======>`, userDetails);
-
   return (
     <AppBar position='static' classes={{ root: classes.menuBar }}>
       {userDetails && userDetails.isLoggedIn && <div className={classes.container}>

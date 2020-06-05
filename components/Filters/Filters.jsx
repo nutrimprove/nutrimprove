@@ -60,7 +60,7 @@ const Filters = ({ classes }) => {
     ));
 
   const hasFilters = () => {
-    return CATEGORIES.length !== filters.length && filters.length > 0;
+    return categories.all.length !== categories.selectedGroups.length && categories.selectedGroups.length > 0;
   };
 
   return (
@@ -82,7 +82,7 @@ const Filters = ({ classes }) => {
           </div>
         </FormControl>
       </PopoverPanelWithButton>
-      {hasFilters() && <Link component={'button'} className={classes.reset} onClick={setNone}>Reset Filters</Link>}
+      {hasFilters() && <Link component='button' className={classes.reset} onClick={setNone}>Reset Filters</Link>}
     </div>
   );
 };
