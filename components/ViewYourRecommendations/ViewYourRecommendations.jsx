@@ -4,13 +4,15 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 const ViewYourRecommendations = () => {
-  const user = useSelector(({ globalState }) => globalState.userDetails.name);
+  const {userDetails} = useSelector(({ globalState }) => globalState);
   const [recommendations, setRecommendations] = useState();
   const [title, setTitle] = useState();
 
+  console.log(`=== ViewYourRecommendations.jsx #11 === ( userDetails ) =======>`, userDetails);
+
   useEffect(() => {
     (async () => {
-      const recommendations = await getUserRecommendations(user);
+      const recommendations = await getUserRecommendations(userDetails.email);
       setTitle(`Your recommendations (${recommendations.length})`);
       setRecommendations(recommendations);
     })();

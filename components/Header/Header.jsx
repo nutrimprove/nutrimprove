@@ -1,25 +1,14 @@
 import { AppBar, Link, Toolbar, Typography } from '@material-ui/core';
 import MainNav from 'components/Header/MainNav';
-import { EDAMAM_DB } from 'helpers/constants';
-import { getAllFoodNames } from 'interfaces/api/foods';
 import PropTypes from 'prop-types';
-import React, { useCallback, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { setFoodNamesAction } from 'store/global/actions';
+import React from 'react';
+import { useSelector } from 'react-redux';
+import { useAuth } from 'react-use-auth';
 import HeaderLink from './HeaderLink';
 
 const Header = ({ classes }) => {
-  const dispatch = useDispatch();
-  const setFoodNames = useCallback(foodNames => dispatch(setFoodNamesAction(foodNames)), []);
-
-  useEffect(() => {
-    (async () => {
-      if (!EDAMAM_DB) {
-        const foodNames = await getAllFoodNames();
-        setFoodNames(foodNames);
-      }
-    })();
-  }, []);
+  const userDetails = useSelector(({ globalState }) => globalState.userDetails);
+  const { login, logout } = useAuth();
 
   return (
     <div className={classes.header}>
@@ -41,8 +30,10 @@ const Header = ({ classes }) => {
 
           </div>
           <div id='user' className={classes.right}>
-            <HeaderLink action={() => true}>Logout</HeaderLink>
-            <HeaderLink action={() => true}>Login</HeaderLink>
+            {userDetails.isLoggedIn
+              ? <HeaderLink action={logout}>Logout</HeaderLink>
+              : <HeaderLink action={login}>Login</HeaderLink>
+            }
           </div>
         </Toolbar>
       </AppBar>

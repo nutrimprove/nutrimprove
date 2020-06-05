@@ -1,7 +1,11 @@
 import { AppBar } from '@material-ui/core';
 import MenuButton from 'components/Header/MainNav/MenuButton';
+import LoadingSpinner from 'components/LoadingSpinner';
+import { isAdmin } from 'helpers/userUtils';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { usePromiseTracker } from 'react-promise-tracker';
+import { useSelector } from 'react-redux';
 
 const menus = [
   {
@@ -31,18 +35,21 @@ const adminOption = {
 };
 
 const MainNav = ({ classes }) => {
+  const { userDetails } = useSelector(state => state.globalState);
+  const { isLoggedIn, approved } = userDetails;
+
+  console.log(`=== MainNav.jsx #39 === ( userDetails ) =======>`, userDetails);
 
   return (
     <AppBar position='static' classes={{ root: classes.menuBar }}>
-      {/* <Typography className={classes.welcomeText}>Welcome to Nutrimprove</Typography> */}
-      <div className={classes.container}>
+      {userDetails && userDetails.isLoggedIn && <div className={classes.container}>
         {menus.map(menu => (
           <MenuButton key={menu.name} menu={menu}/>
         ))}
-        {/* {userDetails.approved && isAdmin(userDetails) && ( */}
-        <MenuButton menu={adminOption}/>
-        {/* )} */}
-      </div>
+        {isLoggedIn && approved && isAdmin(userDetails) && (
+          <MenuButton menu={adminOption}/>
+        )}
+      </div>}
     </AppBar>
   );
 };

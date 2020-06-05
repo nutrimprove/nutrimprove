@@ -7,14 +7,8 @@ import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 
 const ResultsTable = ({ classes, data, onRowClick, title, scrollable, sortOnLoad, sortColumns = [] }) => {
-  if (!data || data.length === 0) return null;
-
   const [order, setOrder] = useState({ column: null, order: null });
-  const [tableData, setTableData] = useState(data);
-
-  useEffect(() => {
-    setTableData(data);
-  }, [data]);
+  const [tableData, setTableData] = useState([]);
 
   let columns;
   if (data && data.length > 0) {
@@ -27,6 +21,12 @@ const ResultsTable = ({ classes, data, onRowClick, title, scrollable, sortOnLoad
   }
 
   useEffect(() => {
+    if (data) {
+      setTableData(data);
+    }
+  }, [data]);
+
+  useEffect(() => {
     handleSort(sortOnLoad);
   }, []);
 
@@ -35,7 +35,7 @@ const ResultsTable = ({ classes, data, onRowClick, title, scrollable, sortOnLoad
   const sort = column => column ? columnsToSort.includes(column.toLowerCase()) : column;
 
   const handleSort = column => {
-    if (!sort(column)) return;
+    if (!sort(column) || !data || data.length === 0) return;
 
     const sortObject = { column };
     order.column === column

@@ -5,7 +5,7 @@ import React from 'react';
 import { usePromiseTracker } from 'react-promise-tracker';
 
 const PageContent = ({ children, classes }) => {
-  const { promiseInProgress: authenticating } = usePromiseTracker({ area: 'authentication' });
+  const { promiseInProgress: authenticating } = usePromiseTracker({ area: 'authenticating' });
 
   return (
   <Paper className={classes.content}>

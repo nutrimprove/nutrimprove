@@ -1,3 +1,4 @@
+import WelcomePage from 'components/WelcomePage/WelcomePage';
 import { PROJECT_NAME } from 'helpers/constants';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -10,7 +11,7 @@ const content = {
 };
 
 const NoAccess = ({ userDetails }) => {
-  if (userDetails.email) {
+  if (userDetails && userDetails.email) {
     if (!userDetails.email_verified) {
       content.subtitle = 'Please verify your email account';
       content.messages = [
@@ -28,13 +29,14 @@ const NoAccess = ({ userDetails }) => {
 
   return (
     <>
-      {userDetails && <SectionHeader content={content}/>}
+      <SectionHeader content={content}/>
+      <WelcomePage header={false}/>
     </>
   );
 };
 
 NoAccess.propTypes = {
-  userDetails: PropTypes.object.isRequired,
+  userDetails: PropTypes.object,
 };
 
 export default NoAccess;

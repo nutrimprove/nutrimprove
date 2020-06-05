@@ -1,17 +1,17 @@
 import { Link, Typography } from '@material-ui/core';
-import BackToMainPageLink from 'components/BackToMainPageLink';
 import SectionHeader from 'components/SectionHeader';
+import PropTypes from 'prop-types';
 import React from 'react';
 
 const content = {
   title: `Welcome to Nutrimprove`,
 };
 
-const WelcomePage = () => {
+const WelcomePage = ({ header = true }) => {
   return (
     <>
       <>
-        <SectionHeader content={content}/>
+        {header && <SectionHeader content={content}/>}
         <Typography>
           NutrImprove is an initiative that aims to curate the world&apos;s
           largest database of nutritional recommendations.
@@ -45,6 +45,10 @@ const WelcomePage = () => {
       </>
     </>
   );
+};
+
+WelcomePage.propTypes = {
+  header: PropTypes.bool,
 };
 
 export default WelcomePage;
