@@ -34,7 +34,7 @@ const RootContainer = ({ classes, children }) => {
         }
       }
     })();
-  }, []);
+  }, [user]);
 
   return (
     <div className={classes.container}>
