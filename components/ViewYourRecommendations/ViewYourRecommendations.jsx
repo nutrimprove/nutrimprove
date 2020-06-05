@@ -1,14 +1,12 @@
 import ViewRecommendations from 'components/ViewRecommendations';
 import { getUserRecommendations } from 'interfaces/api/recommendations';
 import React, { useEffect, useState } from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 const ViewYourRecommendations = () => {
-  const userDetails = useSelector(({ globalState }) => globalState.userDetails, shallowEqual);
+  const userDetails = useSelector(({ globalState }) => globalState.userDetails);
   const [recommendations, setRecommendations] = useState();
   const [title, setTitle] = useState();
-
-  console.log(`=== ViewYourRecommendations.jsx #11 === ( userDetails ) =======>`, userDetails);
 
   useEffect(() => {
     (async () => {
