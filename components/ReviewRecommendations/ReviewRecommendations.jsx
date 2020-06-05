@@ -26,10 +26,12 @@ const ReviewRecommendations = ({ classes }) => {
   const [compareOpen, setCompareOpen] = useState();
   const [comparisonData, setComparisonData] = useState();
   const { promiseInProgress: loadingRecommendations } = usePromiseTracker({ area: 'getAllRecommendations' });
+  let firstLoad = false;
 
   useEffect(() => {
     (async () => {
       const results = await getAllRecommendations();
+      firstLoad = true;
       if (results) {
         setRecommendations(results);
       }
@@ -162,7 +164,7 @@ const ReviewRecommendations = ({ classes }) => {
           {compareOpen && <CompareModal dataSet={comparisonData} open={compareOpen} onClose={handleCloseModal}/>}
         </>
       )}
-      {!recommendation && !loadingRecommendations &&
+      {!recommendation && !loadingRecommendations && firstLoad &&
       <Typography className={classes.title}>No more recommendations!!</Typography>}
     </>
   );

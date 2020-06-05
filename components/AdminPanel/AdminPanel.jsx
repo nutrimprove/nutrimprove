@@ -37,6 +37,8 @@ const updatePoints = async () => {
 
 const AdminPanel = ({ classes }) => {
   const userDetails = useSelector(({ globalState }) => globalState.userDetails);
+  if (!userDetails) return null;
+
   const [users, setUsers] = useState();
   const [userQuery, setUserQuery] = useState();
 

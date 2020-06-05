@@ -41,6 +41,8 @@ const DEFAULT_CARD_NUTRIENTS = [
 
 const GA_TRACKING_ID = 'UA-168058659-2';
 
+const IS_PRODUCTION = process.env.NODE_ENV === 'production' && process.env.PRODUCTION === 'true';
+
 export {
   PROJECT_NAME,
   ROLES,
@@ -50,4 +52,5 @@ export {
   CATEGORIES,
   DEFAULT_CARD_NUTRIENTS,
   GA_TRACKING_ID,
+  IS_PRODUCTION,
 };

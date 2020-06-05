@@ -7,6 +7,8 @@ import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 
 const ResultsTable = ({ classes, data, onRowClick, title, scrollable, sortOnLoad, sortColumns = [] }) => {
+  if (!data || data.length === 0) return null;
+
   const [order, setOrder] = useState({ column: null, order: null });
   const [tableData, setTableData] = useState(data);
 

@@ -1,8 +1,8 @@
-import { GA_TRACKING_ID } from 'helpers/constants';
+import { GA_TRACKING_ID, IS_PRODUCTION } from 'helpers/constants';
 
 // https://developers.google.com/analytics/devguides/collection/gtagjs/pages
 export const pageview = (url) => {
-  if (window.gtag) {
+  if (IS_PRODUCTION && window.gtag) {
     window.gtag('config', GA_TRACKING_ID, {
       page_path: url,
     });
@@ -13,7 +13,7 @@ export const pageview = (url) => {
 
 // https://developers.google.com/analytics/devguides/collection/gtagjs/events
 export const event = ({ action, category, label, value }) => {
-  if (window.gtag) {
+  if (IS_PRODUCTION && window.gtag) {
     window.gtag('event', action, {
       event_category: category,
       event_label: label,

@@ -97,6 +97,11 @@ const AddBulkRecommendations = ({
       return;
     }
 
+    if(!userDetails || !userDetails.email) {
+      console.error('No user logged in?!');
+      return;
+    }
+
     for (const food of foods) {
       for (const recommendation of recommendations) {
         recommendationsPayload.push({

@@ -1,5 +1,5 @@
 import { ServerStyleSheets } from '@material-ui/core/styles';
-import { GA_TRACKING_ID } from 'helpers/constants';
+import { GA_TRACKING_ID, IS_PRODUCTION } from 'helpers/constants';
 import Document, { Head, Html, Main, NextScript } from 'next/document';
 import React from 'react';
 
@@ -13,12 +13,11 @@ export default class MyDocument extends Document {
         enhanceApp: (App) => (props) => sheets.collect(<App {...props} />),
       });
 
-    const isProduction = process.env.NODE_ENV === 'production' && process.env.PRODUCTION === 'true';
     const initialProps = await Document.getInitialProps(ctx);
 
     return {
       ...initialProps,
-      isProduction,
+      IS_PRODUCTION,
       // Styles fragment is rendered after the app and page rendering finish.
       styles: [...React.Children.toArray(initialProps.styles), sheets.getStyleElement()],
     };
@@ -38,13 +37,11 @@ export default class MyDocument extends Document {
   }
 
   render() {
-    const { isProduction } = this.props;
-
     return (
       <Html lang="en">
         <Head>
           {/* Global Site Tag (gtag.js) - Google Analytics */}
-          {isProduction && (
+          {IS_PRODUCTION && (
             <>
               <script async src={`https://www.googletagmanager.com/gtag/js?id=${GA_TRACKING_ID}`}/>
               <script dangerouslySetInnerHTML={this.setGoogleTags()}/>

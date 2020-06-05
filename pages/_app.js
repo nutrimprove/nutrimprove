@@ -1,4 +1,3 @@
-import AuthContainer from 'components/AuthContainer';
 import Header from 'components/Header';
 import PageContent from 'components/PageContent';
 import RootContainer from 'components/RootContainer';
@@ -12,12 +11,12 @@ import withReduxStore from 'store/withReduxStore';
 const MyApp = ({ Component, pageProps, store }) => {
   useEffect(() => {
     const handleRouteChange = url => {
-      gtag.pageview(url)
+      gtag.pageview(url);
     };
-    Router.events.on('routeChangeComplete', handleRouteChange)
+    Router.events.on('routeChangeComplete', handleRouteChange);
     return () => {
-      Router.events.off('routeChangeComplete', handleRouteChange)
-    }
+      Router.events.off('routeChangeComplete', handleRouteChange);
+    };
   }, []);
 
   return (
@@ -25,9 +24,7 @@ const MyApp = ({ Component, pageProps, store }) => {
       <RootContainer>
         <Header/>
         <PageContent>
-          <AuthContainer>
-            <Component {...pageProps}/>
-          </AuthContainer>
+          <Component {...pageProps}/>
         </PageContent>
       </RootContainer>
     </Provider>
