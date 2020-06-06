@@ -1,5 +1,7 @@
 import { ROLES } from './constants';
 
+const registeredStorage = [];
+
 const userRoleToString = userRole => {
   return Object.keys(ROLES).find(key => ROLES[key] === userRole);
 };
@@ -12,12 +14,50 @@ const isOwner = user => {
   return user.role === ROLES.OWNER;
 };
 
-const isLoggedIn = () => {
+// Registers items in storage for better tracking and disposal
+const registerStorage = (item) => {
+  registeredStorage.push(item);
+};
+
+const getUserStorage = () => {
   if (typeof window !== 'undefined') {
-    const user = JSON.parse(localStorage.getItem('useAuth:user'));
-    return user && user.email;
+    return JSON.parse(localStorage.getItem('useAuth:user'));
   }
-  return false;
+};
+
+const isLoggedIn = () => {
+  const user = getUserStorage();
+  return user && user.email;
+};
+
+const isApproved = () => {
+  return getFromLocalStorage('approved');
+};
+
+const emailVerified = () => {
+  const user = getUserStorage();
+  return user && user.email_verified;
+};
+
+const addToLocalStorage = (item, value) => {
+  if (typeof window !== 'undefined') {
+    registerStorage(item);
+    localStorage.setItem(item, value);
+  }
+};
+
+const getFromLocalStorage = item => {
+  if (typeof window !== 'undefined') {
+    return JSON.parse(localStorage.getItem(item));
+  }
+};
+
+const clearStorage = () => {
+  if (typeof window !== 'undefined') {
+    registeredStorage.forEach(item => {
+      localStorage.removeItem(item);
+    })
+  }
 };
 
 const isValidEmail = email => {
@@ -36,6 +76,10 @@ export {
   isAdmin,
   isOwner,
   isLoggedIn,
+  isApproved,
   isValidEmail,
   calcPoints,
+  emailVerified,
+  addToLocalStorage,
+  clearStorage,
 };

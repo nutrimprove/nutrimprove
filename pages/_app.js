@@ -1,6 +1,6 @@
 import Header from 'components/Header';
 import PageContent from 'components/PageContent';
-import RootContainer from 'components/RootContainer';
+import LoaderContainer from 'components/LoaderContainer';
 import * as gtag from 'helpers/analytics';
 import Router, { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
@@ -30,12 +30,12 @@ const MyApp = ({ Component, pageProps, store }) => {
       auth0_client_id='mkvqwP1yMM0ICN88WsOWp1h1y82Xd55A'
     >
       <Provider store={store}>
-        <RootContainer>
+        <LoaderContainer>
           <Header/>
           <PageContent>
             <Component {...pageProps}/>
           </PageContent>
-        </RootContainer>
+        </LoaderContainer>
       </Provider>
     </AuthProvider>
   );

@@ -1,6 +1,6 @@
 import { AppBar } from '@material-ui/core';
 import MenuButton from 'components/Header/MainNav/MenuButton';
-import { isAdmin, isLoggedIn } from 'helpers/userUtils';
+import { emailVerified, isAdmin, isApproved, isLoggedIn } from 'helpers/userUtils';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { useSelector } from 'react-redux';
@@ -37,9 +37,9 @@ const MainNav = ({ classes }) => {
 
   return (
     <AppBar position='static' classes={{ root: classes.menuBar }}>
-      {isLoggedIn() && <div className={classes.container}>
+      {isLoggedIn() && emailVerified() && <div className={classes.container}>
         {menus.map(menu => (
-          <MenuButton key={menu.name} menu={menu}/>
+          <MenuButton key={menu.name} menu={menu} disabled={!isApproved()}/>
         ))}
         {isAdmin(userDetails) && (
           <MenuButton menu={adminOption}/>
