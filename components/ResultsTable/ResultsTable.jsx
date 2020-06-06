@@ -61,7 +61,7 @@ const ResultsTable = ({ classes, data, onRowClick, title, scrollable, sortOnLoad
                 return (
                   <TableCell className={clsx(classes.tableHeader, sort(column) ? classes.pointer : null)}
                              key={`${column}-${index}`}
-                             onClick={sort(column) ? () => handleSort(column) : null}
+                             onClick={sort(column) ? () => handleSort(column.toLowerCase()) : null}
                   >
                     {column}
                     <span className={classes.sortIcon}>
