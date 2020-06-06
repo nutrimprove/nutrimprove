@@ -41,7 +41,7 @@ const MainNav = ({ classes }) => {
         {menus.map(menu => (
           <MenuButton key={menu.name} menu={menu}/>
         ))}
-        {isLoggedIn() && isAdmin(userDetails) && (
+        {isAdmin(userDetails) && (
           <MenuButton menu={adminOption}/>
         )}
       </div>}
