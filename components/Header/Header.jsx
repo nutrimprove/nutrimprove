@@ -1,13 +1,12 @@
 import { AppBar, Link, Toolbar, Typography } from '@material-ui/core';
 import MainNav from 'components/Header/MainNav';
+import { isLoggedIn } from 'helpers/userUtils';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { useSelector } from 'react-redux';
 import { useAuth } from 'react-use-auth';
 import HeaderLink from './HeaderLink';
 
 const Header = ({ classes }) => {
-  const userDetails = useSelector(({ globalState }) => globalState.userDetails);
   const { login, logout } = useAuth();
 
   return (
@@ -30,7 +29,7 @@ const Header = ({ classes }) => {
 
           </div>
           <div id='user' className={classes.right}>
-            {userDetails.isLoggedIn
+            {isLoggedIn()
               ? <HeaderLink action={logout}>Logout</HeaderLink>
               : <HeaderLink action={login}>Login</HeaderLink>
             }

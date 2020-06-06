@@ -16,11 +16,11 @@ const RootContainer = ({ classes, children }) => {
 
   useEffect(() => {
     (async () => {
-      if (user.email) {
+      if (isAuthenticated() && user.email) {
         const userDetails = await getUser(user.email);
         if (userDetails) {
           const { role, approved, points, preferences, email } = userDetails;
-          setUserDetails({ email, role, approved, points, isLoggedIn: isAuthenticated() });
+          setUserDetails({ email, role, approved, points });
           setUserPreferences(preferences);
 
           if (!EDAMAM_DB) {

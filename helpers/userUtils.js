@@ -12,6 +12,14 @@ const isOwner = user => {
   return user.role === ROLES.OWNER;
 };
 
+const isLoggedIn = () => {
+  if (typeof window !== 'undefined') {
+    const user = JSON.parse(localStorage.getItem('useAuth:user'));
+    return user && user.email;
+  }
+  return false;
+};
+
 const isValidEmail = email => {
   const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return regex.test(String(email).toLowerCase());
@@ -27,6 +35,7 @@ export {
   userRoleToString,
   isAdmin,
   isOwner,
+  isLoggedIn,
   isValidEmail,
   calcPoints,
 };
