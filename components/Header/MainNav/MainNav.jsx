@@ -37,9 +37,9 @@ const MainNav = ({ classes }) => {
 
   return (
     <AppBar position='static' classes={{ root: classes.menuBar }}>
-      {isLoggedIn() && emailVerified() && <div className={classes.container}>
+      {isLoggedIn() && <div className={classes.container}>
         {menus.map(menu => (
-          <MenuButton key={menu.name} menu={menu} disabled={!isApproved()}/>
+          <MenuButton key={menu.name} menu={menu} disabled={!emailVerified() || !isApproved()}/>
         ))}
         {isAdmin(userDetails) && (
           <MenuButton menu={adminOption}/>
