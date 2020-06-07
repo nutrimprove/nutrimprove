@@ -8,8 +8,9 @@ const LoadingSpinner = ({
                           colour = 'black',
                           context,
                           force = false,
+                          delay = 0,
                         }) => {
-  const { promiseInProgress } = usePromiseTracker({ area: context });
+  const { promiseInProgress } = usePromiseTracker({ area: context, delay });
 
   return (
     (promiseInProgress || force) && (
@@ -25,6 +26,7 @@ LoadingSpinner.propTypes = {
   classes: PropTypes.object.isRequired,
   context: PropTypes.string,
   force: PropTypes.bool,
+  delay: PropTypes.number,
 };
 
 export default LoadingSpinner;

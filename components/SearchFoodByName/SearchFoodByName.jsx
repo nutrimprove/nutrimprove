@@ -7,7 +7,8 @@ import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 
 const SearchFoodByName = () => {
-  const { categories, foodNames } = useSelector(state => state.globalState);
+  const categories = useSelector(({ globalState }) => globalState.categories);
+  const foodNames = useSelector(({ globalState }) => globalState.foodNames);
   const [selectedFood, setSelectedFood] = useState();
   const [data, setData] = useState();
   const filteredFoodNames = filterFoodNames(foodNames, categories.selectedGroups);

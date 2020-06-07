@@ -16,7 +16,8 @@ import ScrollIntoView from '../ScrollIntoView';
 import ChangeNutrientModal from './ChangeNutrientModal';
 
 const FoodCard = ({ food, onMouseOver, highlightItem, classes }) => {
-  const { preferences, userDetails } = useSelector(state => state.globalState);
+  const preferences = useSelector(({ globalState }) => globalState.preferences);
+  const userDetails = useSelector(({ globalState }) => globalState.userDetails);
   const dispatch = useDispatch();
   const setUserPreferences = useCallback(preferences => dispatch(setUserPreferencesAction(preferences)), []);
   const [foodDetails, setFoodDetails] = useState();

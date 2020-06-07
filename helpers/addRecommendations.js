@@ -10,6 +10,11 @@ const addRecommendations = async ({ foods, recommendations, onSuccess, onFailure
   const { userDetails } = store.getState().globalState;
   const recommendationsPayload = [];
 
+  if(!userDetails) {
+    console.error('No user logged in?!');
+    return;
+  }
+
   // Every recommendation will be added to every single food (n->n)
   for (const food of foods) {
     for (const recommendation of recommendations) {

@@ -8,6 +8,9 @@ export default {
     '&:hover': {
       backgroundColor: '#1f3195',
     },
+    '&:disabled': {
+      color: '#9f9fa5'
+    },
   },
   link: {
     display: 'block',

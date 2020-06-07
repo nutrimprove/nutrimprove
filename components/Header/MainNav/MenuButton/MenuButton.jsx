@@ -5,7 +5,7 @@ import Router from 'next/router';
 import PropTypes from 'prop-types';
 import React, { useEffect, useRef, useState } from 'react';
 
-const MenuButton = ({ menu, classes }) => {
+const MenuButton = ({ menu, disabled, classes }) => {
   const [open, setOpen] = useState(false);
   const anchorRef = useRef(null);
   const { name, options } = menu;
@@ -59,6 +59,7 @@ const MenuButton = ({ menu, classes }) => {
         aria-haspopup="true"
         onClick={handleToggle}
         className={classes.name}
+        disabled={disabled}
       >
         {name}
         {options && <span className={classes.icon}>{open ? <ExpandLessIcon/> : <ExpandMoreIcon/>}</span>}
@@ -105,6 +106,7 @@ const MenuButton = ({ menu, classes }) => {
 
 MenuButton.propTypes = {
   menu: PropTypes.object.isRequired,
+  disabled: PropTypes.bool,
   classes: PropTypes.object.isRequired,
 };
 
