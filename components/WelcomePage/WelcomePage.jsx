@@ -1,9 +1,8 @@
 import { Link, Typography } from '@material-ui/core';
 import { PROJECT_NAME } from 'helpers/constants';
-import { emailVerified, isApproved } from 'helpers/userUtils';
+import { emailVerified } from 'helpers/userUtils';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { useSelector } from 'react-redux';
 import { useAuth } from 'react-use-auth';
 import SectionHeader from '../SectionHeader';
 
@@ -55,11 +54,6 @@ const WelcomePage = () => {
       content.subtitle = 'Please verify your email account';
       content.messages = [
         'Follow the link provided in the verification email we sent you',
-      ];
-    } else if (!isApproved()) {
-      content.subtitle = 'Waiting for an Admin Approval';
-      content.messages = [
-        'An admin will need to verify your account so that you can access the functionality of the site.',
       ];
     } else {
       content.subtitle = '';

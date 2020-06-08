@@ -1,4 +1,5 @@
 import { AppBar } from '@material-ui/core';
+import Typography from '@material-ui/core/Typography';
 import MenuButton from 'components/Header/MainNav/MenuButton';
 import { emailVerified, isAdmin, isApproved } from 'helpers/userUtils';
 import PropTypes from 'prop-types';
@@ -44,6 +45,9 @@ const MainNav = ({ classes }) => {
           ))}
           {isAdmin(userDetails) && (
             <MenuButton menu={adminOption}/>
+          )}
+          {emailVerified() && !userDetails.approved && (
+            <Typography className={classes.waitingForAdmin}>Waiting for an Admin Approval</Typography>
           )}
         </div>
       )}
