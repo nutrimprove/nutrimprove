@@ -1,5 +1,5 @@
 import { EDAMAM_DB } from 'helpers/constants';
-import { addToLocalStorage, clearStorage } from 'helpers/userUtils';
+import { addToLocalStorage, clearStorage, isLoggedIn } from 'helpers/userUtils';
 import { getAllFoodNames } from 'interfaces/api/foods';
 import { getUser } from 'interfaces/api/users';
 import PropTypes from 'prop-types';
@@ -31,7 +31,9 @@ const LoaderContainer = ({ classes, children }) => {
           }
         }
       } else {
-        clearStorage();
+        if (!isLoggedIn()) {
+          clearStorage();
+        }
       }
     })();
   }, [user]);
