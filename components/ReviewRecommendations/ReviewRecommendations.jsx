@@ -27,8 +27,9 @@ const ReviewRecommendations = ({ classes }) => {
   const [comparisonData, setComparisonData] = useState();
   const { promiseInProgress: loadingRecommendations } = usePromiseTracker({ area: 'getAllRecommendations' });
   const { promiseInProgress: loadingFoodData } = usePromiseTracker({ area: 'getFoodData' });
-  const loading = loadingRecommendations || loadingFoodData;
+
   let firstLoad = true;
+  const loading = loadingRecommendations || (firstLoad && loadingFoodData);
 
   useEffect(() => {
     (async () => {

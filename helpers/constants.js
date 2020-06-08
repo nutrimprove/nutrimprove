@@ -1,4 +1,4 @@
-const PROJECT_NAME = 'NutrImprove';
+const PROJECT_NAME = 'Nutrimprove';
 const ROLES = {
   OWNER: 0,
   ADMIN: 5,
