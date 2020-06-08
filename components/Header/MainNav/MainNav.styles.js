@@ -30,4 +30,8 @@ export default {
     color: 'white',
     padding: '0 20px',
   },
+  waitingForAdmin: {
+    float: 'right',
+    padding: 12,
+  },
 };
