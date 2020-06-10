@@ -36,7 +36,7 @@ const FoodCard = ({ food, onMouseOver, highlightItem, classes }) => {
     preferences
       ? setNutrients(getCardNutrients(food, preferences.cardNutrients))
       : setNutrients(getCardNutrients(food));
-  }, [food, preferences]);
+  }, [preferences]);
 
   const showFoodDetails = () => {
     const { foodName, proximates, vitamins, inorganics } = food;

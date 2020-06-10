@@ -29,7 +29,7 @@ const ReviewRecommendations = ({ classes }) => {
   const { promiseInProgress: loadingFoodData } = usePromiseTracker({ area: 'getFoodData' });
 
   let firstLoad = true;
-  const loading = loadingRecommendations || (firstLoad && loadingFoodData);
+  const loading = loadingRecommendations || (!firstLoad && loadingFoodData);
 
   useEffect(() => {
     (async () => {
