@@ -15,7 +15,7 @@ import ResultsTable from '../ResultsTable';
 import ScrollIntoView from '../ScrollIntoView';
 import ChangeNutrientModal from './ChangeNutrientModal';
 
-const FoodCard = ({ food, onMouseOver, highlightItem, classes, ...props }) => {
+const FoodCard = ({ food, onMouseOver, highlightItem, classes }) => {
   const preferences = useSelector(({ globalState }) => globalState.preferences);
   const userDetails = useSelector(({ globalState }) => globalState.userDetails);
   const dispatch = useDispatch();
