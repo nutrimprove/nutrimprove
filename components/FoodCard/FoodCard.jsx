@@ -6,7 +6,7 @@ import { savePreferences } from 'interfaces/api/users';
 import { isEqual } from 'lodash';
 import { uniqueId } from 'lodash/util';
 import PropTypes from 'prop-types';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setUserPreferencesAction } from 'store/global/actions';
 import LoadingPanel from '../LoadingPanel';
@@ -15,7 +15,7 @@ import ResultsTable from '../ResultsTable';
 import ScrollIntoView from '../ScrollIntoView';
 import ChangeNutrientModal from './ChangeNutrientModal';
 
-const FoodCard = ({ food, onMouseOver, highlightItem, classes }) => {
+const FoodCard = ({ food, onMouseOver, highlightItem, classes, ...props }) => {
   const preferences = useSelector(({ globalState }) => globalState.preferences);
   const userDetails = useSelector(({ globalState }) => globalState.userDetails);
   const dispatch = useDispatch();
@@ -24,9 +24,13 @@ const FoodCard = ({ food, onMouseOver, highlightItem, classes }) => {
   const [detailsOpen, setDetailsOpen] = useState(false);
   const [changeNutrientOpen, setChangeNutrientOpen] = useState(false);
   const [nutrientToChange, setNutrientToChange] = useState();
-  const [undoHistory, setUndoHistory] = useState([]);
+  const undoHistory = useRef([]);
   const [nutrients, setNutrients] = useState();
   const title = food ? food.foodName : '';
+
+  const setUndoHistory = (history) => {
+    undoHistory.current = history;
+  };
 
   useEffect(() => {
     preferences
@@ -60,7 +64,7 @@ const FoodCard = ({ food, onMouseOver, highlightItem, classes }) => {
   };
 
   const popHistory = () => {
-    const history = [...undoHistory];
+    const history = [...undoHistory.current];
     const previousState = history.pop();
     setUndoHistory(history);
     return previousState;
@@ -71,8 +75,8 @@ const FoodCard = ({ food, onMouseOver, highlightItem, classes }) => {
     await savePreferences(userDetails.email, newPreferences);
     if (addToUndo) {
       preferences && preferences.cardNutrients
-        ? setUndoHistory([...undoHistory, preferences.cardNutrients])
-        : setUndoHistory([...undoHistory, DEFAULT_CARD_NUTRIENTS]);
+        ? setUndoHistory([...undoHistory.current, preferences.cardNutrients])
+        : setUndoHistory([...undoHistory.current, DEFAULT_CARD_NUTRIENTS]);
     }
   };
 
@@ -133,7 +137,7 @@ const FoodCard = ({ food, onMouseOver, highlightItem, classes }) => {
                 Reset
               </Link>
             )}
-            {undoHistory.length > 0 && (
+            {undoHistory.current.length > 0 && (
               <Link component='button' onClick={undo} className={classes.link} title='Undo last change'>
                 Undo
               </Link>
