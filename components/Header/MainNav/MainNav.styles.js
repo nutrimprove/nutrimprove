@@ -23,6 +23,8 @@ export default {
     margin: '0 auto',
     padding: 0,
     height: '100%',
+    alignItems: 'center',
+    display: 'flex',
   },
   button: {
     fontSize: 14,
@@ -30,8 +32,12 @@ export default {
     color: 'white',
     padding: '0 20px',
   },
-  waitingForAdmin: {
-    float: 'right',
-    padding: 12,
+  rightNavContent: {
+    fontSize: 14,
+    marginLeft: 'auto',
+  },
+  rightNavText: {
+    marginLeft: 12,
+    verticalAlign: 'text-bottom',
   },
 };
