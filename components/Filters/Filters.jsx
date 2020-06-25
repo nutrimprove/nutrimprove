@@ -1,6 +1,6 @@
 import { Button, Checkbox, FormControl, FormControlLabel, FormGroup, Link } from '@material-ui/core';
 import PopoverPanelWithButton from 'components/PopoverPanelWithButton';
-import { CATEGORIES, EDAMAM_DB } from 'helpers/constants';
+import { EDAMAM_DB } from 'helpers/constants';
 import { uniqueId } from 'lodash/util';
 import PropTypes from 'prop-types';
 import React, { useCallback, useEffect, useState } from 'react';
