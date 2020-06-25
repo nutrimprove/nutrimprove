@@ -10,7 +10,7 @@ import { parseNutrients } from 'helpers/utils';
 import { getFoodById } from 'interfaces/api/foods';
 import { applyRecommendationRating, getAllRecommendations } from 'interfaces/api/recommendations';
 import PropTypes from 'prop-types';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { usePromiseTracker } from 'react-promise-tracker';
 
 const getRandom = items => {
@@ -28,13 +28,13 @@ const ReviewRecommendations = ({ classes }) => {
   const { promiseInProgress: loadingRecommendations } = usePromiseTracker({ area: 'getAllRecommendations' });
   const { promiseInProgress: loadingFoodData } = usePromiseTracker({ area: 'getFoodData' });
 
-  let firstLoad = true;
-  const loading = loadingRecommendations || (!firstLoad && loadingFoodData);
+  const firstLoad = useRef(true);
+
+  const loading = loadingRecommendations || (firstLoad.current && loadingFoodData);
 
   useEffect(() => {
     (async () => {
       const results = await getAllRecommendations();
-      firstLoad = false;
       if (results) {
         setRecommendations(results);
       }
@@ -45,6 +45,7 @@ const ReviewRecommendations = ({ classes }) => {
     (async () => {
       if (recommendations) {
         await getRecommendation();
+        firstLoad.current = false;
       }
     })();
   }, [recommendations]);
