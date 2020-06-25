@@ -1,8 +1,10 @@
 import { AppBar, Typography } from '@material-ui/core';
 import MenuButton from 'components/Header/MainNav/MenuButton';
+import LoadingSpinner from 'components/LoadingSpinner';
 import { emailVerified, isAdmin, isApproved } from 'helpers/userUtils';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { usePromiseTracker } from 'react-promise-tracker';
 import { useSelector } from 'react-redux';
 
 const menus = [
@@ -34,6 +36,7 @@ const adminOption = {
 
 const MainNav = ({ classes }) => {
   const userDetails = useSelector(({ globalState }) => globalState.userDetails);
+  const { promiseInProgress: loadingUser } = usePromiseTracker({ area: 'getUser' });
   const disabled = !userDetails || !userDetails.email || !emailVerified() || !isApproved();
 
   return (
@@ -46,7 +49,13 @@ const MainNav = ({ classes }) => {
           <MenuButton menu={adminOption}/>
         )}
         {userDetails && userDetails.email && emailVerified() && !userDetails.approved && (
-          <Typography className={classes.waitingForAdmin}>Waiting for an Admin Approval</Typography>
+          <Typography className={classes.rightNavContent}>Waiting for an Admin Approval</Typography>
+        )}
+        {disabled && loadingUser && (
+          <Typography className={classes.rightNavContent}>
+            <LoadingSpinner force={true} colour='white'/>
+            <span className={classes.rightNavText}>Loading user data . . .</span>
+          </Typography>
         )}
       </div>
     </AppBar>
