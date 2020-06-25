@@ -8,6 +8,9 @@ export default {
     width: 50,
     margin: '0 18px',
   },
+  link: {
+    fontSize: 12,
+  },
   toolbar: {
     height: 60,
     '& a': {

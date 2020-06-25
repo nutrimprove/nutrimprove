@@ -20,14 +20,11 @@ const Header = ({ classes }) => {
               alt='Go to main page'
             />
           </Link>
-          <div id='links'>
-            <Typography variant='button' color='inherit'>
-              <Link href='/about'>About</Link>
-              {/* {username() && <Link href='/help'>Help</Link>} */}
-              <Link href='https://github.com/eat-well/nutrimprove/releases' target='_blank'>Release Notes</Link>
-            </Typography>
-
-          </div>
+          <Typography className={classes.link} variant='button' color='inherit'>
+            <Link href='/about'>About</Link>
+            {/* {username() && <Link href='/help'>Help</Link>} */}
+            <Link href='https://github.com/eat-well/nutrimprove/releases' target='_blank'>Release Notes</Link>
+          </Typography>
           <div id='user' className={classes.right}>
             {isLoggedIn()
               ? <HeaderLink action={logout}>Logout</HeaderLink>

@@ -16,13 +16,13 @@ const menus = [
   {
     name: 'Recommendations',
     options: [
-      { label: 'View Your Recommendations', link: '/recommendations/view' },
-      { label: 'View All Recommendations', link: '/recommendations/view-all' },
+      { label: 'View Yours', link: '/recommendations/view' },
+      { label: 'View All', link: '/recommendations/view-all' },
       { divider: true },
-      { label: 'Add Recommendations', link: '/recommendations/add' },
-      { label: 'Bulk Add Recommendations', link: '/recommendations/bulk-add' },
+      { label: 'Add', link: '/recommendations/add' },
+      { label: 'Bulk Add', link: '/recommendations/bulk-add' },
       { divider: true },
-      { label: 'Review Recommendations', link: '/recommendations/review' },
+      { label: 'Review', link: '/recommendations/review' },
     ],
   },
 ];
