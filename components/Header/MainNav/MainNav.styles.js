@@ -4,7 +4,7 @@ export default {
   menuBar: {
     backgroundColor: '#3f51b5',
     color: 'white',
-    height: 48,
+    height: 40,
     position: 'relative',
     display: 'block',
     margin: '0 auto',

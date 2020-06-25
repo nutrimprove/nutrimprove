@@ -16,13 +16,13 @@ const menus = [
   {
     name: 'Recommendations',
     options: [
-      { label: 'View Your Recommendations', link: '/recommendations/view' },
-      { label: 'View All Recommendations', link: '/recommendations/view-all' },
+      { label: 'View Yours', link: '/recommendations/view' },
+      { label: 'View All', link: '/recommendations/view-all' },
       { divider: true },
-      { label: 'Add Recommendations', link: '/recommendations/add' },
-      { label: 'Bulk Add Recommendations', link: '/recommendations/bulk-add' },
+      { label: 'Add', link: '/recommendations/add' },
+      { label: 'Bulk Add', link: '/recommendations/bulk-add' },
       { divider: true },
-      { label: 'Review Recommendations', link: '/recommendations/review' },
+      { label: 'Review', link: '/recommendations/review' },
     ],
   },
 ];
@@ -34,22 +34,21 @@ const adminOption = {
 
 const MainNav = ({ classes }) => {
   const userDetails = useSelector(({ globalState }) => globalState.userDetails);
+  const disabled = !userDetails || !userDetails.email || !emailVerified() || !isApproved();
 
   return (
     <AppBar position='static' classes={{ root: classes.menuBar }}>
-      {userDetails && userDetails.email && (
-        <div className={classes.container}>
-          {menus.map(menu => (
-            <MenuButton key={menu.name} menu={menu} disabled={!emailVerified() || !isApproved()}/>
-          ))}
-          {isAdmin(userDetails) && (
-            <MenuButton menu={adminOption}/>
-          )}
-          {emailVerified() && !userDetails.approved && (
-            <Typography className={classes.waitingForAdmin}>Waiting for an Admin Approval</Typography>
-          )}
-        </div>
-      )}
+      <div className={classes.container}>
+        {menus.map(menu => (
+          <MenuButton key={menu.name} menu={menu} disabled={disabled}/>
+        ))}
+        {isAdmin(userDetails) && (
+          <MenuButton menu={adminOption}/>
+        )}
+        {userDetails && userDetails.email && emailVerified() && !userDetails.approved && (
+          <Typography className={classes.waitingForAdmin}>Waiting for an Admin Approval</Typography>
+        )}
+      </div>
     </AppBar>
   );
 };
