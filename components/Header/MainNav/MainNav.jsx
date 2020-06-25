@@ -3,7 +3,7 @@ import MenuButton from 'components/Header/MainNav/MenuButton';
 import LoadingSpinner from 'components/LoadingSpinner';
 import { emailVerified, isAdmin, isApproved } from 'helpers/userUtils';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { usePromiseTracker } from 'react-promise-tracker';
 import { useSelector } from 'react-redux';
 
@@ -36,8 +36,30 @@ const adminOption = {
 
 const MainNav = ({ classes }) => {
   const userDetails = useSelector(({ globalState }) => globalState.userDetails);
+  const [disabled, setDisabled] = useState(true);
   const { promiseInProgress: loadingUser } = usePromiseTracker({ area: 'getUser' });
-  const disabled = !userDetails || !userDetails.email || !emailVerified() || !isApproved();
+
+  useEffect(() => {
+    setDisabled(!userDetails || !userDetails.email || !emailVerified() || !isApproved());
+  }, [userDetails]);
+
+  const RightNavContent = () => {
+    if (userDetails && userDetails.email && emailVerified() && !isApproved()) {
+      return (
+        <Typography className={classes.rightNavContent}>
+          <span className={classes.notice}>Waiting for an Admin Approval</span>
+        </Typography>
+      );
+    } else if (disabled && loadingUser) {
+      return (
+        <Typography className={classes.rightNavContent}>
+          <LoadingSpinner force={true} colour='white'/>
+          <span className={classes.rightNavText}>Loading user data . . .</span>
+        </Typography>
+      );
+    }
+    return null;
+  };
 
   return (
     <AppBar position='static' classes={{ root: classes.menuBar }}>
@@ -48,15 +70,7 @@ const MainNav = ({ classes }) => {
         {isAdmin(userDetails) && (
           <MenuButton menu={adminOption}/>
         )}
-        {userDetails && userDetails.email && emailVerified() && !userDetails.approved && (
-          <Typography className={classes.rightNavContent}>Waiting for an Admin Approval</Typography>
-        )}
-        {disabled && loadingUser && (
-          <Typography className={classes.rightNavContent}>
-            <LoadingSpinner force={true} colour='white'/>
-            <span className={classes.rightNavText}>Loading user data . . .</span>
-          </Typography>
-        )}
+        <RightNavContent/>
       </div>
     </AppBar>
   );
