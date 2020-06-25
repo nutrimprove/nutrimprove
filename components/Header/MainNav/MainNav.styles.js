@@ -4,7 +4,7 @@ export default {
   menuBar: {
     backgroundColor: '#3f51b5',
     color: 'white',
-    height: 48,
+    height: 40,
     position: 'relative',
     display: 'block',
     margin: '0 auto',
@@ -23,11 +23,24 @@ export default {
     margin: '0 auto',
     padding: 0,
     height: '100%',
+    alignItems: 'center',
+    display: 'flex',
   },
   button: {
     fontSize: 14,
     fontWeight: 500,
     color: 'white',
     padding: '0 20px',
+  },
+  rightNavContent: {
+    fontSize: 14,
+    marginLeft: 'auto',
+  },
+  notice: {
+    color: 'yellow',
+  },
+  rightNavText: {
+    marginLeft: 12,
+    verticalAlign: 'text-bottom',
   },
 };

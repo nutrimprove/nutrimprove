@@ -5,11 +5,12 @@ import ButtonWithSpinner from 'components/ButtonWithSpinner';
 import CompareModal from 'components/CompareModal';
 import FoodCard from 'components/FoodCard';
 import LoadingPanel from 'components/LoadingPanel';
+import LoadingSpinner from 'components/LoadingSpinner';
 import { parseNutrients } from 'helpers/utils';
 import { getFoodById } from 'interfaces/api/foods';
 import { applyRecommendationRating, getAllRecommendations } from 'interfaces/api/recommendations';
 import PropTypes from 'prop-types';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { usePromiseTracker } from 'react-promise-tracker';
 
 const getRandom = items => {
@@ -26,7 +27,10 @@ const ReviewRecommendations = ({ classes }) => {
   const [comparisonData, setComparisonData] = useState();
   const { promiseInProgress: loadingRecommendations } = usePromiseTracker({ area: 'getAllRecommendations' });
   const { promiseInProgress: loadingFoodData } = usePromiseTracker({ area: 'getFoodData' });
-  const loading = loadingRecommendations || loadingFoodData;
+
+  const firstLoad = useRef(true);
+
+  const loading = loadingRecommendations || (firstLoad.current && loadingFoodData);
 
   useEffect(() => {
     (async () => {
@@ -41,6 +45,7 @@ const ReviewRecommendations = ({ classes }) => {
     (async () => {
       if (recommendations) {
         await getRecommendation();
+        firstLoad.current = false;
       }
     })();
   }, [recommendations]);
@@ -122,6 +127,7 @@ const ReviewRecommendations = ({ classes }) => {
 
   return (
     <>
+      {loading && <LoadingPanel/>}
       {food && recommendedFood && (
         <>
           <div className={classes.cards}>
@@ -153,15 +159,17 @@ const ReviewRecommendations = ({ classes }) => {
                 Approve
               </ButtonWithSpinner>
             </div>
-            <Link component={'button'} className={classes.skip} onClick={skipRecommendation}>
+            <Link component='button' className={classes.skip} onClick={skipRecommendation}>
               <Typography>Skip this recommendation</Typography>
+              <span className={classes.spinner}><LoadingSpinner context='getFoodData'/></span>
+
             </Link>
           </ActionsContainer>
           {compareOpen && <CompareModal dataSet={comparisonData} open={compareOpen} onClose={handleCloseModal}/>}
         </>
       )}
-      {!recommendation && !loading && <Typography className={classes.title}>No more recommendations!!</Typography>}
-      {loading && <LoadingPanel/>}
+      {!recommendation && !loadingRecommendations && !firstLoad &&
+      <Typography className={classes.title}>No more recommendations!!</Typography>}
     </>
   );
 };

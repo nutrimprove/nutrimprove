@@ -8,7 +8,7 @@ import React, { useEffect, useState } from 'react';
 
 const ResultsTable = ({ classes, data, onRowClick, title, scrollable, sortOnLoad, sortColumns = [] }) => {
   const [order, setOrder] = useState({ column: null, order: null });
-  const [tableData, setTableData] = useState(data);
+  const [tableData, setTableData] = useState([]);
 
   let columns;
   if (data && data.length > 0) {
@@ -21,6 +21,12 @@ const ResultsTable = ({ classes, data, onRowClick, title, scrollable, sortOnLoad
   }
 
   useEffect(() => {
+    if (data) {
+      setTableData(data);
+    }
+  }, [data]);
+
+  useEffect(() => {
     handleSort(sortOnLoad);
   }, []);
 
@@ -29,7 +35,7 @@ const ResultsTable = ({ classes, data, onRowClick, title, scrollable, sortOnLoad
   const sort = column => column ? columnsToSort.includes(column.toLowerCase()) : column;
 
   const handleSort = column => {
-    if (!sort(column)) return;
+    if (!sort(column) || !data || data.length === 0) return;
 
     const sortObject = { column };
     order.column === column
@@ -40,7 +46,6 @@ const ResultsTable = ({ classes, data, onRowClick, title, scrollable, sortOnLoad
     const sortBy = Object.keys(data[0]).find(key => key.toLowerCase() === column.toLowerCase());
     const sortedData = orderBy(data, [sortBy], [sortObject.order]);
     setTableData(sortedData);
-    console.log('=== ResultsTable.jsx #44 === ( sortedData ) =======>', sortedData);
   };
 
   return (
@@ -56,7 +61,7 @@ const ResultsTable = ({ classes, data, onRowClick, title, scrollable, sortOnLoad
                 return (
                   <TableCell className={clsx(classes.tableHeader, sort(column) ? classes.pointer : null)}
                              key={`${column}-${index}`}
-                             onClick={sort(column) ? () => handleSort(column) : null}
+                             onClick={sort(column) ? () => handleSort(column.toLowerCase()) : null}
                   >
                     {column}
                     <span className={classes.sortIcon}>
@@ -65,7 +70,6 @@ const ResultsTable = ({ classes, data, onRowClick, title, scrollable, sortOnLoad
                           : <ArrowDropDownIcon/>
                       )}
                     </span>
-
                   </TableCell>
                 );
               })}
@@ -83,7 +87,9 @@ const ResultsTable = ({ classes, data, onRowClick, title, scrollable, sortOnLoad
               >
                 {columns.map((column) => (
                   <TableCell key={`${row}-${column}`}>
-                    {column.toLowerCase().includes('date') ? new Date(row[column]).toLocaleDateString() : row[column]}
+                    <>
+                      {column.toLowerCase().includes('date') ? new Date(row[column]).toLocaleDateString() : row[column]}
+                    </>
                   </TableCell>
                 ))}
               </TableRow>

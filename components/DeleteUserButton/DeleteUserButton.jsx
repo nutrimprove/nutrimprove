@@ -45,7 +45,7 @@ const DeleteUserButton = ({ user, action, className }) => {
 
 DeleteUserButton.propTypes = {
   user: PropTypes.object.isRequired,
-  action: PropTypes.object,
+  action: PropTypes.func,
 };
 
 export default DeleteUserButton;

@@ -82,7 +82,7 @@ const Filters = ({ classes }) => {
           </div>
         </FormControl>
       </PopoverPanelWithButton>
-      {hasFilters() && <Link component={'button'} className={classes.reset} onClick={setNone}>Reset Filters</Link>}
+      {hasFilters() && <Link component='button' className={classes.reset} onClick={setNone}>Reset Filters</Link>}
     </div>
   );
 };

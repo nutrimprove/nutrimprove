@@ -1,9 +1,10 @@
-import { AppBar } from '@material-ui/core';
-import Typography from '@material-ui/core/Typography';
+import { AppBar, Typography } from '@material-ui/core';
 import MenuButton from 'components/Header/MainNav/MenuButton';
-import { isAdmin } from 'helpers/userUtils';
+import LoadingSpinner from 'components/LoadingSpinner';
+import { emailVerified, isAdmin, isApproved } from 'helpers/userUtils';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { usePromiseTracker } from 'react-promise-tracker';
 import { useSelector } from 'react-redux';
 
 const menus = [
@@ -17,39 +18,60 @@ const menus = [
   {
     name: 'Recommendations',
     options: [
-      { label: 'View Your Recommendations', link: '/recommendations/view' },
-      { label: 'View All Recommendations', link: '/recommendations/view-all' },
+      { label: 'View Yours', link: '/recommendations/view' },
+      { label: 'View All', link: '/recommendations/view-all' },
       { divider: true },
-      { label: 'Add Recommendations', link: '/recommendations/add' },
-      { label: 'Bulk Add Recommendations', link: '/recommendations/bulk-add' },
+      { label: 'Add', link: '/recommendations/add' },
+      { label: 'Bulk Add', link: '/recommendations/bulk-add' },
       { divider: true },
-      { label: 'Review Recommendations', link: '/recommendations/review' },
+      { label: 'Review', link: '/recommendations/review' },
     ],
   },
 ];
 
-const adminOption =   {
+const adminOption = {
   name: 'Admin Panel',
   link: '/admin-panel',
 };
 
 const MainNav = ({ classes }) => {
   const userDetails = useSelector(({ globalState }) => globalState.userDetails);
+  const [disabled, setDisabled] = useState(true);
+  const { promiseInProgress: loadingUser } = usePromiseTracker({ area: 'getUser' });
+
+  useEffect(() => {
+    setDisabled(!userDetails || !userDetails.email || !emailVerified() || !isApproved());
+  }, [userDetails]);
+
+  const RightNavContent = () => {
+    if (userDetails && userDetails.email && emailVerified() && !isApproved()) {
+      return (
+        <Typography className={classes.rightNavContent}>
+          <span className={classes.notice}>Waiting for an Admin Approval</span>
+        </Typography>
+      );
+    } else if (disabled && loadingUser) {
+      return (
+        <Typography className={classes.rightNavContent}>
+          <LoadingSpinner force={true} colour='white'/>
+          <span className={classes.rightNavText}>Loading user data . . .</span>
+        </Typography>
+      );
+    }
+    return null;
+  };
 
   return (
     <AppBar position='static' classes={{ root: classes.menuBar }}>
-      {!userDetails || !userDetails.email
-        ? <Typography className={classes.welcomeText}>Welcome to Nutrimprove</Typography>
-        : (
-          <div className={classes.container}>
-            {menus.map(menu => (
-              <MenuButton key={menu.name} menu={menu}/>
-            ))}
-            {userDetails.approved && isAdmin(userDetails) && (
-              <MenuButton menu={adminOption}/>
-            )}
-          </div>
+      <div className={classes.container}>
+        {menus.map(menu => (
+          <MenuButton key={menu.name} menu={menu} disabled={disabled}/>
+        ))}
+        {isAdmin(userDetails) && (
+          <MenuButton menu={adminOption}/>
         )}
+        <RightNavContent/>
+      </div>
     </AppBar>
   );
 };

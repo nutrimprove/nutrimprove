@@ -1,24 +1,30 @@
 export default {
   name: {
-    fontSize: 14,
+    fontSize: 12,
     fontWeight: 500,
-    padding: 22,
+    padding: '0 22px',
     color: 'white',
     height: '100%',
+    borderRadius: 0,
     '&:hover': {
       backgroundColor: '#1f3195',
+    },
+    '&:disabled': {
+      color: '#9f9fa5'
     },
   },
   link: {
     display: 'block',
-    fontSize: 14,
-    textAlign: 'center',
-    padding: '12px 20px',
+    fontSize: 12,
+    fontWeight: 200,
+    textAlign: 'left',
+    padding: '9px 20px',
     color: 'white',
     backgroundColor: '#3f51b5',
     '&:hover': {
       backgroundColor: '#1f3195',
     },
+    textTransform: 'uppercase',
   },
   container: {
     backgroundColor: '#3f51b5',

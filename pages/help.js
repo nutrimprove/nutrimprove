@@ -1,5 +1,5 @@
 import HelpPage from 'components/Help';
-import NoAccess from 'components/NoAccess';
+import WelcomePage from 'components/WelcomePage';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
@@ -10,7 +10,7 @@ const Help = ({ userDetails }) => {
   userDetails.approved ? (
     <HelpPage/>
   ) : (
-    <NoAccess user={userDetails}/>
+    <WelcomePage/>
   );
 };
 

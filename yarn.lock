@@ -1619,6 +1619,13 @@
   dependencies:
     "@types/react" "*"
 
+"@types/react-test-renderer@^16.9.2":
+  version "16.9.2"
+  resolved "https://registry.yarnpkg.com/@types/react-test-renderer/-/react-test-renderer-16.9.2.tgz#e1c408831e8183e5ad748fdece02214a7c2ab6c5"
+  integrity sha512-4eJr1JFLIAlWhzDkBCkhrOIWOvOxcCAfQh+jiKg7l/nNZcCIL2MHl2dZhogIFKyHzedVWHaVP1Yydq/Ruu4agw==
+  dependencies:
+    "@types/react" "*"
+
 "@types/react-transition-group@^4.2.0":
   version "4.4.0"
   resolved "https://registry.yarnpkg.com/@types/react-transition-group/-/react-transition-group-4.4.0.tgz#882839db465df1320e4753e6e9f70ca7e9b4d46d"
@@ -8193,6 +8200,14 @@ react-transition-group@^4.4.0:
     dom-helpers "^5.0.1"
     loose-envify "^1.4.0"
     prop-types "^15.6.2"
+
+react-use-auth@^0.7.3:
+  version "0.7.3"
+  resolved "https://registry.yarnpkg.com/react-use-auth/-/react-use-auth-0.7.3.tgz#0f65e8ee13c1636316afcb9bbd9b5b0865156fba"
+  integrity sha512-RkUNr/k6D58XLHXZhlkIIXdun/KDq2i+LUp4RxnMVbMtFaAE3fJ2AhUu2w4DjGTfGHGNAnAFtjI+y3E5McSvjw==
+  dependencies:
+    "@types/react-test-renderer" "^16.9.2"
+    auth0-js "^9.13.2"
 
 react-virtualized@^9.21.2:
   version "9.21.2"
