@@ -19,19 +19,17 @@ const registerStorage = (item) => {
   registeredStorage.push(item);
 };
 
-const getUserStorage = () => {
+const getFromLocalStorage = item => {
   if (typeof window !== 'undefined') {
-    return JSON.parse(localStorage.getItem('useAuth:user'));
+    return JSON.parse(localStorage.getItem(item));
   }
 };
+
+const getUserStorage = () => getFromLocalStorage('useAuth:user');
 
 const isLoggedIn = () => {
   const user = getUserStorage();
   return user && user.email;
-};
-
-const isApproved = () => {
-  return getFromLocalStorage('approved');
 };
 
 const emailVerified = () => {
@@ -46,10 +44,8 @@ const addToLocalStorage = (item, value) => {
   }
 };
 
-const getFromLocalStorage = item => {
-  if (typeof window !== 'undefined') {
-    return JSON.parse(localStorage.getItem(item));
-  }
+const isApproved = () => {
+  return getFromLocalStorage('approved');
 };
 
 const clearStorage = () => {
