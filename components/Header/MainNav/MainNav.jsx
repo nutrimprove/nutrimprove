@@ -27,6 +27,12 @@ const menus = [
       { label: 'Review', link: '/recommendations/review' },
     ],
   },
+  {
+    name: 'Lists',
+    options: [
+      { label: 'Add new...', link: '/lists/add' },
+    ],
+  },
 ];
 
 const adminOption = {
