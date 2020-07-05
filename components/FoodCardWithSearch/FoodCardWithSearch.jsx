@@ -18,7 +18,9 @@ const FoodCardWithSearch = ({ classes, title, highlightItem, onHover, foodInfo, 
   const loadCardDetails = async () => {
     const foodResult = await getFoodById(selectedFood.foodCode, context);
     setFood(foodResult);
-    foodInfo(foodResult);
+    if (foodInfo) {
+      foodInfo(foodResult);
+    }
   };
 
   const handleFoodSelection = async (event, value) => {
