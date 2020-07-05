@@ -117,6 +117,13 @@ const savePreferences = async (user, preferences) => {
   ]);
 };
 
+const saveLists = async (user, lists) => {
+  const UserConnection = await getUserConnection();
+  return UserConnection.findOneAndUpdate({ email: user }, [
+    { $set: { lists } },
+  ]);
+};
+
 export {
   getUserConnection,
   getUser,
@@ -129,4 +136,5 @@ export {
   addUserPoints,
   updateAllUsersPoints,
   savePreferences,
+  saveLists,
 };
