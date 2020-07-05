@@ -24,8 +24,10 @@ const FoodCard = ({ food, onMouseOver, highlightItem, classes }) => {
   const [detailsOpen, setDetailsOpen] = useState(false);
   const [changeNutrientOpen, setChangeNutrientOpen] = useState(false);
   const [nutrientToChange, setNutrientToChange] = useState();
-  const undoHistory = useRef([]);
   const [nutrients, setNutrients] = useState();
+  const [, updateState] = useState();
+  const forceUpdate = React.useCallback(() => updateState({}), []);
+  const undoHistory = useRef([]);
   const title = food ? food.foodName : '';
 
   const setUndoHistory = (history) => {
@@ -74,10 +76,9 @@ const FoodCard = ({ food, onMouseOver, highlightItem, classes }) => {
     setUserPreferences(newPreferences);
     await savePreferences(userDetails.email, newPreferences);
     if (addToUndo) {
-      preferences && preferences.cardNutrients
-        ? setUndoHistory([...undoHistory.current, preferences.cardNutrients])
-        : setUndoHistory([...undoHistory.current, DEFAULT_CARD_NUTRIENTS]);
+      setUndoHistory([...undoHistory.current, preferences.cardNutrients]);
     }
+    forceUpdate();
   };
 
   const handleNutrientChange = newNutrient => {
@@ -137,8 +138,8 @@ const FoodCard = ({ food, onMouseOver, highlightItem, classes }) => {
                 Reset
               </Link>
             )}
-            {undoHistory.current.length > 0 && (
-              <Link component='button' onClick={undo} className={classes.link} title='Undo last change'>
+            {undoHistory.current && undoHistory.current.length > 0 && (
+              <Link component='button' key={undoHistory.current.length} onClick={undo} className={classes.link} title='Undo last change'>
                 Undo
               </Link>
             )}
