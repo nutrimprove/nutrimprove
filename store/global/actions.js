@@ -4,6 +4,7 @@ export const ActionsTypes = {
   SET_CATEGORIES: 'SET_CATEGORIES',
   SET_USER_PREFERENCES: 'SET_USER_PREFERENCES',
   SET_FOOD_NAMES: 'SET_FOOD_NAMES',
+  SET_FOOD_LISTS: 'SET_FOOD_LISTS',
 };
 
 export const setUserDetailsAction = userDetails => {
@@ -24,4 +25,8 @@ export const setCategoriesAction = categories => {
 
 export const setFoodNamesAction = foodNames => {
   return { type: ActionsTypes.SET_FOOD_NAMES, foodNames };
+};
+
+export const setFoodListsAction = foodLists => {
+  return { type: ActionsTypes.SET_FOOD_LISTS, foodLists };
 };

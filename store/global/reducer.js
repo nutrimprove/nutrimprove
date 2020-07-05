@@ -39,6 +39,11 @@ export const reducer = (state = {
       ...state,
       foodNames: action.foodNames,
     };
+  } else if (action.type === ActionsTypes.SET_FOOD_LISTS) {
+    return {
+      ...state,
+      foodLists: action.foodLists,
+    }
   } else {
     return state;
   }
