@@ -62,7 +62,7 @@ const AddRecommendations = ({ classes }) => {
   };
 
   return (
-    <div>
+    <>
       <Filters/>
       <div className={classes.cards}>
         <FoodCardWithSearch title='Food'
@@ -93,7 +93,7 @@ const AddRecommendations = ({ classes }) => {
                       open={compareOpen}
                       onClose={handleCloseModal}
         />)}
-    </div>
+    </>
   );
 };
 
