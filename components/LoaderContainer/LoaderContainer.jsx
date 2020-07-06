@@ -6,13 +6,19 @@ import PropTypes from 'prop-types';
 import React, { useCallback, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useAuth } from 'react-use-auth';
-import { setFoodNamesAction, setUserDetailsAction, setUserPreferencesAction } from 'store/global/actions';
+import {
+  setFoodListsAction,
+  setFoodNamesAction,
+  setUserDetailsAction,
+  setUserPreferencesAction,
+} from 'store/global/actions';
 
 const LoaderContainer = ({ classes, children }) => {
   const dispatch = useDispatch();
   const setFoodNames = useCallback(foodNames => dispatch(setFoodNamesAction(foodNames)), []);
   const setUserDetails = useCallback(userDetails => dispatch(setUserDetailsAction(userDetails)), []);
   const setUserPreferences = useCallback(userPreferences => dispatch(setUserPreferencesAction(userPreferences)), []);
+  const setUserLists = useCallback(userLists => dispatch(setFoodListsAction(userLists)), []);
   const { isAuthenticated, user } = useAuth();
 
   useEffect(() => {
@@ -20,9 +26,10 @@ const LoaderContainer = ({ classes, children }) => {
       if (isAuthenticated() && user.email) {
         const userDetails = await getUser(user.email);
         if (userDetails) {
-          const { role, approved, points, preferences, email } = userDetails;
+          const { role, approved, points, preferences, email, lists } = userDetails;
           setUserDetails({ email, role, approved, points });
           setUserPreferences(preferences);
+          setUserLists(lists);
           addToLocalStorage('approved', approved);
 
           if (!EDAMAM_DB) {

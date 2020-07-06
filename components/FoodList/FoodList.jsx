@@ -1,14 +1,12 @@
-import React from 'react';
+import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
+import React from 'react';
 
 const FoodList = ({ classes }) => {
-  const preferences = useSelector(({ globalState }) => globalState.preferences);
-
   return (
-    <>
-
-    </>
+    <div className={classes.root}>
+      <Typography>New List</Typography>
+    </div>
   );
 };
 

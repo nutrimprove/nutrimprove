@@ -13,6 +13,7 @@ export const reducer = (state = {
   categories: CATEGORIES,
   foodNames: [],
   preferences: {},
+  foodLists: [],
 }, action) => {
   if (action.type === ActionsTypes.SET_USER_DETAILS) {
     return {

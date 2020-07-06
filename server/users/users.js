@@ -117,11 +117,13 @@ const savePreferences = async (user, preferences) => {
   ]);
 };
 
-const saveLists = async (user, lists) => {
+const saveList = async (user, list) => {
   const UserConnection = await getUserConnection();
-  return UserConnection.findOneAndUpdate({ email: user }, [
-    { $set: { lists } },
-  ]);
+  return UserConnection.findOneAndUpdate({ email: user }, {
+    $addToSet: {
+      lists: { name: list.name, foods: list.foods, added_on: new Date() },
+    },
+  });
 };
 
 export {
@@ -136,5 +138,5 @@ export {
   addUserPoints,
   updateAllUsersPoints,
   savePreferences,
-  saveLists,
+  saveList,
 };

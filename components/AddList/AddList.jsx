@@ -1,5 +1,6 @@
 import Filters from 'components/Filters';
 import FoodCardWithSearch from 'components/FoodCardWithSearch';
+import FoodList from 'components/FoodList';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 
@@ -9,7 +10,10 @@ const AddList = ({ classes }) => {
   return (
     <>
       <Filters/>
-      <FoodCardWithSearch title='Food' foodInfo={setFood}/>
+      <div className={classes.container}>
+        <FoodCardWithSearch title='Food' foodInfo={setFood}/>
+        <FoodList/>
+      </div>
     </>
   );
 };
