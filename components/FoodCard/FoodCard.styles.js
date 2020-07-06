@@ -1,8 +1,8 @@
 export default {
   card: {
     borderRadius: 7,
-      margin: 'auto',
-      width: 430,
+    margin: 'auto',
+    width: 430,
   },
   content: {
     minHeight: 288,

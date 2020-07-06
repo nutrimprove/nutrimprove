@@ -1,4 +1,3 @@
-import { Typography } from '@material-ui/core';
 import CardTitle from 'components/CardTitle';
 import { filterFoodNames } from 'helpers/utils';
 import { getFoodById } from 'interfaces/api/foods';
@@ -8,7 +7,7 @@ import { useSelector } from 'react-redux';
 import FoodCard from '../FoodCard';
 import SearchField from '../SearchField';
 
-const FoodCardWithSearch = ({ classes, title, highlightItem, onHover, foodInfo, context, className }) => {
+const FoodCardWithSearch = ({ title, highlightItem, onHover, foodInfo, context, className }) => {
   const categories = useSelector(({ globalState }) => globalState.categories);
   const foodNames = useSelector(({ globalState }) => globalState.foodNames);
   const [selectedFood, setSelectedFood] = useState();
@@ -30,7 +29,7 @@ const FoodCardWithSearch = ({ classes, title, highlightItem, onHover, foodInfo, 
 
   return (
     <div className={className}>
-      <CardTitle title={title} />
+      <CardTitle title={title}/>
       <SearchField loading={loading}
                    onSelection={handleFoodSelection}
                    onButtonClick={loadCardDetails}
@@ -53,7 +52,6 @@ FoodCardWithSearch.propTypes = {
   highlightItem: PropTypes.string,
   foodInfo: PropTypes.func,
   context: PropTypes.string,
-  classes: PropTypes.object.isRequired,
 };
 
 export default FoodCardWithSearch;

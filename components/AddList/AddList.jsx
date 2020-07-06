@@ -11,12 +11,8 @@ const AddList = ({ classes }) => {
     <>
       <Filters/>
       <div className={classes.container}>
-        <div className={classes.column}>
-          <FoodCardWithSearch title='Food' foodInfo={setFood}/>
-        </div>
-        <div className={classes.column}>
-          <FoodList/>
-        </div>
+        <FoodCardWithSearch title='Food' foodInfo={setFood} className={classes.foodCard}/>
+        <FoodList className={classes.foodList}/>
       </div>
     </>
   );
