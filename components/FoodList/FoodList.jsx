@@ -8,7 +8,7 @@ import React from 'react';
 const FoodList = ({ classes, className, foods }) => {
   return (
     <div className={className}>
-      <CardTitle title='New List'/>
+      <CardTitle title='New List' editable={true}/>
       <div className={classes.container}>
         <List>
           {foods && foods.map(food => {
