@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux';
 import FoodCard from '../FoodCard';
 import SearchField from '../SearchField';
 
-const FoodCardWithSearch = ({ classes, title, highlightItem, onHover, foodInfo, context }) => {
+const FoodCardWithSearch = ({ classes, title, highlightItem, onHover, foodInfo, context, className }) => {
   const categories = useSelector(({ globalState }) => globalState.categories);
   const foodNames = useSelector(({ globalState }) => globalState.foodNames);
   const [selectedFood, setSelectedFood] = useState();
@@ -28,7 +28,7 @@ const FoodCardWithSearch = ({ classes, title, highlightItem, onHover, foodInfo, 
   };
 
   return (
-    <div className={classes.root}>
+    <div className={className}>
       <Typography className={classes.title} variant='subtitle1'>{title}</Typography>
       <SearchField loading={loading}
                    onSelection={handleFoodSelection}
@@ -47,6 +47,7 @@ const FoodCardWithSearch = ({ classes, title, highlightItem, onHover, foodInfo, 
 
 FoodCardWithSearch.propTypes = {
   title: PropTypes.string,
+  className: PropTypes.string,
   onHover: PropTypes.func,
   highlightItem: PropTypes.string,
   foodInfo: PropTypes.func,

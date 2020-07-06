@@ -3,7 +3,6 @@ import ButtonWithSpinner from 'components/ButtonWithSpinner';
 import CompareModal from 'components/CompareModal';
 import Filters from 'components/Filters';
 import FoodCardWithSearch from 'components/FoodCardWithSearch';
-import SectionHeader from 'components/SectionHeader';
 import addRecommendations from 'helpers/addRecommendations';
 import { parseNutrients } from 'helpers/utils';
 import PropTypes from 'prop-types';
@@ -70,12 +69,14 @@ const AddRecommendations = ({ classes }) => {
                             highlightItem={hoveredItem}
                             context='food'
                             foodInfo={setFood}
+                            className={classes.card}
         />
         <FoodCardWithSearch title='Recommendation'
                             onHover={setHoveredNutrient}
                             highlightItem={hoveredItem}
                             context='recommendation'
                             foodInfo={setRecommendedFood}
+                            className={classes.card}
         />
       </div>
       <ActionsPanel food={food} recommendedFood={recommendedFood} status={status}>
