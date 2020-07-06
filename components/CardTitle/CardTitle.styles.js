@@ -10,6 +10,9 @@ export default {
   content: {
     display: 'inline-flex',
     position: 'relative',
+    '&:focus': {
+      outline: 'none',
+    },
   },
   editIcon: {
     position: 'absolute',

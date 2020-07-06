@@ -1,17 +1,16 @@
-import { Typography } from '@material-ui/core';
-import TextField from '@material-ui/core/TextField';
+import { TextField, Typography } from '@material-ui/core';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 
-const CardTitle = ({ classes, title, editable }) => {
+const CardTitle = ({ classes, title, editable, onTitleChange }) => {
   const [titleEdit, setTitleEdit] = useState(false);
   const [cardTitle, setCardTitle] = useState(title);
 
   useEffect(() => {
     setCardTitle(title);
-  }, []);
+  }, [title]);
 
   const editTitle = () => {
     setTitleEdit(true);
@@ -19,12 +18,16 @@ const CardTitle = ({ classes, title, editable }) => {
 
   const onBlur = () => {
     setTitleEdit(false);
+    if(cardTitle === '') {
+      setCardTitle('New List');
+      onTitleChange('New List');
+    } else {
+      onTitleChange(cardTitle);
+    }
   };
 
   const setTitle = ({ currentTarget }) => {
-    currentTarget.value === ''
-      ? setCardTitle('New List')
-      : setCardTitle(currentTarget.value);
+    setCardTitle(currentTarget.value);
   };
 
   const keyPressed = e => {
@@ -33,9 +36,26 @@ const CardTitle = ({ classes, title, editable }) => {
     }
   };
 
+  const EditableTitle = ({ children }) => {
+    return !editable
+      ? <div className={classes.content}>{children}</div>
+      : <div className={classes.content}
+             onClick={editTitle}
+             role='button'
+             tabIndex="0"
+             onKeyDown={editTitle}
+      >
+        {children}
+      </div>;
+  };
+
+  EditableTitle.propTypes = {
+    children: PropTypes.object.isRequired,
+  };
+
   return (
     <div className={classes.container}>
-      <div className={classes.content} onClick={editTitle} role='button' tabIndex="0" onKeyDown={editTitle}>
+      <EditableTitle>
         {titleEdit
           ? <TextField disableUnderline={true}
                        onBlur={onBlur}
@@ -53,7 +73,7 @@ const CardTitle = ({ classes, title, editable }) => {
             </>
           )
         }
-      </div>
+      </EditableTitle>
     </div>
   );
 };
@@ -62,6 +82,7 @@ CardTitle.propTypes = {
   classes: PropTypes.object.isRequired,
   title: PropTypes.string.isRequired,
   editable: PropTypes.bool,
+  onTitleChange: PropTypes.func,
 };
 
 export default CardTitle;

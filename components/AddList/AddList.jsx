@@ -2,29 +2,53 @@ import Typography from '@material-ui/core/Typography';
 import ArrowForwardIosRoundedIcon from '@material-ui/icons/ArrowForwardIosRounded';
 import Filters from 'components/Filters';
 import FoodCardWithSearch from 'components/FoodCardWithSearch';
-import FoodList from 'components/FoodList';
 import MainButton from 'components/MainButton';
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { saveNewFoodListAction } from 'store/global/actions';
+import FoodListCard from './FoodListCard';
 
 const AddList = ({ classes }) => {
   const [food, setFood] = useState();
-  const [foodList, setFoodList] = useState();
+  const [foodList, setFoodList] = useState([]);
   const [status, setStatus] = useState();
+  const [listName, setListName] = useState('New List');
+  const dispatch = useDispatch();
+  const saveNewList = useCallback((name, foods) => dispatch(saveNewFoodListAction(name, foods)), []);
+  const lists = useSelector(({ globalState }) => globalState.lists);
+
+  useEffect(() => {
+    if (lists) {
+      const newFoodList = lists.find(list => list.id === -1);
+      if (newFoodList) {
+        setFoodList(newFoodList.foods);
+        setListName(newFoodList.name);
+      }
+    }
+  }, []);
 
   const addToList = () => {
+    let foods = [];
     if (foodList) {
       const inList = foodList.find(foodItem => foodItem.foodCode === food.foodCode);
       if (inList) {
         setStatus('Already present in list');
         return;
       }
-      setFoodList([...foodList, food]);
+      foods = [...foodList, food];
     } else {
-      setFoodList([food]);
+      foods = [food];
     }
+    setFoodList(foods);
+    saveNewList(listName, foods);
     setFood(null);
     setStatus(null);
+  };
+
+  const saveListName = name => {
+    setListName(name);
+    saveNewList(name, foodList);
   };
 
   return (
@@ -44,7 +68,7 @@ const AddList = ({ classes }) => {
             )
           }
         </div>
-        <FoodList className={classes.foodList} foods={foodList}/>
+        <FoodListCard className={classes.foodList} title={listName} foods={foodList} onListNameChange={saveListName}/>
       </div>
     </>
   );

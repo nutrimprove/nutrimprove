@@ -1,4 +1,4 @@
-import { CATEGORIES } from '../../helpers/constants';
+import { CATEGORIES } from 'helpers/constants';
 import { ActionsTypes } from './actions';
 
 const userWithAddedPoints = (userDetails, points) => {
@@ -8,12 +8,39 @@ const userWithAddedPoints = (userDetails, points) => {
   }
 };
 
+const getNewList = (name, foods) => ({ foods, name, id: -1 });
+
+const saveNewFoodsList = (lists = [], name, foods) => {
+  let found = false;
+  const newList = getNewList(name, foods);
+  const listsToSave = lists.map(list => {
+    if (list.id !== -1) {
+      return list;
+    } else {
+      found = true;
+      return newList;
+    }
+  });
+
+  if (!found) {
+    listsToSave.push(newList);
+  }
+  return listsToSave;
+};
+
+const addNewFoodsList = (lists = [], name, foods) => {
+  const newList = getNewList(name, foods);
+  const listsToSave = lists.map(list => list.id !== -1 ? list : { ...list, id: list.length });
+  listsToSave.push(newList);
+  return listsToSave;
+};
+
 export const reducer = (state = {
   userDetails: {},
   categories: CATEGORIES,
   foodNames: [],
   preferences: {},
-  foodLists: [],
+  lists: [],
 }, action) => {
   if (action.type === ActionsTypes.SET_USER_DETAILS) {
     return {
@@ -43,8 +70,18 @@ export const reducer = (state = {
   } else if (action.type === ActionsTypes.SET_FOOD_LISTS) {
     return {
       ...state,
-      foodLists: action.foodLists,
-    }
+      lists: action.foodLists,
+    };
+  } else if (action.type === ActionsTypes.SAVE_NEW_FOODS_LIST) {
+    return {
+      ...state,
+      lists: saveNewFoodsList(state.lists, action.name, action.foods),
+    };
+  } else if (action.type === ActionsTypes.ADD_NEW_FOODS_LIST) {
+    return {
+      ...state,
+      lists: addNewFoodsList(state.lists, action.name, action.foods),
+    };
   } else {
     return state;
   }
