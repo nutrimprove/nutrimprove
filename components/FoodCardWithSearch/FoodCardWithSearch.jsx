@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux';
 import FoodCard from '../FoodCard';
 import SearchField from '../SearchField';
 
-const FoodCardWithSearch = ({ title, highlightItem, onHover, foodInfo, context, className }) => {
+const FoodCardWithSearch = ({ title, highlightItem, onHover, onFoodLoad, context, buttonText, reset, className }) => {
   const categories = useSelector(({ globalState }) => globalState.categories);
   const foodNames = useSelector(({ globalState }) => globalState.foodNames);
   const [selectedFood, setSelectedFood] = useState();
@@ -18,8 +18,8 @@ const FoodCardWithSearch = ({ title, highlightItem, onHover, foodInfo, context, 
   const loadCardDetails = async () => {
     const foodResult = await getFoodById(selectedFood.foodCode, context);
     setFood(foodResult);
-    if (foodInfo) {
-      foodInfo(foodResult);
+    if (onFoodLoad) {
+      onFoodLoad(foodResult);
     }
   };
 
@@ -37,6 +37,7 @@ const FoodCardWithSearch = ({ title, highlightItem, onHover, foodInfo, context, 
                    values={filteredFoodNames}
                    width={260}
                    buttonDisabled={!selectedFood}
+                   buttonText={buttonText}
       />
       {food && (
         <FoodCard food={food} onMouseOver={onHover} highlightItem={highlightItem}/>
@@ -50,8 +51,10 @@ FoodCardWithSearch.propTypes = {
   className: PropTypes.string,
   onHover: PropTypes.func,
   highlightItem: PropTypes.string,
-  foodInfo: PropTypes.func,
+  onFoodLoad: PropTypes.func,
   context: PropTypes.string,
+  reset: PropTypes.bool,
+  buttonText: PropTypes.string,
 };
 
 export default FoodCardWithSearch;

@@ -9,4 +9,7 @@ export default {
   list: {
     padding: 20,
   },
+  empty: {
+    color: '#999999',
+  }
 };

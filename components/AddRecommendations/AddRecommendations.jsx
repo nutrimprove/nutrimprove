@@ -68,14 +68,14 @@ const AddRecommendations = ({ classes }) => {
                             onHover={setHoveredNutrient}
                             highlightItem={hoveredItem}
                             context='food'
-                            foodInfo={setFood}
+                            onFoodLoad={setFood}
                             className={classes.card}
         />
         <FoodCardWithSearch title='Recommendation'
                             onHover={setHoveredNutrient}
                             highlightItem={hoveredItem}
                             context='recommendation'
-                            foodInfo={setRecommendedFood}
+                            onFoodLoad={setRecommendedFood}
                             className={classes.card}
         />
       </div>

@@ -6,9 +6,19 @@ export default {
     margin: 'auto',
   },
   foodCard: {
+    display: 'grid',
+  },
+  foodColumn: {
+    width: 'calc(50% - 25px)',
     margin: '0 auto',
     display: 'grid',
-    width: 'calc(50% - 25px)',
+  },
+  addToListButton: {
+    width: 430,
+    margin: '20px auto 0',
+  },
+  addToListText: {
+    marginRight: 10,
   },
   foodList: {
     marginLeft: 50,
