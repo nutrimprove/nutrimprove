@@ -35,7 +35,7 @@ const CardTitle = ({ classes, title, editable }) => {
 
   return (
     <div className={classes.container}>
-      <div className={classes.content} onClick={editTitle}>
+      <div className={classes.content} onClick={editTitle} role='button' tabIndex="0" onKeyDown={editTitle}>
         {titleEdit
           ? <TextField disableUnderline={true}
                        onBlur={onBlur}
@@ -46,11 +46,7 @@ const CardTitle = ({ classes, title, editable }) => {
           />
           : (
             <>
-              <Typography variant='subtitle1'
-                          className={clsx(editable ? classes.editableText : null)}
-                          noWrap={true}
-                          display={'inline'}
-              >
+              <Typography variant='subtitle1' className={clsx(editable ? classes.editableText : null)} noWrap={true}>
                 {cardTitle}
               </Typography>
               {editable && <span className={classes.editIcon}><EditOutlinedIcon fontSize='small'/></span>}
