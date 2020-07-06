@@ -1,4 +1,5 @@
 import { Typography } from '@material-ui/core';
+import CardTitle from 'components/CardTitle';
 import { filterFoodNames } from 'helpers/utils';
 import { getFoodById } from 'interfaces/api/foods';
 import PropTypes from 'prop-types';
@@ -29,7 +30,7 @@ const FoodCardWithSearch = ({ classes, title, highlightItem, onHover, foodInfo, 
 
   return (
     <div className={className}>
-      <Typography className={classes.title} variant='subtitle1'>{title}</Typography>
+      <CardTitle title={title} />
       <SearchField loading={loading}
                    onSelection={handleFoodSelection}
                    onButtonClick={loadCardDetails}

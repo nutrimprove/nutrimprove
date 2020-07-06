@@ -2,6 +2,7 @@ import { Link, Typography } from '@material-ui/core';
 import clsx from 'clsx';
 import ActionsContainer from 'components/ActionsContainer';
 import ButtonWithSpinner from 'components/ButtonWithSpinner';
+import CardTitle from 'components/CardTitle';
 import CompareModal from 'components/CompareModal';
 import FoodCard from 'components/FoodCard';
 import LoadingPanel from 'components/LoadingPanel';
@@ -132,11 +133,11 @@ const ReviewRecommendations = ({ classes }) => {
         <>
           <div className={classes.cards}>
             <div className={classes.card}>
-              <Typography className={classes.title} variant='subtitle1'>Food</Typography>
+              <CardTitle title='Food'/>
               <FoodCard food={food} onMouseOver={setHoveredNutrient} highlightItem={hoveredItem}/>
             </div>
             <div className={classes.card}>
-              <Typography className={classes.title} variant='subtitle1'>Recommendation</Typography>
+              <CardTitle title='Recommendation'/>
               <FoodCard food={recommendedFood} onMouseOver={setHoveredNutrient} highlightItem={hoveredItem}/>
             </div>
           </div>

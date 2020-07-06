@@ -1,12 +1,13 @@
 import Typography from '@material-ui/core/Typography';
+import CardTitle from 'components/CardTitle';
 import PropTypes from 'prop-types';
 import React from 'react';
 
 const FoodList = ({ classes }) => {
   return (
-    <div className={classes.root}>
-      <Typography>New List</Typography>
-    </div>
+    <>
+      <CardTitle title='New List'/>
+    </>
   );
 };
 
