@@ -11,8 +11,9 @@ import FoodListCard from './FoodListCard';
 
 const AddList = ({ classes }) => {
   const [food, setFood] = useState();
+  const [selectedFood, setSelectedFood] = useState();
+  const [addButtonText, setAddButtonText] = useState('Select food');
   const [foodList, setFoodList] = useState([]);
-  const [status, setStatus] = useState();
   const [listName, setListName] = useState('New List');
   const dispatch = useDispatch();
   const saveNewList = useCallback((name, foods) => dispatch(saveNewFoodListAction(name, foods)), []);
@@ -28,27 +29,30 @@ const AddList = ({ classes }) => {
     }
   }, []);
 
+  useEffect(() => {
+    !foodList.find(food => food.foodCode === selectedFood.foodCode)
+      ? setFood(selectedFood)
+      : setAddButtonText('Food already in list');
+  }, [selectedFood]);
+
   const addToList = () => {
-    let foods = [];
-    if (foodList) {
-      const inList = foodList.find(foodItem => foodItem.foodCode === food.foodCode);
-      if (inList) {
-        setStatus('Already present in list');
-        return;
-      }
-      foods = [...foodList, food];
-    } else {
-      foods = [food];
-    }
+    const foods = foodList ? [...foodList, food] :  [food];
     setFoodList(foods);
     saveNewList(listName, foods);
     setFood(null);
-    setStatus(null);
   };
 
   const saveListName = name => {
     setListName(name);
     saveNewList(name, foodList);
+  };
+
+  const removeFood = ({currentTarget}) => {
+    const foodKey = currentTarget.dataset.key;
+    setFoodList(foodList.filter(food => food.foodCode !== currentTarget.dataset.key));
+    if (foodKey === selectedFood.foodCode) {
+      setFood(selectedFood);
+    }
   };
 
   return (
@@ -57,9 +61,9 @@ const AddList = ({ classes }) => {
       <Typography color='secondary'>{status}</Typography>
       <div className={classes.container}>
         <div className={classes.foodColumn}>
-          <FoodCardWithSearch title='Food' onFoodLoad={setFood} buttonText='Select' className={classes.foodCard}/>
+          <FoodCardWithSearch title='Food' onFoodLoad={setSelectedFood} buttonText='Select' className={classes.foodCard}/>
           {!food
-            ? <MainButton disabled={true} className={classes.addToListButton}>Select New Food</MainButton>
+            ? <MainButton disabled={true} className={classes.addToListButton}>{addButtonText}</MainButton>
             : (
               <MainButton action={addToList} className={classes.addToListButton}>
                 <span className={classes.addToListText}>Add Food to List</span>
@@ -68,7 +72,7 @@ const AddList = ({ classes }) => {
             )
           }
         </div>
-        <FoodListCard className={classes.foodList} title={listName} foods={foodList} onListNameChange={saveListName}/>
+        <FoodListCard className={classes.foodList} title={listName} foods={foodList} onListNameChange={saveListName} onDelete={removeFood}/>
       </div>
     </>
   );

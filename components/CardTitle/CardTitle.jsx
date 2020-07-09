@@ -4,6 +4,8 @@ import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 
+const DEFAULT_LIST_NAME = 'New List';
+
 const CardTitle = ({ classes, title, editable, onTitleChange }) => {
   const [titleEdit, setTitleEdit] = useState(false);
   const [cardTitle, setCardTitle] = useState(title);
@@ -19,8 +21,8 @@ const CardTitle = ({ classes, title, editable, onTitleChange }) => {
   const onBlur = () => {
     setTitleEdit(false);
     if(cardTitle === '') {
-      setCardTitle('New List');
-      onTitleChange('New List');
+      setCardTitle(DEFAULT_LIST_NAME);
+      onTitleChange(DEFAULT_LIST_NAME);
     } else {
       onTitleChange(cardTitle);
     }

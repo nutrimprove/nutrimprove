@@ -1,13 +1,22 @@
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import Typography from '@material-ui/core/Typography';
+import DeleteIcon from '@material-ui/icons/Delete';
 import CardTitle from 'components/CardTitle';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-const FoodListCard = ({ classes, className, title, foods, onListNameChange }) => {
+const FoodListCard = ({ classes, className, title, foods, onListNameChange, onDelete }) => {
   const handleFoodClick = () => {
 
+  };
+
+  const setHoverColor = ({ currentTarget }) => {
+    currentTarget.style.color = 'darkred';
+  };
+
+  const setNormalColor = ({ currentTarget }) => {
+    currentTarget.style.color = 'grey';
   };
 
   return (
@@ -18,6 +27,13 @@ const FoodListCard = ({ classes, className, title, foods, onListNameChange }) =>
           {foods && foods.map(food => (
             <ListItem key={food.foodCode} className={classes.food} onClick={handleFoodClick}>
               <Typography variant='body1'>{food.foodName}</Typography>
+              <DeleteIcon onClick={onDelete}
+                          style={{ color: 'grey', cursor: 'pointer' }}
+                          onMouseOver={setHoverColor}
+                          onMouseLeave={setNormalColor}
+                          titleAccess='Delete'
+                          data-key={food.foodCode}
+              />
             </ListItem>
           ))}
           {!foods || foods.length === 0 && (
@@ -37,6 +53,7 @@ FoodListCard.propTypes = {
   title: PropTypes.string.isRequired,
   foods: PropTypes.array.isRequired,
   onListNameChange: PropTypes.func,
+  onDelete: PropTypes.func,
 };
 
 export default FoodListCard;

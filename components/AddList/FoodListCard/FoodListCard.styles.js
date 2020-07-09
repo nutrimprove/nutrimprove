@@ -13,7 +13,6 @@ export default {
     color: '#999999',
   },
   food: {
-    cursor: 'pointer',
     '&:hover': {
       backgroundColor: '#e5e5ea',
     },
