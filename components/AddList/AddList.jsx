@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { saveNewFoodListAction } from 'store/global/actions';
-import FoodListCard from './FoodListCard';
+import FoodListPanel from './FoodListPanel';
 
 const AddList = ({ classes }) => {
   const [food, setFood] = useState();
@@ -72,7 +72,7 @@ const AddList = ({ classes }) => {
             )
           }
         </div>
-        <FoodListCard className={classes.foodList} title={listName} foods={foodList} onListNameChange={saveListName} onDelete={removeFood}/>
+        <FoodListPanel className={classes.foodList} title={listName} foods={foodList} onListNameChange={saveListName} onDelete={removeFood}/>
       </div>
     </>
   );

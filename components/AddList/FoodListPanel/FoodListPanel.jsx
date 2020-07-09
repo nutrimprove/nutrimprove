@@ -6,7 +6,7 @@ import CardTitle from 'components/CardTitle';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-const FoodListCard = ({ classes, className, title, foods, onListNameChange, onDelete }) => {
+const FoodListPanel = ({ classes, className, title, foods, onListNameChange, onDelete }) => {
   const handleFoodClick = () => {
 
   };
@@ -47,7 +47,7 @@ const FoodListCard = ({ classes, className, title, foods, onListNameChange, onDe
   );
 };
 
-FoodListCard.propTypes = {
+FoodListPanel.propTypes = {
   classes: PropTypes.object.isRequired,
   className: PropTypes.string,
   title: PropTypes.string.isRequired,
@@ -56,4 +56,4 @@ FoodListCard.propTypes = {
   onDelete: PropTypes.func,
 };
 
-export default FoodListCard;
+export default FoodListPanel;
