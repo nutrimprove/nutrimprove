@@ -31,6 +31,7 @@ const FoodListPanel = ({ classes, className, title, foods, onListNameChange, onD
                           onMouseLeave={setNormalColor}
                           titleAccess='Delete'
                           data-key={food.foodCode}
+                          className={classes.deleteIcon}
               />
             </ListItem>
           ))}
