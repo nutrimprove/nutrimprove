@@ -139,7 +139,12 @@ const FoodCard = ({ food, onMouseOver, highlightItem, classes }) => {
               </Link>
             )}
             {undoHistory.current && undoHistory.current.length > 0 && (
-              <Link component='button' key={undoHistory.current.length} onClick={undo} className={classes.link} title='Undo last change'>
+              <Link component='button'
+                    key={undoHistory.current.length}
+                    onClick={undo}
+                    className={classes.link}
+                    title='Undo last change'
+              >
                 Undo
               </Link>
             )}

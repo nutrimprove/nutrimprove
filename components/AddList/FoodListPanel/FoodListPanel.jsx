@@ -1,6 +1,4 @@
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import Typography from '@material-ui/core/Typography';
+import { List, ListItem, Typography } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import CardTitle from 'components/CardTitle';
 import PropTypes from 'prop-types';

@@ -1,5 +1,5 @@
 import { withStyles } from '@material-ui/core';
-import styles from 'components/AddList/FoodListPanel/FoodListPanel.styles';
-import FoodListPanel from 'components/AddList/FoodListPanel/FoodListPanel';
+import styles from './FoodListPanel.styles';
+import FoodListPanel from './FoodListPanel';
 
 export default withStyles(styles)(FoodListPanel);
