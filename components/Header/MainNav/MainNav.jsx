@@ -1,6 +1,6 @@
-import { AppBar, Typography } from '@material-ui/core';
+import { AppBar } from '@material-ui/core';
 import MenuButton from 'components/Header/MainNav/MenuButton';
-import LoadingSpinner from 'components/LoadingSpinner';
+import RightNavText from 'components/Header/MainNav/RightNavText';
 import { emailVerified, isAdmin, isApproved } from 'helpers/userUtils';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
@@ -50,18 +50,13 @@ const MainNav = ({ classes }) => {
   }, [userDetails]);
 
   const RightNavContent = () => {
-    if (userDetails && userDetails.email && emailVerified() && !isApproved()) {
-      return (
-        <Typography className={classes.rightNavContent}>
-          <span className={classes.notice}>Waiting for an Admin Approval</span>
-        </Typography>
-      );
+    if (userDetails && userDetails.email && emailVerified()) {
+      return isApproved()
+        ? <RightNavText>{userDetails.email}</RightNavText>
+        : <RightNavText important={true}>Waiting for an Admin Approval</RightNavText>;
     } else if (disabled && loadingUser) {
       return (
-        <Typography className={classes.rightNavContent}>
-          <LoadingSpinner force={true} colour='white'/>
-          <span className={classes.rightNavText}>Loading user data . . .</span>
-        </Typography>
+        <RightNavText>Loading user data . . .</RightNavText>
       );
     }
     return null;
