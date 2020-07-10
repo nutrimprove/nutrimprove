@@ -1,6 +1,6 @@
 export default {
   section: {
-    backgroundColor: '#f5f5f5',
+    backgroundColor: '#f9f9f9',
     padding: '10px 10px 5px 10px',
     border: 'solid 1px lightgrey',
     borderRadius: '0 0 9px 9px',
