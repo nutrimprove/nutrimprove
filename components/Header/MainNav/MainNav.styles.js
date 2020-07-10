@@ -32,4 +32,15 @@ export default {
     color: 'white',
     padding: '0 20px',
   },
+  rightNavContent: {
+    fontSize: 14,
+    marginLeft: 'auto',
+  },
+  notice: {
+    color: 'yellow',
+  },
+  rightNavText: {
+    marginLeft: 12,
+    verticalAlign: 'text-bottom',
+  },
 };
