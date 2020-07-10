@@ -1,7 +1,6 @@
 import { Link, List, Typography } from '@material-ui/core';
 import ArrowRightAltIcon from '@material-ui/icons/ArrowRightAlt';
 import ContentSection from 'components/ContentSection';
-import Footer from 'components/Footer';
 import Tooltip from 'components/Tooltip';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -59,7 +58,13 @@ const InfoPage = ({ classes }) => {
           </Typography>
           <Typography variant='body2' paragraph={true}>
             We’d love your company, and you can join us here:&nbsp;
-            <Link title='Go to Eventbrite page' href='https://www.eventbrite.com/o/30510887572' target='_blank'>event page</Link>.
+            <Link
+              title='Go to Eventbrite page'
+              href='https://www.eventbrite.com/e/covid-19-the-impact-on-nutrition-and-the-new-role-for-health-practitioners-tickets-109709516116'
+              target='_blank'
+            >
+              event page
+            </Link>.
           </Typography>
           <Typography variant='body2'>
             The webinar will have the following agenda:
