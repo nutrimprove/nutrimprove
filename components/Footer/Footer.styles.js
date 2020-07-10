@@ -4,7 +4,7 @@ export default {
   footer: {
     minWidth: MIN_WIDTH,
     minHeight: 20,
-    margin: '20px -20px',
+    margin: '36px -20px',
     backgroundColor: '#3f51b5',
     padding: 10,
     borderRadius: '0 0 7px 7px',
