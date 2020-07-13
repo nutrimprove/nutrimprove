@@ -1,3 +1,4 @@
+import { NUTRIENT_GROUPS } from 'helpers/constants';
 import { getFoodById } from 'interfaces/api/foods';
 import { uniqueId } from 'lodash';
 import { DEFAULT_CARD_NUTRIENTS } from './constants';
@@ -66,8 +67,10 @@ const parseNutrients = ({ nutrients, filterEmptyValues = true, addKey = false })
 
 const getCardNutrients = (foodObj, cardNutrients = DEFAULT_CARD_NUTRIENTS) => {
   if (!foodObj) return;
-  const { proximates, vitamins, inorganics } = foodObj;
-  const allNutrients = { ...proximates, ...vitamins, ...inorganics };
+
+  const allNutrients = NUTRIENT_GROUPS.reduce((merged, group) => {
+      return {...merged, ...foodObj[group]};
+    }, {});
 
   // Get only essential nutrients to display in the card
   const nutrients = {};
