@@ -22,6 +22,7 @@ export default {
   },
   foodList: {
     marginLeft: 50,
-    width: 'calc(50% - 25px)',
+    width: 430,
+    textAlign: 'center',
   },
 };

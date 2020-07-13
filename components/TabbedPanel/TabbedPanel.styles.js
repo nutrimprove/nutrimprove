@@ -14,5 +14,9 @@ export default {
     borderRadius: '9px 9px 0 0',
     marginRight: 2,
     fontSize: '0.7em',
+    minHeight: 'unset',
+  },
+  tabs: {
+    minHeight: 'unset',
   },
 };

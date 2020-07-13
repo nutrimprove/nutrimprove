@@ -1,6 +1,6 @@
 export default {
   container: {
-    margin: '0 auto',
+    margin: '0 auto 10px',
     backgroundColor: '#f5f5fa',
     borderRadius: 7,
     width: 430,
@@ -9,16 +9,4 @@ export default {
   list: {
     padding: 20,
   },
-  empty: {
-    color: '#999999',
-  },
-  food: {
-    '&:hover': {
-      backgroundColor: '#e5e5ea',
-    },
-  },
-  deleteIcon: {
-    position: 'absolute',
-    right: 10,
-  }
 };

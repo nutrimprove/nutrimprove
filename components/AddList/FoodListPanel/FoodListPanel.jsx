@@ -1,53 +1,63 @@
-import { List, ListItem, Typography } from '@material-ui/core';
-import DeleteIcon from '@material-ui/icons/Delete';
 import CardTitle from 'components/CardTitle';
+import FoodCard from 'components/FoodCard';
+import TabbedPanel from 'components/TabbedPanel';
+import { cloneDeep } from 'lodash';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import FoodList from './FoodList';
 
-const FoodListPanel = ({ classes, className, title, foods, onListNameChange, onDelete }) => {
-  const handleFoodClick = () => {
+const sumNutrients = (foods, group) => {
+  if (foods && foods.length > 0) {
+    return foods.reduce((merged, food, index) => {
+      const current = cloneDeep(food);
+      if (index === 0) {
+        Object.keys(current[group]).forEach(nutrient => {
+          if (isNaN(current[group][nutrient].quantity)) {
+            current[group][nutrient].quantity = 0;
+          }
+        });
+        return current;
+      }
 
-  };
+      Object.keys(merged[group]).forEach(nutrient => {
+        const quantity = isNaN(current[group][nutrient].quantity) ? 0 : current[group][nutrient].quantity;
+        merged[group][nutrient].quantity = +merged[group][nutrient].quantity + +quantity;
+      });
+      return merged;
+    }, {});
+  }
+};
 
-  const setHoverColor = ({ currentTarget }) => {
-    currentTarget.style.color = 'darkred';
-  };
+const FoodListPanel = ({ className, title, foods, onListNameChange, onDelete }) => {
+  const [nutritionalData, setNutritionalData] = useState();
 
-  const setNormalColor = ({ currentTarget }) => {
-    currentTarget.style.color = 'grey';
-  };
+  useEffect(() => {
+    const updatedQuantities = sumNutrients(foods, ['proximates']);
+    setNutritionalData(updatedQuantities);
+  }, [foods]);
+
+  const tabs = [
+    {
+      label: 'Foods',
+      content: <FoodList foods={foods} onDelete={onDelete}/>,
+    },
+    {
+      label: 'Nutritional Information',
+      content: <FoodCard actions={false} food={nutritionalData} title={false}/>,
+      disabled: !nutritionalData || nutritionalData.length === 0,
+      container: false,
+    },
+  ];
 
   return (
     <div className={className}>
       <CardTitle title={title} editable={true} onTitleChange={onListNameChange}/>
-      <div className={classes.container}>
-        <List>
-          {foods && foods.map(food => (
-            <ListItem key={food.foodCode} className={classes.food} onClick={handleFoodClick}>
-              <Typography variant='body1'>{food.foodName}</Typography>
-              <DeleteIcon onClick={onDelete}
-                          style={{ color: 'grey', cursor: 'pointer' }}
-                          onMouseOver={setHoverColor}
-                          onMouseLeave={setNormalColor}
-                          titleAccess='Delete'
-                          data-key={food.foodCode}
-                          className={classes.deleteIcon}
-              />
-            </ListItem>
-          ))}
-          {!foods || foods.length === 0 && (
-            <ListItem>
-              <Typography className={classes.empty} title='Empty list'>Empty</Typography>
-            </ListItem>
-          )}
-        </List>
-      </div>
+      <TabbedPanel tabs={tabs} />
     </div>
   );
 };
 
 FoodListPanel.propTypes = {
-  classes: PropTypes.object.isRequired,
   className: PropTypes.string,
   title: PropTypes.string.isRequired,
   foods: PropTypes.array.isRequired,

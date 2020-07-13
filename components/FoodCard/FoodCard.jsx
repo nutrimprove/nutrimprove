@@ -15,7 +15,7 @@ import ResultsTable from '../ResultsTable';
 import ScrollIntoView from '../ScrollIntoView';
 import ChangeNutrientModal from './ChangeNutrientModal';
 
-const FoodCard = ({ food, onMouseOver, highlightItem, classes }) => {
+const FoodCard = ({ food, onMouseOver, title = true, highlightItem, header = true, actions = true, classes }) => {
   const preferences = useSelector(({ globalState }) => globalState.preferences);
   const userDetails = useSelector(({ globalState }) => globalState.userDetails);
   const dispatch = useDispatch();
@@ -28,7 +28,7 @@ const FoodCard = ({ food, onMouseOver, highlightItem, classes }) => {
   const [, updateState] = useState();
   const forceUpdate = React.useCallback(() => updateState({}), []);
   const undoHistory = useRef([]);
-  const title = food ? food.foodName : '';
+  const cardTitle = food && title ? food.foodName : '';
 
   const setUndoHistory = (history) => {
     undoHistory.current = history;
@@ -103,10 +103,12 @@ const FoodCard = ({ food, onMouseOver, highlightItem, classes }) => {
   return (
     <>
       <Card className={classes.card}>
-        <Typography className={classes.title} color="textSecondary" title={title} noWrap={true}>
-          {title}
-          <span className={classes.subtitle}>Nutritional values per 100g of food</span>
-        </Typography>
+        {header && (
+          <Typography className={classes.title} color="textSecondary" title={cardTitle} noWrap={true}>
+            {cardTitle}
+            <span className={classes.subtitle}>Nutritional values per 100g of food</span>
+          </Typography>
+        )}
         <CardContent className={classes.content}>
           <List className={classes.list}>
             {nutrients && nutrients.map(({ label, name, quantity, changed }) => (
@@ -150,12 +152,14 @@ const FoodCard = ({ food, onMouseOver, highlightItem, classes }) => {
             )}
           </div>
         </CardContent>
-        <CardActions className={classes.actions}>
-          <ScrollIntoView/>
-          <Button variant='outlined' color='primary' className={classes.button} onClick={showFoodDetails}>
-            Show More
-          </Button>
-        </CardActions>
+        {actions && (
+          <CardActions className={classes.actions}>
+            <ScrollIntoView/>
+            <Button variant='outlined' color='primary' className={classes.button} onClick={showFoodDetails}>
+              Show More
+            </Button>
+          </CardActions>
+        )}
       </Card>
       {detailsOpen && (
         <ModalPanel open={detailsOpen}
@@ -183,6 +187,8 @@ FoodCard.propTypes = {
   food: PropTypes.object.isRequired,
   onMouseOver: PropTypes.func,
   highlightItem: PropTypes.string,
+  header: PropTypes.bool,
+  actions: PropTypes.bool,
   classes: PropTypes.object.isRequired,
 };
 
