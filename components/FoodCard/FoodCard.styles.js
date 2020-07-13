@@ -62,7 +62,6 @@ export default {
   subtitle: {
     display: 'block',
     fontSize: 11,
-    textAlign: 'center',
     fontWeight: 300,
     paddingTop: 5,
   },
