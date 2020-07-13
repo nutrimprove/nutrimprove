@@ -1,6 +1,6 @@
 import Header from 'components/Header';
-import PageContent from 'components/PageContent';
 import LoaderContainer from 'components/LoaderContainer';
+import PageContent from 'components/PageContent';
 import * as gtag from 'helpers/analytics';
 import Router, { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
@@ -9,8 +9,11 @@ import { Provider } from 'react-redux';
 import { AuthProvider } from 'react-use-auth';
 import withReduxStore from 'store/withReduxStore';
 
+const noHeaderPages = ['/info'];
+
 const MyApp = ({ Component, pageProps, store }) => {
   const router = useRouter();
+  const hasHeader = !noHeaderPages.includes(router.route);
 
   useEffect(() => {
     // Google Analytics
@@ -31,7 +34,7 @@ const MyApp = ({ Component, pageProps, store }) => {
     >
       <Provider store={store}>
         <LoaderContainer>
-          <Header/>
+          {hasHeader ? <Header/> : null}
           <PageContent>
             <Component {...pageProps}/>
           </PageContent>

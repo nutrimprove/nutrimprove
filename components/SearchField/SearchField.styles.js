@@ -6,7 +6,7 @@ export default {
     borderRadius: 7,
     borderColor: 'lightgray',
     padding: '10px 10px 10px 20px',
-    margin: '0 auto 20px',
+    margin: '0 auto',
   },
   button: {
     margin: 10,

@@ -1,4 +1,5 @@
 import Paper from '@material-ui/core/Paper';
+import Footer from 'components/Footer';
 import LoadingPanel from 'components/LoadingPanel';
 import { isApproved, isLoggedIn } from 'helpers/userUtils';
 import { useRouter } from 'next/router';
@@ -6,7 +7,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { usePromiseTracker } from 'react-promise-tracker';
 
-const noAuthPages = ['/', '/auth0_callback', '/about'];
+const noAuthPages = ['/', '/auth0_callback', '/about', '/info'];
 
 const PageContent = ({ children, classes }) => {
   const { promiseInProgress } = usePromiseTracker();
@@ -18,6 +19,7 @@ const PageContent = ({ children, classes }) => {
       return (
         <Paper className={classes.content}>
           {promiseInProgress ? <LoadingPanel/> : children}
+          <Footer/>
         </Paper>
       );
     }
