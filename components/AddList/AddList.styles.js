@@ -24,4 +24,7 @@ export default {
     marginLeft: 50,
     width: 'calc(50% - 25px)',
   },
+  quantity: {
+    float: 'right',
+  },
 };

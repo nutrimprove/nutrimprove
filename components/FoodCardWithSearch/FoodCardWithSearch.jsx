@@ -50,7 +50,7 @@ const FoodCardWithSearch = ({ title, highlightItem, onHover, onFoodLoad, context
 
 FoodCardWithSearch.propTypes = {
   title: PropTypes.string,
-  classes: PropTypes.string.required,
+  classes: PropTypes.string.isRequired,
   className: PropTypes.string,
   onHover: PropTypes.func,
   highlightItem: PropTypes.string,

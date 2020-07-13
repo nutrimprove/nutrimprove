@@ -8,15 +8,17 @@ export default {
     },
     paddingRight: 36,
   },
-  deleteIcon: {
-    position: 'absolute',
-    right: 10,
-  },
   foodsFooter: {
     textAlign: 'center',
     '& .MuiTypography-root': {
       fontSize: 12,
-      color: 'grey'
+      color: 'grey',
     },
-  }
+  },
+  table: {
+    '& .MuiTableCell-root': {
+      padding: 5,
+      maxWidth: 350,
+    },
+  },
 };

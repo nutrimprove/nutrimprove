@@ -7,23 +7,11 @@ export default {
     borderRadius: 9,
     marginBottom: 20,
   },
-  content: {
-    display: 'inline-flex',
-    position: 'relative',
-    '&:focus': {
-      outline: 'none',
-    },
-  },
   editIcon: {
     position: 'absolute',
     top: 3,
     right: -24,
     color: '#3f51b5',
     cursor: 'pointer',
-  },
-  editableText: {
-    color: '#3f51b5',
-    cursor: 'pointer',
-    maxWidth: 400,
   },
 };

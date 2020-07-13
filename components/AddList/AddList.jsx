@@ -1,3 +1,4 @@
+import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import ArrowForwardIosRoundedIcon from '@material-ui/icons/ArrowForwardIosRounded';
 import Filters from 'components/Filters';
@@ -15,9 +16,12 @@ const AddList = ({ classes }) => {
   const [addButtonText, setAddButtonText] = useState('Select food');
   const [foodList, setFoodList] = useState([]);
   const [listName, setListName] = useState('New List');
+  const [quantity, setQuantity] = useState(0);
   const dispatch = useDispatch();
   const saveNewList = useCallback((name, foods) => dispatch(saveNewFoodListAction(name, foods)), []);
   const lists = useSelector(({ globalState }) => globalState.lists);
+
+  const ALREADY_IN_LIST_TEXT = 'Food already in list';
 
   useEffect(() => {
     if (lists) {
@@ -32,14 +36,15 @@ const AddList = ({ classes }) => {
   useEffect(() => {
     !foodList.find(food => food.foodCode === selectedFood.foodCode)
       ? setFood(selectedFood)
-      : setAddButtonText('Food already in list');
+      : setAddButtonText(ALREADY_IN_LIST_TEXT);
   }, [selectedFood]);
 
   const addToList = () => {
-    const foods = foodList ? [...foodList, food] :  [food];
+    const foods = foodList ? [...foodList, food] : [food];
     setFoodList(foods);
     saveNewList(listName, foods);
     setFood(null);
+    setAddButtonText(ALREADY_IN_LIST_TEXT);
   };
 
   const saveListName = name => {
@@ -47,7 +52,7 @@ const AddList = ({ classes }) => {
     saveNewList(name, foodList);
   };
 
-  const removeFood = ({currentTarget}) => {
+  const removeFood = ({ currentTarget }) => {
     const foodKey = currentTarget.dataset.key;
     setFoodList(foodList.filter(food => food.foodCode !== currentTarget.dataset.key));
     if (foodKey === selectedFood.foodCode) {
@@ -61,18 +66,38 @@ const AddList = ({ classes }) => {
       <Typography color='secondary'>{status}</Typography>
       <div className={classes.container}>
         <div className={classes.foodColumn}>
-          <FoodCardWithSearch title='Food' onFoodLoad={setSelectedFood} buttonText='Select' className={classes.foodCard}/>
-          {!food
-            ? <MainButton disabled={true} className={classes.addToListButton}>{addButtonText}</MainButton>
-            : (
-              <MainButton action={addToList} className={classes.addToListButton}>
-                <span className={classes.addToListText}>Add Food to List</span>
-                <ArrowForwardIosRoundedIcon fontSize='small'/>
-              </MainButton>
-            )
-          }
+          <FoodCardWithSearch title='Food'
+                              onFoodLoad={setSelectedFood}
+                              buttonText='Select'
+                              className={classes.foodCard}
+          />
+          <div className={classes.addToListButton}>
+            {!food
+              ? <MainButton disabled={true} className={classes.addToListButton}>{addButtonText}</MainButton>
+              : (
+                <>
+                  <TextField className={classes.quantity}
+                             size='small'
+                             helperText='default: 100g'
+                             type='number'
+                             label='Type quantity'
+                             placeholder='100'
+                             onChange={setQuantity}
+                             InputProps={{ endAdornment: 'g' }}
+                             title='Type quantity (in grams)'
+                  />
+                  <MainButton action={addToList} className={classes.addToListButton}>
+                    <span className={classes.addToListText}>Add Food to List</span>
+                    <ArrowForwardIosRoundedIcon fontSize='small'/>
+                  </MainButton>
+                </>
+              )
+            }
+          </div>
+
         </div>
-        <FoodListPanel className={classes.foodList} title={listName} foods={foodList} onListNameChange={saveListName} onDelete={removeFood}/>
+        <FoodListPanel className={classes.foodList} title={listName} foods={foodList} onListNameChange={saveListName}
+                       onDelete={removeFood}/>
       </div>
     </>
   );

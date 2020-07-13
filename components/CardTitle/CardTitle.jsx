@@ -1,84 +1,17 @@
-import { TextField, Typography } from '@material-ui/core';
-import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
-import clsx from 'clsx';
+import { Typography } from '@material-ui/core';
+import EditableText from 'components/EditableText';
 import PropTypes from 'prop-types';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
-const DEFAULT_LIST_NAME = 'New List';
-
-const CardTitle = ({ classes, title, editable, onTitleChange }) => {
-  const [titleEdit, setTitleEdit] = useState(false);
-  const [cardTitle, setCardTitle] = useState(title);
-
-  useEffect(() => {
-    setCardTitle(title);
-  }, [title]);
-
-  const editTitle = () => {
-    setTitleEdit(true);
-  };
-
-  const onBlur = () => {
-    setTitleEdit(false);
-    if(cardTitle === '') {
-      setCardTitle(DEFAULT_LIST_NAME);
-      onTitleChange(DEFAULT_LIST_NAME);
-    } else {
-      onTitleChange(cardTitle);
-    }
-  };
-
-  const setTitle = ({ currentTarget }) => {
-    setCardTitle(currentTarget.value);
-  };
-
-  const keyPressed = e => {
-    if (e.key === 'Enter') {
-      onBlur();
-    }
-  };
-
-  const EditableTitle = ({ children }) => {
-    return !editable
-      ? <div className={classes.content}>{children}</div>
-      : <div className={classes.content}
-             onClick={editTitle}
-             role='button'
-             tabIndex="0"
-             onKeyDown={editTitle}
-      >
-        {children}
-      </div>;
-  };
-
-  EditableTitle.propTypes = {
-    children: PropTypes.object.isRequired,
-  };
-
-  return (
-    <div className={classes.container}>
-      <EditableTitle>
-        {titleEdit
-          ? <TextField disableUnderline={true}
-                       onBlur={onBlur}
-                       onChange={setTitle}
-                       autoFocus={true}
-                       defaultValue={cardTitle}
-                       onKeyPress={keyPressed}
-          />
-          : (
-            <>
-              <Typography variant='subtitle1' className={clsx(editable ? classes.editableText : null)} noWrap={true}>
-                {cardTitle}
-              </Typography>
-              {editable && <span className={classes.editIcon}><EditOutlinedIcon fontSize='small'/></span>}
-            </>
-          )
-        }
-      </EditableTitle>
-    </div>
-  );
-};
+const CardTitle = ({ classes, title, editable, onTitleChange }) => (
+  <div className={classes.container}>
+    {editable && title
+      ? <EditableText text={title} onChange={onTitleChange}/>
+      : <Typography variant='subtitle1' noWrap={true}>
+        {title}
+      </Typography>}
+  </div>
+);
 
 CardTitle.propTypes = {
   classes: PropTypes.object.isRequired,
