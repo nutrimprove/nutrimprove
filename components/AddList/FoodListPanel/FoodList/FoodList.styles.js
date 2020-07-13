@@ -12,4 +12,11 @@ export default {
     position: 'absolute',
     right: 10,
   },
+  foodsFooter: {
+    textAlign: 'center',
+    '& .MuiTypography-root': {
+      fontSize: 12,
+      color: 'grey'
+    },
+  }
 };

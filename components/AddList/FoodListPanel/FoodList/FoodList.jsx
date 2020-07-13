@@ -1,7 +1,7 @@
 import { List, ListItem, Typography } from '@material-ui/core';
-import React from 'react';
-import PropTypes from 'prop-types';
 import DeleteIcon from '@material-ui/icons/Delete';
+import PropTypes from 'prop-types';
+import React from 'react';
 
 const FoodList = ({ classes, foods, onDelete }) => {
   const setHoverColor = ({ currentTarget }) => {
@@ -34,7 +34,9 @@ const FoodList = ({ classes, foods, onDelete }) => {
           </ListItem>
         )}
       </List>
-      <Typography variant='caption' className={classes.foodsFooter}>Add foods to list from left side panel</Typography>
+      <div className={classes.foodsFooter}>
+        <Typography>Add foods to list from left side panel</Typography>
+      </div>
     </>
   );
 };
