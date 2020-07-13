@@ -3,13 +3,14 @@ import LoadingPanel from 'components/LoadingPanel';
 import ModalPanel from 'components/ModalPanel';
 import ResultsTable from 'components/ResultsTable';
 import SearchField from 'components/SearchField';
+import { NUTRIENT_GROUPS } from 'helpers/constants';
 import { parseNutrients } from 'helpers/utils';
 import { getFoodByName, getFoodsByNutrient, getNutrients } from 'interfaces/api/foods';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 const SearchFoodByNutrient = () => {
-  const categories = useSelector(({globalState}) => globalState.categories);
+  const categories = useSelector(({ globalState }) => globalState.categories);
   const [nutrient, setNutrient] = useState();
   const [nutrients, setNutrients] = useState([]);
   const [foods, setFoods] = useState();
@@ -20,7 +21,7 @@ const SearchFoodByNutrient = () => {
 
   useEffect(() => {
     (async () => {
-      const nutrientList = await getNutrients(['proximates', 'vitamins', 'inorganics']);
+      const nutrientList = await getNutrients(NUTRIENT_GROUPS);
       setNutrients(nutrientList);
     })();
   }, []);
@@ -102,7 +103,8 @@ const SearchFoodByNutrient = () => {
           title={selectedFood}
           subtitle='Nutritional information per 100g of food'
         >
-          {selectedFoodDetails ? <ResultsTable data={selectedFoodDetails} scrollable sortColumns={['nutrient']}/> : <LoadingPanel/>}
+          {selectedFoodDetails ? <ResultsTable data={selectedFoodDetails} scrollable sortColumns={['nutrient']}/> :
+            <LoadingPanel/>}
         </ModalPanel>
       )}
     </>

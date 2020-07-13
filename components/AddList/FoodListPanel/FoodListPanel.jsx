@@ -1,27 +1,32 @@
 import CardTitle from 'components/CardTitle';
 import FoodCard from 'components/FoodCard';
 import TabbedPanel from 'components/TabbedPanel';
+import { NUTRIENT_GROUPS } from 'helpers/constants';
 import { cloneDeep } from 'lodash';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import FoodList from './FoodList';
 
-const sumNutrients = (foods, group) => {
+const sumNutrients = (foods, groups) => {
   if (foods && foods.length > 0) {
     return foods.reduce((merged, food, index) => {
       const current = cloneDeep(food);
       if (index === 0) {
-        Object.keys(current[group]).forEach(nutrient => {
-          if (isNaN(current[group][nutrient].quantity)) {
-            current[group][nutrient].quantity = 0;
-          }
+        groups.forEach(group => {
+          Object.keys(current[group]).forEach(nutrient => {
+            if (isNaN(current[group][nutrient].quantity)) {
+              current[group][nutrient].quantity = 0;
+            }
+          });
         });
         return current;
       }
 
-      Object.keys(merged[group]).forEach(nutrient => {
-        const quantity = isNaN(current[group][nutrient].quantity) ? 0 : current[group][nutrient].quantity;
-        merged[group][nutrient].quantity = +merged[group][nutrient].quantity + +quantity;
+      groups.forEach(group => {
+        Object.keys(merged[group]).forEach(nutrient => {
+          const quantity = isNaN(current[group][nutrient].quantity) ? 0 : current[group][nutrient].quantity;
+          merged[group][nutrient].quantity = +merged[group][nutrient].quantity + +quantity;
+        });
       });
       return merged;
     }, {});
@@ -32,8 +37,7 @@ const FoodListPanel = ({ className, title, foods, onListNameChange, onDelete }) 
   const [nutritionalData, setNutritionalData] = useState();
 
   useEffect(() => {
-    const updatedQuantities = sumNutrients(foods, ['proximates']);
-    setNutritionalData(updatedQuantities);
+    setNutritionalData(sumNutrients(foods, NUTRIENT_GROUPS));
   }, [foods]);
 
   const tabs = [
@@ -52,7 +56,7 @@ const FoodListPanel = ({ className, title, foods, onListNameChange, onDelete }) 
   return (
     <div className={className}>
       <CardTitle title={title} editable={true} onTitleChange={onListNameChange}/>
-      <TabbedPanel tabs={tabs} />
+      <TabbedPanel tabs={tabs}/>
     </div>
   );
 };

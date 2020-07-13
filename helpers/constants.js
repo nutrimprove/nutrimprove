@@ -38,6 +38,7 @@ const DEFAULT_CARD_NUTRIENTS = [
   { name: 'omega3', label: 'Omega 3' },
   { name: 'Cholesterol', label: 'Cholesterol' },
 ];
+const NUTRIENT_GROUPS = ['proximates', 'vitamins', 'inorganics'];
 
 const GA_TRACKING_ID = 'UA-168058659-2';
 
@@ -51,6 +52,7 @@ export {
   EDAMAM_DB,
   CATEGORIES,
   DEFAULT_CARD_NUTRIENTS,
+  NUTRIENT_GROUPS,
   GA_TRACKING_ID,
   IS_PRODUCTION,
 };

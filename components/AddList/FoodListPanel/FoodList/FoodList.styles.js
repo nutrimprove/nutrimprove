@@ -6,6 +6,7 @@ export default {
     '&:hover': {
       backgroundColor: '#e5e5ea',
     },
+    paddingRight: 36,
   },
   deleteIcon: {
     position: 'absolute',

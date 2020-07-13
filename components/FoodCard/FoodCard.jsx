@@ -188,6 +188,7 @@ FoodCard.propTypes = {
   onMouseOver: PropTypes.func,
   highlightItem: PropTypes.string,
   header: PropTypes.bool,
+  title: PropTypes.bool,
   actions: PropTypes.bool,
   classes: PropTypes.object.isRequired,
 };

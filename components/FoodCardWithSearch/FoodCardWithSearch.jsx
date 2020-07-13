@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux';
 import FoodCard from '../FoodCard';
 import SearchField from '../SearchField';
 
-const FoodCardWithSearch = ({ title, highlightItem, onHover, onFoodLoad, context, buttonText, className }) => {
+const FoodCardWithSearch = ({ title, highlightItem, onHover, onFoodLoad, context, buttonText, className, classes }) => {
   const categories = useSelector(({ globalState }) => globalState.categories);
   const foodNames = useSelector(({ globalState }) => globalState.foodNames);
   const [selectedFood, setSelectedFood] = useState();
@@ -30,24 +30,27 @@ const FoodCardWithSearch = ({ title, highlightItem, onHover, onFoodLoad, context
   return (
     <div className={className}>
       <CardTitle title={title}/>
-      <SearchField loading={loading}
-                   onSelection={handleFoodSelection}
-                   onButtonClick={loadCardDetails}
-                   buttonContext={context}
-                   values={filteredFoodNames}
-                   width={260}
-                   buttonDisabled={!selectedFood}
-                   buttonText={buttonText}
-      />
-      {food && (
-        <FoodCard food={food} onMouseOver={onHover} highlightItem={highlightItem}/>
-      )}
+      <div className={classes.searchAndCard}>
+        <SearchField loading={loading}
+                     onSelection={handleFoodSelection}
+                     onButtonClick={loadCardDetails}
+                     buttonContext={context}
+                     values={filteredFoodNames}
+                     width={260}
+                     buttonDisabled={!selectedFood}
+                     buttonText={buttonText}
+        />
+        {food && (
+          <FoodCard food={food} onMouseOver={onHover} highlightItem={highlightItem}/>
+        )}
+      </div>
     </div>
   );
 };
 
 FoodCardWithSearch.propTypes = {
   title: PropTypes.string,
+  classes: PropTypes.string.required,
   className: PropTypes.string,
   onHover: PropTypes.func,
   highlightItem: PropTypes.string,

@@ -17,7 +17,7 @@ const FoodList = ({ classes, foods, onDelete }) => {
       <List>
         {foods && foods.map(food => (
           <ListItem key={food.foodCode} className={classes.food}>
-            <Typography variant='body2'>{food.foodName}</Typography>
+            <Typography variant='body2' noWrap title={food.foodName}>{food.foodName}</Typography>
             <DeleteIcon onClick={onDelete}
                         style={{ color: 'grey', cursor: 'pointer' }}
                         onMouseOver={setHoverColor}
