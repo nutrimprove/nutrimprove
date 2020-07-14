@@ -10,6 +10,7 @@ export default {
   },
   foodsFooter: {
     textAlign: 'center',
+    marginTop: 8,
     '& .MuiTypography-root': {
       fontSize: 12,
       color: 'grey',
@@ -20,5 +21,15 @@ export default {
       padding: 5,
       maxWidth: 350,
     },
+  },
+  quantity: {
+    '&.MuiTableCell-root': {
+      width: 50,
+    }
+  },
+  deleteIcon: {
+    '&.MuiTableCell-root': {
+      width: 40,
+    }
   },
 };

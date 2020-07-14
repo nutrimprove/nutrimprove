@@ -23,13 +23,13 @@ const FoodList = ({ classes, foods, onDelete }) => {
         <TableBody>
           {foods && foods.map(food => (
             <TableRow key={food.foodCode} className={classes.food}>
-              <TableCell className={classes.nameCell}>
+              <TableCell>
                 <Typography variant='body2' noWrap title={food.foodName}>{food.foodName}</Typography>
               </TableCell>
-              <TableCell align='right'>
-                <EditableText>100g</EditableText>
+              <TableCell align='right' className={classes.quantity}>
+                <EditableText size='small' text='100'>g</EditableText>
               </TableCell>
-              <TableCell align='right'>
+              <TableCell align='right' className={classes.deleteIcon}>
                 <DeleteIcon onClick={onDelete}
                             style={{ color: 'grey', cursor: 'pointer' }}
                             onMouseOver={setHoverColor}

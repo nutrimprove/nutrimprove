@@ -47,7 +47,7 @@ const FoodListPanel = ({ className, title, foods, onListNameChange, onDelete }) 
     },
     {
       label: 'Nutritional Information',
-      content: <FoodCard actions={false} food={nutritionalData} title={false}/>,
+      content: <FoodCard food={nutritionalData} title={false}/>,
       disabled: !nutritionalData || nutritionalData.length === 0,
       container: false,
     },
