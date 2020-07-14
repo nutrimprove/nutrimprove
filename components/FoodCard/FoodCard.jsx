@@ -15,7 +15,18 @@ import ResultsTable from '../ResultsTable';
 import ScrollIntoView from '../ScrollIntoView';
 import ChangeNutrientModal from './ChangeNutrientModal';
 
-const FoodCard = ({ food, onMouseOver, title = true, highlightItem, header = true, actions = true, classes }) => {
+const FoodCard = ({
+                    food,
+                    onMouseOver,
+                    showTitle = true,
+                    title,
+                    subtitle = 'Nutritional values per 100g of food',
+                    highlightItem,
+                    header = true,
+                    actions = true,
+                    scrollIntoView = false,
+                    classes,
+                  }) => {
   const preferences = useSelector(({ globalState }) => globalState.preferences);
   const userDetails = useSelector(({ globalState }) => globalState.userDetails);
   const dispatch = useDispatch();
@@ -28,7 +39,7 @@ const FoodCard = ({ food, onMouseOver, title = true, highlightItem, header = tru
   const [, updateState] = useState();
   const forceUpdate = React.useCallback(() => updateState({}), []);
   const undoHistory = useRef([]);
-  const cardTitle = food && title ? food.foodName : '';
+  const cardTitle = title || (food && showTitle ? food.foodName : '');
 
   const setUndoHistory = (history) => {
     undoHistory.current = history;
@@ -106,7 +117,7 @@ const FoodCard = ({ food, onMouseOver, title = true, highlightItem, header = tru
         {header && (
           <Typography className={classes.title} color="textSecondary" title={cardTitle} noWrap={true}>
             {cardTitle}
-            <span className={classes.subtitle}>Nutritional values per 100g of food</span>
+            <span className={classes.subtitle}>{subtitle}</span>
           </Typography>
         )}
         <CardContent className={classes.content}>
@@ -154,7 +165,7 @@ const FoodCard = ({ food, onMouseOver, title = true, highlightItem, header = tru
         </CardContent>
         {actions && (
           <CardActions className={classes.actions}>
-            <ScrollIntoView/>
+            {scrollIntoView && <ScrollIntoView/>}
             <Button variant='outlined' color='primary' className={classes.button} onClick={showFoodDetails}>
               Show More
             </Button>
@@ -164,8 +175,8 @@ const FoodCard = ({ food, onMouseOver, title = true, highlightItem, header = tru
       {detailsOpen && (
         <ModalPanel open={detailsOpen}
                     onClose={handleCloseModal}
-                    title={foodDetails.foodName}
-                    subtitle='Nutritional information per 100g of food'
+                    title={cardTitle}
+                    subtitle={subtitle}
         >
           {foodDetails && foodDetails.nutrients
             ? <ResultsTable data={foodDetails.nutrients} scrollable={true} sortColumns={['nutrient']}/>
@@ -187,9 +198,12 @@ FoodCard.propTypes = {
   food: PropTypes.object.isRequired,
   onMouseOver: PropTypes.func,
   highlightItem: PropTypes.string,
+  subtitle: PropTypes.string,
   header: PropTypes.bool,
-  title: PropTypes.bool,
+  showTitle: PropTypes.bool,
+  title: PropTypes.string,
   actions: PropTypes.bool,
+  scrollIntoView: PropTypes.bool,
   classes: PropTypes.object.isRequired,
 };
 

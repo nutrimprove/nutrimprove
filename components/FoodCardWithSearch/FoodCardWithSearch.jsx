@@ -41,7 +41,7 @@ const FoodCardWithSearch = ({ title, highlightItem, onHover, onFoodLoad, context
                      buttonText={buttonText}
         />
         {food && (
-          <FoodCard food={food} onMouseOver={onHover} highlightItem={highlightItem}/>
+          <FoodCard food={food} onMouseOver={onHover} highlightItem={highlightItem} scrollIntoView={true}/>
         )}
       </div>
     </div>

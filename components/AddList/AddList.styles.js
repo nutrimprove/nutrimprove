@@ -5,13 +5,9 @@ export default {
     maxWidth: 1200,
     margin: 'auto',
   },
-  foodCard: {
-    display: 'grid',
-  },
   foodColumn: {
     width: 'calc(50% - 25px)',
     margin: '0 auto',
-    display: 'grid',
   },
   addToListButton: {
     width: 430,

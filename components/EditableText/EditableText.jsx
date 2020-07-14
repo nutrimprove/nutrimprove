@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 
-const EditableText = ({ classes, text, onChange, children, size = 'medium' }) => {
+const EditableText = ({ classes, text, datakey, onChange, children, size = 'medium' }) => {
   const [titleEdit, setTitleEdit] = useState(false);
   const [onHover, setOnHover] = useState(false);
 
@@ -14,7 +14,7 @@ const EditableText = ({ classes, text, onChange, children, size = 'medium' }) =>
 
   const handleInput = ({ target }) => {
     if (target.value !== '' && onChange) {
-      onChange(target.value);
+      onChange(target);
     }
     setTitleEdit(false);
     setOnHover(false);
@@ -43,12 +43,12 @@ const EditableText = ({ classes, text, onChange, children, size = 'medium' }) =>
   return (
     <>
       {titleEdit
-        ? <TextField disableUnderline={true}
-                     onBlur={handleInput}
+        ? <TextField onBlur={handleInput}
                      autoFocus={true}
                      defaultValue={text}
                      onKeyPress={keyPressed}
                      className={classes.editField}
+                     inputProps={{ 'data-key': datakey }}
         />
         : (
           <div className={classes.content}
@@ -62,7 +62,7 @@ const EditableText = ({ classes, text, onChange, children, size = 'medium' }) =>
             <Typography variant={sizeProps().variant} className={classes.editableText} noWrap={true}>
               {text}{children}
             </Typography>
-            {onHover && <div className={clsx(classes.editIcon, sizeProps().className)} >
+            {onHover && <div className={clsx(classes.editIcon, sizeProps().className)}>
               <EditOutlinedIcon fontSize='inherit'/>
             </div>}
           </div>
@@ -75,6 +75,7 @@ const EditableText = ({ classes, text, onChange, children, size = 'medium' }) =>
 EditableText.propTypes = {
   classes: PropTypes.object.isRequired,
   children: PropTypes.string,
+  datakey: PropTypes.string,
   onChange: PropTypes.func.isRequired,
   size: PropTypes.string,
   text: PropTypes.string.isRequired,

@@ -8,7 +8,7 @@ import EditableText from 'components/EditableText';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-const FoodList = ({ classes, foods, onDelete }) => {
+const FoodList = ({ classes, foods, onEditQuantity, onDelete }) => {
   const setHoverColor = ({ currentTarget }) => {
     currentTarget.style.color = 'darkred';
   };
@@ -27,7 +27,9 @@ const FoodList = ({ classes, foods, onDelete }) => {
                 <Typography variant='body2' noWrap title={food.foodName}>{food.foodName}</Typography>
               </TableCell>
               <TableCell align='right' className={classes.quantity}>
-                <EditableText size='small' text='100'>g</EditableText>
+                <EditableText size='small' text={food.quantity} datakey={food.foodCode} onChange={onEditQuantity}>
+                  g
+                </EditableText>
               </TableCell>
               <TableCell align='right' className={classes.deleteIcon}>
                 <DeleteIcon onClick={onDelete}
@@ -60,6 +62,7 @@ FoodList.propTypes = {
   classes: PropTypes.object.isRequired,
   foods: PropTypes.array,
   onDelete: PropTypes.func,
+  onEditQuantity: PropTypes.func,
 };
 
 export default FoodList;

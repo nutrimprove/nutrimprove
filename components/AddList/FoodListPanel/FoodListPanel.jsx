@@ -33,21 +33,29 @@ const sumNutrients = (foods, groups) => {
   }
 };
 
-const FoodListPanel = ({ className, title, foods, onListNameChange, onDelete }) => {
+const FoodListPanel = ({ className, title, foods, onListNameChange, onEditQuantity, onDelete }) => {
   const [nutritionalData, setNutritionalData] = useState();
+  const quantity = foods.reduce((total, food) => total + +food.quantity, 0);
 
   useEffect(() => {
     setNutritionalData(sumNutrients(foods, NUTRIENT_GROUPS));
   }, [foods]);
 
+  const getFoodCardTitle = () => {
+    return foods.length === 1 ? foods[0].foodName : `${foods.length} ingredients`;
+  };
+
   const tabs = [
     {
       label: 'Foods',
-      content: <FoodList foods={foods} onDelete={onDelete}/>,
+      content: <FoodList foods={foods} onDelete={onDelete} onEditQuantity={onEditQuantity}/>,
     },
     {
       label: 'Nutritional Information',
-      content: <FoodCard food={nutritionalData} title={false}/>,
+      content: <FoodCard food={nutritionalData}
+                         title={getFoodCardTitle()}
+                         subtitle={`Total weight: ${quantity}g`}
+      />,
       disabled: !nutritionalData || nutritionalData.length === 0,
       container: false,
     },
@@ -66,6 +74,7 @@ FoodListPanel.propTypes = {
   title: PropTypes.string.isRequired,
   foods: PropTypes.array.isRequired,
   onListNameChange: PropTypes.func,
+  onEditQuantity: PropTypes.func,
   onDelete: PropTypes.func,
 };
 

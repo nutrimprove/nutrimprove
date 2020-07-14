@@ -3,6 +3,7 @@ import ArrowForwardIosRoundedIcon from '@material-ui/icons/ArrowForwardIosRounde
 import Filters from 'components/Filters';
 import FoodCardWithSearch from 'components/FoodCardWithSearch';
 import MainButton from 'components/MainButton';
+import { cloneDeep } from 'lodash';
 import PropTypes from 'prop-types';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -39,11 +40,13 @@ const AddList = ({ classes }) => {
   }, [selectedFood]);
 
   const addToList = () => {
+    food.quantity = quantity || 100;
     const foods = foodList ? [...foodList, food] : [food];
     setFoodList(foods);
     saveNewList(listName, foods);
     setFood(null);
     setAddButtonText(ALREADY_IN_LIST_TEXT);
+    setQuantity(null);
   };
 
   const saveListName = name => {
@@ -59,6 +62,17 @@ const AddList = ({ classes }) => {
     }
   };
 
+  const handleQuantityChange = ({currentTarget}) => {
+    setQuantity(currentTarget.value);
+  };
+
+  const editQuantity = target => {
+    const foodIndex = foodList.findIndex(food => food.foodCode === target.dataset.key);
+    const newList = cloneDeep(foodList);
+    newList[foodIndex].quantity = target.value;
+    setFoodList(newList);
+  };
+
   return (
     <>
       <Filters/>
@@ -68,7 +82,6 @@ const AddList = ({ classes }) => {
           <FoodCardWithSearch title='Food'
                               onFoodLoad={setSelectedFood}
                               buttonText='Select'
-                              className={classes.foodCard}
           />
           <div className={classes.addToListButton}>
             {!food
@@ -81,7 +94,7 @@ const AddList = ({ classes }) => {
                              type='number'
                              label='Type quantity'
                              placeholder='100'
-                             onChange={setQuantity}
+                             onChange={handleQuantityChange}
                              InputProps={{ endAdornment: 'g' }}
                              title='Type quantity (in grams)'
                   />
@@ -93,10 +106,14 @@ const AddList = ({ classes }) => {
               )
             }
           </div>
-
         </div>
-        <FoodListPanel className={classes.foodList} title={listName} foods={foodList} onListNameChange={saveListName}
-                       onDelete={removeFood}/>
+        <FoodListPanel className={classes.foodList}
+                       title={listName}
+                       foods={foodList}
+                       onListNameChange={saveListName}
+                       onDelete={removeFood}
+                       onEditQuantity={editQuantity}
+        />
       </div>
     </>
   );
