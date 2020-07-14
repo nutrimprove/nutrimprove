@@ -1,5 +1,6 @@
-import { List, ListItem, Typography } from '@material-ui/core';
+import { Typography } from '@material-ui/core';
 import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -19,30 +20,34 @@ const FoodList = ({ classes, foods, onDelete }) => {
   return (
     <>
       <Table size='small' className={classes.table}>
-        {foods && foods.map(food => (
-          <TableRow key={food.foodCode} className={classes.food}>
-            <TableCell className={classes.nameCell}>
-              <Typography variant='body2' noWrap title={food.foodName}>{food.foodName}</Typography>
-            </TableCell>
-            <TableCell align='right'>
-              <EditableText>100g</EditableText>
-            </TableCell>
-            <TableCell align='right'>
-              <DeleteIcon onClick={onDelete}
-                          style={{ color: 'grey', cursor: 'pointer' }}
-                          onMouseOver={setHoverColor}
-                          onMouseLeave={setNormalColor}
-                          titleAccess='Delete'
-                          data-key={food.foodCode}
-              />
-            </TableCell>
-          </TableRow>
-        ))}
-        {!foods || foods.length === 0 && (
-          <ListItem>
-            <Typography variant='body2' className={classes.empty} title='Empty list'>Empty</Typography>
-          </ListItem>
-        )}
+        <TableBody>
+          {foods && foods.map(food => (
+            <TableRow key={food.foodCode} className={classes.food}>
+              <TableCell className={classes.nameCell}>
+                <Typography variant='body2' noWrap title={food.foodName}>{food.foodName}</Typography>
+              </TableCell>
+              <TableCell align='right'>
+                <EditableText>100g</EditableText>
+              </TableCell>
+              <TableCell align='right'>
+                <DeleteIcon onClick={onDelete}
+                            style={{ color: 'grey', cursor: 'pointer' }}
+                            onMouseOver={setHoverColor}
+                            onMouseLeave={setNormalColor}
+                            titleAccess='Delete'
+                            data-key={food.foodCode}
+                />
+              </TableCell>
+            </TableRow>
+          ))}
+          {!foods || foods.length === 0 && (
+            <TableRow>
+              <TableCell>
+                <Typography variant='body2' className={classes.empty} title='Empty list'>Empty</Typography>
+              </TableCell>
+            </TableRow>
+          )}
+        </TableBody>
       </Table>
       <div className={classes.foodsFooter}>
         <Typography>Add foods to list from left side panel</Typography>

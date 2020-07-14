@@ -13,7 +13,7 @@ const RightNavText = ({ classes, children, important }) => {
 
 RightNavText.propTypes = {
   classes: PropTypes.object.isRequired,
-  children: PropTypes.object.isRequired,
+  children: PropTypes.string.isRequired,
   important: PropTypes.bool,
 };
 
