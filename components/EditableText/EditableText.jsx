@@ -1,5 +1,5 @@
 import { TextField, Typography } from '@material-ui/core';
-import EditOutlinedIcon from '@material-ui/core/SvgIcon/SvgIcon';
+import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 

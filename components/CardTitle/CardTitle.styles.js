@@ -7,11 +7,4 @@ export default {
     borderRadius: 9,
     marginBottom: 20,
   },
-  editIcon: {
-    position: 'absolute',
-    top: 3,
-    right: -24,
-    color: '#3f51b5',
-    cursor: 'pointer',
-  },
 };

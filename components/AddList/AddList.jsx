@@ -1,5 +1,4 @@
-import TextField from '@material-ui/core/TextField';
-import Typography from '@material-ui/core/Typography';
+import { TextField, Typography } from '@material-ui/core';
 import ArrowForwardIosRoundedIcon from '@material-ui/icons/ArrowForwardIosRounded';
 import Filters from 'components/Filters';
 import FoodCardWithSearch from 'components/FoodCardWithSearch';
