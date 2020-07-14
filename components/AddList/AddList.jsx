@@ -49,9 +49,9 @@ const AddList = ({ classes }) => {
     setQuantity(null);
   };
 
-  const saveListName = name => {
-    setListName(name);
-    saveNewList(name, foodList);
+  const saveListName = ({value}) => {
+    setListName(value);
+    saveNewList(value, foodList);
   };
 
   const removeFood = ({ currentTarget }) => {
