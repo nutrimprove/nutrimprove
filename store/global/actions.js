@@ -7,6 +7,7 @@ export const ActionsTypes = {
   SET_FOOD_LISTS: 'SET_FOOD_LISTS',
   SAVE_NEW_FOODS_LIST: 'SAVE_NEW_FOODS_LIST',
   ADD_NEW_FOODS_LIST: 'ADD_NEW_FOODS_LIST',
+  EDIT_FOODS_LIST: 'EDIT_FOODS_LIST',
 };
 
 export const setUserDetailsAction = userDetails => {
@@ -33,10 +34,14 @@ export const setFoodListsAction = foodLists => {
   return { type: ActionsTypes.SET_FOOD_LISTS, foodLists };
 };
 
-export const addNewFoodListAction = (name, foods) => {
+export const addNewFoodsListAction = (name, foods) => {
   return { type: ActionsTypes.ADD_NEW_FOODS_LIST, name, foods };
 };
 
 export const saveNewFoodListAction = (name, foods) => {
   return { type: ActionsTypes.SAVE_NEW_FOODS_LIST, name, foods };
+};
+
+export const editFoodsListAction = list => {
+  return { type: ActionsTypes.EDIT_FOODS_LIST, list };
 };

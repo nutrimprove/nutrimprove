@@ -35,6 +35,27 @@ const addNewFoodsList = (lists = [], name, foods) => {
   return listsToSave;
 };
 
+const editFoodsList = (lists, edittedList) => {
+  const listIndex = lists.findIndex(list => list.id === edittedList.id);
+  if (listIndex !== -1) {
+    return lists.map(list => list.id === edittedList.id ? edittedList : list);
+  }
+};
+
+// const editFoodQuantity = (lists, listId, foodKey, quantity) => {
+//   if (foodKey && quantity > 0) {
+//     const listIndex = lists.findIndex(list => list.id === listId);
+//     const list = cloneDeep(lists)[listIndex];
+//     const foodToEdit = list.foods.find(food => food.foodCode === foodKey);
+//     console.log(`=== reducer.js #44 === ( list ) =======>`, list);
+//     console.log(`=== reducer.js #45 === ( foodToEdit ) =======>`, foodToEdit);
+//     foodToEdit.quantity = quantity;
+//     console.log(`=== reducer.js #47 === ( list ) =======>`, list);
+//
+//     return list;
+//   }
+// };
+
 export const reducer = (state = {
   userDetails: {},
   categories: CATEGORIES,
@@ -81,6 +102,11 @@ export const reducer = (state = {
     return {
       ...state,
       lists: addNewFoodsList(state.lists, action.name, action.foods),
+    };
+  } else if (action.type === ActionsTypes.EDIT_FOODS_LIST) {
+    return {
+      ...state,
+      lists: editFoodsList(state.lists, action.list),
     };
   } else {
     return state;
