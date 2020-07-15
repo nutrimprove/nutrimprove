@@ -9,6 +9,8 @@ export default {
   },
   editField: {
     width: '90%',
+    padding: 0,
+    bottom: 2,
   },
   editableText: {
     color: '#3f51b5',

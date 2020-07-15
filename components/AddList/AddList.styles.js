@@ -9,9 +9,13 @@ export default {
     width: 'calc(50% - 25px)',
     margin: '0 auto',
   },
-  addToListButton: {
+  addToListButtonContainer: {
+    margin: '20px auto',
     width: 430,
-    margin: '20px auto 0',
+  },
+  addToListButton: {
+    width: '100%',
+    margin: 0,
   },
   addToListText: {
     marginRight: 10,
@@ -21,6 +25,25 @@ export default {
     width: 'calc(50% - 25px)',
   },
   quantity: {
-    float: 'right',
+    margin: '20px 38px 0',
+    position: 'relative',
+    display: 'flex',
+    padding: '10px 20px',
+    borderBottom: '1px dotted #ddd',
+    borderRadius: 7,
+  },
+  quantityLabel: {
+    fontWeight: 'bold',
+  },
+  quantityField: {
+    position: 'absolute',
+    right: 30,
+    maxWidth: 80,
+    '& .MuiTextField-root': {
+      marginLeft: 16,
+      bottom: 7,
+    }
+
+
   },
 };

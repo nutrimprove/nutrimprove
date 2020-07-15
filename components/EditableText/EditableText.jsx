@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 
-const EditableText = ({ classes, value, datakey, onChange, children, min, max, maxLength, size = 'medium', type = 'text' }) => {
+const EditableText = ({ classes, className, value, datakey, onChange, children, min, max, maxLength, size = 'medium', type = 'text' }) => {
   const [edit, setEdit] = useState(false);
   const [onHover, setOnHover] = useState(false);
 
@@ -50,7 +50,7 @@ const EditableText = ({ classes, value, datakey, onChange, children, min, max, m
   };
 
   return (
-    <>
+    <div className={className}>
       {edit
         ? <TextField onBlur={handleInput}
                      autoFocus={true}
@@ -78,7 +78,7 @@ const EditableText = ({ classes, value, datakey, onChange, children, min, max, m
           </div>
         )
       }
-    </>
+    </div>
   );
 };
 

@@ -24,7 +24,8 @@ export default {
   },
   quantity: {
     '&.MuiTableCell-root': {
-      maxWidth: 60,
+      width: 70,
+      padding: 0,
     }
   },
   deleteIcon: {

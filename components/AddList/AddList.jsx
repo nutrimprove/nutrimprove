@@ -1,5 +1,7 @@
-import { TextField, Typography } from '@material-ui/core';
+import { Typography } from '@material-ui/core';
+import Paper from '@material-ui/core/Paper';
 import ArrowForwardIosRoundedIcon from '@material-ui/icons/ArrowForwardIosRounded';
+import EditableText from 'components/EditableText';
 import Filters from 'components/Filters';
 import FoodCardWithSearch from 'components/FoodCardWithSearch';
 import MainButton from 'components/MainButton';
@@ -16,7 +18,7 @@ const AddList = ({ classes }) => {
   const [addButtonText, setAddButtonText] = useState('Select food');
   const [foodList, setFoodList] = useState([]);
   const [listName, setListName] = useState('New List');
-  const [quantity, setQuantity] = useState(0);
+  const [quantity, setQuantity] = useState(100);
   const dispatch = useDispatch();
   const saveNewList = useCallback((name, foods) => dispatch(saveNewFoodListAction(name, foods)), []);
   const lists = useSelector(({ globalState }) => globalState.lists);
@@ -40,13 +42,13 @@ const AddList = ({ classes }) => {
   }, [selectedFood]);
 
   const addToList = () => {
-    food.quantity = quantity || 100;
+    food.quantity = quantity;
     const foods = foodList ? [...foodList, food] : [food];
     setFoodList(foods);
     saveNewList(listName, foods);
     setFood(null);
     setAddButtonText(ALREADY_IN_LIST_TEXT);
-    setQuantity(null);
+    setQuantity(100);
   };
 
   const saveListName = ({ value }) => {
@@ -64,8 +66,8 @@ const AddList = ({ classes }) => {
     }
   };
 
-  const handleQuantityChange = ({ currentTarget }) => {
-    setQuantity(currentTarget.value);
+  const handleQuantityChange = target => {
+    setQuantity(target.value);
   };
 
   const editFoodInListQuantity = target => {
@@ -86,26 +88,28 @@ const AddList = ({ classes }) => {
                               onFoodLoad={setSelectedFood}
                               buttonText='Select'
           />
-          <div className={classes.addToListButton}>
+          {food && <Paper className={classes.quantity}>
+            <Typography>Amount:&nbsp;</Typography>
+            <EditableText size='medium'
+                          value={quantity}
+                          min={0.1}
+                          max={9999}
+                          type='number'
+                          datakey={selectedFood.foodCode}
+                          onChange={handleQuantityChange}
+                          className={classes.quantityField}
+            >
+              g
+            </EditableText>
+          </Paper>}
+          <div className={classes.addToListButtonContainer}>
             {!food
               ? <MainButton disabled={true} className={classes.addToListButton}>{addButtonText}</MainButton>
               : (
-                <>
-                  <TextField className={classes.quantity}
-                             size='small'
-                             helperText='default: 100g'
-                             type='number'
-                             label='Type quantity'
-                             placeholder='100'
-                             onChange={handleQuantityChange}
-                             InputProps={{ endAdornment: 'g' }}
-                             title='Type quantity (in grams)'
-                  />
                   <MainButton action={addToList} className={classes.addToListButton}>
                     <span className={classes.addToListText}>Add Food to List</span>
                     <ArrowForwardIosRoundedIcon fontSize='small'/>
                   </MainButton>
-                </>
               )
             }
           </div>
