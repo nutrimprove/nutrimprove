@@ -16,6 +16,8 @@ const sumNutrients = (foods, groups) => {
           Object.keys(current[group]).forEach(nutrient => {
             if (isNaN(current[group][nutrient].quantity)) {
               current[group][nutrient].quantity = 0;
+            } else {
+              current[group][nutrient].quantity = +current[group][nutrient].quantity * (+current.quantity / 100);
             }
           });
         });
@@ -24,7 +26,10 @@ const sumNutrients = (foods, groups) => {
 
       groups.forEach(group => {
         Object.keys(merged[group]).forEach(nutrient => {
-          const quantity = isNaN(current[group][nutrient].quantity) ? 0 : current[group][nutrient].quantity;
+          const isNotValid = isNaN(current[group][nutrient].quantity);
+          // Sets nutrient quantity (baseline is per 100g) based on food quantity
+          const calculatedQuantity = +current[group][nutrient].quantity * (+current.quantity / 100);
+          const quantity = isNotValid ? 0 : calculatedQuantity;
           merged[group][nutrient].quantity = +merged[group][nutrient].quantity + +quantity;
         });
       });
