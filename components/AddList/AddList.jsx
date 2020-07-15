@@ -49,28 +49,31 @@ const AddList = ({ classes }) => {
     setQuantity(null);
   };
 
-  const saveListName = ({value}) => {
+  const saveListName = ({ value }) => {
     setListName(value);
     saveNewList(value, foodList);
   };
 
   const removeFood = ({ currentTarget }) => {
     const foodKey = currentTarget.dataset.key;
-    setFoodList(foodList.filter(food => food.foodCode !== currentTarget.dataset.key));
+    const newList = foodList.filter(food => food.foodCode !== foodKey);
+    setFoodList(newList);
+    saveNewList(listName, newList);
     if (foodKey === selectedFood.foodCode) {
       setFood(selectedFood);
     }
   };
 
-  const handleQuantityChange = ({currentTarget}) => {
+  const handleQuantityChange = ({ currentTarget }) => {
     setQuantity(currentTarget.value);
   };
 
-  const editQuantity = target => {
+  const editFoodInListQuantity = target => {
     const foodIndex = foodList.findIndex(food => food.foodCode === target.dataset.key);
     const newList = cloneDeep(foodList);
-    newList[foodIndex].quantity = target.value;
+    newList[foodIndex].quantity = Number(target.value);
     setFoodList(newList);
+    saveNewList(listName, newList);
   };
 
   return (
@@ -112,7 +115,7 @@ const AddList = ({ classes }) => {
                        foods={foodList}
                        onListNameChange={saveListName}
                        onDelete={removeFood}
-                       onEditQuantity={editQuantity}
+                       onEditQuantity={editFoodInListQuantity}
         />
       </div>
     </>

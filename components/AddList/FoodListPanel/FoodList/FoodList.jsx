@@ -27,7 +27,7 @@ const FoodList = ({ classes, foods, onEditQuantity, onDelete }) => {
                 <Typography variant='body2' noWrap title={food.foodName}>{food.foodName}</Typography>
               </TableCell>
               <TableCell align='right' className={classes.quantity}>
-                <EditableText size='small' text={food.quantity.toString()} datakey={food.foodCode} onChange={onEditQuantity}>
+                <EditableText size='small' value={food.quantity} min={0.1} max={9999} type='number' datakey={food.foodCode} onChange={onEditQuantity}>
                   g
                 </EditableText>
               </TableCell>
