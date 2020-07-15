@@ -96,7 +96,7 @@ export const reducer = (state = {
   } else if (action.type === ActionsTypes.SAVE_NEW_FOODS_LIST) {
     return {
       ...state,
-      lists: saveNewFoodsList(state.lists, action.name, action.foods),
+      lists: saveNewFoodsList(state.lists, action.list),
     };
   } else if (action.type === ActionsTypes.ADD_NEW_FOODS_LIST) {
     return {

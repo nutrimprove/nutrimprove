@@ -5,6 +5,7 @@ import EditableText from 'components/EditableText';
 import Filters from 'components/Filters';
 import FoodCardWithSearch from 'components/FoodCardWithSearch';
 import MainButton from 'components/MainButton';
+import { saveList } from 'interfaces/api/users';
 import { cloneDeep } from 'lodash';
 import PropTypes from 'prop-types';
 import React, { useCallback, useEffect, useState } from 'react';
@@ -20,7 +21,8 @@ const AddList = ({ classes }) => {
   const [listName, setListName] = useState('New List');
   const [quantity, setQuantity] = useState(100);
   const dispatch = useDispatch();
-  const saveNewList = useCallback((name, foods) => dispatch(saveNewFoodListAction(name, foods)), []);
+  const saveListToState = useCallback(list => dispatch(saveNewFoodListAction(list)), []);
+  const user = useSelector(({globalState}) => globalState.userDetails.email);
   const lists = useSelector(({ globalState }) => globalState.lists);
 
   const ALREADY_IN_LIST_TEXT = 'Food already in list';
@@ -45,7 +47,9 @@ const AddList = ({ classes }) => {
     food.quantity = quantity;
     const foods = foodList ? [...foodList, food] : [food];
     setFoodList(foods);
-    saveNewList(listName, foods);
+    const list = { foods, name: listName};
+    saveListToState(list);
+    saveList(user, list);
     setFood(null);
     setAddButtonText(ALREADY_IN_LIST_TEXT);
     setQuantity(100);
@@ -53,14 +57,14 @@ const AddList = ({ classes }) => {
 
   const saveListName = ({ value }) => {
     setListName(value);
-    saveNewList(value, foodList);
+    saveListToState(value, foodList);
   };
 
   const removeFood = ({ currentTarget }) => {
     const foodKey = currentTarget.dataset.key;
     const newList = foodList.filter(food => food.foodCode !== foodKey);
     setFoodList(newList);
-    saveNewList(listName, newList);
+    saveListToState(listName, newList);
     if (foodKey === selectedFood.foodCode) {
       setFood(selectedFood);
     }
@@ -75,7 +79,7 @@ const AddList = ({ classes }) => {
     const newList = cloneDeep(foodList);
     newList[foodIndex].quantity = Number(target.value);
     setFoodList(newList);
-    saveNewList(listName, newList);
+    saveListToState(listName, newList);
   };
 
   return (

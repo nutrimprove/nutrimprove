@@ -54,6 +54,9 @@ const updateAllUsersPoints = () =>
 const savePreferences = (user, preferences) =>
   postRequest(`${usersEndpoint}/preferences`, { user, preferences });
 
+const saveList = (user, list) =>
+  postRequest(`${usersEndpoint}/lists/add`, { user, list });
+
 export {
   getUser,
   getAllUsers,
@@ -64,4 +67,5 @@ export {
   deleteUser,
   updateAllUsersPoints,
   savePreferences,
+  saveList,
 };

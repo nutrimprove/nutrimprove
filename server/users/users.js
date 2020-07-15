@@ -119,11 +119,9 @@ const savePreferences = async (user, preferences) => {
 
 const saveList = async (user, list) => {
   const UserConnection = await getUserConnection();
-  return UserConnection.findOneAndUpdate({ email: user }, {
-    $addToSet: {
-      lists: { name: list.name, foods: list.foods, added_on: new Date() },
-    },
-  });
+  return UserConnection.updateOne({ email: user },
+    { $addToSet: { lists: { ...list } } },
+  );
 };
 
 export {

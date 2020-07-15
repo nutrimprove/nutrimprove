@@ -20,6 +20,14 @@ const usersSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    preferences: {
+      type: Array,
+      required: false,
+    },
+    lists: {
+      type: Array,
+      required: false,
+    },
   },
   { timestamps: true },
 );

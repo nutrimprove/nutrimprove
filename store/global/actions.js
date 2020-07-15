@@ -38,8 +38,8 @@ export const addNewFoodsListAction = (name, foods) => {
   return { type: ActionsTypes.ADD_NEW_FOODS_LIST, name, foods };
 };
 
-export const saveNewFoodListAction = (name, foods) => {
-  return { type: ActionsTypes.SAVE_NEW_FOODS_LIST, name, foods };
+export const saveNewFoodListAction = list => {
+  return { type: ActionsTypes.SAVE_NEW_FOODS_LIST, list };
 };
 
 export const editFoodsListAction = list => {
