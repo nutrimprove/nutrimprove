@@ -96,7 +96,7 @@ const AddList = ({ classes }) => {
     const foodIndex = foodList.findIndex(food => food.foodCode === target.dataset.key);
     const foods = cloneDeep(foodList);
     foods[foodIndex].quantity = Number(target.value);
-    saveListToStateAndDB(foods, editList);
+    saveListToStateAndDB(foods);
   };
 
   return (

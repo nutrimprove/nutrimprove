@@ -84,6 +84,7 @@ const EditableText = ({ classes, className, value, datakey, onChange, children, 
 
 EditableText.propTypes = {
   classes: PropTypes.object.isRequired,
+  className: PropTypes.string,
   children: PropTypes.string,
   datakey: PropTypes.string,
   onChange: PropTypes.func.isRequired,
