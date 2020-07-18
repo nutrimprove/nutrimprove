@@ -54,9 +54,9 @@ const AddList = ({ classes }) => {
       })),
   });
 
-  const saveListToStateAndDB = foods => {
+  const saveListToStateAndDB = (foods = foodList, name = listName) => {
     setFoodList(foods);
-    const list = { foods, name: listName, id: -1 };
+    const list = { foods, name, id: -1 };
     saveListToState(list);
     foods.length > 1
       ? editList(user, formattedList(list))
@@ -75,7 +75,7 @@ const AddList = ({ classes }) => {
 
   const saveListName = ({ value }) => {
     setListName(value);
-    saveListToState(value, foodList);
+    saveListToStateAndDB(foodList, value);
   };
 
   const removeFood = ({ currentTarget }) => {
