@@ -10,7 +10,7 @@ const userWithAddedPoints = (userDetails, points) => {
 
 const getNewList = (name, foods) => ({ foods, name, id: -1 });
 
-const saveNewFoodsList = (lists = [], name, foods) => {
+const saveNewFoodsList = (lists = [], { name, foods }) => {
   let found = false;
   const newList = getNewList(name, foods);
   const listsToSave = lists.map(list => {

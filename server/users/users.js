@@ -117,10 +117,21 @@ const savePreferences = async (user, preferences) => {
   ]);
 };
 
-const saveList = async (user, list) => {
+const editList = async (user, list) => {
   const UserConnection = await getUserConnection();
   return UserConnection.updateOne({ email: user },
-    { $addToSet: { lists: { ...list } } },
+    { $set: { 'lists.$[list]': list } },
+    {
+      upsert: true,
+      arrayFilters: [{ 'list.id': list.id }],
+    },
+  );
+};
+
+const addList = async (user, list) => {
+  const UserConnection = await getUserConnection();
+  return UserConnection.updateOne({ email: user },
+    { $addToSet: { lists: list } },
   );
 };
 
@@ -136,5 +147,6 @@ export {
   addUserPoints,
   updateAllUsersPoints,
   savePreferences,
-  saveList,
+  editList,
+  addList,
 };

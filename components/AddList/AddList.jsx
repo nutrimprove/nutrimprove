@@ -5,7 +5,7 @@ import EditableText from 'components/EditableText';
 import Filters from 'components/Filters';
 import FoodCardWithSearch from 'components/FoodCardWithSearch';
 import MainButton from 'components/MainButton';
-import { saveList } from 'interfaces/api/users';
+import { addList, editList } from 'interfaces/api/users';
 import { cloneDeep } from 'lodash';
 import PropTypes from 'prop-types';
 import React, { useCallback, useEffect, useState } from 'react';
@@ -22,20 +22,20 @@ const AddList = ({ classes }) => {
   const [quantity, setQuantity] = useState(100);
   const dispatch = useDispatch();
   const saveListToState = useCallback(list => dispatch(saveNewFoodListAction(list)), []);
-  const user = useSelector(({globalState}) => globalState.userDetails.email);
+  const user = useSelector(({ globalState }) => globalState.userDetails.email);
   const lists = useSelector(({ globalState }) => globalState.lists);
 
   const ALREADY_IN_LIST_TEXT = 'Food already in list';
 
   useEffect(() => {
-    if (lists) {
+    if (lists.length > 0) {
       const newFoodList = lists.find(list => list.id === -1);
       if (newFoodList) {
         setFoodList(newFoodList.foods);
         setListName(newFoodList.name);
       }
     }
-  }, []);
+  }, [lists]);
 
   useEffect(() => {
     !foodList.find(food => food.foodCode === selectedFood.foodCode)
@@ -45,11 +45,19 @@ const AddList = ({ classes }) => {
 
   const addToList = () => {
     food.quantity = quantity;
-    const foods = foodList ? [...foodList, food] : [food];
-    setFoodList(foods);
-    const list = { foods, name: listName};
-    saveListToState(list);
+    let foods, saveList;
+    if (foodList.length > 0) {
+      foods = [...foodList, food];
+      saveList = editList;
+    } else {
+      foods = [food];
+      saveList = addList;
+    }
+    const list = { foods, name: listName, id: -1 };
     saveList(user, list);
+    setFoodList(foods);
+    saveListToState(list);
+
     setFood(null);
     setAddButtonText(ALREADY_IN_LIST_TEXT);
     setQuantity(100);
@@ -110,10 +118,10 @@ const AddList = ({ classes }) => {
             {!food
               ? <MainButton disabled={true} className={classes.addToListButton}>{addButtonText}</MainButton>
               : (
-                  <MainButton action={addToList} className={classes.addToListButton}>
-                    <span className={classes.addToListText}>Add Food to List</span>
-                    <ArrowForwardIosRoundedIcon fontSize='small'/>
-                  </MainButton>
+                <MainButton action={addToList} className={classes.addToListButton}>
+                  <span className={classes.addToListText}>Add Food to List</span>
+                  <ArrowForwardIosRoundedIcon fontSize='small'/>
+                </MainButton>
               )
             }
           </div>
