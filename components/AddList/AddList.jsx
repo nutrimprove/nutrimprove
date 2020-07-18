@@ -38,25 +38,35 @@ const AddList = ({ classes }) => {
   }, [lists]);
 
   useEffect(() => {
-    !foodList.find(food => food.foodCode === selectedFood.foodCode)
-      ? setFood(selectedFood)
-      : setAddButtonText(ALREADY_IN_LIST_TEXT);
+    if (selectedFood) {
+      !foodList.find(food => food.foodCode === selectedFood.foodCode)
+        ? setFood(selectedFood)
+        : setAddButtonText(ALREADY_IN_LIST_TEXT);
+    }
   }, [selectedFood]);
+
+  const formattedList = list => ({
+    ...list,
+    foods: list.foods.map(food => ({
+        quantity: food.quantity,
+        foodCode: food.foodCode,
+        foodName: food.foodName,
+      })),
+  });
+
+  const saveListToStateAndDB = foods => {
+    setFoodList(foods);
+    const list = { foods, name: listName, id: -1 };
+    saveListToState(list);
+    foods.length > 1
+      ? editList(user, formattedList(list))
+      : addList(user, formattedList(list));
+  };
 
   const addToList = () => {
     food.quantity = quantity;
-    let foods, saveList;
-    if (foodList.length > 0) {
-      foods = [...foodList, food];
-      saveList = editList;
-    } else {
-      foods = [food];
-      saveList = addList;
-    }
-    const list = { foods, name: listName, id: -1 };
-    saveList(user, list);
-    setFoodList(foods);
-    saveListToState(list);
+    const foods = foodList.length > 0 ? [...foodList, food] : [food];
+    saveListToStateAndDB(foods);
 
     setFood(null);
     setAddButtonText(ALREADY_IN_LIST_TEXT);
@@ -84,10 +94,9 @@ const AddList = ({ classes }) => {
 
   const editFoodInListQuantity = target => {
     const foodIndex = foodList.findIndex(food => food.foodCode === target.dataset.key);
-    const newList = cloneDeep(foodList);
-    newList[foodIndex].quantity = Number(target.value);
-    setFoodList(newList);
-    saveListToState(listName, newList);
+    const foods = cloneDeep(foodList);
+    foods[foodIndex].quantity = Number(target.value);
+    saveListToStateAndDB(foods, editList);
   };
 
   return (

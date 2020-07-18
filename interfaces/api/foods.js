@@ -1,5 +1,5 @@
 import { trackPromise } from 'react-promise-tracker';
-import { getRequest } from './requests';
+import { getRequest, postRequest } from './requests';
 
 const foodApiEndpoint = '/api/foods';
 
@@ -22,9 +22,15 @@ const getFoodById = (id, context = 'getFoodData') =>
     context,
   );
 
-const getFoodByName = (id, context = 'getFoodData') =>
+const getFoodsByIds = (ids, context = 'getFoodData') =>
   trackPromise(
-    getRequest(`${foodApiEndpoint}/name/${encodeURIComponent(id)}`),
+    postRequest(`${foodApiEndpoint}/ids`, { ids }),
+    context,
+  );
+
+const getFoodByName = (name, context = 'getFoodData') =>
+  trackPromise(
+    getRequest(`${foodApiEndpoint}/name/${encodeURIComponent(name)}`),
     context,
   );
 
@@ -50,4 +56,12 @@ const getFoodsByNutrient = ({ nutrient, limit = 100, filters }) => {
   );
 };
 
-export { getFoodsByCategories, getFoodById, getFoodByName, getAllFoodNames, getFoodsByNutrient, getNutrients };
+export {
+  getFoodsByCategories,
+  getFoodById,
+  getFoodsByIds,
+  getFoodByName,
+  getAllFoodNames,
+  getFoodsByNutrient,
+  getNutrients,
+};

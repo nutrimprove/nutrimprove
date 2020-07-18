@@ -14,11 +14,9 @@ const sumNutrients = (foods, groups) => {
       if (index === 0) {
         groups.forEach(group => {
           Object.keys(current[group]).forEach(nutrient => {
-            if (isNaN(current[group][nutrient].quantity)) {
-              current[group][nutrient].quantity = 0;
-            } else {
-              current[group][nutrient].quantity = +current[group][nutrient].quantity * (+current.quantity / 100);
-            }
+            isNaN(current[group][nutrient].quantity)
+              ? current[group][nutrient].quantity = 0
+              : current[group][nutrient].quantity = +current[group][nutrient].quantity * (+current.quantity / 100);
           });
         });
         return current;
@@ -38,7 +36,7 @@ const sumNutrients = (foods, groups) => {
   }
 };
 
-const FoodListPanel = ({ className, title, foods, onListNameChange, onEditQuantity, onDelete }) => {
+const FoodListPanel = ({ className, title, foods = [], onListNameChange, onEditQuantity, onDelete }) => {
   const [nutritionalData, setNutritionalData] = useState();
   const quantity = foods.reduce((total, food) => total + +food.quantity, 0);
 

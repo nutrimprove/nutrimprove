@@ -22,6 +22,11 @@ const getFoodById = async id => {
   return FoodsConnection.findOne({ foodCode: id });
 };
 
+const getFoodsByIds = async ids => {
+  const FoodsConnection = await getFoodsConnection();
+  return FoodsConnection.find({ foodCode: { '$in': ids } });
+};
+
 const getFoodByName = async name => {
   const FoodsConnection = await getFoodsConnection();
   return FoodsConnection.findOne({ foodName: name });
@@ -77,4 +82,12 @@ const getFoodsByNutrient = async (nutrient, limit, filters) => {
   return FoodsConnection.find(query, projection).sort(sort).limit(numberOfRecords);
 };
 
-export { getFoodsByCategories, getFoodById, getFoodByName, getAllFoodNames, getNutrients, getFoodsByNutrient };
+export {
+  getFoodsByCategories,
+  getFoodById,
+  getFoodsByIds,
+  getFoodByName,
+  getAllFoodNames,
+  getNutrients,
+  getFoodsByNutrient,
+};
