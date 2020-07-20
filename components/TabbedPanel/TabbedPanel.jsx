@@ -1,6 +1,6 @@
 import { Tab, Tabs } from '@material-ui/core';
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import TabContainer from '../TabContainer';
 
 const TabbedPanel = ({ tabs, classes }) => {
@@ -9,6 +9,10 @@ const TabbedPanel = ({ tabs, classes }) => {
   const tabChange = (event, tab) => {
     setTabOption(tab);
   };
+
+  useEffect(() => {
+    setTabOption(0);
+  }, [tabs]);
 
   return (
     <div className={classes.content}>
@@ -20,7 +24,8 @@ const TabbedPanel = ({ tabs, classes }) => {
         })}
       </Tabs>
       {tabs.map((tab, index) => (
-        <TabContainer key={`${tab.label}-content`} value={tabOption} index={index} disabled={tab.disabled} container={tab.container}>
+        <TabContainer key={`${tab.label}-content`} value={tabOption} index={index} disabled={tab.disabled}
+                      container={tab.container}>
           {tab.content}
         </TabContainer>
       ))}
