@@ -48,17 +48,17 @@ const AddList = ({ classes }) => {
   const formattedList = list => ({
     ...list,
     foods: list.foods.map(food => ({
-        quantity: food.quantity,
-        foodCode: food.foodCode,
-        foodName: food.foodName,
-      })),
+      quantity: food.quantity,
+      foodCode: food.foodCode,
+      foodName: food.foodName,
+    })),
   });
 
-  const saveListToStateAndDB = (foods = foodList, name = listName) => {
+  const saveListToStateAndDB = ({ foods = foodList, name = listName, deletion }) => {
     setFoodList(foods);
     const list = { foods, name, id: -1 };
     saveListToState(list);
-    foods.length > 1
+    foods.length > 0 || deletion || name
       ? editList(user, formattedList(list))
       : addList(user, formattedList(list));
   };
@@ -66,7 +66,7 @@ const AddList = ({ classes }) => {
   const addToList = () => {
     food.quantity = quantity;
     const foods = foodList.length > 0 ? [...foodList, food] : [food];
-    saveListToStateAndDB(foods);
+    saveListToStateAndDB({ foods });
 
     setFood(null);
     setAddButtonText(ALREADY_IN_LIST_TEXT);
@@ -74,16 +74,17 @@ const AddList = ({ classes }) => {
   };
 
   const saveListName = ({ value }) => {
-    setListName(value);
-    saveListToStateAndDB(foodList, value);
+    if (value !== '') {
+      setListName(value);
+      saveListToStateAndDB({ name: value });
+    }
   };
 
   const removeFood = ({ currentTarget }) => {
     const foodKey = currentTarget.dataset.key;
     const newList = foodList.filter(food => food.foodCode !== foodKey);
-    setFoodList(newList);
-    saveListToState(listName, newList);
-    if (foodKey === selectedFood.foodCode) {
+    saveListToStateAndDB({ foods: newList, deletion: true });
+    if (selectedFood && foodKey === selectedFood.foodCode) {
       setFood(selectedFood);
     }
   };
@@ -96,7 +97,7 @@ const AddList = ({ classes }) => {
     const foodIndex = foodList.findIndex(food => food.foodCode === target.dataset.key);
     const foods = cloneDeep(foodList);
     foods[foodIndex].quantity = Number(target.value);
-    saveListToStateAndDB(foods);
+    saveListToStateAndDB({ foods });
   };
 
   return (
