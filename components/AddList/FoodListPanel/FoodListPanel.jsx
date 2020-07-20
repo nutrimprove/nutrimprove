@@ -1,5 +1,6 @@
 import CardTitle from 'components/CardTitle';
 import FoodCard from 'components/FoodCard';
+import MainButton from 'components/MainButton';
 import TabbedPanel from 'components/TabbedPanel';
 import { NUTRIENT_GROUPS } from 'helpers/constants';
 import { cloneDeep } from 'lodash';
@@ -36,7 +37,7 @@ const sumNutrients = (foods, groups) => {
   }
 };
 
-const FoodListPanel = ({ className, title, foods = [], onListNameChange, onEditQuantity, onDelete }) => {
+const FoodListPanel = ({ classes, className, title, foods = [], onListNameChange, onEditQuantity, onDelete, onSaveButtonClick }) => {
   const [nutritionalData, setNutritionalData] = useState();
   const quantity = foods.reduce((total, food) => total + +food.quantity, 0);
 
@@ -68,17 +69,22 @@ const FoodListPanel = ({ className, title, foods = [], onListNameChange, onEditQ
     <div className={className}>
       <CardTitle title={title} editable={true} onTitleChange={onListNameChange}/>
       <TabbedPanel tabs={tabs}/>
+      <MainButton className={classes.saveButton} disabled={foods.length === 0} action={onSaveButtonClick}>
+        Save and start new...
+      </MainButton>
     </div>
   );
 };
 
 FoodListPanel.propTypes = {
+  classes: PropTypes.string.isRequired,
   className: PropTypes.string,
   title: PropTypes.string.isRequired,
   foods: PropTypes.array.isRequired,
   onListNameChange: PropTypes.func,
   onEditQuantity: PropTypes.func,
   onDelete: PropTypes.func,
+  onSaveButtonClick: PropTypes.func,
 };
 
 export default FoodListPanel;

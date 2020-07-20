@@ -5,9 +5,7 @@ export const ActionsTypes = {
   SET_USER_PREFERENCES: 'SET_USER_PREFERENCES',
   SET_FOOD_NAMES: 'SET_FOOD_NAMES',
   SET_FOOD_LISTS: 'SET_FOOD_LISTS',
-  SAVE_NEW_FOODS_LIST: 'SAVE_NEW_FOODS_LIST',
-  ADD_NEW_FOODS_LIST: 'ADD_NEW_FOODS_LIST',
-  EDIT_FOODS_LIST: 'EDIT_FOODS_LIST',
+  SET_CURRENT_LIST: 'SET_CURRENT_LIST',
 };
 
 export const setUserDetailsAction = userDetails => {
@@ -30,18 +28,6 @@ export const setFoodNamesAction = foodNames => {
   return { type: ActionsTypes.SET_FOOD_NAMES, foodNames };
 };
 
-export const setFoodListsAction = foodLists => {
-  return { type: ActionsTypes.SET_FOOD_LISTS, foodLists };
-};
-
-export const addNewFoodsListAction = (name, foods) => {
-  return { type: ActionsTypes.ADD_NEW_FOODS_LIST, name, foods };
-};
-
-export const saveNewFoodListAction = list => {
-  return { type: ActionsTypes.SAVE_NEW_FOODS_LIST, list };
-};
-
-export const editFoodsListAction = list => {
-  return { type: ActionsTypes.EDIT_FOODS_LIST, list };
+export const setCurrentListAction = list => {
+  return { type: ActionsTypes.SET_CURRENT_LIST, list };
 };

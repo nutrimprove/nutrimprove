@@ -7,7 +7,7 @@ import React, { useCallback, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useAuth } from 'react-use-auth';
 import {
-  setFoodListsAction,
+  setCurrentListAction,
   setFoodNamesAction,
   setUserDetailsAction,
   setUserPreferencesAction,
@@ -33,7 +33,7 @@ const LoaderContainer = ({ classes, children }) => {
   const setFoodNames = useCallback(foodNames => dispatch(setFoodNamesAction(foodNames)), []);
   const setUserDetails = useCallback(userDetails => dispatch(setUserDetailsAction(userDetails)), []);
   const setUserPreferences = useCallback(userPreferences => dispatch(setUserPreferencesAction(userPreferences)), []);
-  const setUserLists = useCallback(userLists => dispatch(setFoodListsAction(userLists)), []);
+  const setCurrentList = useCallback(list => dispatch(setCurrentListAction(list)), []);
   const { isAuthenticated, user } = useAuth();
 
   useEffect(() => {
@@ -45,7 +45,8 @@ const LoaderContainer = ({ classes, children }) => {
           setUserDetails({ email, role, approved, points });
           setUserPreferences(preferences);
           const updatedLists = await listsWithFullFoodDetails(lists);
-          setUserLists(updatedLists);
+          const currentList = updatedLists.find(({id}) => id === -1);
+          setCurrentList(currentList);
           addToLocalStorage('approved', approved);
 
           if (!EDAMAM_DB) {

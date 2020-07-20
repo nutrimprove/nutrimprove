@@ -10,7 +10,7 @@ import { cloneDeep } from 'lodash';
 import PropTypes from 'prop-types';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { saveNewFoodListAction } from 'store/global/actions';
+import { setCurrentListAction } from 'store/global/actions';
 import FoodListPanel from './FoodListPanel';
 
 const AddList = ({ classes }) => {
@@ -20,24 +20,23 @@ const AddList = ({ classes }) => {
   const [foodList, setFoodList] = useState();
   const [listName, setListName] = useState();
   const [quantity, setQuantity] = useState(100);
-  const dispatch = useDispatch();
-  const saveListToState = useCallback(list => dispatch(saveNewFoodListAction(list)), []);
   const user = useSelector(({ globalState }) => globalState.userDetails.email);
-  const lists = useSelector(({ globalState }) => globalState.lists);
+  const currentList = useSelector(({ globalState }) => globalState.currentList);
+  const dispatch = useDispatch();
+  const saveListToState = useCallback(list => dispatch(setCurrentListAction(list)), []);
 
   const ALREADY_IN_LIST_TEXT = 'Food already in list';
+  const DEFAULT_LIST_OBJECT = { id: -1, name: 'New List', foods: [] };
 
   useEffect(() => {
-    if (lists.length > 0) {
-      const newFoodList = lists.find(list => list.id === -1);
-      if (newFoodList) {
-        setFoodList(newFoodList.foods);
-        setListName(newFoodList.name);
-      }
+    if (currentList) {
+        setFoodList(currentList.foods);
+        setListName(currentList.name);
     } else {
-      addList(user, { id: -1, name: 'New List', foods: [] });
+      addList(user, DEFAULT_LIST_OBJECT);
+      saveListToState(DEFAULT_LIST_OBJECT);
     }
-  }, [lists]);
+  }, [currentList]);
 
   useEffect(() => {
     if (selectedFood) {
@@ -56,11 +55,17 @@ const AddList = ({ classes }) => {
     })),
   });
 
-  const saveListToStateAndDB = ({ foods = foodList, name = listName, deletion }) => {
-    setFoodList(foods);
-    const list = { foods, name, id: -1 };
-    saveListToState(list);
-    editList(user, formattedList(list));
+  const saveListToStateAndDB = ({ foods = foodList, name = listName, id = -1 }) => {
+    const list = { foods, name, id };
+    if (id === -1) {
+      editList(user, formattedList(list));
+      saveListToState(list);
+    } else {
+      editList(user, DEFAULT_LIST_OBJECT);
+      addList(user, formattedList(list));
+      saveListToState(DEFAULT_LIST_OBJECT);
+      setFood(selectedFood);
+    }
   };
 
   const addToList = () => {
@@ -75,7 +80,6 @@ const AddList = ({ classes }) => {
 
   const saveListName = ({ value }) => {
     if (value !== '') {
-      setListName(value);
       saveListToStateAndDB({ name: value });
     }
   };
@@ -83,14 +87,14 @@ const AddList = ({ classes }) => {
   const removeFood = ({ currentTarget }) => {
     const foodKey = currentTarget.dataset.key;
     const newList = foodList.filter(food => food.foodCode !== foodKey);
-    saveListToStateAndDB({ foods: newList, deletion: true });
+    saveListToStateAndDB({ foods: newList });
     if (selectedFood && foodKey === selectedFood.foodCode) {
       setFood(selectedFood);
     }
   };
 
   const handleQuantityChange = target => {
-    setQuantity(target.value);
+    setQuantity(Number(target.value));
   };
 
   const editFoodInListQuantity = target => {
@@ -98,6 +102,10 @@ const AddList = ({ classes }) => {
     const foods = cloneDeep(foodList);
     foods[foodIndex].quantity = Number(target.value);
     saveListToStateAndDB({ foods });
+  };
+
+  const handleSaveButtonClick = () => {
+    saveListToStateAndDB({ id: Date.now() });
   };
 
   return (
@@ -142,6 +150,7 @@ const AddList = ({ classes }) => {
                        onListNameChange={saveListName}
                        onDelete={removeFood}
                        onEditQuantity={editFoodInListQuantity}
+                       onSaveButtonClick={handleSaveButtonClick}
         />
       </div>
     </>

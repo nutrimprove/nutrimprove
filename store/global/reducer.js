@@ -8,60 +8,12 @@ const userWithAddedPoints = (userDetails, points) => {
   }
 };
 
-const getNewList = (name, foods) => ({ foods, name, id: -1 });
-
-const saveNewFoodsList = (lists = [], { name, foods }) => {
-  let found = false;
-  const newList = getNewList(name, foods);
-  const listsToSave = lists.map(list => {
-    if (list.id !== -1) {
-      return list;
-    } else {
-      found = true;
-      return newList;
-    }
-  });
-
-  if (!found) {
-    listsToSave.push(newList);
-  }
-  return listsToSave;
-};
-
-const addNewFoodsList = (lists = [], name, foods) => {
-  const newList = getNewList(name, foods);
-  const listsToSave = lists.map(list => list.id !== -1 ? list : { ...list, id: list.length });
-  listsToSave.push(newList);
-  return listsToSave;
-};
-
-const editFoodsList = (lists, edittedList) => {
-  const listIndex = lists.findIndex(list => list.id === edittedList.id);
-  if (listIndex !== -1) {
-    return lists.map(list => list.id === edittedList.id ? edittedList : list);
-  }
-};
-
-// const editFoodQuantity = (lists, listId, foodKey, quantity) => {
-//   if (foodKey && quantity > 0) {
-//     const listIndex = lists.findIndex(list => list.id === listId);
-//     const list = cloneDeep(lists)[listIndex];
-//     const foodToEdit = list.foods.find(food => food.foodCode === foodKey);
-//     console.log(`=== reducer.js #44 === ( list ) =======>`, list);
-//     console.log(`=== reducer.js #45 === ( foodToEdit ) =======>`, foodToEdit);
-//     foodToEdit.quantity = quantity;
-//     console.log(`=== reducer.js #47 === ( list ) =======>`, list);
-//
-//     return list;
-//   }
-// };
-
 export const reducer = (state = {
   userDetails: {},
   categories: CATEGORIES,
   foodNames: [],
   preferences: {},
-  lists: [],
+  currentList: undefined,
 }, action) => {
   if (action.type === ActionsTypes.SET_USER_DETAILS) {
     return {
@@ -88,25 +40,10 @@ export const reducer = (state = {
       ...state,
       foodNames: action.foodNames,
     };
-  } else if (action.type === ActionsTypes.SET_FOOD_LISTS) {
+  } else if (action.type === ActionsTypes.SET_CURRENT_LIST) {
     return {
       ...state,
-      lists: action.foodLists,
-    };
-  } else if (action.type === ActionsTypes.SAVE_NEW_FOODS_LIST) {
-    return {
-      ...state,
-      lists: saveNewFoodsList(state.lists, action.list),
-    };
-  } else if (action.type === ActionsTypes.ADD_NEW_FOODS_LIST) {
-    return {
-      ...state,
-      lists: addNewFoodsList(state.lists, action.name, action.foods),
-    };
-  } else if (action.type === ActionsTypes.EDIT_FOODS_LIST) {
-    return {
-      ...state,
-      lists: editFoodsList(state.lists, action.list),
+      currentList: action.list,
     };
   } else {
     return state;
