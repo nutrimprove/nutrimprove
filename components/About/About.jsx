@@ -13,9 +13,10 @@ const About = () => {
   return (
     <>
       <SectionHeader content={content}/>
-      <Typography>
-        NutrImprove is an initiative that aims to curate the world&apos;s
-        largest database of nutritional recommendations.
+      <Typography paragraph={true}>
+        The Nutrimprove project is part of the NHS clinical entrepreneurship scheme and an initiative that aims to
+        curate the world&apos;s largest database of nutritional recommendations with the help of UK-based registered
+        nutritionists and dietitians.
       </Typography>
       <Typography paragraph={true}>
         The NutrImprove web application will allow nutritionists,
@@ -29,9 +30,8 @@ const About = () => {
         richer source of information for all users.
       </Typography>
       <Typography paragraph={true}>
-        In time, the web application will also allow it&apos;s users to
-        search for foods and display their nutritional information,
-        including vitamins, minerals and their RDI.
+        The web application is constantly evolving and new functionalities will be added periodically. Contributors
+        will have a first line of contact to provide any feedback or ideas on how to improve it.
       </Typography>
       <Typography paragraph={true}>
         Contributors will have access to this data so they may quickly
@@ -40,10 +40,8 @@ const About = () => {
       <Typography>
         If you are a registered nutritionist, nutritional therapist or
         dietitian and are interested in knowing more about this project
-        please contact us via email on:
+        please contact us via email on: <Link>nutrimprove@gmail.com</Link>
       </Typography>
-      <Link>nutrimprove@gmail.com</Link>
-      <BackToMainPageLink/>
     </>
   );
 };
