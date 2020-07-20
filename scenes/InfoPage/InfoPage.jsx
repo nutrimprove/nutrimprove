@@ -28,8 +28,9 @@ const InfoPage = ({ classes }) => {
 
         <ContentSection title='The Nutrimprove project'>
           <Typography variant='body2' paragraph={true}>
-            NutrImprove is an initiative that aims to curate the world&apos;s largest database of nutritional
-            recommendations.
+            The Nutrimprove project is part of the NHS clinical entrepreneurship scheme and an initiative that aims to
+            curate the world&apos;s largest database of nutritional recommendations with the help of UK-based registered
+            nutritionists and dietitians.
           </Typography>
           <Typography variant='body2' paragraph={true}>
             The NutrImprove web application will allow nutritionists, nutritional therapists and dietitians to recommend
