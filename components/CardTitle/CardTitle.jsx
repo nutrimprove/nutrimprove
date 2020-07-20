@@ -3,9 +3,9 @@ import EditableText from 'components/EditableText';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-const CardTitle = ({ classes, title, editable, onTitleChange }) => (
+const CardTitle = ({ classes, title = ' ', editable, onTitleChange }) => (
   <div className={classes.container}>
-    {editable && title
+    {title && editable
       ? <EditableText value={title} onChange={onTitleChange}/>
       : <Typography variant='subtitle1' noWrap={true}>
         {title}

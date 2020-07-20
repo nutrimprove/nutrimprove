@@ -17,8 +17,8 @@ const AddList = ({ classes }) => {
   const [food, setFood] = useState();
   const [selectedFood, setSelectedFood] = useState();
   const [addButtonText, setAddButtonText] = useState('Select food');
-  const [foodList, setFoodList] = useState([]);
-  const [listName, setListName] = useState('New List');
+  const [foodList, setFoodList] = useState();
+  const [listName, setListName] = useState();
   const [quantity, setQuantity] = useState(100);
   const dispatch = useDispatch();
   const saveListToState = useCallback(list => dispatch(saveNewFoodListAction(list)), []);
@@ -34,6 +34,8 @@ const AddList = ({ classes }) => {
         setFoodList(newFoodList.foods);
         setListName(newFoodList.name);
       }
+    } else {
+      addList(user, { id: -1, name: 'New List', foods: [] });
     }
   }, [lists]);
 
@@ -58,9 +60,7 @@ const AddList = ({ classes }) => {
     setFoodList(foods);
     const list = { foods, name, id: -1 };
     saveListToState(list);
-    foods.length > 0 || deletion || name
-      ? editList(user, formattedList(list))
-      : addList(user, formattedList(list));
+    editList(user, formattedList(list));
   };
 
   const addToList = () => {
