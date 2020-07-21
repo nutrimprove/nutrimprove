@@ -1,19 +1,10 @@
-import { isAdmin } from 'helpers/userUtils';
-import { deleteUser } from 'interfaces/api/users';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import LoadingSpinner from '../LoadingSpinner';
 import MainButton from '../MainButton';
 
-const DeleteUserButton = ({ user, action, className }) => {
+const DeleteUserButton = ({ onConfirmation, datakey, context, buttonText, buttonConfirmationText, disabled, className }) => {
   const [confirm, setConfirm] = useState(false);
-  const [disabled, setDisabled] = useState(isAdmin(user)); // Admin users not deletable
-
-  const confirmButtonActions = async () => {
-    setDisabled(true);
-    await deleteUser(user.email);
-    action(user.email);
-  };
 
   const setTempConfirmation = () => {
     setConfirm(true);
@@ -24,19 +15,20 @@ const DeleteUserButton = ({ user, action, className }) => {
 
   const defaultButton = () => (
     <MainButton action={setTempConfirmation} disabled={disabled} className={className}>
-      Delete User
+      {buttonText}
     </MainButton>
   );
 
   const confirmButton = () => (
     <MainButton
-      action={confirmButtonActions}
+      action={onConfirmation}
       colour={'secondary'}
       disabled={disabled}
       className={className}
+      datakey={datakey}
     >
-      Confirm Deletion
-      <LoadingSpinner context={`deleteUser-${user.email}`}/>
+      {buttonConfirmationText}
+      <LoadingSpinner context={context}/>
     </MainButton>
   );
 
@@ -44,8 +36,10 @@ const DeleteUserButton = ({ user, action, className }) => {
 };
 
 DeleteUserButton.propTypes = {
-  user: PropTypes.object.isRequired,
-  action: PropTypes.func,
+  onConfirmation: PropTypes.func,
+  datakey: PropTypes.string,
+  context: PropTypes.string,
+  buttonText: PropTypes.string,
 };
 
 export default DeleteUserButton;

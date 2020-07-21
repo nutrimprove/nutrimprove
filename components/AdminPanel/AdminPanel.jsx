@@ -3,6 +3,7 @@ import { isAdmin, isOwner, userRoleToString } from 'helpers/userUtils';
 import { updateDB } from 'interfaces/api/db';
 import {
   approveUser,
+  deleteUser,
   getAllUsers,
   getApprovedUsers,
   getNotApprovedUsers,
@@ -45,6 +46,10 @@ const AdminPanel = ({ classes }) => {
   }, []);
 
   useEffect(() => {
+    updateResults();
+  }, [userDetails]);
+
+  useEffect(() => {
     setUsers(null);
     updateResults();
   }, [userQuery]);
@@ -70,15 +75,18 @@ const AdminPanel = ({ classes }) => {
     );
   };
 
-  const removeUser = userToDelete => {
-    const newUserList = users.filter(user => user.email !== userToDelete);
-    setUsers(newUserList);
-    updateResults();
-  };
-
   const deleteButton = user => {
     if (userDetails.role === ROLES.OWNER) {
-      return <DeleteUserButton action={removeUser} user={user} className={classes.actionButton}/>;
+      return <DeleteUserButton
+        onConfirmation={confirmDeletion}
+        key={user.email}
+        buttonText='Delete User'
+        buttonConfirmationText='Confirm Deletion'
+        datakey={user.email}
+        disabled={isAdmin(user)}
+        className={classes.actionButton}
+        context={`deleteUser-${user.email}`}
+      />;
     }
   };
 
@@ -88,6 +96,18 @@ const AdminPanel = ({ classes }) => {
       {deleteButton(user)}
     </>
   );
+
+  const removeUser = userToDelete => {
+    const newUserList = users.filter(user => user.email !== userToDelete);
+    setUsers(newUserList);
+    updateResults();
+  };
+
+  const confirmDeletion = async event => {
+    const email = event.currentTarget.dataset.key;
+    await deleteUser(email);
+    removeUser(email);
+  };
 
   const updateResults = async () => {
     let users;
