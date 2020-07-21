@@ -59,6 +59,11 @@ export const reducer = (state = {
       ...state,
       lists: [...state.lists, action.list],
     };
+  } else if (action.type === ActionsTypes.DELETE_LIST) {
+    return {
+      ...state,
+      lists: [...state.lists.filter(list => list.id !== action.listId)],
+    };
   } else {
     return state;
   }

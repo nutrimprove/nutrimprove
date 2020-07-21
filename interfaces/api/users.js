@@ -60,6 +60,9 @@ const addList = (user, list) =>
 const editList = (user, list) =>
   postRequest(`${usersEndpoint}/lists/edit`, { user, list });
 
+const deleteList = (user, list) =>
+  postRequest(`${usersEndpoint}/lists/delete`, { user, list });
+
 export {
   getUser,
   getAllUsers,
@@ -72,4 +75,5 @@ export {
   savePreferences,
   addList,
   editList,
+  deleteList,
 };

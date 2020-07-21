@@ -6,6 +6,7 @@ export const ActionsTypes = {
   SET_FOOD_NAMES: 'SET_FOOD_NAMES',
   SET_LISTS: 'SET_LISTS',
   ADD_LIST: 'ADD_LIST',
+  DELETE_LIST: 'DELETE_LIST',
   SET_CURRENT_LIST: 'SET_CURRENT_LIST',
 };
 
@@ -35,6 +36,10 @@ export const setCurrentListAction = list => {
 
 export const addListAction = list => {
   return { type: ActionsTypes.ADD_LIST, list };
+};
+
+export const deleteListAction = listId => {
+  return { type: ActionsTypes.DELETE_LIST, listId };
 };
 
 export const setListsAction = lists => {

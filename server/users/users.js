@@ -135,6 +135,13 @@ const addList = async (user, list) => {
   );
 };
 
+const deleteList = async (user, listId) => {
+  const UserConnection = await getUserConnection();
+  return UserConnection.updateOne({ email: user },
+    { $pull: { lists: { id: listId } } },
+  );
+};
+
 export {
   getUserConnection,
   getUser,
@@ -148,5 +155,6 @@ export {
   updateAllUsersPoints,
   savePreferences,
   editList,
+  deleteList,
   addList,
 };
