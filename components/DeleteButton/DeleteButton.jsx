@@ -1,9 +1,10 @@
+import DeleteIcon from '@material-ui/icons/Delete';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import LoadingSpinner from '../LoadingSpinner';
 import MainButton from '../MainButton';
 
-const DeleteUserButton = ({ onConfirmation, datakey, context, buttonText, buttonConfirmationText, disabled, className }) => {
+const DeleteButton = ({ classes, onConfirmation, datakey, icon = false, context, buttonText, buttonConfirmationText, disabled, className }) => {
   const [confirm, setConfirm] = useState(false);
 
   const setTempConfirmation = () => {
@@ -15,6 +16,7 @@ const DeleteUserButton = ({ onConfirmation, datakey, context, buttonText, button
 
   const defaultButton = () => (
     <MainButton action={setTempConfirmation} disabled={disabled} className={className}>
+      {icon && <DeleteIcon className={classes.deleteIcon}/>}
       {buttonText}
     </MainButton>
   );
@@ -35,11 +37,16 @@ const DeleteUserButton = ({ onConfirmation, datakey, context, buttonText, button
   return confirm ? confirmButton() : defaultButton();
 };
 
-DeleteUserButton.propTypes = {
+DeleteButton.propTypes = {
   onConfirmation: PropTypes.func,
   datakey: PropTypes.string,
   context: PropTypes.string,
   buttonText: PropTypes.string,
+  buttonConfirmationText: PropTypes.string,
+  icon: PropTypes.bool,
+  disabled: PropTypes.bool,
+  className: PropTypes.string,
+  classes: PropTypes.object.isRequired,
 };
 
-export default DeleteUserButton;
+export default DeleteButton;

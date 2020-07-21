@@ -14,7 +14,7 @@ import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import ButtonWithSpinner from '../ButtonWithSpinner';
-import DeleteUserButton from '../DeleteUserButton';
+import DeleteButton from '../DeleteButton';
 import LoadingPanel from '../LoadingPanel';
 import ResultsTable from '../ResultsTable';
 
@@ -77,7 +77,7 @@ const AdminPanel = ({ classes }) => {
 
   const deleteButton = user => {
     if (userDetails.role === ROLES.OWNER) {
-      return <DeleteUserButton
+      return <DeleteButton
         onConfirmation={confirmDeletion}
         key={user.email}
         buttonText='Delete User'
