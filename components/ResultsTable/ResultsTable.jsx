@@ -6,7 +6,7 @@ import { orderBy } from 'lodash';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 
-const ResultsTable = ({ classes, data, onRowClick, title, scrollable, sortOnLoad, sortColumns = [] }) => {
+const ResultsTable = ({ classes, className, data, onRowClick, title, scrollable, sortOnLoad, sortColumns = [] }) => {
   const [order, setOrder] = useState({ column: null, order: null });
   const [tableData, setTableData] = useState([]);
 
@@ -49,7 +49,7 @@ const ResultsTable = ({ classes, data, onRowClick, title, scrollable, sortOnLoad
   };
 
   return (
-    <div className={clsx(classes.table, scrollable ? classes.scrollable : null)}>
+    <div className={clsx(classes.table, scrollable ? classes.scrollable : null, className)}>
       {title && <Typography variant='body1' align='center' className={classes.title}>
         {title}
       </Typography>}
@@ -87,9 +87,7 @@ const ResultsTable = ({ classes, data, onRowClick, title, scrollable, sortOnLoad
               >
                 {columns.map((column) => (
                   <TableCell key={`${row}-${column}`}>
-                    <>
-                      {column.toLowerCase().includes('date') ? new Date(row[column]).toLocaleDateString() : row[column]}
-                    </>
+                    {column.toLowerCase().includes('date') ? new Date(row[column]).toLocaleDateString() : row[column]}
                   </TableCell>
                 ))}
               </TableRow>
@@ -104,6 +102,7 @@ const ResultsTable = ({ classes, data, onRowClick, title, scrollable, sortOnLoad
 ResultsTable.propTypes = {
   classes: PropTypes.object.isRequired,
   data: PropTypes.array.isRequired,
+  className: PropTypes.string,
   title: PropTypes.string,
   scrollable: PropTypes.bool,
   sortOnLoad: PropTypes.string,

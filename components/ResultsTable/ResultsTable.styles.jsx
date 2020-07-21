@@ -24,7 +24,7 @@ export default {
   },
   row: {
     '&:nth-of-type(even)': {
-      backgroundColor: '#f8f8f8',
+      backgroundColor: '#fafafa',
     },
   },
   clickable: {
