@@ -11,23 +11,23 @@ const ViewLists = ({ classes }) => {
   const [detailsOpen, setDetailsOpen] = useState(false);
   const [selectedList, setSelectedList] = useState();
 
-  const formattedLists = () => lists.filter(({ id }) => id !== -1).map(({ id, name, foods }) => {
-    const quantity = foods.reduce((quantity, currentFood) => quantity + currentFood.quantity, 0);
+  const getTotalWeight = foods => foods.reduce((quantity, currentFood) => quantity + currentFood.quantity, 0);
+
+  const listsData = () => lists.filter(({ id }) => id !== -1).map(({ id, name, foods, created }) => {
+    const quantity = getTotalWeight(foods);
     const foodName = id !== -1 ? name : `${name} *`;
-    return { id, name: foodName, foods: foods.length, totalWeight: `${quantity}g` };
+    return { id, Name: foodName, Foods: foods.length, 'Total Weight': `${quantity}g`, 'Date Created': created };
   });
 
   const onRowClick = ({ currentTarget }) => {
-    const selected = lists.find(({ id }) => id.toString() === currentTarget.dataset.id);
-    setSelectedList(selected);
+    const { name, foods } = lists.find(({ id }) => id.toString() === currentTarget.dataset.id);
+    const formattedList = {
+      name: name,
+      foods: foods.map(food => ({ name: food.foodName, quantity: `${food.quantity}g` })),
+      totalWeight: `${getTotalWeight(foods)}g`,
+    };
+    setSelectedList(formattedList);
     setDetailsOpen(true);
-  };
-
-  const formattedSelectedList = () => {
-    return {
-      name: selectedList.name,
-      foods: selectedList.foods.map(food => ({name: food.foodName, quantity: food.quantity})),
-    }
   };
 
   const handleCloseDetails = () => {
@@ -39,7 +39,7 @@ const ViewLists = ({ classes }) => {
       {lists.length === 0
         ? <Typography>No lists. You can add a new list <Link href='/lists/add'>here</Link></Typography>
         : <ResultsTable className={classes.table} onRowClick={onRowClick}
-                        sortColumns={['name', 'foods']} data={formattedLists()}/>
+                        sortColumns={['name', 'foods', 'totalweight', 'datecreated']} data={listsData()}/>
       }
       {detailsOpen && (
         <ModalPanel open={detailsOpen}
@@ -47,7 +47,8 @@ const ViewLists = ({ classes }) => {
                     title={selectedList.name}
         >
           {selectedList
-            ? <ResultsTable data={formattedSelectedList().foods} scrollable={true} sortColumns={['foods']}/>
+            ? <ResultsTable title={`Total weight: ${selectedList.totalWeight}`} data={selectedList.foods}
+                            sortColumns={['foods']}/>
             : <LoadingPanel/>
           }
         </ModalPanel>)}

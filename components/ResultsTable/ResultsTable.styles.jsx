@@ -3,7 +3,7 @@ export default {
     width: '100%',
   },
   table: {
-    padding: '0 0 18px 18px',
+    display: 'unset',
   },
   scrollable: {
     overflow: 'auto',
@@ -27,13 +27,15 @@ export default {
       backgroundColor: '#fafafa',
     },
   },
+  cellText: {
+    fontSize: 14,
+  },
   clickable: {
     cursor: 'pointer',
   },
   title: {
-    marginTop: 25,
+    marginTop: 10,
     marginBottom: 20,
-    fontWeight: 'bold',
   },
   sortIcon: {
     position: 'absolute',

@@ -14,8 +14,8 @@ const ResultsTable = ({ classes, className, data, onRowClick, title, scrollable,
   if (data && data.length > 0) {
     columns = Object.keys(data[0]).filter(key => key !== 'id').map(key => key);
   }
-
   let columnsToSort = [...sortColumns];
+  // Handle columns to sort if it receives column indexes instead of names
   if (sortColumns.every(column => typeof column === 'number')) {
     columnsToSort = sortColumns.map(column => columns[column].toLowerCase());
   }
@@ -85,11 +85,13 @@ const ResultsTable = ({ classes, className, data, onRowClick, title, scrollable,
                 onClick={onRowClick}
                 data-id={row.id}
               >
-                {columns.map((column) => (
+                {columns.map((column) => {
+                  const cellContent = column.toLowerCase().includes('date') ? new Date(row[column]).toLocaleDateString() : row[column];
+                  return (
                   <TableCell key={`${row}-${column}`}>
-                    {column.toLowerCase().includes('date') ? new Date(row[column]).toLocaleDateString() : row[column]}
+                    <Typography className={classes.cellText} noWrap={true} title={cellContent}>{cellContent}</Typography>
                   </TableCell>
-                ))}
+                )})}
               </TableRow>
             ))}
           </TableBody>

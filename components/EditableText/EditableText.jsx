@@ -2,11 +2,16 @@ import { TextField, Typography } from '@material-ui/core';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 const EditableText = ({ classes, className, value, datakey, onChange, children, min, max, maxLength, size = 'medium', type = 'text' }) => {
   const [edit, setEdit] = useState(false);
   const [onHover, setOnHover] = useState(false);
+  const [lengthLeft, setLengthLeft] = useState();
+
+  useEffect(() => {
+
+  }, [value]);
 
   const editTitle = () => {
     setEdit(true);
@@ -27,12 +32,25 @@ const EditableText = ({ classes, className, value, datakey, onChange, children, 
       handleInput(event);
       setEdit(false);
     } else {
-      const value = event.target.value;
-      const isMaxLength = maxLength && value.length > maxLength;
-      const isMax = type.toLowerCase() === 'number' && max && Number(value.toString() + event.key) > max;
+      const fieldValue = event.target.value;
+      const isMaxLength = maxLength && fieldValue.length >= maxLength;
+      const isMax = type.toLowerCase() === 'number' && max && Number(fieldValue.toString() + event.key) > max;
       if (isMaxLength || isMax) {
         event.preventDefault();
       }
+      const newLengthLeft = maxLength - fieldValue.length;
+      if (newLengthLeft < 10) {
+        setLengthLeft(maxLength - fieldValue.length);
+      }
+    }
+  };
+
+  const onPaste = event => {
+    const clipboardData = event.clipboardData || window.clipboardData;
+    const pastedDataLength = clipboardData.getData('text').length;
+    const valueLength = event.target.value.length;
+    if (valueLength + pastedDataLength >= maxLength) {
+      event.preventDefault();
     }
   };
 
@@ -59,6 +77,7 @@ const EditableText = ({ classes, className, value, datakey, onChange, children, 
                      className={classes.editField}
                      inputProps={{ 'data-key': datakey }}
                      type={type}
+                     onPaste={onPaste}
         />
         : (
           <div className={classes.content}

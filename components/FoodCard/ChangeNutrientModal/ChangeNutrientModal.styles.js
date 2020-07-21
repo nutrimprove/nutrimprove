@@ -19,9 +19,8 @@ export default {
     width: 480,
     height: 280,
     minHeight: 'unset',
-    position: 'relative',
     margin: 'auto',
-    right: 'unset',
-    left: 'unset',
+    top: 0,
+    bottom: 0,
   }
 };

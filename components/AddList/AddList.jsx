@@ -64,6 +64,7 @@ const AddList = ({ classes }) => {
     } else {
       editList(user, DEFAULT_LIST_OBJECT);
       setCurrentListToState(DEFAULT_LIST_OBJECT);
+      list.created = Date.now();
       addList(user, formattedList(list));
       addListToState(list);
       setFood(selectedFood);

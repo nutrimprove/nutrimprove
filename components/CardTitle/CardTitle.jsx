@@ -6,7 +6,7 @@ import React from 'react';
 const CardTitle = ({ classes, title = ' ', editable, onTitleChange }) => (
   <div className={classes.container}>
     {title && editable
-      ? <EditableText value={title} onChange={onTitleChange}/>
+      ? <EditableText maxLength={100} value={title} onChange={onTitleChange}/>
       : <Typography variant='subtitle1' noWrap={true}>
         {title}
       </Typography>}

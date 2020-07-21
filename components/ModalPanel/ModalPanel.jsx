@@ -7,17 +7,17 @@ import React from 'react';
 const ModalPanel = ({ children, title, subtitle, open, onClose, classes, style }) => (
   <Modal open={open} onClose={onClose}>
     <div className={clsx(classes.modal, style)}>
-      <div>
-        <IconButton classes={{ root: classes.closeIcon }} onClick={onClose} aria-label='close'>
+      <>
+        <IconButton classes={{ root: classes.closeIcon }}  onClick={onClose} aria-label='close'>
           <CloseIcon fontSize='small'/>
         </IconButton>
         <div className={classes.header}>
-          <Typography variant='h6' noWrap={true}>{title}</Typography>
+          <Typography variant='h6' title={title}>{title}</Typography>
           <Typography variant='subtitle2' color='textSecondary'>
             {subtitle}
           </Typography>
         </div>
-      </div>
+      </>
       {children}
     </div>
   </Modal>

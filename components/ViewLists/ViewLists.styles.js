@@ -3,6 +3,7 @@ export default {
     width: 'fit-content',
     '& .MuiTableBody-root .MuiTableCell-root': {
       padding: '8px 16px',
-    }
+      maxWidth: 500,
+    },
   }
 };
