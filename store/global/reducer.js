@@ -8,12 +8,15 @@ const userWithAddedPoints = (userDetails, points) => {
   }
 };
 
+const updateCurrentList = (lists, currentList) => lists.map(list => list.id !== -1 ? list : currentList);
+
 export const reducer = (state = {
   userDetails: {},
   categories: CATEGORIES,
   foodNames: [],
   preferences: {},
   currentList: undefined,
+  lists: [],
 }, action) => {
   if (action.type === ActionsTypes.SET_USER_DETAILS) {
     return {
@@ -43,7 +46,18 @@ export const reducer = (state = {
   } else if (action.type === ActionsTypes.SET_CURRENT_LIST) {
     return {
       ...state,
+      lists: updateCurrentList(state.lists, action.list),
       currentList: action.list,
+    };
+  } else if (action.type === ActionsTypes.SET_LISTS) {
+    return {
+      ...state,
+      lists: action.lists,
+    };
+  } else if (action.type === ActionsTypes.ADD_LIST) {
+    return {
+      ...state,
+      lists: [...state.lists, action.list],
     };
   } else {
     return state;

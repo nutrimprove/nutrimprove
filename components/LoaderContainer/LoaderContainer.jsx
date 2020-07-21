@@ -8,7 +8,7 @@ import { useDispatch } from 'react-redux';
 import { useAuth } from 'react-use-auth';
 import {
   setCurrentListAction,
-  setFoodNamesAction,
+  setFoodNamesAction, setListsAction,
   setUserDetailsAction,
   setUserPreferencesAction,
 } from 'store/global/actions';
@@ -33,6 +33,7 @@ const LoaderContainer = ({ classes, children }) => {
   const setFoodNames = useCallback(foodNames => dispatch(setFoodNamesAction(foodNames)), []);
   const setUserDetails = useCallback(userDetails => dispatch(setUserDetailsAction(userDetails)), []);
   const setUserPreferences = useCallback(userPreferences => dispatch(setUserPreferencesAction(userPreferences)), []);
+  const setLists = useCallback(lists => dispatch(setListsAction(lists)), []);
   const setCurrentList = useCallback(list => dispatch(setCurrentListAction(list)), []);
   const { isAuthenticated, user } = useAuth();
 
@@ -42,10 +43,11 @@ const LoaderContainer = ({ classes, children }) => {
         const userDetails = await getUser(user.email);
         if (userDetails) {
           const { role, approved, points, preferences, email, lists } = userDetails;
+          const detailedLists = await listsWithFullFoodDetails(lists);
+          const currentList = detailedLists.find(({id}) => id === -1);
           setUserDetails({ email, role, approved, points });
           setUserPreferences(preferences);
-          const updatedLists = await listsWithFullFoodDetails(lists);
-          const currentList = updatedLists.find(({id}) => id === -1);
+          setLists(detailedLists);
           setCurrentList(currentList);
           addToLocalStorage('approved', approved);
 

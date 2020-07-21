@@ -10,7 +10,7 @@ import { cloneDeep } from 'lodash';
 import PropTypes from 'prop-types';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setCurrentListAction } from 'store/global/actions';
+import { addListAction, setCurrentListAction } from 'store/global/actions';
 import FoodListPanel from './FoodListPanel';
 
 const AddList = ({ classes }) => {
@@ -23,7 +23,8 @@ const AddList = ({ classes }) => {
   const user = useSelector(({ globalState }) => globalState.userDetails.email);
   const currentList = useSelector(({ globalState }) => globalState.currentList);
   const dispatch = useDispatch();
-  const saveListToState = useCallback(list => dispatch(setCurrentListAction(list)), []);
+  const setCurrentListToState = useCallback(list => dispatch(setCurrentListAction(list)), []);
+  const addListToState = useCallback(list => dispatch(addListAction(list)), []);
 
   const ALREADY_IN_LIST_TEXT = 'Food already in list';
   const DEFAULT_LIST_OBJECT = { id: -1, name: 'New List', foods: [] };
@@ -34,7 +35,7 @@ const AddList = ({ classes }) => {
         setListName(currentList.name);
     } else {
       addList(user, DEFAULT_LIST_OBJECT);
-      saveListToState(DEFAULT_LIST_OBJECT);
+      setCurrentListToState(DEFAULT_LIST_OBJECT);
     }
   }, [currentList]);
 
@@ -59,11 +60,12 @@ const AddList = ({ classes }) => {
     const list = { foods, name, id };
     if (id === -1) {
       editList(user, formattedList(list));
-      saveListToState(list);
+      setCurrentListToState(list);
     } else {
       editList(user, DEFAULT_LIST_OBJECT);
+      setCurrentListToState(DEFAULT_LIST_OBJECT);
       addList(user, formattedList(list));
-      saveListToState(DEFAULT_LIST_OBJECT);
+      addListToState(list);
       setFood(selectedFood);
     }
   };

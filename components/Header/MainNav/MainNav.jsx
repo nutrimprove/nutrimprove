@@ -11,26 +11,27 @@ const menus = [
   {
     name: 'Search Food',
     options: [
-      { label: 'By Food Name', link: '/search/food' },
-      { label: 'By Nutrient', link: '/search/nutrient' },
+      { label: 'By Food Name...', link: '/search/food' },
+      { label: 'By Nutrient...', link: '/search/nutrient' },
     ],
   },
   {
     name: 'Recommendations',
     options: [
-      { label: 'View Yours', link: '/recommendations/view' },
-      { label: 'View All', link: '/recommendations/view-all' },
+      { label: 'View Yours...', link: '/recommendations/view' },
+      { label: 'View All...', link: '/recommendations/view-all' },
       { divider: true },
-      { label: 'Add', link: '/recommendations/add' },
-      { label: 'Bulk Add', link: '/recommendations/bulk-add' },
+      { label: 'Add...', link: '/recommendations/add' },
+      { label: 'Bulk Add...', link: '/recommendations/bulk-add' },
       { divider: true },
-      { label: 'Review', link: '/recommendations/review' },
+      { label: 'Review...', link: '/recommendations/review' },
     ],
   },
   {
     name: 'Lists',
     options: [
       { label: 'Add new...', link: '/lists/add' },
+      { label: 'View...', link: '/lists/view' },
     ],
   },
 ];

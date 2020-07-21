@@ -131,7 +131,7 @@ const editList = async (user, list) => {
 const addList = async (user, list) => {
   const UserConnection = await getUserConnection();
   return UserConnection.updateOne({ email: user },
-    { $addToSet: { lists: list } },
+    { $addToSet: { lists: { ...list, created: Date.now() } } },
   );
 };
 
