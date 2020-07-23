@@ -33,6 +33,7 @@ export default {
     maxHeight: 500,
     overflowY: 'auto',
     padding: '0 4px 4px',
+    flex: 'auto',
   },
   modalFooter: {
     position: 'sticky',
