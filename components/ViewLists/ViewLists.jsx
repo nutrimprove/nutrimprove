@@ -20,8 +20,7 @@ const ViewLists = ({ classes }) => {
 
   const listsData = () => lists.filter(({ id }) => id !== -1).map(({ id, name, foods, created }) => {
     const quantity = getTotalWeight(foods);
-    const foodName = id !== -1 ? name : `${name} *`;
-    return { id, Name: foodName, Foods: foods.length, 'Total Weight': `${quantity}g`, 'Date Created': created };
+    return { id, name, Foods: foods.length, 'Total Weight': `${quantity}g`, 'Date Created': created };
   });
 
   const onRowClick = ({ currentTarget }) => {
@@ -53,6 +52,14 @@ const ViewLists = ({ classes }) => {
       : `You currently have ${quantity} ${quantity === 1 ? 'list' : 'lists'}!`;
   };
 
+  const Footer = () => (
+    <DeleteButton buttonText='Delete List'
+                  icon={true}
+                  buttonConfirmationText='Confirm Deletion?'
+                  onConfirmation={onDeleteList}
+    />
+  );
+
   return (
     <>
       {lists.length === 0
@@ -68,21 +75,17 @@ const ViewLists = ({ classes }) => {
         <ModalPanel open={detailsOpen}
                     onClose={handleCloseDetails}
                     title={selectedList.name}
+                    subtitle={`Total weight: ${selectedList.totalWeight} - ${selectedList.foods.length}`}
+                    footer={<Footer/>}
+                    style={selectedList.foods.length <= 3 ? classes.shortHeight : null}
         >
           {selectedList && (
-            <>
-              <ResultsTable
-                title={`Total weight: ${selectedList.totalWeight}`}
-                data={selectedList.foods}
-                sortColumns={['foods']}
-              />
-              <DeleteButton buttonText='Delete List'
-                            icon={true}
-                            buttonConfirmationText='Confirm Deletion?'
-                            onConfirmation={onDeleteList}
-              />
-            </>
+            <ResultsTable
+              data={selectedList.foods}
+              sortColumns={['foods']}
+            />
           )}
+
         </ModalPanel>)}
     </>
   );

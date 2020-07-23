@@ -1,9 +1,8 @@
 export default {
   table: {
     width: 'fit-content',
-    '& .MuiTableBody-root .MuiTableCell-root': {
-      padding: '8px 16px',
-      maxWidth: 500,
-    },
+  },
+  shortHeight: {
+    minHeight: 370,
   }
 };
