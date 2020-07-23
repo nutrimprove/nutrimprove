@@ -1,6 +1,6 @@
 export default {
   content: {
-    margin: 20,
+    margin: '0 20px',
   },
   nutrient: {
     borderStyle: 'solid',
@@ -9,18 +9,15 @@ export default {
     borderColor: 'lightgray',
     padding: '14px 40px 8px',
     height: 70,
-    margin: '-18px 30px 0',
+    margin: '0 30px',
+    '& .MuiAutocomplete-root': {
+      margin: 'auto',
+    },
   },
-  buttons: {
-    margin: '24px auto 0',
-    width: 'fit-content',
-  },
-  modalSize: {
+  modal: {
     width: 480,
-    height: 280,
+    top: '20%',
     minHeight: 'unset',
-    margin: 'auto',
-    top: 0,
-    bottom: 0,
-  }
+    maxHeight: 'unset',
+  },
 };
