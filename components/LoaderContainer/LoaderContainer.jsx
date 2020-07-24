@@ -1,5 +1,5 @@
 import { EDAMAM_DB } from 'helpers/constants';
-import { addToLocalStorage, clearStorage, isLoggedIn } from 'helpers/userUtils';
+import { addToLocalStorage, clearStorage } from 'helpers/userUtils';
 import { getAllFoodNames, getFoodsByIds } from 'interfaces/api/foods';
 import { getUser } from 'interfaces/api/users';
 import PropTypes from 'prop-types';
@@ -8,7 +8,8 @@ import { useDispatch } from 'react-redux';
 import { useAuth } from 'react-use-auth';
 import {
   setCurrentListAction,
-  setFoodNamesAction, setListsAction,
+  setFoodNamesAction,
+  setListsAction,
   setUserDetailsAction,
   setUserPreferencesAction,
 } from 'store/global/actions';
@@ -24,7 +25,7 @@ const listsWithFullFoodDetails = async lists => {
   // Returns list of lists with combined food details (from list and fetched full food details)
   return lists.map(list => ({
     ...list,
-    foods: list.foods.map(listFood => ({...listFood, ...foods.find(food => food.foodCode === listFood.foodCode)})),
+    foods: list.foods.map(listFood => ({ ...listFood, ...foods.find(food => food.foodCode === listFood.foodCode) })),
   }));
 };
 
@@ -44,7 +45,7 @@ const LoaderContainer = ({ classes, children }) => {
         if (userDetails) {
           const { role, approved, points, preferences, email, lists } = userDetails;
           const detailedLists = await listsWithFullFoodDetails(lists);
-          const currentList = detailedLists.find(({id}) => id === -1);
+          const currentList = detailedLists.find(({ id }) => id === -1);
           setUserDetails({ email, role, approved, points });
           setUserPreferences(preferences);
           setLists(detailedLists);
@@ -57,9 +58,7 @@ const LoaderContainer = ({ classes, children }) => {
           }
         }
       } else {
-        if (!isLoggedIn()) {
-          clearStorage();
-        }
+        clearStorage();
       }
     })();
   }, [user]);
