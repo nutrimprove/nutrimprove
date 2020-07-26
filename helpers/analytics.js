@@ -7,7 +7,7 @@ export const pageview = (url) => {
       page_path: url,
     });
   } else {
-    const logObj = { prod: IS_PRODUCTION, gtag: window.gtag};
+    const logObj = { method: 'pageview', prod: IS_PRODUCTION, gtag: window.gtag};
     console.warn(logObj);
   }
 };
@@ -21,6 +21,7 @@ export const event = ({ action, category, label, value }) => {
       value: value,
     });
   } else {
-    console.warn(`Invalid 'window.gtag'!`);
+    const logObj = { method: 'event', prod: IS_PRODUCTION, gtag: window.gtag};
+    console.warn(logObj);
   }
 };
