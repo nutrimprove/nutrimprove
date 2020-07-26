@@ -1,5 +1,6 @@
 import { Link, Typography } from '@material-ui/core';
 import DeleteButton from 'components/DeleteButton';
+import LoadingPanel from 'components/LoadingPanel';
 import ModalPanel from 'components/ModalPanel';
 import ResultsTable from 'components/ResultsTable';
 import { deleteList } from 'interfaces/api/users';
@@ -23,7 +24,7 @@ const ViewLists = ({ classes }) => {
     return { id, name, Foods: foods.length, 'Total Weight': `${quantity}g`, 'Date Created': created };
   });
 
-  const onRowClick = ({ currentTarget }) => {
+  const onListRowClick = ({ currentTarget }) => {
     const { name, foods, id } = lists.find(({ id }) => id.toString() === currentTarget.dataset.id);
     const formattedList = {
       id,
@@ -49,7 +50,7 @@ const ViewLists = ({ classes }) => {
     const quantity = listsData().length;
     return quantity === 0
       ? 'You have no lists created!'
-      : `You currently have ${quantity} ${quantity === 1 ? 'list' : 'lists'}!`;
+      : `You currently have ${quantity} ${quantity === 1 ? 'saved list' : 'saved lists'}!`;
   };
 
   const Footer = () => (
@@ -60,17 +61,26 @@ const ViewLists = ({ classes }) => {
     />
   );
 
+  const ListsResultsTable = () => {
+    if (!lists) return <LoadingPanel/>;
+
+    return listsData().length === 0
+      ? <Typography>No lists. You can add a new list <Link href='/lists/add'>here</Link></Typography>
+      : <ResultsTable className={classes.table}
+                      onRowClick={onListRowClick}
+                      title={listsResultsTitle()}
+                      sortColumns={['name', 'foods', 'totalweight', 'datecreated']}
+                      data={listsData()}
+      />;
+  };
+
+  const onFoodClick = ({ currentTarget }) => {
+    console.log(`=== ViewLists.jsx #64 === ( currentTarget ) =======>`, currentTarget);
+  };
+
   return (
     <>
-      {lists.length === 0
-        ? <Typography>No lists. You can add a new list <Link href='/lists/add'>here</Link></Typography>
-        : <ResultsTable className={classes.table}
-                        onRowClick={onRowClick}
-                        title={listsResultsTitle()}
-                        sortColumns={['name', 'foods', 'totalweight', 'datecreated']}
-                        data={listsData()}
-        />
-      }
+      <ListsResultsTable/>
       {detailsOpen && (
         <ModalPanel open={detailsOpen}
                     onClose={handleCloseDetails}
@@ -83,6 +93,7 @@ const ViewLists = ({ classes }) => {
             <ResultsTable
               data={selectedList.foods}
               sortColumns={['foods']}
+              onRowClick={onFoodClick}
             />
           )}
 

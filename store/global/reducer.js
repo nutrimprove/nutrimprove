@@ -16,7 +16,7 @@ export const reducer = (state = {
   foodNames: [],
   preferences: {},
   currentList: undefined,
-  lists: [],
+  lists: undefined,
 }, action) => {
   if (action.type === ActionsTypes.SET_USER_DETAILS) {
     return {
@@ -46,7 +46,7 @@ export const reducer = (state = {
   } else if (action.type === ActionsTypes.SET_CURRENT_LIST) {
     return {
       ...state,
-      lists: updateCurrentList(state.lists, action.list),
+      lists: state.lists ? updateCurrentList(state.lists, action.list) : null,
       currentList: action.list,
     };
   } else if (action.type === ActionsTypes.SET_LISTS) {
