@@ -6,7 +6,7 @@ import { orderBy } from 'lodash';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 
-const ResultsTable = ({ classes, className, data, onRowClick, title, scrollable, sortOnLoad, sortColumns = [] }) => {
+const ResultsTable = ({ classes, className, data, onRowClick, title, titleIcon, scrollable, sortOnLoad, sortColumns = [] }) => {
   const [order, setOrder] = useState({ column: null, order: null });
   const [tableData, setTableData] = useState([]);
 
@@ -51,7 +51,7 @@ const ResultsTable = ({ classes, className, data, onRowClick, title, scrollable,
   return (
     <div className={clsx(classes.table, scrollable ? classes.scrollable : null, className)}>
       {title && <Typography variant='body1' align='center' className={classes.title}>
-        {title}
+        {title}<span className={classes.titleIcon}>{titleIcon}</span>
       </Typography>}
       {columns && <Paper className={classes.results}>
         <Table stickyHeader aria-label="sticky table">
@@ -110,6 +110,7 @@ ResultsTable.propTypes = {
   sortOnLoad: PropTypes.string,
   sortColumns: PropTypes.array,
   onRowClick: PropTypes.func,
+  titleIcon: PropTypes.object,
 };
 
 export default ResultsTable;

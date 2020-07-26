@@ -41,6 +41,12 @@ export default {
     marginTop: 10,
     marginBottom: 20,
   },
+  titleIcon: {
+    marginLeft: 8,
+    verticalAlign: 'bottom',
+    display: 'inline-flex',
+    cursor: 'pointer',
+  },
   sortIcon: {
     position: 'absolute',
   },

@@ -3,26 +3,39 @@ import DeleteButton from 'components/DeleteButton';
 import LoadingPanel from 'components/LoadingPanel';
 import ModalPanel from 'components/ModalPanel';
 import ResultsTable from 'components/ResultsTable';
-import { deleteList } from 'interfaces/api/users';
+import { listsWithFullFoodDetails } from 'helpers/listsUtils';
+import { deleteList, getUser } from 'interfaces/api/users';
 import PropTypes from 'prop-types';
-import React, { useCallback, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { deleteListAction } from 'store/global/actions';
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 
 const ViewLists = ({ classes }) => {
-  const lists = useSelector(({ globalState }) => globalState.lists);
   const user = useSelector(({ globalState }) => globalState.userDetails.email);
+  const [lists, setLists] = useState();
   const [detailsOpen, setDetailsOpen] = useState(false);
   const [selectedList, setSelectedList] = useState();
-  const dispatch = useDispatch();
-  const deleteListFromState = useCallback(listId => dispatch(deleteListAction(listId)), []);
+
+  useEffect(() => {
+    (async () => {
+      if (user) {
+        const userDetails = await getUser(user);
+        if (userDetails && userDetails.lists) {
+          setLists(await listsWithFullFoodDetails(userDetails.lists));
+        } else {
+          setLists([]);
+        }
+      }
+    })();
+  }, [user]);
 
   const getTotalWeight = foods => foods.reduce((quantity, currentFood) => quantity + currentFood.quantity, 0);
 
-  const listsData = () => lists.filter(({ id }) => id !== -1).map(({ id, name, foods, created }) => {
-    const quantity = getTotalWeight(foods);
-    return { id, name, Foods: foods.length, 'Total Weight': `${quantity}g`, 'Date Created': created };
-  });
+  const listsData = () => {
+    return lists.filter(({ id }) => id !== -1).map(({ id, name, foods, created }) => {
+      const quantity = getTotalWeight(foods);
+      return { id, name, Foods: foods.length, 'Total Weight': `${quantity}g`, 'Date Created': created };
+    });
+  };
 
   const onListRowClick = ({ currentTarget }) => {
     const { name, foods, id } = lists.find(({ id }) => id.toString() === currentTarget.dataset.id);
@@ -42,8 +55,8 @@ const ViewLists = ({ classes }) => {
 
   const onDeleteList = () => {
     deleteList(user, selectedList.id);
+    setLists(lists.filter(food => food.id !== selectedList.id));
     setDetailsOpen(false);
-    deleteListFromState(selectedList.id);
   };
 
   const listsResultsTitle = () => {
@@ -85,7 +98,7 @@ const ViewLists = ({ classes }) => {
         <ModalPanel open={detailsOpen}
                     onClose={handleCloseDetails}
                     title={selectedList.name}
-                    subtitle={`Total weight: ${selectedList.totalWeight} - ${selectedList.foods.length}`}
+                    subtitle={`Total weight: ${selectedList.totalWeight} - ${selectedList.foods.length} foods`}
                     footer={<Footer/>}
                     style={selectedList.foods.length <= 3 ? classes.shortHeight : null}
         >

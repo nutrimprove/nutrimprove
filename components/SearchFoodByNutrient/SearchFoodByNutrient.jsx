@@ -1,22 +1,29 @@
+import PlaylistAddIcon from '@material-ui/icons/PlaylistAdd';
 import Filters from 'components/Filters';
 import LoadingPanel from 'components/LoadingPanel';
 import ModalPanel from 'components/ModalPanel';
 import ResultsTable from 'components/ResultsTable';
 import SearchField from 'components/SearchField';
+import SaveToListModal from 'components/SearchFoodByNutrient/SaveToListModal';
 import { NUTRIENT_GROUPS } from 'helpers/constants';
+import { formatListToSave } from 'helpers/listsUtils';
 import { parseNutrients } from 'helpers/utils';
 import { getFoodByName, getFoodsByNutrient, getNutrients } from 'interfaces/api/foods';
+import { addList } from 'interfaces/api/users';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 const SearchFoodByNutrient = () => {
   const categories = useSelector(({ globalState }) => globalState.categories);
+  const user = useSelector(({ globalState }) => globalState.userDetails.email);
   const [nutrient, setNutrient] = useState();
   const [nutrients, setNutrients] = useState([]);
   const [foods, setFoods] = useState();
+  const [fullFoodsData, setFullFoodsData] = useState();
   const [selectedFood, setSelectedFood] = useState();
   const [selectedFoodDetails, setSelectedFoodDetails] = useState();
   const [detailsOpen, setDetailsOpen] = useState(false);
+  const [saveToListOpen, setSaveToListOpen] = useState(false);
   const [resultsTitle, setResultsTitle] = useState();
 
   useEffect(() => {
@@ -45,6 +52,7 @@ const SearchFoodByNutrient = () => {
     const foods = await getFoodsByNutrient({ nutrient: nutrientKey, filters: categories.selectedGroups });
     setResultsTitle(`${nutrient.label} per 100g of food`);
     setFoods(formatFoods(foods));
+    setFullFoodsData(foods);
   };
 
   const handleRowClick = async ({ currentTarget }) => {
@@ -68,10 +76,23 @@ const SearchFoodByNutrient = () => {
 
   const handleCloseModal = () => {
     setDetailsOpen(false);
+    setSaveToListOpen(false);
   };
 
   const handleNutrientSelection = (event, value) => {
     setNutrient(value);
+  };
+
+  const handleSaveListIconClick = () => {
+    setSaveToListOpen(true);
+  };
+
+  const handleSaveToList = ({ listName, quantity }) => {
+    const foodsToSave = fullFoodsData.slice(0, quantity);
+    const foodsToSaveWithQuantity = foodsToSave.map(food => ({ ...food, quantity: 100 }));
+    const list = { name: listName, foods: foodsToSaveWithQuantity };
+    addList(user, formatListToSave(list));
+    setSaveToListOpen(false);
   };
 
   return (
@@ -95,6 +116,7 @@ const SearchFoodByNutrient = () => {
         title={resultsTitle}
         onRowClick={handleRowClick}
         sortColumns={[0, 1, 2]}
+        titleIcon={<PlaylistAddIcon htmlColor='#3f51b5' onClick={handleSaveListIconClick}/>}
       />}
       {detailsOpen && (
         <ModalPanel
@@ -107,6 +129,9 @@ const SearchFoodByNutrient = () => {
             <LoadingPanel/>}
         </ModalPanel>
       )}
+      {saveToListOpen &&
+      <SaveToListModal open={saveToListOpen} nutrientName={nutrient.label} onSubmit={handleSaveToList}
+                       onClose={handleCloseModal}/>}
     </>
   );
 };

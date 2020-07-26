@@ -77,7 +77,7 @@ const getFoodsByNutrient = async (nutrient, limit, filters) => {
   query[`${nutrient}.quantity`] = { $gt: 0 };
   const sort = {};
   sort[nutrient] = -1;
-  const projection = { _id: 0, foodName: 1, group: 1 };
+  const projection = { _id: 0, foodName: 1, foodCode: 1, group: 1 };
   projection[nutrient] = 1;
   return FoodsConnection.find(query, projection).sort(sort).limit(numberOfRecords);
 };
