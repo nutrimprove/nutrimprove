@@ -3,16 +3,18 @@ import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import TabContainer from '../TabContainer';
 
-const TabbedPanel = ({ tabs, classes }) => {
+const TabbedPanel = ({ tabs, selectTab, classes }) => {
   const [tabOption, setTabOption] = useState(0);
+
+  useEffect(() => {
+    if (typeof selectTab === 'number') {
+      setTabOption(selectTab);
+    }
+  }, [selectTab]);
 
   const tabChange = (event, tab) => {
     setTabOption(tab);
   };
-
-  useEffect(() => {
-    setTabOption(0);
-  }, [tabs]);
 
   return (
     <div className={classes.content}>
@@ -36,6 +38,7 @@ const TabbedPanel = ({ tabs, classes }) => {
 TabbedPanel.propTypes = {
   tabs: PropTypes.array.isRequired,
   container: PropTypes.bool,
+  selectTab: PropTypes.Number,
   classes: PropTypes.object.isRequired,
 };
 

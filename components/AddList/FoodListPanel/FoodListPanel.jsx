@@ -68,7 +68,7 @@ const FoodListPanel = ({ classes, className, title, foods = [], onListNameChange
   return (
     <div className={className}>
       <CardTitle title={title} editable={true} onTitleChange={onListNameChange}/>
-      <TabbedPanel tabs={tabs}/>
+      <TabbedPanel tabs={tabs} selectTab={!nutritionalData || nutritionalData.length === 0 ? 0 : null}/>
       <MainButton className={classes.saveButton} disabled={foods.length === 0} action={onSaveButtonClick}>
         Save and start new...
       </MainButton>
