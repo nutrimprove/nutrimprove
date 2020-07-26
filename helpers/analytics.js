@@ -7,7 +7,8 @@ export const pageview = (url) => {
       page_path: url,
     });
   } else {
-    console.warn(`Invalid 'window.gtag'!`);
+    const logObj = { prod: IS_PRODUCTION, gtag: window.gtag};
+    console.warn(logObj);
   }
 };
 
