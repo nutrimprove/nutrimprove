@@ -77,7 +77,7 @@ const FoodListPanel = ({ classes, className, title, foods = [], onListNameChange
 };
 
 FoodListPanel.propTypes = {
-  classes: PropTypes.string.isRequired,
+  classes: PropTypes.object.isRequired,
   className: PropTypes.string,
   title: PropTypes.string.isRequired,
   foods: PropTypes.array.isRequired,

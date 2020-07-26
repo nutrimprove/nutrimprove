@@ -38,7 +38,7 @@ const TabbedPanel = ({ tabs, selectTab, classes }) => {
 TabbedPanel.propTypes = {
   tabs: PropTypes.array.isRequired,
   container: PropTypes.bool,
-  selectTab: PropTypes.Number,
+  selectTab: PropTypes.number,
   classes: PropTypes.object.isRequired,
 };
 

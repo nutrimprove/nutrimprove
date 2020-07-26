@@ -147,14 +147,14 @@ const AddList = ({ classes }) => {
             }
           </div>
         </div>
-        <FoodListPanel className={classes.foodList}
+        {foodList && <FoodListPanel className={classes.foodList}
                        title={listName}
                        foods={foodList}
                        onListNameChange={saveListName}
                        onDelete={removeFood}
                        onEditQuantity={editFoodInListQuantity}
                        onSaveButtonClick={handleSaveButtonClick}
-        />
+        />}
       </div>
     </>
   );
