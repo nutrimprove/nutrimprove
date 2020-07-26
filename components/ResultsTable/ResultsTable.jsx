@@ -10,6 +10,8 @@ const ResultsTable = ({ classes, className, data, onRowClick, title, titleIcon, 
   const [order, setOrder] = useState({ column: null, order: null });
   const [tableData, setTableData] = useState([]);
 
+  console.log(`=== ResultsTable.jsx #13 === ( data ) =======>`, data);
+
   let columns;
   if (data && data.length > 0) {
     columns = Object.keys(data[0]).filter(key => key !== 'id').map(key => key);

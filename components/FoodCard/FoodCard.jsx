@@ -1,7 +1,7 @@
 import { Button, Card, CardActions, CardContent, Link, List, ListItem, Typography } from '@material-ui/core';
 import clsx from 'clsx';
 import { DEFAULT_CARD_NUTRIENTS } from 'helpers/constants';
-import { getCardNutrients, parseNutrients } from 'helpers/utils';
+import { getCardNutrients, parseFoodDetails } from 'helpers/utils';
 import { savePreferences } from 'interfaces/api/users';
 import { isEqual } from 'lodash';
 import { uniqueId } from 'lodash/util';
@@ -52,16 +52,8 @@ const FoodCard = ({
   }, [food, preferences]);
 
   const showFoodDetails = () => {
-    const { foodName, proximates, vitamins, inorganics } = food;
     setDetailsOpen(true);
-    setFoodDetails({
-      foodName,
-      nutrients: [
-        ...parseNutrients({ nutrients: proximates, filterEmptyValues: false }),
-        ...parseNutrients({ nutrients: vitamins, filterEmptyValues: false }),
-        ...parseNutrients({ nutrients: inorganics, filterEmptyValues: false }),
-      ],
-    });
+    setFoodDetails(parseFoodDetails({ food, filterEmptyValues: false }));
   };
 
   const handleClick = async ({ currentTarget }) => {

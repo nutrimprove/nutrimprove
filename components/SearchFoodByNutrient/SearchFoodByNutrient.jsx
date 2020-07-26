@@ -7,7 +7,7 @@ import SearchField from 'components/SearchField';
 import SaveToListModal from 'components/SearchFoodByNutrient/SaveToListModal';
 import { NUTRIENT_GROUPS } from 'helpers/constants';
 import { formatListToSave } from 'helpers/listsUtils';
-import { parseNutrients } from 'helpers/utils';
+import { parseFoodDetails } from 'helpers/utils';
 import { getFoodByName, getFoodsByNutrient, getNutrients } from 'interfaces/api/foods';
 import { addList } from 'interfaces/api/users';
 import React, { useEffect, useState } from 'react';
@@ -66,11 +66,8 @@ const SearchFoodByNutrient = () => {
     setDetailsOpen(true);
     const food = await getFoodByName(foodName);
     if (food) {
-      const proximates = parseNutrients({ nutrients: food.proximates });
-      const vitamins = parseNutrients({ nutrients: food.vitamins });
-      const minerals = parseNutrients({ nutrients: food.inorganics });
-      const combinedResults = [...proximates, ...vitamins, ...minerals];
-      setSelectedFoodDetails(combinedResults);
+      const nutrients = parseFoodDetails({ food }).nutrients;
+      setSelectedFoodDetails(nutrients);
     }
   };
 

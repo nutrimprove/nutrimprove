@@ -7,7 +7,7 @@ import CompareModal from 'components/CompareModal';
 import FoodCard from 'components/FoodCard';
 import LoadingPanel from 'components/LoadingPanel';
 import LoadingSpinner from 'components/LoadingSpinner';
-import { parseNutrients } from 'helpers/utils';
+import { parseFoodDetails } from 'helpers/utils';
 import { getFoodById } from 'interfaces/api/foods';
 import { applyRecommendationRating, getAllRecommendations } from 'interfaces/api/recommendations';
 import PropTypes from 'prop-types';
@@ -99,17 +99,7 @@ const ReviewRecommendations = ({ classes }) => {
     }
   };
 
-  const getFoodDetails = (food) => {
-    const { foodName, proximates, vitamins, inorganics } = food;
-    return {
-      foodName,
-      nutrients: [
-        ...parseNutrients({ nutrients: proximates, filterEmptyValues: false }),
-        ...parseNutrients({ nutrients: vitamins, filterEmptyValues: false }),
-        ...parseNutrients({ nutrients: inorganics, filterEmptyValues: false }),
-      ],
-    };
-  };
+  const getFoodDetails = food => parseFoodDetails({ food, filterEmptyValues: false });
 
   const compareFoods = () => {
     setCompareOpen(true);

@@ -1,6 +1,6 @@
 import { NUTRIENT_GROUPS } from 'helpers/constants';
 import { getFoodById } from 'interfaces/api/foods';
-import { uniqueId } from 'lodash';
+import { cloneDeep, uniqueId } from 'lodash';
 import { DEFAULT_CARD_NUTRIENTS } from './constants';
 
 const getTime = () => {
@@ -65,12 +65,21 @@ const parseNutrients = ({ nutrients, filterEmptyValues = true, addKey = false })
   return nutrientsObj;
 };
 
+const parseFoodDetails = ({ food: { foodName, proximates, vitamins, inorganics }, filterEmptyValues = true }) => ({
+  foodName,
+  nutrients: [
+    ...parseNutrients({ nutrients: proximates, filterEmptyValues }),
+    ...parseNutrients({ nutrients: vitamins, filterEmptyValues }),
+    ...parseNutrients({ nutrients: inorganics, filterEmptyValues }),
+  ],
+});
+
 const getCardNutrients = (foodObj, cardNutrients = DEFAULT_CARD_NUTRIENTS) => {
   if (!foodObj) return;
 
   const allNutrients = NUTRIENT_GROUPS.reduce((merged, group) => {
-      return {...merged, ...foodObj[group]};
-    }, {});
+    return { ...merged, ...foodObj[group] };
+  }, {});
 
   // Get only essential nutrients to display in the card
   const nutrients = {};
@@ -94,6 +103,35 @@ const getCardNutrients = (foodObj, cardNutrients = DEFAULT_CARD_NUTRIENTS) => {
     }
     return newNutrient;
   });
+};
+
+const sumNutrients = (foods, nutrientGroups = NUTRIENT_GROUPS) => {
+  if (foods && foods.length > 0) {
+    return foods.reduce((merged, food, index) => {
+      const current = cloneDeep(food);
+      if (index === 0) {
+        nutrientGroups.forEach(group => {
+          Object.keys(current[group]).forEach(nutrient => {
+            isNaN(current[group][nutrient].quantity)
+              ? current[group][nutrient].quantity = 0
+              : current[group][nutrient].quantity = +current[group][nutrient].quantity * (+current.quantity / 100);
+          });
+        });
+        return current;
+      }
+
+      nutrientGroups.forEach(group => {
+        Object.keys(merged[group]).forEach(nutrient => {
+          const isNotValid = isNaN(current[group][nutrient].quantity);
+          // Sets nutrient quantity (baseline is per 100g) based on food quantity
+          const calculatedQuantity = +current[group][nutrient].quantity * (+current.quantity / 100);
+          const quantity = isNotValid ? 0 : calculatedQuantity;
+          merged[group][nutrient].quantity = +merged[group][nutrient].quantity + +quantity;
+        });
+      });
+      return merged;
+    }, {});
+  }
 };
 
 const getFoodsFromRecommendation = async recommendation => {
@@ -142,6 +180,8 @@ export {
   getFoodsFromRecommendation,
   getFoodGroups,
   parseNutrients,
+  parseFoodDetails,
+  sumNutrients,
   getCardNutrients,
   filterFoodNames,
 };

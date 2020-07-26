@@ -4,6 +4,7 @@ import LoadingPanel from 'components/LoadingPanel';
 import ModalPanel from 'components/ModalPanel';
 import ResultsTable from 'components/ResultsTable';
 import { listsWithFullFoodDetails } from 'helpers/listsUtils';
+import { parseFoodDetails, sumNutrients } from 'helpers/utils';
 import { deleteList, getUser } from 'interfaces/api/users';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
@@ -12,15 +13,18 @@ import { useSelector } from 'react-redux';
 const ViewLists = ({ classes }) => {
   const user = useSelector(({ globalState }) => globalState.userDetails.email);
   const [lists, setLists] = useState();
-  const [detailsOpen, setDetailsOpen] = useState(false);
+  const [listDetailsOpen, setListDetailsOpen] = useState(false);
+  const [foodDetailsOpen, setFoodDetailsOpen] = useState(false);
   const [selectedList, setSelectedList] = useState();
+  const [selectedFood, setSelectedFood] = useState();
 
   useEffect(() => {
     (async () => {
       if (user) {
         const userDetails = await getUser(user);
         if (userDetails && userDetails.lists) {
-          setLists(await listsWithFullFoodDetails(userDetails.lists));
+          const fullLists = await listsWithFullFoodDetails(userDetails.lists);
+          setLists(fullLists);
         } else {
           setLists([]);
         }
@@ -42,21 +46,25 @@ const ViewLists = ({ classes }) => {
     const formattedList = {
       id,
       name,
-      foods: foods.map(food => ({ name: food.foodName, quantity: `${food.quantity}g` })),
+      foods: foods.map(food => ({ id: food.foodCode, name: food.foodName, quantity: `${food.quantity}g` })),
       totalWeight: `${getTotalWeight(foods)}g`,
     };
     setSelectedList(formattedList);
-    setDetailsOpen(true);
+    setListDetailsOpen(true);
   };
 
-  const handleCloseDetails = () => {
-    setDetailsOpen(false);
+  const handleCloseListDetails = () => {
+    setListDetailsOpen(false);
+  };
+
+  const handleCloseFoodDetails = () => {
+    setFoodDetailsOpen(false);
   };
 
   const onDeleteList = () => {
     deleteList(user, selectedList.id);
     setLists(lists.filter(food => food.id !== selectedList.id));
-    setDetailsOpen(false);
+    setListDetailsOpen(false);
   };
 
   const listsResultsTitle = () => {
@@ -82,21 +90,28 @@ const ViewLists = ({ classes }) => {
       : <ResultsTable className={classes.table}
                       onRowClick={onListRowClick}
                       title={listsResultsTitle()}
-                      sortColumns={['name', 'foods', 'totalweight', 'datecreated']}
+                      sortColumns={['name', 'foods', 'total weight', 'date created']}
                       data={listsData()}
       />;
   };
 
   const onFoodClick = ({ currentTarget }) => {
-    console.log(`=== ViewLists.jsx #64 === ( currentTarget ) =======>`, currentTarget);
+    const fullList = lists.find(list => list.id === selectedList.id);
+    const food = fullList.foods.find(food => food.foodCode === currentTarget.dataset.id);
+    const foodWithUpdatedNutrientQuantities = parseFoodDetails({
+      food: sumNutrients([food]),
+      filterEmptyValues: false,
+    });
+    setSelectedFood(foodWithUpdatedNutrientQuantities);
+    setFoodDetailsOpen(true);
   };
 
   return (
     <>
       <ListsResultsTable/>
-      {detailsOpen && (
-        <ModalPanel open={detailsOpen}
-                    onClose={handleCloseDetails}
+      {listDetailsOpen && (
+        <ModalPanel open={listDetailsOpen}
+                    onClose={handleCloseListDetails}
                     title={selectedList.name}
                     subtitle={`Total weight: ${selectedList.totalWeight} - ${selectedList.foods.length} foods`}
                     footer={<Footer/>}
@@ -105,11 +120,21 @@ const ViewLists = ({ classes }) => {
           {selectedList && (
             <ResultsTable
               data={selectedList.foods}
-              sortColumns={['foods']}
+              sortColumns={[0, 1]}
               onRowClick={onFoodClick}
             />
           )}
-
+        </ModalPanel>)}
+      {foodDetailsOpen && (
+        <ModalPanel open={foodDetailsOpen}
+                    onClose={handleCloseFoodDetails}
+                    title={selectedFood.foodName}
+                    subtitle={`Nutritional values (${selectedFood.quantity}g)`}
+        >
+          {selectedFood
+            ? <ResultsTable data={selectedFood.nutrients} scrollable={true} sortColumns={[0, 1]}/>
+            : <LoadingPanel/>
+          }
         </ModalPanel>)}
     </>
   );

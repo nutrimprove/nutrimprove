@@ -2,7 +2,7 @@ import CompareModal from 'components/CompareModal';
 import LoadingPanel from 'components/LoadingPanel';
 import ResultsTable from 'components/ResultsTable';
 import SearchField from 'components/SearchField';
-import { getFoodsFromRecommendation, parseNutrients } from 'helpers/utils';
+import { getFoodsFromRecommendation, parseFoodDetails } from 'helpers/utils';
 import { getRecommendation } from 'interfaces/api/recommendations';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
@@ -48,17 +48,7 @@ const ViewRecommendations = ({ recommendations, title }) => {
     setFilteredList({ list: formattedRecommendations });
   }, [recommendations]);
 
-  const getFoodDetails = (food) => {
-    const { foodName, proximates, vitamins, inorganics } = food;
-    return {
-      foodName,
-      nutrients: [
-        ...parseNutrients({ nutrients: proximates, filterEmptyValues: false }),
-        ...parseNutrients({ nutrients: vitamins, filterEmptyValues: false }),
-        ...parseNutrients({ nutrients: inorganics, filterEmptyValues: false }),
-      ],
-    };
-  };
+  const getFoodDetails = food => parseFoodDetails({ food, filterEmptyValues: false });
 
   const handleRowClick = async ({ currentTarget }) => {
     setComparisonData(null);
