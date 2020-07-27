@@ -46,7 +46,7 @@ const FoodCard = ({
   };
 
   useEffect(() => {
-    preferences
+    preferences && preferences.cardNutrients
       ? setNutrients(getCardNutrients(food, preferences.cardNutrients))
       : setNutrients(getCardNutrients(food));
   }, [food, preferences]);

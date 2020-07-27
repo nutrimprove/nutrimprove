@@ -21,7 +21,7 @@ const usersSchema = new mongoose.Schema(
       required: true,
     },
     preferences: {
-      type: Array,
+      type: Object,
       required: false,
     },
     lists: {
