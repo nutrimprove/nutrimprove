@@ -180,7 +180,7 @@ const AdminPanel = ({ classes }) => {
           </ButtonWithSpinner>
         </>
       )}
-      {users ? <ResultsTable data={users} title={`${users.length} ${userQuery}`}/> : <LoadingPanel/>}
+      {users ? <ResultsTable className={classes.results} data={users} title={`${users.length} ${userQuery}`}/> : <LoadingPanel/>}
     </>
   );
 };
