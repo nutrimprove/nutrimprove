@@ -2,10 +2,15 @@ export default {
   dropdown: {
     marginLeft: 12,
     marginTop: -3,
+    fontSize: 15,
+  },
+  dropdownItem: {
+    fontSize: 15,
   },
   quantitySelection: {
     display: 'inline-flex',
-
+    fontSize: 16,
+    marginTop: 20,
   },
   modal: {
     width: 480,
@@ -15,9 +20,14 @@ export default {
   },
   listName: {
     display: 'flex',
-    marginBottom: 20,
+    '& input': {
+      fontSize: 16,
+    },
   },
   content: {
     padding: '0 20px',
   },
+  savedMessage: {
+    textAlign: 'center',
+  }
 };
