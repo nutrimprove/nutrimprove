@@ -102,6 +102,7 @@ const ViewLists = ({ classes }) => {
       food: sumNutrients([food]),
       filterEmptyValues: false,
     });
+    foodWithUpdatedNutrientQuantities.quantity = food.quantity;
     setSelectedFood(foodWithUpdatedNutrientQuantities);
     setFoodDetailsOpen(true);
   };
