@@ -4,6 +4,7 @@ import ArrowForwardIosRoundedIcon from '@material-ui/icons/ArrowForwardIosRounde
 import EditableText from 'components/EditableText';
 import Filters from 'components/Filters';
 import FoodCardWithSearch from 'components/FoodCardWithSearch';
+import LoadingPanel from 'components/LoadingPanel';
 import MainButton from 'components/MainButton';
 import { formatListToSave, listsWithFullFoodDetails } from 'helpers/listsUtils';
 import { addList, editList, getUser } from 'interfaces/api/users';
@@ -113,48 +114,51 @@ const AddList = ({ classes }) => {
   return (
     <>
       <Filters/>
-      <Typography color='secondary'>{status}</Typography>
-      <div className={classes.container}>
-        <div className={classes.foodColumn}>
-          <FoodCardWithSearch title='Food'
-                              onFoodLoad={setSelectedFood}
-                              buttonText='Select'
-          />
-          {food && <Paper className={classes.quantity}>
-            <Typography>Amount:&nbsp;</Typography>
-            <EditableText size='medium'
-                          value={quantity}
-                          min={0.1}
-                          max={9999}
-                          type='number'
-                          datakey={selectedFood.foodCode}
-                          onChange={handleQuantityChange}
-                          className={classes.quantityField}
-            >
-              g
-            </EditableText>
-          </Paper>}
-          <div className={classes.addToListButtonContainer}>
-            {!food
-              ? <MainButton disabled={true} className={classes.addToListButton}>{addButtonText}</MainButton>
-              : (
-                <MainButton action={addToList} className={classes.addToListButton}>
-                  <span className={classes.addToListText}>Add Food to List</span>
-                  <ArrowForwardIosRoundedIcon fontSize='small'/>
-                </MainButton>
-              )
-            }
+      {!foodList
+        ? <LoadingPanel/>
+        : (
+          <div className={classes.container}>
+            <div className={classes.foodColumn}>
+              <FoodCardWithSearch title='Food'
+                                  onFoodLoad={setSelectedFood}
+                                  buttonText='Select'
+              />
+              {food && <Paper className={classes.quantity}>
+                <Typography>Amount:&nbsp;</Typography>
+                <EditableText size='medium'
+                              value={quantity}
+                              min={0.1}
+                              max={9999}
+                              type='number'
+                              datakey={selectedFood.foodCode}
+                              onChange={handleQuantityChange}
+                              className={classes.quantityField}
+                >
+                  g
+                </EditableText>
+              </Paper>}
+              <div className={classes.addToListButtonContainer}>
+                {!food
+                  ? <MainButton disabled={true} className={classes.addToListButton}>{addButtonText}</MainButton>
+                  : (
+                    <MainButton action={addToList} className={classes.addToListButton}>
+                      <span className={classes.addToListText}>Add Food to List</span>
+                      <ArrowForwardIosRoundedIcon fontSize='small'/>
+                    </MainButton>
+                  )
+                }
+              </div>
+            </div>
+            <FoodListPanel className={classes.foodList}
+                           title={listName}
+                           foods={foodList}
+                           onListNameChange={saveListName}
+                           onDelete={removeFood}
+                           onEditQuantity={editFoodInListQuantity}
+                           onSaveButtonClick={handleSaveButtonClick}
+            />
           </div>
-        </div>
-        {foodList && <FoodListPanel className={classes.foodList}
-                                    title={listName}
-                                    foods={foodList}
-                                    onListNameChange={saveListName}
-                                    onDelete={removeFood}
-                                    onEditQuantity={editFoodInListQuantity}
-                                    onSaveButtonClick={handleSaveButtonClick}
-        />}
-      </div>
+        )}
     </>
   );
 };
