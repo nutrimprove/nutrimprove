@@ -3,6 +3,7 @@ const ROLES = {
   OWNER: 0,
   ADMIN: 5,
   CONTRIBUTOR: 100,
+  DEMO_USER: 200,
 };
 const MIN_WIDTH = 1060;
 const EDAMAM_DB = false;
