@@ -30,7 +30,6 @@ const AddRecommendations = ({ classes }) => {
 
     if(!userDetails) {
       console.error('No user logged in?!');
-      console.log('Details', userDetails);
       return;
     }
 
