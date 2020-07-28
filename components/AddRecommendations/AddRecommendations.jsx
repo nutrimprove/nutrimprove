@@ -3,9 +3,8 @@ import ButtonWithSpinner from 'components/ButtonWithSpinner';
 import CompareModal from 'components/CompareModal';
 import Filters from 'components/Filters';
 import FoodCardWithSearch from 'components/FoodCardWithSearch';
-import SectionHeader from 'components/SectionHeader';
 import addRecommendations from 'helpers/addRecommendations';
-import { parseNutrients } from 'helpers/utils';
+import { parseFoodDetails } from 'helpers/utils';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 
@@ -25,17 +24,7 @@ const AddRecommendations = ({ classes }) => {
     setHoveredItem(event.currentTarget.dataset.name);
   };
 
-  const getFoodDetails = (food) => {
-    const { foodName, proximates, vitamins, inorganics } = food;
-    return {
-      foodName,
-      nutrients: [
-        ...parseNutrients({ nutrients: proximates, filterEmptyValues: false }),
-        ...parseNutrients({ nutrients: vitamins, filterEmptyValues: false }),
-        ...parseNutrients({ nutrients: inorganics, filterEmptyValues: false }),
-      ],
-    };
-  };
+  const getFoodDetails = food => parseFoodDetails({ food, filterEmptyValues: false });
 
   const compareFoods = () => {
     setCompareOpen(true);
@@ -62,20 +51,22 @@ const AddRecommendations = ({ classes }) => {
   };
 
   return (
-    <div>
+    <>
       <Filters/>
       <div className={classes.cards}>
         <FoodCardWithSearch title='Food'
                             onHover={setHoveredNutrient}
                             highlightItem={hoveredItem}
                             context='food'
-                            foodInfo={setFood}
+                            onFoodLoad={setFood}
+                            className={classes.card}
         />
         <FoodCardWithSearch title='Recommendation'
                             onHover={setHoveredNutrient}
                             highlightItem={hoveredItem}
                             context='recommendation'
-                            foodInfo={setRecommendedFood}
+                            onFoodLoad={setRecommendedFood}
+                            className={classes.card}
         />
       </div>
       <ActionsPanel food={food} recommendedFood={recommendedFood} status={status}>
@@ -93,7 +84,7 @@ const AddRecommendations = ({ classes }) => {
                       open={compareOpen}
                       onClose={handleCloseModal}
         />)}
-    </div>
+    </>
   );
 };
 

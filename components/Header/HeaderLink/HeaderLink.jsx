@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 const HeaderLink = ({ action, children, classes }) => (
-  <Typography variant='button' color='inherit' className={classes.link}>
-    <Link href='#' onClick={action}>
+  <Link href='#' onClick={action}>
+    <Typography variant='button' color='inherit' className={classes.link}>
       {children}
-    </Link>
-  </Typography>
+    </Typography>
+  </Link>
 );
 
 HeaderLink.propTypes = {

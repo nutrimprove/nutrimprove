@@ -1,5 +1,6 @@
 export default {
   content: {
-    padding: '18px 18px 40px 18px',
+    padding: 10,
+    background: '#f5f5fa',
   },
 };

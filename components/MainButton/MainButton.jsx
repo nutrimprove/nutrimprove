@@ -9,6 +9,7 @@ const MainButton = ({
                       colour = 'primary',
                       children,
                       className,
+                      datakey,
                     }) => (
   <>
     <Button
@@ -17,6 +18,7 @@ const MainButton = ({
       color={colour}
       onClick={action}
       disabled={disabled}
+      data-key={datakey}
     >
       {children}
     </Button>
@@ -29,6 +31,7 @@ MainButton.propTypes = {
   children: PropTypes.any,
   classes: PropTypes.object.isRequired,
   className: PropTypes.string,
+  datakey: PropTypes.string,
   colour: PropTypes.string,
 };
 

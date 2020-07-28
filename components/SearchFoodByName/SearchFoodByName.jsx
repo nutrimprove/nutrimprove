@@ -1,7 +1,7 @@
 import Filters from 'components/Filters';
 import ResultsTable from 'components/ResultsTable';
 import SearchField from 'components/SearchField';
-import { filterFoodNames, parseNutrients } from 'helpers/utils';
+import { filterFoodNames, parseFoodDetails } from 'helpers/utils';
 import { getNutritionData } from 'interfaces/api/nutrition';
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -14,13 +14,9 @@ const SearchFoodByName = () => {
   const filteredFoodNames = filterFoodNames(foodNames, categories.selectedGroups);
 
   const updateResults = async () => {
-    const data = await getNutritionData(selectedFood.foodCode);
-    if (data) {
-      const proximates = parseNutrients({ nutrients: data.proximates });
-      const vitamins = parseNutrients({ nutrients: data.vitamins });
-      const minerals = parseNutrients({ nutrients: data.inorganics });
-      const combinedResults = [...proximates, ...vitamins, ...minerals];
-      setData(combinedResults);
+    const food = await getNutritionData(selectedFood.foodCode);
+    if (food) {
+      setData(parseFoodDetails({ food }).nutrients);
     }
   };
 

@@ -16,11 +16,11 @@ const sectionHeader = {
   messages: [helpMessage],
 };
 
-const ReviewRecommendationsPage = () => (
+const BulkAddRecommendationsPage = () => (
   <>
     <SectionHeader content={sectionHeader}/>
     <AddBulkRecommendations/>
   </>
 );
 
-export default ReviewRecommendationsPage;
+export default BulkAddRecommendationsPage;

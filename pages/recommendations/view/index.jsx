@@ -7,11 +7,11 @@ const sectionHeader = {
   subtitle: 'Search and view your recommendations',
 };
 
-const ReviewRecommendationsPage = () => (
+const ViewYourRecommendationsPage = () => (
   <>
     <SectionHeader content={sectionHeader}/>
     <ViewYourRecommendations/>
   </>
 );
 
-export default ReviewRecommendationsPage;
+export default ViewYourRecommendationsPage;

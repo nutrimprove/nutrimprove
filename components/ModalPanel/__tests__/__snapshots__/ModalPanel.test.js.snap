@@ -20,7 +20,9 @@ exports[`Modal Panel is rendered 1`] = `
       class="ModalPanel-modal-2"
       tabindex="-1"
     >
-      <div>
+      <div
+        class="ModalPanel-header-3"
+      >
         <button
           aria-label="close"
           class="MuiButtonBase-root MuiIconButton-root ModalPanel-closeIcon-1"
@@ -45,24 +47,25 @@ exports[`Modal Panel is rendered 1`] = `
             class="MuiTouchRipple-root"
           />
         </button>
-        <div
-          class="ModalPanel-header-3"
+        <h6
+          class="MuiTypography-root MuiTypography-h6"
+          title="Modal title"
         >
-          <h6
-            class="MuiTypography-root MuiTypography-h6 MuiTypography-noWrap"
-          >
-            Modal title
-          </h6>
-          <h6
-            class="MuiTypography-root MuiTypography-subtitle2 MuiTypography-colorTextSecondary"
-          >
-            Modal subtitle
-          </h6>
-        </div>
+          Modal title
+        </h6>
+        <h6
+          class="MuiTypography-root MuiTypography-subtitle2 MuiTypography-colorTextSecondary"
+        >
+          Modal subtitle
+        </h6>
       </div>
-      <span>
-        This is a modal panel.
-      </span>
+      <div
+        class="ModalPanel-content-4"
+      >
+        <span>
+          This is a modal panel.
+        </span>
+      </div>
     </div>
     <div
       data-test="sentinelEnd"

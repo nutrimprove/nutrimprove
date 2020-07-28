@@ -7,11 +7,11 @@ const sectionHeader = {
   subtitle: 'List the foods with the highest level of a specific nutrient (use the filters to refine your search)',
 };
 
-const ReviewRecommendationsPage = () => (
+const SearchByNutrientPage = () => (
   <>
     <SectionHeader content={sectionHeader}/>
     <SearchFoodByNutrient/>
   </>
 );
 
-export default ReviewRecommendationsPage;
+export default SearchByNutrientPage;

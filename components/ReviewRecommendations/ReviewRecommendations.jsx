@@ -2,22 +2,25 @@ import { Link, Typography } from '@material-ui/core';
 import clsx from 'clsx';
 import ActionsContainer from 'components/ActionsContainer';
 import ButtonWithSpinner from 'components/ButtonWithSpinner';
+import CardTitle from 'components/CardTitle';
 import CompareModal from 'components/CompareModal';
 import FoodCard from 'components/FoodCard';
 import LoadingPanel from 'components/LoadingPanel';
 import LoadingSpinner from 'components/LoadingSpinner';
-import { parseNutrients } from 'helpers/utils';
+import { parseFoodDetails } from 'helpers/utils';
 import { getFoodById } from 'interfaces/api/foods';
 import { applyRecommendationRating, getAllRecommendations } from 'interfaces/api/recommendations';
 import PropTypes from 'prop-types';
 import React, { useEffect, useRef, useState } from 'react';
 import { usePromiseTracker } from 'react-promise-tracker';
+import { useSelector } from 'react-redux';
 
 const getRandom = items => {
   return items[Math.floor(Math.random() * items.length)];
 };
 
 const ReviewRecommendations = ({ classes }) => {
+  const user = useSelector(({ globalState }) => globalState.userDetails.email);
   const [recommendations, setRecommendations] = useState();
   const [recommendation, setRecommendation] = useState();
   const [food, setFood] = useState();
@@ -25,21 +28,23 @@ const ReviewRecommendations = ({ classes }) => {
   const [hoveredItem, setHoveredItem] = useState();
   const [compareOpen, setCompareOpen] = useState();
   const [comparisonData, setComparisonData] = useState();
+  const [skipped, setSkipped] = useState(false);
   const { promiseInProgress: loadingRecommendations } = usePromiseTracker({ area: 'getAllRecommendations' });
   const { promiseInProgress: loadingFoodData } = usePromiseTracker({ area: 'getFoodData' });
 
   const firstLoad = useRef(true);
 
-  const loading = loadingRecommendations || (firstLoad.current && loadingFoodData);
+  const loading = !user || loadingRecommendations || (firstLoad.current && loadingFoodData);
 
   useEffect(() => {
     (async () => {
       const results = await getAllRecommendations();
-      if (results) {
-        setRecommendations(results);
+      if (user && results && results.length > 0) {
+        const foodsFromOtherContributors = results.filter(({ contributors }) => !contributors.find(({ id }) => id === user));
+        setRecommendations(foodsFromOtherContributors);
       }
     })();
-  }, []);
+  }, [user]);
 
   useEffect(() => {
     (async () => {
@@ -78,6 +83,7 @@ const ReviewRecommendations = ({ classes }) => {
   const skipRecommendation = () => {
     const recs = recommendations.filter(rec => rec._id !== recommendation._id);
     setRecommendations(recs);
+    setSkipped(true);
   };
 
   const rejectRecommendation = async () => {
@@ -98,17 +104,7 @@ const ReviewRecommendations = ({ classes }) => {
     }
   };
 
-  const getFoodDetails = (food) => {
-    const { foodName, proximates, vitamins, inorganics } = food;
-    return {
-      foodName,
-      nutrients: [
-        ...parseNutrients({ nutrients: proximates, filterEmptyValues: false }),
-        ...parseNutrients({ nutrients: vitamins, filterEmptyValues: false }),
-        ...parseNutrients({ nutrients: inorganics, filterEmptyValues: false }),
-      ],
-    };
-  };
+  const getFoodDetails = food => parseFoodDetails({ food, filterEmptyValues: false });
 
   const compareFoods = () => {
     setCompareOpen(true);
@@ -132,11 +128,11 @@ const ReviewRecommendations = ({ classes }) => {
         <>
           <div className={classes.cards}>
             <div className={classes.card}>
-              <Typography className={classes.title} variant='subtitle1'>Food</Typography>
+              <CardTitle title='Food'/>
               <FoodCard food={food} onMouseOver={setHoveredNutrient} highlightItem={hoveredItem}/>
             </div>
             <div className={classes.card}>
-              <Typography className={classes.title} variant='subtitle1'>Recommendation</Typography>
+              <CardTitle title='Recommendation'/>
               <FoodCard food={recommendedFood} onMouseOver={setHoveredNutrient} highlightItem={hoveredItem}/>
             </div>
           </div>
@@ -168,8 +164,12 @@ const ReviewRecommendations = ({ classes }) => {
           {compareOpen && <CompareModal dataSet={comparisonData} open={compareOpen} onClose={handleCloseModal}/>}
         </>
       )}
-      {!recommendation && !loadingRecommendations && !firstLoad &&
-      <Typography className={classes.title}>No more recommendations!!</Typography>}
+      {!recommendation && skipped && !loading && (
+        <Typography className={classes.title}>No more recommendations to review!!</Typography>
+      )}
+      {recommendations && recommendations.length === 0 && !loading && !skipped && (
+        <Typography className={classes.title}>No recommendations available for review!!</Typography>
+      )}
     </>
   );
 };
