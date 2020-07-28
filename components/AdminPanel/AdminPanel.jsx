@@ -129,7 +129,7 @@ const AdminPanel = ({ classes }) => {
       users.map(user => {
         newUsersObj.push({
           email: user.email,
-          role: userRoleToString(user.role).replace('_', ' '),
+          role: userRoleToString(user.role),
           approved: user.approved,
           action: renderActionButtons(user),
         });
