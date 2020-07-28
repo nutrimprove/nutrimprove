@@ -7,6 +7,9 @@ const usersSchema = new mongoose.Schema(
       lowercase: true,
       trim: true,
       required: true,
+      index: {
+        unique: true,
+      },
     },
     role: {
       type: Number,
