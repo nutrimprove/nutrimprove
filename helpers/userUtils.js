@@ -1,22 +1,17 @@
 import { ROLES } from './constants';
 
-const registeredStorage = [];
-
 const userRoleToString = userRole => {
   return Object.keys(ROLES).find(key => ROLES[key] === userRole);
 };
 
 const isAdmin = user => {
-  return user.role === ROLES.OWNER || user.role === ROLES.ADMIN;
+  return user
+    ? user.role === ROLES.OWNER || user.role === ROLES.ADMIN
+    : false;
 };
 
 const isOwner = user => {
   return user.role === ROLES.OWNER;
-};
-
-// Registers items in storage for better tracking and disposal
-const registerStorage = (item) => {
-  registeredStorage.push(item);
 };
 
 const getFromLocalStorage = item => {
@@ -39,7 +34,6 @@ const emailVerified = () => {
 
 const addToLocalStorage = (item, value) => {
   if (typeof window !== 'undefined') {
-    registerStorage(item);
     localStorage.setItem(item, value);
   }
 };
@@ -50,9 +44,9 @@ const isApproved = () => {
 
 const clearStorage = () => {
   if (typeof window !== 'undefined') {
-    registeredStorage.forEach(item => {
-      localStorage.removeItem(item);
-    })
+    localStorage.removeItem('useAuth:user');
+    localStorage.removeItem('approved');
+    localStorage.removeItem('user_details');
   }
 };
 

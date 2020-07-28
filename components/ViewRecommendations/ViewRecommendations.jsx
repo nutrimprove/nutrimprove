@@ -2,7 +2,7 @@ import CompareModal from 'components/CompareModal';
 import LoadingPanel from 'components/LoadingPanel';
 import ResultsTable from 'components/ResultsTable';
 import SearchField from 'components/SearchField';
-import { getFoodsFromRecommendation, parseNutrients } from 'helpers/utils';
+import { getFoodsFromRecommendation, parseFoodDetails } from 'helpers/utils';
 import { getRecommendation } from 'interfaces/api/recommendations';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
@@ -14,7 +14,6 @@ const formatRecommendations = recommendations => {
     id: recommendation._id,
     food: recommendation.food.name,
     recommendation: recommendation.recommendation.name,
-    rating: recommendation.rating,
     'Date Added': recommendation.timestamp,
   }));
 };
@@ -25,6 +24,7 @@ const ViewRecommendations = ({ recommendations, title }) => {
   const [list, setList] = useState();
   const [filteredList, setFilteredList] = useState();
   const [comparisonData, setComparisonData] = useState();
+  const [recommendationRating, setRecommendationRating] = useState();
   const [compareOpen, setCompareOpen] = useState();
   const [filter, setFilter] = useState();
   const [foodNames, setFoodNames] = useState();
@@ -48,22 +48,13 @@ const ViewRecommendations = ({ recommendations, title }) => {
     setFilteredList({ list: formattedRecommendations });
   }, [recommendations]);
 
-  const getFoodDetails = (food) => {
-    const { foodName, proximates, vitamins, inorganics } = food;
-    return {
-      foodName,
-      nutrients: [
-        ...parseNutrients({ nutrients: proximates, filterEmptyValues: false }),
-        ...parseNutrients({ nutrients: vitamins, filterEmptyValues: false }),
-        ...parseNutrients({ nutrients: inorganics, filterEmptyValues: false }),
-      ],
-    };
-  };
+  const getFoodDetails = food => parseFoodDetails({ food, filterEmptyValues: false });
 
   const handleRowClick = async ({ currentTarget }) => {
     setComparisonData(null);
     setCompareOpen(true);
     const recommendation = await getRecommendation(currentTarget.dataset.id);
+    setRecommendationRating(recommendation.rating);
     const foods = await getFoodsFromRecommendation(recommendation);
     const food = getFoodDetails(foods[0]);
     const recommendedFood = getFoodDetails(foods[1]);
@@ -105,7 +96,7 @@ const ViewRecommendations = ({ recommendations, title }) => {
                                                           sortColumns={['food', 'recommendation', 'rating', 'date added']}
                                                           sortOnLoad='date added'
       />}
-      {compareOpen && <CompareModal dataSet={comparisonData} open={compareOpen} onClose={handleCloseModal}/>}
+      {compareOpen && <CompareModal dataSet={comparisonData} tableTitle={`Recommendation rating: ${recommendationRating}`} open={compareOpen} onClose={handleCloseModal}/>}
     </>
   );
 };

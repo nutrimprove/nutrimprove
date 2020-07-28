@@ -3,7 +3,11 @@ export default {
     width: '100%',
   },
   table: {
-    padding: '0 0 18px 18px',
+    display: 'unset',
+    '& .MuiTableBody-root .MuiTableCell-root': {
+      padding: '11px 16px',
+      maxWidth: 500,
+    },
   },
   scrollable: {
     overflow: 'auto',
@@ -24,16 +28,24 @@ export default {
   },
   row: {
     '&:nth-of-type(even)': {
-      backgroundColor: '#f8f8f8',
+      backgroundColor: '#fafafa',
     },
+  },
+  cellText: {
+    fontSize: 14,
   },
   clickable: {
     cursor: 'pointer',
   },
   title: {
-    marginTop: 25,
+    marginTop: 10,
     marginBottom: 20,
-    fontWeight: 'bold',
+  },
+  titleIcon: {
+    marginLeft: 8,
+    verticalAlign: 'bottom',
+    display: 'inline-flex',
+    cursor: 'pointer',
   },
   sortIcon: {
     position: 'absolute',

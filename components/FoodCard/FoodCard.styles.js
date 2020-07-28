@@ -1,8 +1,8 @@
 export default {
   card: {
     borderRadius: 7,
-    margin: '20px auto 0',
-    width: 430,
+    margin: 'auto',
+    width: 'auto',
   },
   content: {
     minHeight: 288,
@@ -62,7 +62,7 @@ export default {
   subtitle: {
     display: 'block',
     fontSize: 11,
-    textAlign: 'center',
     fontWeight: 300,
+    paddingTop: 5,
   },
 };

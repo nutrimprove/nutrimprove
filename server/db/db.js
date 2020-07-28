@@ -1,3 +1,4 @@
+import { getUser, getUserConnection, saveUser } from 'server/users/users';
 import { getRecommendationsConnection } from '../recommendations/recommendations';
 
 const addContributorsUpdate = async () => {
@@ -31,6 +32,27 @@ const cleanTestData = async () => {
   return result;
 };
 
+const addDemoUsers = async () => {
+  const users = [''];
+
+  for(let i = 0; i < users.length; i++) {
+    const userExists = await getUser(users[i]);
+    if (!userExists) {
+      const newUserDocument = {
+        email: users[i],
+        role: 200,
+        points: 1.0,
+        approved: true,
+      };
+      const result = await saveUser(newUserDocument);
+      console.log(`Added user: `, result);
+    } else {
+      console.log(`Skipped already existing user: `, users[i]);
+    }
+  }
+  return `Added ${users.length} users. Check server log for details.`;
+};
+
 const updateDB = async (run = true) => {
   if (!run)
     return {
@@ -38,7 +60,7 @@ const updateDB = async (run = true) => {
         'For security reasons please set the "run" flag to true before running the DB update script!',
     };
 
-  return cleanTestData();
+  return addDemoUsers();
 };
 
 export { updateDB };

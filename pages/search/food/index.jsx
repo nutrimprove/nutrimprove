@@ -7,11 +7,11 @@ const sectionHeader = {
   subtitle: 'Search for a food to display its nutritional data (use the filters to refine your search)',
 };
 
-const ReviewRecommendationsPage = () => (
+const SearchByFoodPage = () => (
   <>
     <SectionHeader content={sectionHeader}/>
     <SearchFoodByName/>
   </>
 );
 
-export default ReviewRecommendationsPage;
+export default SearchByFoodPage;

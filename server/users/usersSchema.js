@@ -7,6 +7,9 @@ const usersSchema = new mongoose.Schema(
       lowercase: true,
       trim: true,
       required: true,
+      index: {
+        unique: true,
+      },
     },
     role: {
       type: Number,
@@ -19,6 +22,14 @@ const usersSchema = new mongoose.Schema(
     points: {
       type: Number,
       required: true,
+    },
+    preferences: {
+      type: Object,
+      required: false,
+    },
+    lists: {
+      type: Array,
+      required: false,
     },
   },
   { timestamps: true },

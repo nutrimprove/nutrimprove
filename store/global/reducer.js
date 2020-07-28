@@ -1,4 +1,4 @@
-import { CATEGORIES } from '../../helpers/constants';
+import { CATEGORIES } from 'helpers/constants';
 import { ActionsTypes } from './actions';
 
 const userWithAddedPoints = (userDetails, points) => {
@@ -13,6 +13,7 @@ export const reducer = (state = {
   categories: CATEGORIES,
   foodNames: [],
   preferences: {},
+  currentList: undefined,
 }, action) => {
   if (action.type === ActionsTypes.SET_USER_DETAILS) {
     return {

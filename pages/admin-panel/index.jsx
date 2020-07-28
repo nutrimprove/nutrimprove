@@ -6,11 +6,11 @@ const sectionHeader = {
   title: 'Administration panel',
 };
 
-const ReviewRecommendationsPage = () => (
+const AdminPanelPage = () => (
   <>
     <SectionHeader content={sectionHeader}/>
     <AdminPanel/>
   </>
 );
 
-export default ReviewRecommendationsPage;
+export default AdminPanelPage;

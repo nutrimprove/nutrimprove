@@ -7,11 +7,11 @@ const sectionHeader = {
   subtitle: 'Choose the foods and the recommendations you would like to provide',
 };
 
-const ReviewRecommendationsPage = () => (
+const AddRecommendationsPage = () => (
   <>
     <SectionHeader content={sectionHeader}/>
     <AddRecommendations/>
   </>
 );
 
-export default ReviewRecommendationsPage;
+export default AddRecommendationsPage;

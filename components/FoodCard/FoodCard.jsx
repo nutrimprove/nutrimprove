@@ -1,7 +1,7 @@
 import { Button, Card, CardActions, CardContent, Link, List, ListItem, Typography } from '@material-ui/core';
 import clsx from 'clsx';
 import { DEFAULT_CARD_NUTRIENTS } from 'helpers/constants';
-import { getCardNutrients, parseNutrients } from 'helpers/utils';
+import { getCardNutrients, parseFoodDetails } from 'helpers/utils';
 import { savePreferences } from 'interfaces/api/users';
 import { isEqual } from 'lodash';
 import { uniqueId } from 'lodash/util';
@@ -15,7 +15,18 @@ import ResultsTable from '../ResultsTable';
 import ScrollIntoView from '../ScrollIntoView';
 import ChangeNutrientModal from './ChangeNutrientModal';
 
-const FoodCard = ({ food, onMouseOver, highlightItem, classes }) => {
+const FoodCard = ({
+                    food,
+                    onMouseOver,
+                    showTitle = true,
+                    title,
+                    subtitle = 'Nutritional values per 100g of food',
+                    highlightItem,
+                    header = true,
+                    actions = true,
+                    scrollIntoView = false,
+                    classes,
+                  }) => {
   const preferences = useSelector(({ globalState }) => globalState.preferences);
   const userDetails = useSelector(({ globalState }) => globalState.userDetails);
   const dispatch = useDispatch();
@@ -24,31 +35,25 @@ const FoodCard = ({ food, onMouseOver, highlightItem, classes }) => {
   const [detailsOpen, setDetailsOpen] = useState(false);
   const [changeNutrientOpen, setChangeNutrientOpen] = useState(false);
   const [nutrientToChange, setNutrientToChange] = useState();
-  const undoHistory = useRef([]);
   const [nutrients, setNutrients] = useState();
-  const title = food ? food.foodName : '';
+  const [, updateState] = useState();
+  const forceUpdate = React.useCallback(() => updateState({}), []);
+  const undoHistory = useRef([]);
+  const cardTitle = title || (food && showTitle ? food.foodName : '');
 
   const setUndoHistory = (history) => {
     undoHistory.current = history;
   };
 
   useEffect(() => {
-    preferences
+    preferences && preferences.cardNutrients
       ? setNutrients(getCardNutrients(food, preferences.cardNutrients))
       : setNutrients(getCardNutrients(food));
   }, [food, preferences]);
 
   const showFoodDetails = () => {
-    const { foodName, proximates, vitamins, inorganics } = food;
     setDetailsOpen(true);
-    setFoodDetails({
-      foodName,
-      nutrients: [
-        ...parseNutrients({ nutrients: proximates, filterEmptyValues: false }),
-        ...parseNutrients({ nutrients: vitamins, filterEmptyValues: false }),
-        ...parseNutrients({ nutrients: inorganics, filterEmptyValues: false }),
-      ],
-    });
+    setFoodDetails(parseFoodDetails({ food, filterEmptyValues: false }));
   };
 
   const handleClick = async ({ currentTarget }) => {
@@ -74,10 +79,9 @@ const FoodCard = ({ food, onMouseOver, highlightItem, classes }) => {
     setUserPreferences(newPreferences);
     await savePreferences(userDetails.email, newPreferences);
     if (addToUndo) {
-      preferences && preferences.cardNutrients
-        ? setUndoHistory([...undoHistory.current, preferences.cardNutrients])
-        : setUndoHistory([...undoHistory.current, DEFAULT_CARD_NUTRIENTS]);
+      setUndoHistory([...undoHistory.current, preferences.cardNutrients]);
     }
+    forceUpdate();
   };
 
   const handleNutrientChange = newNutrient => {
@@ -102,10 +106,12 @@ const FoodCard = ({ food, onMouseOver, highlightItem, classes }) => {
   return (
     <>
       <Card className={classes.card}>
-        <Typography className={classes.title} color="textSecondary" title={title} noWrap={true}>
-          {title}
-          <span className={classes.subtitle}>Nutritional values per 100g of food</span>
-        </Typography>
+        {header && (
+          <Typography className={classes.title} color="textSecondary" title={cardTitle} noWrap={true}>
+            {cardTitle}
+            <span className={classes.subtitle}>{subtitle}</span>
+          </Typography>
+        )}
         <CardContent className={classes.content}>
           <List className={classes.list}>
             {nutrients && nutrients.map(({ label, name, quantity, changed }) => (
@@ -137,25 +143,32 @@ const FoodCard = ({ food, onMouseOver, highlightItem, classes }) => {
                 Reset
               </Link>
             )}
-            {undoHistory.current.length > 0 && (
-              <Link component='button' onClick={undo} className={classes.link} title='Undo last change'>
+            {undoHistory.current && undoHistory.current.length > 0 && (
+              <Link component='button'
+                    key={undoHistory.current.length}
+                    onClick={undo}
+                    className={classes.link}
+                    title='Undo last change'
+              >
                 Undo
               </Link>
             )}
           </div>
         </CardContent>
-        <CardActions className={classes.actions}>
-          <ScrollIntoView/>
-          <Button variant='outlined' color='primary' className={classes.button} onClick={showFoodDetails}>
-            Show More
-          </Button>
-        </CardActions>
+        {actions && (
+          <CardActions className={classes.actions}>
+            {scrollIntoView && <ScrollIntoView/>}
+            <Button variant='outlined' color='primary' className={classes.button} onClick={showFoodDetails}>
+              Show More
+            </Button>
+          </CardActions>
+        )}
       </Card>
       {detailsOpen && (
         <ModalPanel open={detailsOpen}
                     onClose={handleCloseModal}
-                    title={foodDetails.foodName}
-                    subtitle='Nutritional information per 100g of food'
+                    title={cardTitle}
+                    subtitle={subtitle}
         >
           {foodDetails && foodDetails.nutrients
             ? <ResultsTable data={foodDetails.nutrients} scrollable={true} sortColumns={['nutrient']}/>
@@ -177,6 +190,12 @@ FoodCard.propTypes = {
   food: PropTypes.object.isRequired,
   onMouseOver: PropTypes.func,
   highlightItem: PropTypes.string,
+  subtitle: PropTypes.string,
+  header: PropTypes.bool,
+  showTitle: PropTypes.bool,
+  title: PropTypes.string,
+  actions: PropTypes.bool,
+  scrollIntoView: PropTypes.bool,
   classes: PropTypes.object.isRequired,
 };
 
