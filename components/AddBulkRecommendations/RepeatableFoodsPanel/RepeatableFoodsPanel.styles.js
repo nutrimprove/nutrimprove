@@ -18,6 +18,9 @@ export default {
   searchfood: {
     display: 'inline-flex',
   },
+  searchField: {
+    backgroundColor: '#fdfdfd',
+  },
   removeIcon: {
     marginTop: -16,
   },

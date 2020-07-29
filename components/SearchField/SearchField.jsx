@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import React from 'react';
 import AutoComplete from '../AutoComplete';
@@ -5,6 +6,7 @@ import ButtonWithSpinner from '../ButtonWithSpinner';
 
 const SearchField = ({
                        classes,
+                       className,
                        width = 360,
                        values,
                        loading,
@@ -21,7 +23,7 @@ const SearchField = ({
                        groupBy,
                        strict = true,
                      }) => (
-  <div className={classes.search}>
+  <div className={clsx(classes.search, className)}>
     <AutoComplete
       width={width}
       values={values}
@@ -51,6 +53,7 @@ SearchField.propTypes = {
   values: PropTypes.array,
   loading: PropTypes.bool,
   onSelection: PropTypes.func.isRequired,
+  className: PropTypes.string,
   optionsContext: PropTypes.string,
   buttonContext: PropTypes.string,
   buttonText: PropTypes.string,

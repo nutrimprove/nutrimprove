@@ -58,6 +58,7 @@ const RepeatableFoodsPanel = ({ classes, title, foods, isValid }) => {
                          onSelection={(event, value) => setFood(value, food.key)}
                          buttonContext='getFoodData'
                          values={foodNames}
+                         className={classes.searchField}
             />
             <RemoveIcon className={classes.removeIcon} dataKey={food.key} onClick={removeField} disabled={selectedFoods.length <= 1}/>
           </div>
