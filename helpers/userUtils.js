@@ -5,7 +5,9 @@ const userRoleToString = userRole => {
 };
 
 const isAdmin = user => {
-  return user.role === ROLES.OWNER || user.role === ROLES.ADMIN;
+  return user
+    ? user.role === ROLES.OWNER || user.role === ROLES.ADMIN
+    : false;
 };
 
 const isOwner = user => {

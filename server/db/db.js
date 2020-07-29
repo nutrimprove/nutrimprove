@@ -41,7 +41,7 @@ const addDemoUsers = async () => {
       const newUserDocument = {
         email: users[i],
         role: 200,
-        points: 0,
+        points: 1.0,
         approved: true,
       };
       const result = await saveUser(newUserDocument);
