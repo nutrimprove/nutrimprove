@@ -58,7 +58,7 @@ SearchField.propTypes = {
   label: PropTypes.string,
   labelProp: PropTypes.string,
   noMatchText: PropTypes.string,
-  onButtonClick: PropTypes.func.isRequired,
+  onButtonClick: PropTypes.func,
   buttonDisabled: PropTypes.bool,
   strict: PropTypes.bool,
   groupBy: PropTypes.func,

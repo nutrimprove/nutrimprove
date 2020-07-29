@@ -1,20 +1,19 @@
 export default {
   fieldBox: {
-    float: 'left',
-    marginRight: 80,
-    marginBottom: 30,
-    width: 300,
-    border: '1px dashed #ddd',
-    padding: '30px 40px',
+    width: 430,
+    margin: '0 auto',
+    padding: '20px 20px 20px 30px',
     borderRadius: 9,
-    backgroundColor: '#f5f5fa',
-    borderStyle: 'outset',
+    backgroundColor: '#fafafd',
     height: 'fit-content',
   },
   title: {
     marginBottom: 20,
   },
   searchfood: {
-    display: '-webkit-box',
+    display: 'inline-flex',
+  },
+  removeIcon: {
+    marginTop: -16,
   },
 };
