@@ -1,6 +1,5 @@
 import { Button, Checkbox, FormControl, FormControlLabel, FormGroup, Link } from '@material-ui/core';
 import PopoverPanelWithButton from 'components/PopoverPanelWithButton';
-import { EDAMAM_DB } from 'helpers/constants';
 import { uniqueId } from 'lodash/util';
 import PropTypes from 'prop-types';
 import React, { useCallback, useEffect, useState } from 'react';
@@ -8,8 +7,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setCategoriesAction } from 'store/global/actions';
 
 const Filters = ({ classes }) => {
-  if (EDAMAM_DB) return null;
-
   const categories = useSelector(({ globalState }) => globalState.categories);
   const dispatch = useDispatch();
   const setCategories = useCallback(filters => dispatch(setCategoriesAction(filters)), []);

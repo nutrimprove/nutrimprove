@@ -1,4 +1,3 @@
-import { EDAMAM_DB } from 'helpers/constants';
 import { addToLocalStorage, clearStorage, isLoggedIn } from 'helpers/userUtils';
 import { getAllFoodNames } from 'interfaces/api/foods';
 import { getUser } from 'interfaces/api/users';
@@ -24,11 +23,8 @@ const LoaderContainer = ({ classes, children }) => {
           setUserDetails({ email, role, approved, points });
           setUserPreferences(preferences);
           addToLocalStorage('approved', approved);
-
-          if (!EDAMAM_DB) {
-            const foodNames = await getAllFoodNames();
-            setFoodNames(foodNames);
-          }
+          const foodNames = await getAllFoodNames();
+          setFoodNames(foodNames);
         }
       } else {
         if (!isLoggedIn()) {
