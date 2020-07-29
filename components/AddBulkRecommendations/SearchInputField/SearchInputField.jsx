@@ -11,7 +11,7 @@ import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { usePromiseTracker } from 'react-promise-tracker';
 import { useSelector } from 'react-redux';
-import LoadingSpinner from '../LoadingSpinner';
+import LoadingSpinner from 'components/LoadingSpinner';
 
 const renderInput = inputProps => {
   const {

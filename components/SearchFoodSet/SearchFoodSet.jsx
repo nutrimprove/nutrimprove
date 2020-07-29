@@ -2,7 +2,7 @@ import { FormControl, FormGroup } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import ButtonWithSpinner from '../ButtonWithSpinner';
-import SearchInputField from '../SearchInputField';
+import SearchInputField from '../AddBulkRecommendations/SearchInputField';
 
 const SearchFoodSet = ({ classes, action, context, naked }) => {
   const [food, setFood] = useState(null);

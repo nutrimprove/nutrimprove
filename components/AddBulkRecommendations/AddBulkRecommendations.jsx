@@ -1,6 +1,6 @@
 import ButtonWithSpinner from 'components/ButtonWithSpinner';
 import Filters from 'components/Filters';
-import RepeatableFoodsPanel from 'components/RepeatableFoodsPanel';
+import RepeatableFoodsPanel from 'components/AddBulkRecommendations/RepeatableFoodsPanel';
 import StatusMessage from 'components/StatusMessage';
 import { calcPoints } from 'helpers/userUtils';
 import { getTime } from 'helpers/utils';

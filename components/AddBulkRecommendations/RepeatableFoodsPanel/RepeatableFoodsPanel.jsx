@@ -5,8 +5,8 @@ import { uniqueId } from 'lodash';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import MainButton from '../MainButton';
-import RemoveIcon from '../RemoveIcon';
+import MainButton from 'components/MainButton';
+import RemoveIcon from 'components/RemoveIcon';
 
 const MAX_FIELDS = 5;
 
