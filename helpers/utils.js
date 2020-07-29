@@ -25,6 +25,8 @@ const fullTrim = str => str.trim().replace(/\s{2,}/g, '');
 
 const lowerCaseCompare = (a, b) => fullTrim(a.toLowerCase()) === fullTrim(b.toLowerCase());
 
+const lowerCaseIncludes = (a, b) => fullTrim(a.toLowerCase()).includes(fullTrim(b.toLowerCase()));
+
 const mapSearchResults = results => {
   if (!results) return null;
 
@@ -176,6 +178,7 @@ export {
   emptyFood,
   fullTrim,
   lowerCaseCompare,
+  lowerCaseIncludes,
   mapSearchResults,
   getFoodsFromRecommendation,
   getFoodGroups,

@@ -4,7 +4,7 @@ import ClearIcon from '@material-ui/icons/Clear';
 import ErrorIcon from '@material-ui/icons/Error';
 import Downshift from 'downshift';
 import { EDAMAM_DB, INPUT_TRIGGER_TIME } from 'helpers/constants';
-import { fullTrim, lowerCaseCompare, mapSearchResults } from 'helpers/utils';
+import { fullTrim, lowerCaseCompare, lowerCaseIncludes, mapSearchResults } from 'helpers/utils';
 import { getSearchedTerms } from 'interfaces/api/edamamFoods';
 import { deburr, uniqueId } from 'lodash';
 import PropTypes from 'prop-types';
@@ -121,7 +121,7 @@ const SearchInputField = ({ classes, foodKey, foodAction, isValid }) => {
           search = await getSearchedTerms(input, context, selectedFilters);
         } else {
           search = foodNames
-            .filter(({ foodName }) => foodName.toLowerCase().includes(input.toLowerCase()))
+            .filter(({ foodName }) => lowerCaseIncludes(foodName, input))
             .filter(({ group }) => selectedFilters.find(filter => group.match(`^(${filter})(.*)`)));
         }
         const mappedSearchResults = mapSearchResults(search);
