@@ -6,13 +6,15 @@ import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { usePromiseTracker } from 'react-promise-tracker';
+import { useAuth } from 'react-use-auth';
 
 const noAuthPages = ['/', '/auth0_callback', '/about', '/info'];
 
 const PageContent = ({ children, classes }) => {
   const { promiseInProgress } = usePromiseTracker();
   const router = useRouter();
-  const enablePage = (isLoggedIn() && isApproved()) || noAuthPages.includes(router.route);
+  const { isAuthenticated } = useAuth();
+  const enablePage = (isLoggedIn() && isApproved() && isAuthenticated) || noAuthPages.includes(router.route);
 
   if (typeof window !== 'undefined') {
     if (enablePage) {

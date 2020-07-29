@@ -17,7 +17,6 @@ export default class MyDocument extends Document {
 
     return {
       ...initialProps,
-      IS_PRODUCTION,
       // Styles fragment is rendered after the app and page rendering finish.
       styles: [...React.Children.toArray(initialProps.styles), sheets.getStyleElement()],
     };

@@ -6,7 +6,7 @@ import { orderBy } from 'lodash';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 
-const ResultsTable = ({ classes, data, onRowClick, title, scrollable, sortOnLoad, sortColumns = [] }) => {
+const ResultsTable = ({ classes, className, data, onRowClick, title, titleIcon, scrollable, sortOnLoad, sortColumns = [] }) => {
   const [order, setOrder] = useState({ column: null, order: null });
   const [tableData, setTableData] = useState([]);
 
@@ -14,8 +14,8 @@ const ResultsTable = ({ classes, data, onRowClick, title, scrollable, sortOnLoad
   if (data && data.length > 0) {
     columns = Object.keys(data[0]).filter(key => key !== 'id').map(key => key);
   }
-
   let columnsToSort = [...sortColumns];
+  // Handle columns to sort if it receives column indexes instead of names
   if (sortColumns.every(column => typeof column === 'number')) {
     columnsToSort = sortColumns.map(column => columns[column].toLowerCase());
   }
@@ -49,9 +49,9 @@ const ResultsTable = ({ classes, data, onRowClick, title, scrollable, sortOnLoad
   };
 
   return (
-    <div className={clsx(classes.table, scrollable ? classes.scrollable : null)}>
+    <div className={clsx(classes.table, scrollable ? classes.scrollable : null, className)}>
       {title && <Typography variant='body1' align='center' className={classes.title}>
-        {title}
+        {title}<span className={classes.titleIcon}>{titleIcon}</span>
       </Typography>}
       {columns && <Paper className={classes.results}>
         <Table stickyHeader aria-label="sticky table">
@@ -85,13 +85,13 @@ const ResultsTable = ({ classes, data, onRowClick, title, scrollable, sortOnLoad
                 onClick={onRowClick}
                 data-id={row.id}
               >
-                {columns.map((column) => (
+                {columns.map((column) => {
+                  const cellContent = column.toLowerCase().includes('date') ? new Date(row[column]).toLocaleDateString() : row[column];
+                  return (
                   <TableCell key={`${row}-${column}`}>
-                    <>
-                      {column.toLowerCase().includes('date') ? new Date(row[column]).toLocaleDateString() : row[column]}
-                    </>
+                    <Typography className={classes.cellText} noWrap={true} title={cellContent}>{cellContent}</Typography>
                   </TableCell>
-                ))}
+                )})}
               </TableRow>
             ))}
           </TableBody>
@@ -104,11 +104,13 @@ const ResultsTable = ({ classes, data, onRowClick, title, scrollable, sortOnLoad
 ResultsTable.propTypes = {
   classes: PropTypes.object.isRequired,
   data: PropTypes.array.isRequired,
+  className: PropTypes.string,
   title: PropTypes.string,
   scrollable: PropTypes.bool,
   sortOnLoad: PropTypes.string,
   sortColumns: PropTypes.array,
   onRowClick: PropTypes.func,
+  titleIcon: PropTypes.object,
 };
 
 export default ResultsTable;

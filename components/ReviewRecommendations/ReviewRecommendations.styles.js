@@ -6,7 +6,7 @@ export default {
     margin: 'auto',
   },
   card: {
-    width: 'auto',
+    width: 430,
     margin: 'auto',
     display: 'inline-block',
     '&:first-child': {

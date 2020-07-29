@@ -3,6 +3,7 @@ import { isAdmin, isOwner, userRoleToString } from 'helpers/userUtils';
 import { updateDB } from 'interfaces/api/db';
 import {
   approveUser,
+  deleteUser,
   getAllUsers,
   getApprovedUsers,
   getNotApprovedUsers,
@@ -13,7 +14,7 @@ import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import ButtonWithSpinner from '../ButtonWithSpinner';
-import DeleteUserButton from '../DeleteUserButton';
+import DeleteButton from '../DeleteButton';
 import LoadingPanel from '../LoadingPanel';
 import ResultsTable from '../ResultsTable';
 
@@ -45,6 +46,10 @@ const AdminPanel = ({ classes }) => {
   }, []);
 
   useEffect(() => {
+    updateResults();
+  }, [userDetails]);
+
+  useEffect(() => {
     setUsers(null);
     updateResults();
   }, [userQuery]);
@@ -70,15 +75,18 @@ const AdminPanel = ({ classes }) => {
     );
   };
 
-  const removeUser = userToDelete => {
-    const newUserList = users.filter(user => user.email !== userToDelete);
-    setUsers(newUserList);
-    updateResults();
-  };
-
   const deleteButton = user => {
     if (userDetails.role === ROLES.OWNER) {
-      return <DeleteUserButton action={removeUser} user={user} className={classes.actionButton}/>;
+      return <DeleteButton
+        onConfirmation={confirmDeletion}
+        key={user.email}
+        buttonText='Delete User'
+        buttonConfirmationText='Confirm Deletion'
+        datakey={user.email}
+        disabled={isAdmin(user)}
+        className={classes.actionButton}
+        context={`deleteUser-${user.email}`}
+      />;
     }
   };
 
@@ -88,6 +96,18 @@ const AdminPanel = ({ classes }) => {
       {deleteButton(user)}
     </>
   );
+
+  const removeUser = userToDelete => {
+    const newUserList = users.filter(user => user.email !== userToDelete);
+    setUsers(newUserList);
+    updateResults();
+  };
+
+  const confirmDeletion = async event => {
+    const email = event.currentTarget.dataset.key;
+    await deleteUser(email);
+    removeUser(email);
+  };
 
   const updateResults = async () => {
     let users;
@@ -109,7 +129,7 @@ const AdminPanel = ({ classes }) => {
       users.map(user => {
         newUsersObj.push({
           email: user.email,
-          role: userRoleToString(user.role),
+          role: userRoleToString(user.role).replace('_', ' '),
           approved: user.approved,
           action: renderActionButtons(user),
         });
@@ -160,7 +180,7 @@ const AdminPanel = ({ classes }) => {
           </ButtonWithSpinner>
         </>
       )}
-      {users ? <ResultsTable data={users} title={`${users.length} ${userQuery}`}/> : <LoadingPanel/>}
+      {users ? <ResultsTable className={classes.results} data={users} title={`${users.length} ${userQuery}`}/> : <LoadingPanel/>}
     </>
   );
 };

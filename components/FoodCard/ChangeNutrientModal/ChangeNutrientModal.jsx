@@ -25,13 +25,28 @@ const ChangeNutrientModal = ({ open, onClose, nutrientToChange, onNutrientChange
     return toExclude.includes(option.name);
   };
 
+  const Buttons = () => (
+    <>
+      {newNutrient && (
+        <MainButton action={() => onNutrientChange(newNutrient)}>
+          Change
+        </MainButton>)}
+      <MainButton context='changeCardNutrient'
+                  action={onClose}
+      >
+        {newNutrient ? 'Cancel' : 'Close'}
+      </MainButton>
+    </>
+  );
+
   return (
     <>
       <ModalPanel open={open}
                   onClose={onClose}
                   title={nutrientToChange.label}
                   subtitle={'Choose nutrient to replace it with'}
-                  style={classes.modalSize}
+                  style={classes.modal}
+                  footer={<Buttons/>}
       >
         <div className={classes.content}>
           <div className={classes.nutrient}>
@@ -47,17 +62,6 @@ const ChangeNutrientModal = ({ open, onClose, nutrientToChange, onNutrientChange
               openOnFocus={true}
               getDisabledOptions={disabledOptions}
             />
-          </div>
-          <div className={classes.buttons}>
-            {newNutrient && (
-              <MainButton action={() => onNutrientChange(newNutrient)}>
-                Change
-              </MainButton>)}
-            <MainButton context='changeCardNutrient'
-                        action={onClose}
-            >
-              {newNutrient ? 'Cancel' : 'Close'}
-            </MainButton>
           </div>
         </div>
       </ModalPanel>
