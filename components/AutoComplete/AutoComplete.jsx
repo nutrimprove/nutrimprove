@@ -26,8 +26,16 @@ const AutoComplete = ({
     if (inputValue.length <= startAfter) return strict ? 0 : options;
 
     const filtered = options.filter(option => {
+      let optionText = option[labelProp];
       const words = inputValue.split(' ');
-      return words.every(word => lowerCaseIncludes(option[labelProp], word));
+      return words.every(word => {
+        if (lowerCaseIncludes(optionText, word)) {
+          // Removes word from text so that it properly validates when same word is input more than once
+          const regex = new RegExp(word, 'i');
+          optionText = optionText.replace(regex, '');
+          return true;
+        }
+      });
     });
     return strict ? filtered.slice(0, 30) : filtered;
   };
