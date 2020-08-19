@@ -3,9 +3,8 @@ import CheckIcon from '@material-ui/icons/CheckCircle';
 import ClearIcon from '@material-ui/icons/Clear';
 import ErrorIcon from '@material-ui/icons/Error';
 import Downshift from 'downshift';
-import { EDAMAM_DB, INPUT_TRIGGER_TIME } from 'helpers/constants';
+import { INPUT_TRIGGER_TIME } from 'helpers/constants';
 import { fullTrim, lowerCaseCompare, lowerCaseIncludes, mapSearchResults } from 'helpers/utils';
-import { getSearchedTerms } from 'interfaces/api/edamamFoods';
 import { deburr, uniqueId } from 'lodash';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
@@ -116,43 +115,34 @@ const SearchInputField = ({ classes, foodKey, foodAction, isValid }) => {
         const selectedFilters = categories.selectedGroups;
         setHasFilters(selectedFilters.length !== 0 && selectedFilters.length !== categories.length);
 
-        let search;
-        if (EDAMAM_DB) {
-          search = await getSearchedTerms(input, context, selectedFilters);
-        } else {
-          search = foodNames
-            .filter(({ foodName }) => lowerCaseIncludes(foodName, input))
-            .filter(({ group }) => selectedFilters.find(filter => group.match(`^(${filter})(.*)`)));
-        }
+        const search = foodNames
+          .filter(({ foodName }) => lowerCaseIncludes(foodName, input))
+          .filter(({ group }) => selectedFilters.find(filter => group.match(`^(${filter})(.*)`)));
         const mappedSearchResults = mapSearchResults(search);
-        if (mappedSearchResults) {
-          const suggestions = mappedSearchResults.map(food => ({
-            food_name: food.food_name,
-            food_id: food.food_id,
-          }));
-          if (suggestions.length > 0) {
-            const selected = suggestions.find(
-              suggestion => lowerCaseCompare(suggestion.food_name, input),
-            );
-            if (selected) {
-              setFood({
-                suggestions,
-                key: foodKey,
-                name: fullTrim(selected.food_name),
-                id: selected.food_id,
-              });
-            } else {
-              setFood({
-                suggestions,
-                key: foodKey,
-                name: input,
-                id: null,
-              });
-            }
-            setNotFound(false);
-          } else {
-            setNotFound(true);
-          }
+        const suggestions = mappedSearchResults?.map(food => ({
+          food_name: food.food_name,
+          food_id: food.food_id,
+        }));
+        if (suggestions?.length > 0) {
+          const selected = suggestions.find(
+            suggestion => lowerCaseCompare(suggestion.food_name, input),
+          );
+          selected
+            ? setFood({
+              suggestions,
+              key: foodKey,
+              name: fullTrim(selected.food_name),
+              id: selected.food_id,
+            })
+            : setFood({
+              suggestions,
+              key: foodKey,
+              name: input,
+              id: null,
+            });
+          setNotFound(false);
+        } else {
+          setNotFound(true);
         }
       }, INPUT_TRIGGER_TIME);
     };
@@ -160,8 +150,8 @@ const SearchInputField = ({ classes, foodKey, foodAction, isValid }) => {
     function onInputChange(input) {
       setNotFound(false);
       resetField();
-      setCharCount(input && input.length ? input.length : 0);
-      if (input && input.length > 2) {
+      setCharCount(input?.length ? input.length : 0);
+      if (input?.length > 2) {
         updateState(input);
       }
     }
@@ -176,27 +166,23 @@ const SearchInputField = ({ classes, foodKey, foodAction, isValid }) => {
     }
 
     function getSuggestions(value) {
-      if (food && food.suggestions) {
+      if (food?.suggestions) {
         const inputValue = deburr(value.trim()).toLowerCase();
         return inputValue.length === 0 ? [] : food.suggestions;
       }
       return [];
     }
 
-    function validationIcon(isOpen) {
-      if (!isOpen) {
-        if (isValid != null) {
-          return isValid ? (
-            <CheckIcon className={classes.checkIcon}/>
-          ) : (
-            <ErrorIcon className={classes.errorIcon}/>
-          );
-        }
-        if ((charCount < 3 && charCount > 0) || (food && !!food.id)) {
-          return <CheckIcon className={classes.checkIcon}/>;
-        } else if (charCount > 0) {
-          return <ErrorIcon className={classes.errorIcon}/>;
-        }
+    function validationIcon() {
+      if (isValid != null) {
+        return isValid
+          ? <CheckIcon className={classes.checkIcon}/>
+          : <ErrorIcon className={classes.errorIcon}/>;
+      }
+      if ((charCount < 3 && charCount > 0) || (food && !!food.id)) {
+        return <CheckIcon className={classes.checkIcon}/>;
+      } else if (charCount > 0) {
+        return <ErrorIcon className={classes.errorIcon}/>;
       }
     }
 
@@ -243,8 +229,8 @@ const SearchInputField = ({ classes, foodKey, foodAction, isValid }) => {
                     endAdornment: (
                       <>
                         <LoadingSpinner context={context}/>
-                        {validationIcon(isOpen)}
-                        {inputValue && inputValue.length > 0 && (
+                        {!isOpen && validationIcon()}
+                        {inputValue?.length > 0 && (
                           <IconButton
                             onClick={() => {
                               clearSelection();
