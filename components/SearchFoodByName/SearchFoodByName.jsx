@@ -2,7 +2,7 @@ import Filters from 'components/Filters';
 import ResultsTable from 'components/ResultsTable';
 import SearchField from 'components/SearchField';
 import { filterFoodNames, parseFoodDetails } from 'helpers/utils';
-import { getNutritionData } from 'interfaces/api/nutrition';
+import { getFoodById } from 'interfaces/api/foods';
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 
@@ -14,7 +14,7 @@ const SearchFoodByName = () => {
   const filteredFoodNames = filterFoodNames(foodNames, categories.selectedGroups);
 
   const updateResults = async () => {
-    const food = await getNutritionData(selectedFood.foodCode);
+    const food = await getFoodById(selectedFood.foodCode);
     if (food) {
       setData(parseFoodDetails({ food }).nutrients);
     }
