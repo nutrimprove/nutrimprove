@@ -1,6 +1,7 @@
 import { Typography } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
 import SearchField from 'components/SearchField';
+import { filterFoodNames } from 'helpers/utils';
 import { uniqueId } from 'lodash';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
@@ -18,8 +19,10 @@ const getNewField = () => ({
 
 const RepeatableFoodsPanel = ({ classes, title, foods, isValid }) => {
   const foodNames = useSelector(({ globalState }) => globalState.foodNames);
+  const categories = useSelector(({ globalState }) => globalState.categories);
   const [selectedFoods, setSelectedFoods] = useState([getNewField()]);
   const addButtonDisabled = selectedFoods.length >= MAX_FIELDS;
+  const filteredFoodNames = filterFoodNames(foodNames, categories.selectedGroups);
 
   useEffect(() => {
     foods(selectedFoods);
@@ -57,7 +60,7 @@ const RepeatableFoodsPanel = ({ classes, title, foods, isValid }) => {
                          loading={!foodNames}
                          onSelection={(event, value) => setFood(value, food.key)}
                          buttonContext='getFoodData'
-                         values={foodNames}
+                         values={filteredFoodNames}
                          className={classes.searchField}
             />
             <RemoveIcon className={classes.removeIcon} dataKey={food.key} onClick={removeField} disabled={selectedFoods.length <= 1}/>
