@@ -19,7 +19,7 @@ const AutoComplete = ({
                         loading,
                         context,
                         strict,
-                        hideDropdownIcon = true,
+                        hideDropdownIcon,
                         width = 300,
                       }) => {
   const filterOptions = (options, { inputValue }) => {
