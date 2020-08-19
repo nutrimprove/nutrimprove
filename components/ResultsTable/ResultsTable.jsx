@@ -2,6 +2,7 @@ import { Paper, Table, TableBody, TableCell, TableHead, TableRow, Typography } f
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
 import clsx from 'clsx';
+import { lowerCaseCompare } from 'helpers/utils';
 import { orderBy } from 'lodash';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
@@ -43,7 +44,7 @@ const ResultsTable = ({ classes, className, data, onRowClick, title, titleIcon, 
       : sortObject.order = 'asc';
     setOrder(sortObject);
 
-    const sortBy = Object.keys(data[0]).find(key => key.toLowerCase() === column.toLowerCase());
+    const sortBy = Object.keys(data[0]).find(key => lowerCaseCompare(key,column));
     const sortedData = orderBy(data, [sortBy], [sortObject.order]);
     setTableData(sortedData);
   };

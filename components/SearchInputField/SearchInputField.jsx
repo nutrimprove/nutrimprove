@@ -4,7 +4,7 @@ import ClearIcon from '@material-ui/icons/Clear';
 import ErrorIcon from '@material-ui/icons/Error';
 import Downshift from 'downshift';
 import { INPUT_TRIGGER_TIME } from 'helpers/constants';
-import { fullTrim, lowerCaseCompare, mapSearchResults } from 'helpers/utils';
+import { fullTrim, lowerCaseCompare, lowerCaseIncludes, mapSearchResults } from 'helpers/utils';
 import { deburr, uniqueId } from 'lodash';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
@@ -116,7 +116,7 @@ const SearchInputField = ({ classes, foodKey, foodAction, isValid }) => {
         setHasFilters(selectedFilters.length !== 0 && selectedFilters.length !== categories.length);
 
         const search = foodNames
-          .filter(({ foodName }) => foodName.toLowerCase().includes(input.toLowerCase()))
+          .filter(({ foodName }) => lowerCaseIncludes(foodName, input))
           .filter(({ group }) => selectedFilters.find(filter => group.match(`^(${filter})(.*)`)));
         const mappedSearchResults = mapSearchResults(search);
         const suggestions = mappedSearchResults?.map(food => ({
@@ -174,16 +174,16 @@ const SearchInputField = ({ classes, foodKey, foodAction, isValid }) => {
     }
 
     function validationIcon() {
-        if (isValid != null) {
-          return isValid
-            ? <CheckIcon className={classes.checkIcon}/>
-            : <ErrorIcon className={classes.errorIcon}/>;
-        }
-        if ((charCount < 3 && charCount > 0) || (food && !!food.id)) {
-          return <CheckIcon className={classes.checkIcon}/>;
-        } else if (charCount > 0) {
-          return <ErrorIcon className={classes.errorIcon}/>;
-        }
+      if (isValid != null) {
+        return isValid
+          ? <CheckIcon className={classes.checkIcon}/>
+          : <ErrorIcon className={classes.errorIcon}/>;
+      }
+      if ((charCount < 3 && charCount > 0) || (food && !!food.id)) {
+        return <CheckIcon className={classes.checkIcon}/>;
+      } else if (charCount > 0) {
+        return <ErrorIcon className={classes.errorIcon}/>;
+      }
     }
 
     return (

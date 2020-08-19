@@ -1,5 +1,6 @@
 import TextField from '@material-ui/core/TextField/TextField';
-import { Autocomplete, createFilterOptions } from '@material-ui/lab';
+import { Autocomplete } from '@material-ui/lab';
+import { lowerCaseIncludes } from 'helpers/utils';
 import PropTypes from 'prop-types';
 import React from 'react';
 import LoadingSpinner from '../LoadingSpinner';
@@ -20,11 +21,24 @@ const AutoComplete = ({
                         strict,
                         width = 300,
                       }) => {
-  const filterOptions = createFilterOptions({
-    limit: strict ? 30 : null,
-    startAfter: strict ? 2 : 0,
-    trim: true,
-  });
+  const filterOptions = (options, { inputValue }) => {
+    const startAfter = strict ? 2 : 0;
+    if (inputValue.length <= startAfter) return strict ? 0 : options;
+
+    const filtered = options.filter(option => {
+      let optionText = option[labelProp];
+      const words = inputValue.split(' ');
+      return words.every(word => {
+        if (lowerCaseIncludes(optionText, word)) {
+          // Removes word from text so that it properly validates when same word is input more than once
+          const regex = new RegExp(word, 'i');
+          optionText = optionText.replace(regex, '');
+          return true;
+        }
+      });
+    });
+    return strict ? filtered.slice(0, 30) : filtered;
+  };
 
   return <Autocomplete
     loading={loading || values.length === 0}
