@@ -1,7 +1,6 @@
 import { Link, Typography } from '@material-ui/core';
 import { PROJECT_NAME } from 'helpers/constants';
 import React from 'react';
-import BackToMainPageLink from '../BackToMainPageLink';
 import SectionHeader from '../SectionHeader';
 
 const content = {
@@ -19,7 +18,7 @@ const About = () => {
         nutritionists and dietitians.
       </Typography>
       <Typography paragraph={true}>
-        The NutrImprove web application will allow nutritionists,
+        The Nutrimprove web application will allow nutritionists,
         nutritional therapists and dietitians to recommend healthier
         alternatives to the foods that may not be adequate for optimal
         health.
