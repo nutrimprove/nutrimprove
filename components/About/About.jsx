@@ -1,5 +1,7 @@
-import { Link, Typography } from '@material-ui/core';
+import { Typography } from '@material-ui/core';
+import SocialNetworks from 'components/SocialNetworks';
 import { PROJECT_NAME } from 'helpers/constants';
+import PropTypes from 'prop-types';
 import React from 'react';
 import SectionHeader from '../SectionHeader';
 
@@ -8,10 +10,10 @@ const content = {
   subtitle: `About the ${PROJECT_NAME} project`,
 };
 
-const About = () => {
+const About = ({ classes, header = true }) => {
   return (
     <>
-      <SectionHeader content={content}/>
+      {header && <SectionHeader content={content}/>}
       <Typography paragraph={true}>
         The Nutrimprove project is part of the NHS clinical entrepreneurship scheme and an initiative that aims to
         curate the world&apos;s largest database of nutritional recommendations with the help of UK-based registered
@@ -36,13 +38,21 @@ const About = () => {
         Contributors will have access to this data so they may quickly
         search and recommend healthier alternatives to their clients.
       </Typography>
-      <Typography>
+      <Typography paragraph={true}>
         If you are a registered nutritionist, nutritional therapist or
         dietitian and are interested in knowing more about this project
-        please contact us via email on: <Link>nutrimprove@gmail.com</Link>
+        please join/contact us:
       </Typography>
+      <div className={classes.social}>
+        <SocialNetworks/>
+      </div>
     </>
   );
+};
+
+About.propTypes = {
+  classes: PropTypes.object.isRequired,
+  header: PropTypes.bool,
 };
 
 export default About;
