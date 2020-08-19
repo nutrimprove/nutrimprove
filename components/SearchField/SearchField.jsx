@@ -13,7 +13,7 @@ const SearchField = ({
                        onSelection,
                        optionsContext,
                        buttonContext,
-                       buttonText = 'Search',
+                       buttonText = 'Select',
                        onButtonClick,
                        buttonDisabled,
                        showButton = true,
@@ -22,6 +22,7 @@ const SearchField = ({
                        noMatchText = 'No food matched!!',
                        groupBy,
                        strict = true,
+                       hideDropdownIcon = true,
                      }) => (
   <div className={clsx(classes.search, className)}>
     <AutoComplete
@@ -35,6 +36,7 @@ const SearchField = ({
       onChange={onSelection}
       strict={strict}
       groupBy={groupBy}
+      hideDropdownIcon={hideDropdownIcon}
     />
     {showButton && <ButtonWithSpinner
       className={classes.button}
@@ -64,6 +66,7 @@ SearchField.propTypes = {
   onButtonClick: PropTypes.func,
   buttonDisabled: PropTypes.bool,
   strict: PropTypes.bool,
+  hideDropdownIcon: PropTypes.bool,
   groupBy: PropTypes.func,
 };
 

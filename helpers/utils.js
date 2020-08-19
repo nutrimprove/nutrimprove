@@ -25,22 +25,14 @@ const fullTrim = str => str.trim().replace(/\s{2,}/g, '');
 
 const lowerCaseCompare = (a, b) => fullTrim(a.toLowerCase()) === fullTrim(b.toLowerCase());
 
-const mapSearchResults = results => {
-  if (!results) return null;
+const lowerCaseIncludes = (a, b) => fullTrim(a.toLowerCase()).includes(fullTrim(b.toLowerCase()));
 
-  // if it contains a matches field it's assumed Edamam is being used with a caching collection
-  if (results.matches) {
-    return results.matches.map(match => ({
-      food_id: match.food_id,
-      food_name: match.food_name,
-    }));
-  }
-  return results.map(item => ({
+const mapSearchResults = results =>
+  results.map(item => ({
     food_id: item.foodCode,
     food_name: item.foodName,
     food_group: item.group,
   }));
-};
 
 const capitalise = string => string.charAt(0).toUpperCase() + string.slice(1);
 
@@ -176,6 +168,7 @@ export {
   emptyFood,
   fullTrim,
   lowerCaseCompare,
+  lowerCaseIncludes,
   mapSearchResults,
   getFoodsFromRecommendation,
   getFoodGroups,

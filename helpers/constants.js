@@ -6,8 +6,7 @@ const ROLES = {
   DEMO_USER: 200,
 };
 const MIN_WIDTH = 1060;
-const EDAMAM_DB = false;
-const INPUT_TRIGGER_TIME = EDAMAM_DB ? 700 : 300;
+const INPUT_TRIGGER_TIME = 300;
 const CATEGORIES = {
   all: [
     { group: 'A', name: 'Cereals and cereal products', selected: true },
@@ -50,7 +49,6 @@ export {
   ROLES,
   INPUT_TRIGGER_TIME,
   MIN_WIDTH,
-  EDAMAM_DB,
   CATEGORIES,
   DEFAULT_CARD_NUTRIENTS,
   NUTRIENT_GROUPS,

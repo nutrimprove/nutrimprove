@@ -107,6 +107,7 @@ const SearchFoodByNutrient = () => {
                    noMatchText='No nutrient matched!!'
                    groupBy={(option) => option.group}
                    strict={false}
+                   hideDropdownIcon={false}
       />
       {foods && <ResultsTable
         data={foods}
