@@ -19,6 +19,7 @@ const AutoComplete = ({
                         loading,
                         context,
                         strict,
+                        hideDropdownIcon,
                         width = 300,
                       }) => {
   const filterOptions = (options, { inputValue }) => {
@@ -56,6 +57,7 @@ const AutoComplete = ({
         {...params}
         InputProps={{
           ...params.InputProps,
+          title: params.inputProps.value,
           style: { fontSize },
           endAdornment: (
             <>
@@ -68,12 +70,13 @@ const AutoComplete = ({
     }
     autoComplete={true}
     autoHighlight={false}
-    autoSelect={true}
+    autoSelect={false}
     noOptionsText={noMatchText}
     openOnFocus={!strict}
     onChange={onChange}
     onInputChange={onInputChange}
     filterOptions={filterOptions}
+    freeSolo={hideDropdownIcon}
   />;
 };
 
@@ -90,6 +93,7 @@ AutoComplete.propTypes = {
   labelProp: PropTypes.string,
   groupBy: PropTypes.func,
   strict: PropTypes.bool,
+  hideDropdownIcon: PropTypes.bool,
   width: PropTypes.number,
 };
 

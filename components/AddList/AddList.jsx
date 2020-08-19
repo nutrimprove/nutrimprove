@@ -122,6 +122,7 @@ const AddList = ({ classes }) => {
               <FoodCardWithSearch title='Food'
                                   onFoodLoad={setSelectedFood}
                                   buttonText='Select'
+                                  context='loadFood'
               />
               {food && <Paper className={classes.quantity}>
                 <Typography>Amount:&nbsp;</Typography>
