@@ -9,11 +9,11 @@ import SectionHeader from '../SectionHeader';
 const WelcomeText = () => (
   <>
     <Typography>
-      NutrImprove is an initiative that aims to curate the world&apos;s
+      Nutrimprove is an initiative that aims to curate the world&apos;s
       largest database of nutritional recommendations.
     </Typography>
     <Typography paragraph={true}>
-      The NutrImprove web application will allow nutritionists,
+      The Nutrimprove web application will allow nutritionists,
       nutritional therapists and dietitians to recommend healthier
       alternatives to the foods that may not be adequate for optimal
       health.
