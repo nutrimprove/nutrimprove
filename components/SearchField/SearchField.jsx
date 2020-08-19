@@ -11,7 +11,7 @@ const SearchField = ({
                        onSelection,
                        optionsContext,
                        buttonContext,
-                       buttonText = 'Search',
+                       buttonText = 'Select',
                        onButtonClick,
                        buttonDisabled,
                        showButton = true,
