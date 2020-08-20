@@ -65,19 +65,11 @@ const AddBulkRecommendations = ({ classes }) => {
   };
 
   const updateFood = (newFood, fieldKey) => {
-    // updateFoodsObject(newFood, fieldKey, foods);
-    const foodIndex = foods.findIndex(({ key }) => key === fieldKey);
-    const updatedFoods = [...foods];
-    updatedFoods.splice(foodIndex, 1, { ...foods[foodIndex], ...newFood });
-    setFoods(updatedFoods);
+    updateFoodsObject(newFood, fieldKey, foods);
   };
 
   const updateRecommendedFood = (newFood, fieldKey) => {
-    // updateFoodsObject(newFood, fieldKey, recommendedFoods, true);
-    const foodIndex = recommendedFoods.findIndex(({ key }) => key === fieldKey);
-    const updatedFoods = [...recommendedFoods];
-    updatedFoods.splice(foodIndex, 1, { ...recommendedFoods[foodIndex], ...newFood });
-    setRecommendedFoods(updatedFoods);
+    updateFoodsObject(newFood, fieldKey, recommendedFoods, true);
   };
 
   const updateFoodsObject = (newFood, fieldKey, foods, isRecommendation) => {
