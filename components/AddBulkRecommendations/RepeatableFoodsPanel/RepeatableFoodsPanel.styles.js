@@ -21,6 +21,9 @@ export default {
   searchField: {
     backgroundColor: '#fdfdfd',
   },
+  invalidField: {
+    backgroundColor: '#ffdddd',
+  },
   removeIcon: {
     marginTop: -16,
   },

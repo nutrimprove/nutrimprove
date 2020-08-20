@@ -1,22 +1,30 @@
+import RepeatableFoodsPanel from 'components/AddBulkRecommendations/RepeatableFoodsPanel';
 import ButtonWithSpinner from 'components/ButtonWithSpinner';
 import Filters from 'components/Filters';
-import RepeatableFoodsPanel from 'components/AddBulkRecommendations/RepeatableFoodsPanel';
 import StatusMessage from 'components/StatusMessage';
 import { calcPoints } from 'helpers/userUtils';
 import { getTime } from 'helpers/utils';
 import { postRecommendations } from 'interfaces/api/recommendations';
-import { difference, uniqBy } from 'lodash';
+import { difference, uniqBy, uniqueId } from 'lodash';
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { usePromiseTracker } from 'react-promise-tracker';
 import { useDispatch, useSelector } from 'react-redux';
 import { addUserPointsAction } from 'store/global/actions';
 
+const MAX_FIELDS = 5;
+const newField = () => ({
+  key: uniqueId(),
+  foodCode: '',
+  foodName: '',
+});
+
 const AddBulkRecommendations = ({ classes }) => {
   const userDetails = useSelector(({ globalState }) => globalState.userDetails);
-  const [recommendedFoods, setRecommendedFoods] = useState();
-  const [foods, setFoods] = useState();
-  const [validation, setValidation] = useState(false);
+  const [recommendedFoods, setRecommendedFoods] = useState([newField()]);
+  const [foods, setFoods] = useState([newField()]);
+  const [invalidFoods, setInvalidFoods] = useState([]);
+  const [validation, setValidation] = useState();
   const [status, setStatus] = useState([]);
   const dispatch = useDispatch();
 
@@ -26,22 +34,20 @@ const AddBulkRecommendations = ({ classes }) => {
   const loadingSearchTerms = loadingRecs || loadingFoods;
   const addRecommendationsDisabled = loadingSearchTerms || savingRecommendations;
 
-  const isValid = food => {
-    if (!validation) {
-      return !!food && food.id ? true : null;
-    }
-    if (!food || !food.id || !food.name) return false;
-
-    const allFoodIds = foods.concat(recommendedFoods).map(item => item.name);
-    const sameIds = allFoodIds.filter(id => id === food.name);
-    return food.id.length > 0 && food.name.length > 2 && sameIds.length <= 1;
-  };
+  useEffect(() => {
+    validation && validateFields();
+  }, [foods, recommendedFoods]);
 
   const validateFields = () => {
     const allFoods = foods.concat(recommendedFoods);
-    const emptyFields = allFoods.filter(food => !food.id);
-    const duplicatedFoods = difference(allFoods, uniqBy(allFoods, 'id'), 'id');
-    return duplicatedFoods.length === 0 && emptyFields.length === 0;
+    const emptyFields = allFoods.filter(({ foodCode }) => foodCode.length === 0);
+    const nonEmptyFields = allFoods.filter(({ foodCode }) => foodCode.length > 0);
+    const duplicateFoods = difference(nonEmptyFields, uniqBy(nonEmptyFields, 'foodCode'), 'foodCode');
+    const invalidFoods = [...emptyFields, ...duplicateFoods];
+    setInvalidFoods(invalidFoods);
+    const valid = invalidFoods.length === 0;
+    setValidation(valid);
+    return valid;
   };
 
   const updateStatus = newStatus => {
@@ -58,11 +64,57 @@ const AddBulkRecommendations = ({ classes }) => {
     }
   };
 
+  const updateFood = (newFood, fieldKey) => {
+    // updateFoodsObject(newFood, fieldKey, foods);
+    const foodIndex = foods.findIndex(({ key }) => key === fieldKey);
+    const updatedFoods = [...foods];
+    updatedFoods.splice(foodIndex, 1, { ...foods[foodIndex], ...newFood });
+    setFoods(updatedFoods);
+  };
+
+  const updateRecommendedFood = (newFood, fieldKey) => {
+    // updateFoodsObject(newFood, fieldKey, recommendedFoods, true);
+    const foodIndex = recommendedFoods.findIndex(({ key }) => key === fieldKey);
+    const updatedFoods = [...recommendedFoods];
+    updatedFoods.splice(foodIndex, 1, { ...recommendedFoods[foodIndex], ...newFood });
+    setRecommendedFoods(updatedFoods);
+  };
+
+  const updateFoodsObject = (newFood, fieldKey, foods, isRecommendation) => {
+    const foodIndex = foods.findIndex(({ key }) => key === fieldKey);
+    const updatedFoods = [...foods];
+    updatedFoods.splice(foodIndex, 1, { ...foods[foodIndex], ...newFood });
+    isRecommendation
+      ? setRecommendedFoods(updatedFoods)
+      : setFoods(updatedFoods);
+  };
+
+  const removeFood = ({ currentTarget }) => {
+    setFoods(foods.filter(({ key }) => key !== currentTarget.dataset.key));
+  };
+
+  const removeRecommendedFood = ({ currentTarget }) => {
+    setRecommendedFoods(recommendedFoods.filter(({ key }) => key !== currentTarget.dataset.key));
+  };
+
+  const addFood = () => {
+    setFoods([...foods, newField()]);
+  };
+
+  const addRecommendedFood = () => {
+    setRecommendedFoods([...recommendedFoods, newField()]);
+  };
+
+  const resetFields = () => {
+    setFoods([newField()]);
+    setRecommendedFoods([newField()]);
+    setInvalidFoods([]);
+  };
+
   const addRecommendations = async () => {
     const recommendationsPayload = [];
 
     if (!validateFields()) {
-      setValidation(true);
       updateStatus('No duplicate nor empty fields are allowed when inserting recommendations!');
       return;
     }
@@ -106,7 +158,7 @@ const AddBulkRecommendations = ({ classes }) => {
       updateStatus(status);
 
       // Reset fields if all combinations were stored successfully
-      removeAllFoods();
+      resetFields();
       setValidation(false);
     } else {
       if (duplicatesCount > 0) {
@@ -130,12 +182,22 @@ const AddBulkRecommendations = ({ classes }) => {
       <Filters/>
       <div className={classes.main}>
         <RepeatableFoodsPanel title='Choose food(s):'
-                              foods={setFoods}
-                              isValid={isValid}
+                              foods={foods}
+                              onSelection={updateFood}
+                              onRemove={removeFood}
+                              onAdd={addFood}
+                              maxFields={MAX_FIELDS}
+                              invalidFoods={invalidFoods}
+                              validation={validation}
         />
         <RepeatableFoodsPanel title='Healthier alternative(s):'
-                              foods={setRecommendedFoods}
-                              isValid={isValid}
+                              foods={recommendedFoods}
+                              onSelection={updateRecommendedFood}
+                              onRemove={removeRecommendedFood}
+                              onAdd={addRecommendedFood}
+                              maxFields={MAX_FIELDS}
+                              invalidFoods={invalidFoods}
+                              validation={validation}
         />
       </div>
       <div className={classes.submit}>
