@@ -46,7 +46,7 @@ const AddBulkRecommendations = ({ classes }) => {
     const invalidFoods = [...emptyFields, ...duplicateFoods];
     setInvalidFoods(invalidFoods);
     const valid = invalidFoods.length === 0;
-    setValidation(valid);
+    setValidation(!valid);
     return valid;
   };
 
@@ -87,6 +87,7 @@ const AddBulkRecommendations = ({ classes }) => {
     isRecommendation
       ? setRecommendedFoods(updatedFoods)
       : setFoods(updatedFoods);
+    validateFields();
   };
 
   const removeFood = ({ currentTarget }) => {
@@ -108,7 +109,6 @@ const AddBulkRecommendations = ({ classes }) => {
   const resetFields = () => {
     setFoods([newField()]);
     setRecommendedFoods([newField()]);
-    setInvalidFoods([]);
   };
 
   const addRecommendations = async () => {

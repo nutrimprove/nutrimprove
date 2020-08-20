@@ -15,6 +15,9 @@ const RepeatableFoodsPanel = ({ classes, title, foods, onSelection, onAdd, onRem
 
   const isInvalid = food => invalidFoods.find(({ foodCode }) => foodCode === food.foodCode);
 
+  console.log(`=== RepeatableFoodsPanel.jsx #18 === ( invalidFoods ) =======>`, invalidFoods);
+  console.log(`=== RepeatableFoodsPanel.jsx #19 === ( validation ) =======>`, validation);
+
   return (
     <Paper className={classes.fieldBox}>
       <Typography className={classes.title} component='h4'>
