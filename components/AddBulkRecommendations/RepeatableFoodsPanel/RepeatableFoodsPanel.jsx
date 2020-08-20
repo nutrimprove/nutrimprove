@@ -15,9 +15,6 @@ const RepeatableFoodsPanel = ({ classes, title, foods, onSelection, onAdd, onRem
 
   const isInvalid = food => invalidFoods.find(({ foodCode }) => foodCode === food.foodCode);
 
-  console.log(`=== RepeatableFoodsPanel.jsx #18 === ( invalidFoods ) =======>`, invalidFoods);
-  console.log(`=== RepeatableFoodsPanel.jsx #19 === ( validation ) =======>`, validation);
-
   return (
     <Paper className={classes.fieldBox}>
       <Typography className={classes.title} component='h4'>
@@ -36,14 +33,14 @@ const RepeatableFoodsPanel = ({ classes, title, foods, onSelection, onAdd, onRem
             <RemoveIcon className={classes.removeIcon} dataKey={food.key} onClick={onRemove} disabled={foods.length <= 1}/>
           </div>
         ))}
-        <MainButton action={onAdd} disabled={foods.length >= maxFields}>Add</MainButton>
+        <MainButton action={onAdd} disabled={foods.length >= maxFields}>Add field</MainButton>
       </>
     </Paper>
   );
 };
 
 RepeatableFoodsPanel.propTypes = {
-  foods: PropTypes.func,
+  foods: PropTypes.array.isRequired,
   classes: PropTypes.object.isRequired,
   title: PropTypes.string,
   validation: PropTypes.bool,
