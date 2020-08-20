@@ -7,7 +7,7 @@ import { getTime } from 'helpers/utils';
 import { postRecommendations } from 'interfaces/api/recommendations';
 import { difference, uniqBy, uniqueId } from 'lodash';
 import PropTypes from 'prop-types';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { usePromiseTracker } from 'react-promise-tracker';
 import { useDispatch, useSelector } from 'react-redux';
 import { addUserPointsAction } from 'store/global/actions';
@@ -33,10 +33,6 @@ const AddBulkRecommendations = ({ classes }) => {
   const { promiseInProgress: loadingFoods } = usePromiseTracker({ area: 'getSearchTerms-food' });
   const loadingSearchTerms = loadingRecs || loadingFoods;
   const addRecommendationsDisabled = loadingSearchTerms || savingRecommendations;
-
-  useEffect(() => {
-    validation && validateFields();
-  }, [foods, recommendedFoods]);
 
   const validateFields = () => {
     const allFoods = foods.concat(recommendedFoods);
@@ -79,7 +75,6 @@ const AddBulkRecommendations = ({ classes }) => {
     isRecommendation
       ? setRecommendedFoods(updatedFoods)
       : setFoods(updatedFoods);
-    validateFields();
   };
 
   const removeFood = ({ currentTarget }) => {
