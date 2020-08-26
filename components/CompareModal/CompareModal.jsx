@@ -35,7 +35,7 @@ const CompareModal = ({
 
 CompareModal.propTypes = {
   open: PropTypes.bool.isRequired,
-  classes: PropTypes.string.isRequired,
+  classes: PropTypes.object.isRequired,
   title: PropTypes.string,
   tableTitle: PropTypes.string,
   dataSet: PropTypes.array,

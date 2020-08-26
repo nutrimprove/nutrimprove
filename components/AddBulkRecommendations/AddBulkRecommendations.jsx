@@ -1,42 +1,32 @@
+import RepeatableFoodsPanel from 'components/AddBulkRecommendations/RepeatableFoodsPanel';
 import ButtonWithSpinner from 'components/ButtonWithSpinner';
 import Filters from 'components/Filters';
-import RepeatableFoodsPanel from 'components/RepeatableFoodsPanel';
 import StatusMessage from 'components/StatusMessage';
 import { calcPoints } from 'helpers/userUtils';
-import { emptyFood, getTime } from 'helpers/utils';
+import { getTime } from 'helpers/utils';
 import { postRecommendations } from 'interfaces/api/recommendations';
-import { difference, uniqBy } from 'lodash';
+import { difference, uniqBy, uniqueId } from 'lodash';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import { usePromiseTracker } from 'react-promise-tracker';
-import { connect } from 'react-redux';
-import {
-  addFoodAction,
-  addRecommendedFoodAction,
-  editFoodAction,
-  editRecommendedFoodAction,
-  removeAllFoodsAndRecommendationsAction,
-  removeFoodAction,
-  removeRecommendedFoodAction,
-} from 'store/addRecommendation/actions';
+import { useDispatch, useSelector } from 'react-redux';
 import { addUserPointsAction } from 'store/global/actions';
 
-const AddBulkRecommendations = ({
-                                  foods,
-                                  recommendations,
-                                  addEmptyRecommendedFood,
-                                  addEmptyFood,
-                                  removeFood,
-                                  removeRecommendedFood,
-                                  removeAllFoods,
-                                  userDetails,
-                                  saveFood,
-                                  saveRecommendedFood,
-                                  addUserPoints,
-                                  classes,
-                                }) => {
-  const [validation, setValidation] = useState(false);
+const MAX_FIELDS = 5;
+const newField = () => ({
+  key: uniqueId(),
+  foodCode: '',
+  foodName: '',
+});
+
+const AddBulkRecommendations = ({ classes }) => {
+  const userDetails = useSelector(({ globalState }) => globalState.userDetails);
+  const [recommendedFoods, setRecommendedFoods] = useState([newField()]);
+  const [foods, setFoods] = useState([newField()]);
+  const [invalidFoods, setInvalidFoods] = useState([]);
+  const [validation, setValidation] = useState();
   const [status, setStatus] = useState([]);
+  const dispatch = useDispatch();
 
   const { promiseInProgress: savingRecommendations } = usePromiseTracker({ area: 'postRecommendations' });
   const { promiseInProgress: loadingRecs } = usePromiseTracker({ area: 'getSearchTerms-rec' });
@@ -44,34 +34,16 @@ const AddBulkRecommendations = ({
   const loadingSearchTerms = loadingRecs || loadingFoods;
   const addRecommendationsDisabled = loadingSearchTerms || savingRecommendations;
 
-  const isValid = food => {
-    if (!validation) {
-      return !!food && food.id ? true : null;
-    }
-    if (!food || !food.id || !food.name) return false;
-
-    const allFoodIds = foods.concat(recommendations).map(item => item.name);
-    const sameIds = allFoodIds.filter(id => id === food.name);
-    return food.id.length > 0 && food.name.length > 2 && sameIds.length <= 1;
-  };
-
-  const setFood = food => {
-    if (food) {
-      saveFood(food);
-    }
-  };
-
-  const setRecommendation = food => {
-    if (food) {
-      saveRecommendedFood(food);
-    }
-  };
-
   const validateFields = () => {
-    const allFoods = foods.concat(recommendations);
-    const emptyFields = allFoods.filter(food => !food.id);
-    const duplicatedFoods = difference(allFoods, uniqBy(allFoods, 'id'), 'id');
-    return duplicatedFoods.length === 0 && emptyFields.length === 0;
+    const allFoods = foods.concat(recommendedFoods);
+    const emptyFields = allFoods.filter(({ foodCode }) => foodCode.length === 0);
+    const nonEmptyFields = allFoods.filter(({ foodCode }) => foodCode.length > 0);
+    const duplicateFoods = difference(nonEmptyFields, uniqBy(nonEmptyFields, 'foodCode'), 'foodCode');
+    const invalidFoods = [...emptyFields, ...duplicateFoods];
+    setInvalidFoods(invalidFoods);
+    const valid = invalidFoods.length === 0;
+    setValidation(!valid);
+    return valid;
   };
 
   const updateStatus = newStatus => {
@@ -88,25 +60,63 @@ const AddBulkRecommendations = ({
     }
   };
 
+  const updateFood = (newFood, fieldKey) => {
+    updateFoodsObject(newFood, fieldKey, foods);
+  };
+
+  const updateRecommendedFood = (newFood, fieldKey) => {
+    updateFoodsObject(newFood, fieldKey, recommendedFoods, true);
+  };
+
+  const updateFoodsObject = (newFood, fieldKey, foods, isRecommendation) => {
+    const foodIndex = foods.findIndex(({ key }) => key === fieldKey);
+    const updatedFoods = [...foods];
+    updatedFoods.splice(foodIndex, 1, { ...foods[foodIndex], ...newFood });
+    isRecommendation
+      ? setRecommendedFoods(updatedFoods)
+      : setFoods(updatedFoods);
+  };
+
+  const removeFood = ({ currentTarget }) => {
+    setFoods(foods.filter(({ key }) => key !== currentTarget.dataset.key));
+  };
+
+  const removeRecommendedFood = ({ currentTarget }) => {
+    setRecommendedFoods(recommendedFoods.filter(({ key }) => key !== currentTarget.dataset.key));
+  };
+
+  const addFood = () => {
+    setFoods([...foods, newField()]);
+  };
+
+  const addRecommendedFood = () => {
+    setRecommendedFoods([...recommendedFoods, newField()]);
+  };
+
+  const resetFields = () => {
+    setFoods([newField()]);
+    setRecommendedFoods([newField()]);
+  };
+
   const addRecommendations = async () => {
     const recommendationsPayload = [];
 
     if (!validateFields()) {
-      setValidation(true);
       updateStatus('No duplicate nor empty fields are allowed when inserting recommendations!');
       return;
     }
 
-    if(!userDetails || !userDetails.email) {
+    if (!userDetails || !userDetails.email) {
       console.error('No user logged in?!');
       return;
     }
 
+    // Every recommendation will be added to every single food (n->n)
     for (const food of foods) {
-      for (const recommendation of recommendations) {
+      for (const recommendation of recommendedFoods) {
         recommendationsPayload.push({
-          food: { id: food.id, name: food.name },
-          recommendation: { id: recommendation.id, name: recommendation.name },
+          food: { id: food.foodCode, name: food.foodName },
+          recommendation: { id: recommendation.foodCode, name: recommendation.foodName },
           contributors: [{ id: userDetails.email }],
         });
       }
@@ -119,23 +129,24 @@ const AddBulkRecommendations = ({
     const insertedCount = result.inserted ? result.inserted.length : 0;
     const incrementedCount = result.incremented ? result.incremented.length : 0;
     const duplicatesCount = result.duplicates ? result.duplicates.length : 0;
+    let status;
 
     if (insertedCount + incrementedCount === recCount) {
-      // Reset fields if all combinations were stored successfully
-      removeAllFoods();
-      setValidation(false);
-
       const addedPoints = calcPoints({ added: insertedCount, incremented: incrementedCount });
-      addUserPoints(addedPoints);
+      dispatch(addUserPointsAction(addedPoints));
 
       const recommendationString = insertedCount === 1 ? 'recommendation' : 'recommendations';
-      let status = `${insertedCount} new ${recommendationString} added to the database!`;
+      status = `${insertedCount} new ${recommendationString} added to the database!`;
 
       if (result.incremented) {
         status = status + ` Added your contribution to ${incrementedCount} already present.`;
       }
       status += ` +${addedPoints} points`;
       updateStatus(status);
+
+      // Reset fields if all combinations were stored successfully
+      resetFields();
+      setValidation(false);
     } else {
       if (duplicatesCount > 0) {
         const duplicatesList = result.duplicates.map(dup => `${dup.food.name} -> ${dup.recommendation.name}`);
@@ -159,16 +170,22 @@ const AddBulkRecommendations = ({
       <div className={classes.main}>
         <RepeatableFoodsPanel title='Choose food(s):'
                               foods={foods}
-                              addEmptyField={addEmptyFood}
-                              setFood={setFood}
-                              removeField={removeFood}
-                              isValid={isValid}/>
+                              onSelection={updateFood}
+                              onRemove={removeFood}
+                              onAdd={addFood}
+                              maxFields={MAX_FIELDS}
+                              invalidFoods={invalidFoods}
+                              validation={validation}
+        />
         <RepeatableFoodsPanel title='Healthier alternative(s):'
-                              foods={recommendations}
-                              addEmptyField={addEmptyRecommendedFood}
-                              setFood={setRecommendation}
-                              removeField={removeRecommendedFood}
-                              isValid={isValid}/>
+                              foods={recommendedFoods}
+                              onSelection={updateRecommendedFood}
+                              onRemove={removeRecommendedFood}
+                              onAdd={addRecommendedFood}
+                              maxFields={MAX_FIELDS}
+                              invalidFoods={invalidFoods}
+                              validation={validation}
+        />
       </div>
       <div className={classes.submit}>
         <ButtonWithSpinner
@@ -185,37 +202,7 @@ const AddBulkRecommendations = ({
 };
 
 AddBulkRecommendations.propTypes = {
-  recommendations: PropTypes.array,
-  foods: PropTypes.array,
-  addEmptyFood: PropTypes.func,
-  removeFood: PropTypes.func,
-  addEmptyRecommendedFood: PropTypes.func,
-  removeRecommendedFood: PropTypes.func,
-  removeAllFoods: PropTypes.func,
-  userDetails: PropTypes.object,
   classes: PropTypes.object.isRequired,
-  saveFood: PropTypes.func,
-  saveRecommendedFood: PropTypes.func,
-  addUserPoints: PropTypes.func,
 };
 
-const mapStateToProps = states => {
-  return {
-    recommendations: states.addRecommendationState.recommendedFoods,
-    foods: states.addRecommendationState.foods,
-    userDetails: states.globalState.userDetails,
-  };
-};
-
-const mapDispatchToProps = dispatch => ({
-  removeFood: food => dispatch(removeFoodAction(food)),
-  removeRecommendedFood: food => dispatch(removeRecommendedFoodAction(food)),
-  addEmptyFood: () => dispatch(addFoodAction(emptyFood())),
-  addEmptyRecommendedFood: () => dispatch(addRecommendedFoodAction(emptyFood())),
-  removeAllFoods: () => dispatch(removeAllFoodsAndRecommendationsAction()),
-  saveFood: food => dispatch(editFoodAction(food)),
-  saveRecommendedFood: food => dispatch(editRecommendedFoodAction(food)),
-  addUserPoints: points => dispatch(addUserPointsAction(points)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(AddBulkRecommendations);
+export default AddBulkRecommendations;

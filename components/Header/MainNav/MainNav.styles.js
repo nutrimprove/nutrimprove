@@ -25,6 +25,7 @@ export default {
     height: '100%',
     alignItems: 'center',
     display: 'flex',
+    position: 'relative',
   },
   button: {
     fontSize: 14,
@@ -32,15 +33,7 @@ export default {
     color: 'white',
     padding: '0 20px',
   },
-  rightNavContent: {
-    fontSize: 14,
-    marginLeft: 'auto',
-  },
   notice: {
     color: 'yellow',
-  },
-  rightNavText: {
-    marginLeft: 12,
-    verticalAlign: 'text-bottom',
   },
 };
