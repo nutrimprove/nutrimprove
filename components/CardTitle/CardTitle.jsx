@@ -15,7 +15,7 @@ const CardTitle = ({ classes, title = ' ', editable, onTitleChange }) => (
 
 CardTitle.propTypes = {
   classes: PropTypes.object.isRequired,
-  title: PropTypes.string.isRequired,
+  title: PropTypes.string,
   editable: PropTypes.bool,
   onTitleChange: PropTypes.func,
 };

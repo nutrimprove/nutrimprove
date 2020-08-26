@@ -3,6 +3,7 @@ import { MIN_WIDTH } from 'helpers/constants';
 export default {
   header: {
     margin: 'auto',
+    minWidth: MIN_WIDTH,
   },
   logo: {
     width: 50,

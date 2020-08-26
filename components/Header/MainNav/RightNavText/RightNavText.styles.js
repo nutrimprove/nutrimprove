@@ -1,7 +1,8 @@
 export default {
   rightNavContent: {
     fontSize: 14,
-    marginLeft: 'auto',
+    right: 20,
+    position: 'absolute',
   },
   notice: {
     color: 'yellow',
