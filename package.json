@@ -1,13 +1,13 @@
 {
   "name": "nutrimprove",
-  "version": "1.0.0",
   "description": "NutrImprove app",
   "main": "pages/index.js",
   "scripts": {
     "start": "next build && next start -p 4000",
     "dev": "next -p 4000",
-    "deploy": "now",
-    "deploy-test": "yarn deploy && yarn now alias nutrimprove",
+    "cypress:open": "cypress open",
+    "deploy": "vercel",
+    "deploy-test": "yarn deploy && yarn vercel alias nutrimprove",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
@@ -59,10 +59,13 @@
     "babel-jest": "^26.0.1",
     "body-parser": "^1.19.0",
     "cross-env": "^5.2.1",
+    "cypress": "^5.0.0",
     "dotenv-webpack": "^1.7.0",
     "eslint": "^6.3.0",
     "eslint-config-prettier": "^6.2.0",
     "eslint-config-standard": "^14.1.0",
+    "eslint-plugin-chai-friendly": "^0.6.0",
+    "eslint-plugin-cypress": "^2.11.1",
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-jest": "^22.17.0",
     "eslint-plugin-jsx-a11y": "^6.2.3",
@@ -74,9 +77,9 @@
     "jest": "^26.0.1",
     "lint-staged": "^9.2.5",
     "nodemon": "^1.19.2",
-    "now": "^17.1.1",
     "prettier": "^1.18.2",
-    "react-test-renderer": "^16.13.1"
+    "react-test-renderer": "^16.13.1",
+    "vercel": "^20.0.0"
   },
   "jest": {
     "testPathIgnorePatterns": [
