@@ -10,8 +10,8 @@ import { AuthProvider } from 'react-use-auth';
 import withReduxStore from 'store/withReduxStore';
 
 const noHeaderPages = ['/info'];
-const AUTH0_DOMAIN = () => process.env.AUTH0_DOMAIN;
-const AUTH0_CLIENT = () => process.env.AUTH0_CLIENT_ID;
+const AUTH0_CLIENT = () => process.env.REACT_APP_AUTH0_CLIENT;
+const AUTH0_DOMAIN = () => process.env.REACT_APP_AUTH0_DOMAIN;
 
 const MyApp = ({ Component, pageProps, store }) => {
   const router = useRouter();
