@@ -31,8 +31,8 @@ const MyApp = ({ Component, pageProps, store }) => {
   return (
     <AuthProvider
       navigate={router.push}
-      auth0_domain={`${AUTH0_DOMAIN()}`}
-      auth0_client_id={`${AUTH0_CLIENT()}`}
+      auth0_domain={`'${AUTH0_DOMAIN()}'`}
+      auth0_client_id={`'${AUTH0_CLIENT()}'`}
     >
       {console.log(`=== _app.js #37 === ( AUTH0_DOMAIN ) =======>`, AUTH0_DOMAIN())}
       {console.log(`=== _app.js #38 === ( AUTH0_CLIENT ) =======>`, AUTH0_CLIENT())}
