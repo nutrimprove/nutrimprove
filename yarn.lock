@@ -8759,10 +8759,10 @@ react-transition-group@^4.4.0:
     loose-envify "^1.4.0"
     prop-types "^15.6.2"
 
-react-use-auth@^0.7.3:
-  version "0.7.3"
-  resolved "https://registry.yarnpkg.com/react-use-auth/-/react-use-auth-0.7.3.tgz#0f65e8ee13c1636316afcb9bbd9b5b0865156fba"
-  integrity sha512-RkUNr/k6D58XLHXZhlkIIXdun/KDq2i+LUp4RxnMVbMtFaAE3fJ2AhUu2w4DjGTfGHGNAnAFtjI+y3E5McSvjw==
+react-use-auth@^0.7.5:
+  version "0.7.5"
+  resolved "https://registry.yarnpkg.com/react-use-auth/-/react-use-auth-0.7.5.tgz#2a03643a07c8e38fd46c18cca6b47dd165dccc4a"
+  integrity sha512-rAjSQdbEYFBgANq8tZieRGMWp2DMOzuSD/H7+i42pYxrwMRiii0wQVLWRKMEJIorW5aDDkwLkIPvsg5+mE7c0g==
   dependencies:
     "@types/react-test-renderer" "^16.9.2"
     auth0-js "^9.13.2"
