@@ -32,9 +32,6 @@ const MyApp = ({ Component, pageProps, store }) => {
       auth0_domain={process.env.AUTH0_DOMAIN}
       auth0_client_id={process.env.AUTH0_CLIENT_ID}
     >
-      {console.log(`=== _app.js #36 === ( process.env.MONGODB_URI ) =======>`, process.env.MONGODB_URI)}
-      {console.log(`=== _app.js #36 === ( process.env.AUTH0_CLIENT_ID ) =======>`, process.env.AUTH0_CLIENT_ID)}
-      {console.log(`=== _app.js #36 === ( process.env.AUTH0_DOMAIN ) =======>`, process.env.AUTH0_DOMAIN)}
       <Provider store={store}>
         <LoaderContainer>
           {hasHeader ? <Header/> : null}
