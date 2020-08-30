@@ -47,6 +47,7 @@ const getNutrients = async (nutrientGroups) => {
   });
 
   const result = await FoodsConnection.findOne({}, projection);
+  console.log(`=== foods.js #50 === ( result ) =======>`, result);
   const document = result._doc;
   const nutrientsList = [];
 
