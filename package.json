@@ -59,7 +59,7 @@
     "body-parser": "^1.19.0",
     "cross-env": "^5.2.1",
     "cypress": "^5.0.0",
-    "dotenv-webpack": "^1.7.0",
+    "dotenv-webpack": "^2.0.0",
     "eslint": "^6.3.0",
     "eslint-config-prettier": "^6.2.0",
     "eslint-config-standard": "^14.1.0",
