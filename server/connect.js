@@ -9,7 +9,6 @@ const mongoOptions = {
 
 const connect = (description, schema, collection) => {
   if (mongoose.connection.readyState === 0) {
-    console.log(`=== connect.js #12 === ( URI ) =======>`, URI);
     mongoose.connect(URI, mongoOptions, err => {
       if (err) {
         console.error('ERROR connecting to database!', err);
