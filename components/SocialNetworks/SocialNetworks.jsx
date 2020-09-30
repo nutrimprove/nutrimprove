@@ -8,7 +8,7 @@ import React from 'react';
 const SocialNetworks = ({ classes }) => {
   return (
     <>
-      <Link href='mailto:nutrimprove@gmail.com' title='Email' target='_blank'>
+      <Link href='mailto:enquiries@nutrimprove.co.uk' title='Email' target='_blank'>
         <EmailIcon className={classes.icon} fontSize='large' color='primary'/>
       </Link>
       <Link href='https://www.linkedin.com/company/nutrimprove' title='LinkedIn' target='_blank'>

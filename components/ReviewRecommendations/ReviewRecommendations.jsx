@@ -39,7 +39,7 @@ const ReviewRecommendations = ({ classes }) => {
   useEffect(() => {
     (async () => {
       const results = await getAllRecommendations();
-      if (user && results && results.length > 0) {
+      if (user && results) {
         const foodsFromOtherContributors = results.filter(({ contributors }) => !contributors.find(({ id }) => id === user));
         setRecommendations(foodsFromOtherContributors);
       }
