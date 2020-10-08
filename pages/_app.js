@@ -29,8 +29,8 @@ const MyApp = ({ Component, pageProps, store }) => {
   return (
     <AuthProvider
       navigate={router.push}
-      auth0_domain='dev-eatwell.eu.auth0.com'
-      auth0_client_id='mkvqwP1yMM0ICN88WsOWp1h1y82Xd55A'
+      auth0_domain={process.env.AUTH0_DOMAIN}
+      auth0_client_id={process.env.AUTH0_CLIENT_ID}
     >
       <Provider store={store}>
         <LoaderContainer>

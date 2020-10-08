@@ -72,7 +72,7 @@ const MainNav = ({ classes }) => {
         {isAdmin(userDetails) && (
           <MenuButton menu={adminOption}/>
         )}
-        <RightNavContent/>
+        <RightNavContent />
       </div>
     </AppBar>
   );

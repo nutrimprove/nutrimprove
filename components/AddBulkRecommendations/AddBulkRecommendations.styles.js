@@ -3,6 +3,6 @@ export default {
     display: 'flex',
   },
   submit: {
-    marginTop: 10,
+    marginTop: 30,
   },
 };
