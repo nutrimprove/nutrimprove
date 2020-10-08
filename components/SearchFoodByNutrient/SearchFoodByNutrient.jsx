@@ -33,6 +33,12 @@ const SearchFoodByNutrient = () => {
     })();
   }, []);
 
+  useEffect(() => {
+    if (categories && foods && nutrient) {
+      getFoods();
+    }
+  }, [categories]);
+
   const formatFoods = foods =>
     foods.map(food => {
       const foodObj = food[nutrient.group][nutrient.name];
