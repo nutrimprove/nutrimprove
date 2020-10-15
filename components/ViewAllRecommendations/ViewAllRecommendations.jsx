@@ -1,4 +1,4 @@
-import ViewRecommendations from 'components/ViewRecommendations/ViewRecommendations';
+import ViewRecommendations from 'components/ViewRecommendations';
 import { getAllRecommendations } from 'interfaces/api/recommendations';
 import React, { useEffect, useState } from 'react';
 
