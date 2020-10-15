@@ -56,6 +56,13 @@ const getFoodsByNutrient = ({ nutrient, limit = 100, filters }) => {
   );
 };
 
+const setHealthyFlag = (foodId, flag) => {
+  return trackPromise(
+    postRequest(`${foodApiEndpoint}/healthyFlag`, { foodId, flag }),
+    'setHealthyFlag',
+  );
+};
+
 export {
   getFoodsByCategories,
   getFoodById,
@@ -64,4 +71,5 @@ export {
   getAllFoodNames,
   getFoodsByNutrient,
   getNutrients,
+  setHealthyFlag,
 };

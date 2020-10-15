@@ -82,6 +82,14 @@ const getFoodsByNutrient = async (nutrient, limit, filters) => {
   return FoodsConnection.find(query, projection).sort(sort).limit(numberOfRecords);
 };
 
+const setHealthyFlag = async (foodId, flag) => {
+  const FoodsConnection = await getFoodsConnection();
+  return FoodsConnection.findOneAndUpdate(
+    { foodCode: foodId },
+    [{ $set: { healthy: flag } }],
+  );
+};
+
 export {
   getFoodsByCategories,
   getFoodById,
@@ -90,4 +98,5 @@ export {
   getAllFoodNames,
   getNutrients,
   getFoodsByNutrient,
+  setHealthyFlag,
 };
