@@ -39,9 +39,9 @@ const ResultsTable = ({ classes, className, data, onRowClick, title, titleIcon, 
     if (!sort(column) || !data || data.length === 0) return;
 
     const sortObject = { column };
-    order.column === column
-      ? sortObject.order = toggleOrder(order.order)
-      : sortObject.order = 'asc';
+    sortObject.order = order.column === column
+      ?  toggleOrder(order.order)
+      : 'asc';
     setOrder(sortObject);
 
     const sortBy = Object.keys(data[0]).find(key => lowerCaseCompare(key,column));
