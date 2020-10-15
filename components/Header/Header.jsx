@@ -22,7 +22,7 @@ const Header = ({ classes }) => {
           <Typography className={classes.link} variant='button' color='inherit'>
             <Link href='/about'>About</Link>
             {/* {username() && <Link href='/help'>Help</Link>} */}
-            <Link href='https://github.com/eat-well/nutrimprove/releases' target='_blank'>Release Notes</Link>
+            <Link href='https://github.com/nutrimprove/nutrimprove/releases' target='_blank'>Release Notes</Link>
           </Typography>
           <div id='user' className={classes.right}>
             {isAuthenticated()
