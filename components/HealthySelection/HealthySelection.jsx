@@ -1,13 +1,19 @@
 import CardTitle from 'components/CardTitle';
 import FoodCard from 'components/FoodCard';
+import LoadingPanel from 'components/LoadingPanel';
 import { getFoodById, getHealthyUnflaggedFoods } from 'interfaces/api/foods';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
+import { usePromiseTracker } from 'react-promise-tracker';
 
 const HealthySelection = ({ classes }) => {
   const [unflaggedFoods, setUnflaggedFoods] = useState();
   const [index, setIndex] = useState();
   const [food, setFood] = useState();
+  const { promiseInProgress: loadingUnflaggedFoods } = usePromiseTracker({ area: 'getFlaggedFoods' });
+  const { promiseInProgress: loadingFoodData } = usePromiseTracker({ area: 'getFoodData' });
+
+  const loading = loadingFoodData || loadingUnflaggedFoods || !food;
 
   useEffect(() => {
     (async () => {
@@ -24,10 +30,11 @@ const HealthySelection = ({ classes }) => {
 
   return (
     <>
-      <div className={classes.card}>
+      {loading && <LoadingPanel/>}
+      {food && <div className={classes.card}>
         <CardTitle title='Food'/>
         <FoodCard food={food}/>
-      </div>
+      </div>}
     </>
   );
 };
