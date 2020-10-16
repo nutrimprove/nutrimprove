@@ -92,17 +92,17 @@ const setHealthyFlag = async (foodId, flag) => {
 
 const getHealthyFoods = async () => {
   const FoodsConnection = await getFoodsConnection();
-  FoodsConnection.find({ healthy: true });
+  return FoodsConnection.find({ healthy: true }, { _id: 0, foodCode: 1 });
 };
 
 const getNonHealthyFoods = async () => {
   const FoodsConnection = await getFoodsConnection();
-  FoodsConnection.find({ healthy: false });
+  return FoodsConnection.find({ healthy: false }, { _id: 0, foodCode: 1 });
 };
 
 const getHealthyUnflaggedFoods = async () => {
   const FoodsConnection = await getFoodsConnection();
-  FoodsConnection.find({ healthy: null });
+  return FoodsConnection.find({ healthy: null }, { _id: 0, foodCode: 1 });
 };
 
 export {

@@ -58,7 +58,7 @@ const getFoodsByNutrient = ({ nutrient, limit = 100, filters }) => {
 
 const setHealthyFlag = (foodId, flag) => {
   return trackPromise(
-    postRequest(`${foodApiEndpoint}/healthyFlag`, { foodId, flag }),
+    postRequest(`${foodApiEndpoint}/sethealthyflag`, { foodId, flag }),
     'setHealthyFlag',
   );
 };
@@ -72,14 +72,14 @@ const getHealthyFoods = () => {
 
 const getNonHealthyFoods = () => {
   return trackPromise(
-    getRequest(`${foodApiEndpoint}/nonHealthy`),
+    getRequest(`${foodApiEndpoint}/nonhealthy`),
     'getFlaggedFoods',
   );
 };
 
 const getHealthyUnflaggedFoods = () => {
   return trackPromise(
-    getRequest(`${foodApiEndpoint}/healthyUnflagged`),
+    getRequest(`${foodApiEndpoint}/healthyunflagged`),
     'getFlaggedFoods',
   );
 };
