@@ -34,12 +34,17 @@ const menus = [
       { label: 'View...', link: '/lists/view' },
     ],
   },
+  {
+    name: 'Healthy Selection',
+    link: '/healthy-selection',
+    restrict: true,
+  },
+  {
+    name: 'Admin Panel',
+    link: '/admin-panel',
+    restrict: true,
+  },
 ];
-
-const adminOption = {
-  name: 'Admin Panel',
-  link: '/admin-panel',
-};
 
 const MainNav = ({ classes }) => {
   const userDetails = useSelector(({ globalState }) => globalState.userDetails);
@@ -66,12 +71,11 @@ const MainNav = ({ classes }) => {
   return (
     <AppBar position='static' classes={{ root: classes.menuBar }}>
       <div className={classes.container}>
-        {menus.map(menu => (
-          <MenuButton key={menu.name} menu={menu} disabled={disabled}/>
-        ))}
-        {isAdmin(userDetails) && (
-          <MenuButton menu={adminOption}/>
-        )}
+        {menus.map(menu => {
+          if(!menu.restrict || isAdmin(userDetails)) {
+            return <MenuButton key={menu.name} menu={menu} disabled={disabled}/>
+          }
+        })}
         <RightNavContent />
       </div>
     </AppBar>
