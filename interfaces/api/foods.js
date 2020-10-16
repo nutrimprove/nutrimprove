@@ -63,6 +63,27 @@ const setHealthyFlag = (foodId, flag) => {
   );
 };
 
+const getHealthyFoods = () => {
+  return trackPromise(
+    getRequest(`${foodApiEndpoint}/healthy`),
+    'getFlaggedFoods',
+  );
+};
+
+const getNonHealthyFoods = () => {
+  return trackPromise(
+    getRequest(`${foodApiEndpoint}/nonHealthy`),
+    'getFlaggedFoods',
+  );
+};
+
+const getHealthyUnflaggedFoods = () => {
+  return trackPromise(
+    getRequest(`${foodApiEndpoint}/healthyUnflagged`),
+    'getFlaggedFoods',
+  );
+};
+
 export {
   getFoodsByCategories,
   getFoodById,
@@ -72,4 +93,7 @@ export {
   getFoodsByNutrient,
   getNutrients,
   setHealthyFlag,
+  getHealthyFoods,
+  getNonHealthyFoods,
+  getHealthyUnflaggedFoods,
 };

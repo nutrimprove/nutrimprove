@@ -90,6 +90,21 @@ const setHealthyFlag = async (foodId, flag) => {
   );
 };
 
+const getHealthyFoods = async () => {
+  const FoodsConnection = await getFoodsConnection();
+  FoodsConnection.find({ healthy: true });
+};
+
+const getNonHealthyFoods = async () => {
+  const FoodsConnection = await getFoodsConnection();
+  FoodsConnection.find({ healthy: false });
+};
+
+const getHealthyUnflaggedFoods = async () => {
+  const FoodsConnection = await getFoodsConnection();
+  FoodsConnection.find({ healthy: null });
+};
+
 export {
   getFoodsByCategories,
   getFoodById,
@@ -99,4 +114,7 @@ export {
   getNutrients,
   getFoodsByNutrient,
   setHealthyFlag,
+  getHealthyFoods,
+  getNonHealthyFoods,
+  getHealthyUnflaggedFoods,
 };
