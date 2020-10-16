@@ -1,17 +1,23 @@
 import CardTitle from 'components/CardTitle';
 import FoodCard from 'components/FoodCard';
-import { getHealthyUnflaggedFoods } from 'interfaces/api/foods';
+import { getFoodById, getHealthyUnflaggedFoods } from 'interfaces/api/foods';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 
 const HealthySelection = ({ classes }) => {
+  const [unflaggedFoods, setUnflaggedFoods] = useState();
+  const [index, setIndex] = useState();
   const [food, setFood] = useState();
 
   useEffect(() => {
     (async () => {
       const results = await getHealthyUnflaggedFoods();
       if (results) {
-        console.log(`=== HealthySelection.jsx #14 === ( results ) =======>`, results);
+        setUnflaggedFoods(results);
+        setIndex(0);
+        // Fetch first unflagged food
+        const currentFood = await getFoodById(results[0].foodCode);
+        setFood(currentFood);
       }
     })();
   }, []);
