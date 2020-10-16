@@ -13,7 +13,7 @@ const ButtonWithSpinner = ({
                              className,
                            }) => (
   <MainButton action={action} disabled={disabled} colour={colour} className={className}>
-    {disabled ? disabledText : children}
+    {disabled && disabledText ? disabledText : children}
     <LoadingSpinner context={context} colour='white'/>
   </MainButton>
 );
