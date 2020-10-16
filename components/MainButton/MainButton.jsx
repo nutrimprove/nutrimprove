@@ -10,10 +10,17 @@ const MainButton = ({
                       children,
                       className,
                       datakey,
-                    }) => (
+                    }) => {
+  let buttonClasses = classes.button;
+  if (colour.toLowerCase() === 'green') {
+    buttonClasses = [classes.button, classes.greenButton].join(' ');
+    colour = 'primary';
+  }
+
+  return (
   <>
     <Button
-      className={className ? [classes.button, className].join(' ') : classes.button}
+      className={className ? [buttonClasses, className].join(' ') : buttonClasses}
       variant='contained'
       color={colour}
       onClick={action}
@@ -23,7 +30,7 @@ const MainButton = ({
       {children}
     </Button>
   </>
-);
+)};
 
 MainButton.propTypes = {
   action: PropTypes.func,

@@ -7,4 +7,10 @@ export default {
     fontSize: '0.7em',
     minWidth: 120,
   },
+  greenButton: {
+    backgroundColor: 'green',
+    '&:hover': {
+      backgroundColor: 'darkgreen',
+    },
+  },
 };
