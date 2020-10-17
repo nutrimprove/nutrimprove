@@ -7,4 +7,7 @@ export default {
   search: {
     margin: 0,
   },
+  filters: {
+    margin: 'auto 35px',
+  },
 };
