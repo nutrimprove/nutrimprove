@@ -82,6 +82,29 @@ const getFoodsByNutrient = async (nutrient, limit, filters) => {
   return FoodsConnection.find(query, projection).sort(sort).limit(numberOfRecords);
 };
 
+const setHealthyFlag = async (foodId, flag) => {
+  const FoodsConnection = await getFoodsConnection();
+  return FoodsConnection.findOneAndUpdate(
+    { foodCode: foodId },
+    [{ $set: { healthy: flag } }],
+  );
+};
+
+const getHealthyFoods = async () => {
+  const FoodsConnection = await getFoodsConnection();
+  return FoodsConnection.find({ healthy: true }, { _id: 0, foodCode: 1 });
+};
+
+const getNonHealthyFoods = async () => {
+  const FoodsConnection = await getFoodsConnection();
+  return FoodsConnection.find({ healthy: false }, { _id: 0, foodCode: 1 });
+};
+
+const getHealthyUnflaggedFoods = async () => {
+  const FoodsConnection = await getFoodsConnection();
+  return FoodsConnection.find({ healthy: null }, { _id: 0, foodCode: 1 });
+};
+
 export {
   getFoodsByCategories,
   getFoodById,
@@ -90,4 +113,8 @@ export {
   getAllFoodNames,
   getNutrients,
   getFoodsByNutrient,
+  setHealthyFlag,
+  getHealthyFoods,
+  getNonHealthyFoods,
+  getHealthyUnflaggedFoods,
 };

@@ -1,10 +1,6 @@
-import { FormControlLabel } from '@material-ui/core';
-import FormControl from '@material-ui/core/FormControl';
-import FormLabel from '@material-ui/core/FormLabel';
-import Radio from '@material-ui/core/Radio';
-import RadioGroup from '@material-ui/core/RadioGroup';
 import CompareModal from 'components/CompareModal';
 import LoadingPanel from 'components/LoadingPanel';
+import RadioOptions from 'components/RadioOptions';
 import ResultsTable from 'components/ResultsTable';
 import SearchField from 'components/SearchField';
 import { getFoodsFromRecommendation, parseFoodDetails } from 'helpers/utils';
@@ -116,27 +112,8 @@ const ViewRecommendations = ({ recommendations, title, classes }) => {
                      buttonText='Filter'
                      className={classes.search}
         />
-        <div className={classes.columnFilters}>
-          <FormControl component='fieldset'>
-            <FormLabel>Show from:</FormLabel>
-            <RadioGroup
-              className={classes.radioGroup}
-              aria-label='filterColumn'
-              name='filterColumn'
-              value={columnFilter}
-              onChange={handleColumnFilterChange}
-            >
-              {columnOptions.map(option => (
-                <FormControlLabel
-                  key={option}
-                  value={option}
-                  control={<Radio color='primary' fontSize='small' size='small'/>}
-                  label={option}
-                />
-              ))}
-            </RadioGroup>
-          </FormControl>
-        </div>
+        <RadioOptions options={columnOptions} onChange={handleColumnFilterChange} initialValue={columnFilter}
+                      inline={false} label='Show from:'/>
       </div>
       {!recommendations && <LoadingPanel/>}
       {filteredList && filteredList.list && <ResultsTable data={filteredList.list}
