@@ -3,13 +3,16 @@ export default {
     display: 'block',
     position: 'relative',
     marginBottom: 20,
+    marginLeft: 16,
   },
-  content: {
+  inline: {
     display: 'inline',
+  },
+  inlineLabel: {
+    marginRight: 10,
   },
   radioGroup: {
     display: 'inline',
     textTransform: 'capitalize',
-    marginLeft: 16,
   },
 };

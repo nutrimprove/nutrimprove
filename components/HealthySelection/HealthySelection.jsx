@@ -100,7 +100,8 @@ const HealthySelection = ({ classes }) => {
 
   return (
     <div className={classes.container}>
-      <RadioOptions options={Object.values(flags)} initialValue={flagQuery} onChange={handleFlagQueryChange}/>
+      <RadioOptions label='Query:' options={Object.values(flags)} initialValue={flagQuery}
+                    onChange={handleFlagQueryChange}/>
       {loading && !noMoreFoods && <LoadingPanel/>}
       {food && foods && !noMoreFoods && <div className={classes.content}>
         <div className={classes.card}>
@@ -114,11 +115,11 @@ const HealthySelection = ({ classes }) => {
         <div className={classes.options}>
           <div className={classes.status}>Current flag: <HealthyFlagStatus/></div>
           <MainButton className={classes.button} action={setHealthy} colour='green'
-                             disabled={loadingFoodData}>
+                      disabled={loadingFoodData}>
             Healthy
           </MainButton>
           <MainButton className={classes.button} action={setNonHealthy} disabled={loadingFoodData}
-                             colour='secondary'>
+                      colour='secondary'>
             Not healthy
           </MainButton>
           <MainButton className={classes.button} action={unflag} disabled={loadingFoodData}>

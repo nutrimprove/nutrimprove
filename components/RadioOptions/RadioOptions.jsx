@@ -6,11 +6,11 @@ import RadioGroup from '@material-ui/core/RadioGroup/RadioGroup';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-const RadioOptions = ({ initialValue, options, onChange, classes }) => {
+const RadioOptions = ({ label, initialValue, options, onChange, inline = true, classes }) => {
   return (
     <div className={classes.container}>
-      <FormControl component='fieldset' className={classes.content}>
-        <FormLabel>Query:</FormLabel>
+      <FormControl component='fieldset' className={inline && classes.inline}>
+        <FormLabel className={inline && classes.inlineLabel}>{label}</FormLabel>
         <RadioGroup
           className={classes.radioGroup}
           value={initialValue}
@@ -32,8 +32,10 @@ const RadioOptions = ({ initialValue, options, onChange, classes }) => {
 
 RadioOptions.propTypes = {
   initialValue: PropTypes.string,
+  label: PropTypes.string,
   options: PropTypes.array.isRequired,
   onChange: PropTypes.func,
+  inline: PropTypes.bool,
   classes: PropTypes.object.isRequired,
 };
 
