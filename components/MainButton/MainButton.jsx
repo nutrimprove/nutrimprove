@@ -6,6 +6,7 @@ const MainButton = ({
                       classes,
                       action,
                       disabled,
+                      disabledText,
                       colour = 'primary',
                       children,
                       className,
@@ -18,23 +19,25 @@ const MainButton = ({
   }
 
   return (
-  <>
-    <Button
-      className={className ? [buttonClasses, className].join(' ') : buttonClasses}
-      variant='contained'
-      color={colour}
-      onClick={action}
-      disabled={disabled}
-      data-key={datakey}
-    >
-      {children}
-    </Button>
-  </>
-)};
+    <>
+      <Button
+        className={className ? [buttonClasses, className].join(' ') : buttonClasses}
+        variant='contained'
+        color={colour}
+        onClick={action}
+        disabled={disabled}
+        data-key={datakey}
+      >
+        {disabled && disabledText ? disabledText : children}
+      </Button>
+    </>
+  );
+};
 
 MainButton.propTypes = {
   action: PropTypes.func,
   disabled: PropTypes.bool,
+  disabledText: PropTypes.string,
   children: PropTypes.any,
   classes: PropTypes.object.isRequired,
   className: PropTypes.string,
