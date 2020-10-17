@@ -1,5 +1,8 @@
 export default {
   container: {
+    textAlign: 'center',
+  },
+  content: {
     display: 'inline-flex',
   },
   card: {
@@ -16,9 +19,7 @@ export default {
   options: {
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center',
-    alignContent: 'center',
-    flexWrap: 'wrap',
+    alignSelf: 'center',
   },
   button: {
     margin: 5,

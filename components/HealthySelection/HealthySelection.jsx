@@ -58,9 +58,9 @@ const HealthySelection = ({ classes }) => {
   };
 
   return (
-    <>
+    <div className={classes.container}>
       {loading && !noMoreFoods && <LoadingPanel/>}
-      {food && unflaggedFoods && !noMoreFoods && <div className={classes.container}>
+      {food && unflaggedFoods && !noMoreFoods && <div className={classes.content}>
         <div className={classes.card}>
           <CardTitle title='Food'>
             <span className={classes.foodLoading}>
@@ -90,7 +90,7 @@ const HealthySelection = ({ classes }) => {
         </div>
       </div>}
       {noMoreFoods && <div>No more foods!!</div>}
-    </>
+    </div>
   );
 };
 
