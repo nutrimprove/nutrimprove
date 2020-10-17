@@ -1,17 +1,31 @@
-import ButtonWithSpinner from 'components/ButtonWithSpinner';
 import CardTitle from 'components/CardTitle';
 import FoodCard from 'components/FoodCard';
 import LoadingPanel from 'components/LoadingPanel';
 import LoadingSpinner from 'components/LoadingSpinner';
-import { getFoodById, getHealthyUnflaggedFoods, setHealthyFlag } from 'interfaces/api/foods';
+import MainButton from 'components/MainButton';
+import RadioOptions from 'components/RadioOptions';
+import {
+  getFoodById,
+  getHealthyFoods,
+  getHealthyUnflaggedFoods,
+  getNonHealthyFoods,
+  setHealthyFlag,
+} from 'interfaces/api/foods';
 import PropTypes from 'prop-types';
 import React, { useEffect, useRef, useState } from 'react';
 import { usePromiseTracker } from 'react-promise-tracker';
 
+const flags = {
+  UNFLAGGED: 'Unflagged',
+  HEALTHY: 'Healthy',
+  NONHEALTHY: 'Non Healthy',
+};
+
 const HealthySelection = ({ classes }) => {
-  const [unflaggedFoods, setUnflaggedFoods] = useState();
+  const [foods, setFoods] = useState();
   const [food, setFood] = useState();
   const [noMoreFoods, setNoMoreFoods] = useState(false);
+  const [flagQuery, setFlagQuery] = useState(flags.UNFLAGGED);
   const { promiseInProgress: loadingUnflaggedFoods } = usePromiseTracker({ area: 'getFlaggedFoods' });
   const { promiseInProgress: loadingFoodData } = usePromiseTracker({ area: 'getFoodData' });
   const foodIndex = useRef(0);
@@ -19,22 +33,44 @@ const HealthySelection = ({ classes }) => {
 
   useEffect(() => {
     (async () => {
-      const results = await getHealthyUnflaggedFoods();
-      setUnflaggedFoods(results);
+      let results;
+      switch (flagQuery) {
+        case flags.UNFLAGGED:
+          results = await getHealthyUnflaggedFoods();
+          break;
+        case flags.HEALTHY:
+          results = await getHealthyFoods();
+          break;
+        case flags.NONHEALTHY:
+          results = await getNonHealthyFoods();
+      }
+      setFoods(results);
     })();
-  }, []);
+  }, [flagQuery]);
 
   useEffect(() => {
     (async () => {
-      if (unflaggedFoods) {
+      if (foods) {
         await loadFood();
       }
     })();
-  }, [unflaggedFoods]);
+  }, [foods]);
+
+  const HealthyFlagStatus = () => {
+    if (food.healthy === null || typeof food.healthy === 'undefined') {
+      return <span className={classes.unFlagged}>Not set</span>;
+    }
+    if (food.healthy) {
+      return <span className={classes.healthy}>Healthy</span>;
+    }
+    if (food.healthy === false) {
+      return <span className={classes.nonHealthy}>Non healthy</span>;
+    }
+  };
 
   const loadFood = async () => {
-    if (foodIndex.current < unflaggedFoods.length) {
-      const currentFood = await getFoodById(unflaggedFoods[foodIndex.current].foodCode);
+    if (foodIndex.current < foods.length) {
+      const currentFood = await getFoodById(foods[foodIndex.current].foodCode);
       setFood(currentFood);
       foodIndex.current = foodIndex.current + 1;
     } else {
@@ -57,10 +93,16 @@ const HealthySelection = ({ classes }) => {
     loadFood();
   };
 
+  const handleFlagQueryChange = e => {
+    setFood(null);
+    setFlagQuery(e.target.value);
+  };
+
   return (
     <div className={classes.container}>
+      <RadioOptions options={Object.values(flags)} initialValue={flagQuery} onChange={handleFlagQueryChange}/>
       {loading && !noMoreFoods && <LoadingPanel/>}
-      {food && unflaggedFoods && !noMoreFoods && <div className={classes.content}>
+      {food && foods && !noMoreFoods && <div className={classes.content}>
         <div className={classes.card}>
           <CardTitle title='Food'>
             <span className={classes.foodLoading}>
@@ -70,23 +112,26 @@ const HealthySelection = ({ classes }) => {
           <FoodCard food={food}/>
         </div>
         <div className={classes.options}>
-          <ButtonWithSpinner className={classes.button} context='' action={setHealthy} colour='green' disabled={loadingFoodData}>
+          <div className={classes.status}>Current flag: <HealthyFlagStatus/></div>
+          <MainButton className={classes.button} action={setHealthy} colour='green'
+                             disabled={loadingFoodData}>
             Healthy
-          </ButtonWithSpinner>
-          <ButtonWithSpinner className={classes.button} context='' action={setNonHealthy} disabled={loadingFoodData} colour='secondary'>
+          </MainButton>
+          <MainButton className={classes.button} action={setNonHealthy} disabled={loadingFoodData}
+                             colour='secondary'>
             Not healthy
-          </ButtonWithSpinner>
-          <ButtonWithSpinner className={classes.button} context='' action={unflag} disabled={loadingFoodData}>
+          </MainButton>
+          <MainButton className={classes.button} action={unflag} disabled={loadingFoodData}>
             Clear healthy flag
-          </ButtonWithSpinner>
-          <ButtonWithSpinner
+          </MainButton>
+          <MainButton
             className={classes.button}
             action={loadFood}
-            disabled={foodIndex.current >= unflaggedFoods.length - 1 || loadingFoodData}
+            disabled={foodIndex.current >= foods.length - 1 || loadingFoodData}
             disabledText={!loadingFoodData && 'No more foods'}
           >
             Skip
-          </ButtonWithSpinner>
+          </MainButton>
         </div>
       </div>}
       {noMoreFoods && <div>No more foods!!</div>}

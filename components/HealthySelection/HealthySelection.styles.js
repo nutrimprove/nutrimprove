@@ -28,4 +28,20 @@ export default {
   foodLoading: {
     position: 'absolute',
   },
+  status: {
+    margin: '15px 5px',
+    fontWeight: 'bold',
+    border: 'solid 1px lightgrey',
+    borderRadius: 5,
+    padding: 10,
+  },
+  unFlagged: {
+    fontWeight: 'normal',
+  },
+  healthy: {
+    color: 'green',
+  },
+  nonHealthy: {
+    color: 'red',
+  },
 };
