@@ -30,18 +30,16 @@ const menus = [
   {
     name: 'Lists',
     options: [
-      { label: 'Add new...', link: '/lists/add' },
+      { label: 'Add New...', link: '/lists/add' },
       { label: 'View...', link: '/lists/view' },
     ],
   },
   {
-    name: 'Healthy Selection',
-    link: '/healthy-selection',
-    restrict: true,
-  },
-  {
-    name: 'Admin Panel',
-    link: '/admin-panel',
+    name: 'Admin',
+    options: [
+      { label: 'Healthy Selection...', link: '/healthy-selection' },
+      { label: 'User Management...', link: '/admin-panel' },
+    ],
     restrict: true,
   },
 ];
@@ -72,11 +70,11 @@ const MainNav = ({ classes }) => {
     <AppBar position='static' classes={{ root: classes.menuBar }}>
       <div className={classes.container}>
         {menus.map(menu => {
-          if(!menu.restrict || isAdmin(userDetails)) {
-            return <MenuButton key={menu.name} menu={menu} disabled={disabled}/>
+          if (!menu.restrict || isAdmin(userDetails)) {
+            return <MenuButton key={menu.name} menu={menu} disabled={disabled}/>;
           }
         })}
-        <RightNavContent />
+        <RightNavContent/>
       </div>
     </AppBar>
   );
