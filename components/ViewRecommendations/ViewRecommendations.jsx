@@ -113,7 +113,7 @@ const ViewRecommendations = ({ recommendations, title, classes }) => {
                      className={classes.search}
         />
         <RadioOptions options={columnOptions} onChange={handleColumnFilterChange} initialValue={columnFilter}
-                      inline={false} label='Show from:'/>
+                      inline={false} label='Show from:' className={classes.filters}/>
       </div>
       {!recommendations && <LoadingPanel/>}
       {filteredList && filteredList.list && <ResultsTable data={filteredList.list}
