@@ -113,7 +113,7 @@ const HealthySelection = ({ classes }) => {
           <FoodCard food={food}/>
         </div>
         <div className={classes.options}>
-          <div className={classes.status}>Current flag: <HealthyFlagStatus/></div>
+          <div className={classes.status}>Food status: <HealthyFlagStatus/></div>
           <MainButton className={classes.button} action={setHealthy} colour='green'
                       disabled={loadingFoodData}>
             Healthy
