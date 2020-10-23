@@ -38,6 +38,7 @@ const menus = [
     name: 'Admin',
     options: [
       { label: 'Healthy Selection...', link: '/healthy-selection' },
+      { label: 'Contributors Status...', link: '/contributors-status' },
       { label: 'User Management...', link: '/admin-panel' },
     ],
     restrict: true,
