@@ -5,7 +5,7 @@ const ROLES = {
   CONTRIBUTOR: 100,
   DEMO_USER: 200,
 };
-const MIN_WIDTH = 1060;
+const MIN_WIDTH = 1100;
 const INPUT_TRIGGER_TIME = 300;
 const CATEGORIES = {
   all: [
