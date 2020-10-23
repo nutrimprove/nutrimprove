@@ -1,1 +1,3 @@
-export { default } from './ContributorsStatus';
+import ContributorsStatus from './ContributorsStatus';
+
+export default ContributorsStatus;

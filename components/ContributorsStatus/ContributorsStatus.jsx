@@ -20,7 +20,6 @@ const ContributorsStatus = () => {
             points: user.points,
             'last seen': new Date(user.updatedAt).toLocaleDateString(),
           }));
-          console.log(`=== ContributorsStatus.jsx #22 === ( users ) =======>`, formattedUsers);
         })(),
         (async () => {
           recommendations = await getAllRecommendations();
@@ -31,8 +30,7 @@ const ContributorsStatus = () => {
         recommendations.forEach(rec => {
           rec.contributors.forEach(({ id }) => {
             const user = formattedUsers.find(user => user.email === id);
-            user.recommendationCount = user.recommendationCount || 0;
-            user.recommendationCount = user.recommendationCount += 1;
+            user.recommendations = user.recommendations ? user.recommendations += 1 : 1;
           });
         });
 
