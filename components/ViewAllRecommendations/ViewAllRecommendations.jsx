@@ -17,7 +17,7 @@ const ViewAllRecommendations = () => {
   return (
     <>
       {/* <Filters/> */}
-      <ViewRecommendations title={title} recommendations={recommendations}/>
+      <ViewRecommendations title={title} recommendations={recommendations} showContributorsFilter={true}/>
     </>
   );
 };

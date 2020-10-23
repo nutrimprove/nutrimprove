@@ -36,7 +36,7 @@ const getContributors = recommendations => {
 
 const hasFood = (foods, food) => !!foods.some(({ foodName }) => foodName === food.foodName);
 
-const ViewRecommendations = ({ recommendations, title, classes }) => {
+const ViewRecommendations = ({ recommendations, title, showContributorsFilter = false, classes }) => {
   const userDetails = useSelector(({ globalState }) => globalState.userDetails);
   const [list, setList] = useState();
   const [filteredList, setFilteredList] = useState();
@@ -149,7 +149,7 @@ const ViewRecommendations = ({ recommendations, title, classes }) => {
         <RadioOptions options={columnOptions} onChange={handleColumnFilterChange} initialValue={columnFilter}
                       inline={false} label='Show from:' className={classes.filters}/>
       </div>
-      {isAdmin(userDetails) && <div>
+      {showContributorsFilter && isAdmin(userDetails) && <div>
         <Link component='button' onClick={() => setShowContributors(!showContributors)}
               className={classes.contributorsLabel}>
           {showContributors ? 'Hide contributors' : 'Show contributors'}
@@ -185,6 +185,7 @@ const ViewRecommendations = ({ recommendations, title, classes }) => {
 ViewRecommendations.propTypes = {
   title: PropTypes.string,
   recommendations: PropTypes.array,
+  showContributorsFilter: PropTypes.bool,
   classes: PropTypes.object.isRequired,
 };
 
