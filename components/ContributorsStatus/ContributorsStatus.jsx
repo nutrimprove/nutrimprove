@@ -21,6 +21,7 @@ const ContributorsStatus = () => {
           formattedUsers = users.map(user => ({
             email: user.email,
             points: user.points,
+            recommendations: 0,
             'last seen': new Date(user.updatedAt).toLocaleDateString(),
           }));
         })(),
@@ -33,7 +34,7 @@ const ContributorsStatus = () => {
         recommendations.forEach(rec => {
           rec.contributors.forEach(({ id }) => {
             const user = formattedUsers.find(user => user.email === id);
-            user.recommendations = user.recommendations ? user.recommendations += 1 : 1;
+            user.recommendations = user.recommendations += 1;
           });
         });
 
