@@ -10,4 +10,9 @@ export default {
   filters: {
     margin: 'auto 35px',
   },
+  contributorsLabel: {
+    width: '100%',
+    textAlign: 'left',
+    margin: '0 0 10px 20px',
+  },
 };
