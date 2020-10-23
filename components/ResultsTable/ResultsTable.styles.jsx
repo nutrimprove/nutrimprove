@@ -6,7 +6,7 @@ export default {
     display: 'unset',
     '& .MuiTableBody-root .MuiTableCell-root': {
       padding: '11px 16px',
-      maxWidth: 500,
+      maxWidth: 430,
     },
   },
   scrollable: {
