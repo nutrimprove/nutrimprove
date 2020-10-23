@@ -1,11 +1,14 @@
+import LoadingPanel from 'components/LoadingPanel';
 import ResultsTable from 'components/ResultsTable';
 import { getAllRecommendations } from 'interfaces/api/recommendations';
 import { getAllUsers } from 'interfaces/api/users';
-import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
+import { usePromiseTracker } from 'react-promise-tracker';
 
 const ContributorsStatus = () => {
   const [contributors, setContributors] = useState();
+  const { promiseInProgress: loadingUsers } = usePromiseTracker({ area: 'getall' });
+  const { promiseInProgress: loadingsRecs } = usePromiseTracker({ area: 'getAllRecommendations' });
 
   useEffect(() => {
     (async () => {
@@ -41,6 +44,7 @@ const ContributorsStatus = () => {
 
   return (
     <>
+      {(loadingUsers || loadingsRecs) && <LoadingPanel/>}
       {contributors && <ResultsTable data={contributors} title='Contributors' sortColumns={[0, 1]}/>}
     </>
   );
