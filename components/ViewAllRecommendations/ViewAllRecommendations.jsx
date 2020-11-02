@@ -1,4 +1,4 @@
-import ViewRecommendations from 'components/ViewRecommendations/ViewRecommendations';
+import ViewRecommendations from 'components/ViewRecommendations';
 import { getAllRecommendations } from 'interfaces/api/recommendations';
 import React, { useEffect, useState } from 'react';
 
@@ -17,7 +17,7 @@ const ViewAllRecommendations = () => {
   return (
     <>
       {/* <Filters/> */}
-      <ViewRecommendations title={title} recommendations={recommendations}/>
+      <ViewRecommendations title={title} recommendations={recommendations} showContributorsFilter={true}/>
     </>
   );
 };

@@ -1,20 +1,24 @@
 import Paper from '@material-ui/core/Paper';
 import Footer from 'components/Footer';
 import LoadingPanel from 'components/LoadingPanel';
-import { isApproved, isLoggedIn } from 'helpers/userUtils';
+import { isAdmin, isApproved, isLoggedIn } from 'helpers/userUtils';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { usePromiseTracker } from 'react-promise-tracker';
+import { useSelector } from 'react-redux';
 import { useAuth } from 'react-use-auth';
 
 const noAuthPages = ['/', '/auth0_callback', '/about', '/info'];
 
+
 const PageContent = ({ children, classes }) => {
+  const userDetails = useSelector(({ globalState }) => globalState.userDetails);
   const { promiseInProgress } = usePromiseTracker();
   const router = useRouter();
   const { isAuthenticated } = useAuth();
-  const enablePage = (isLoggedIn() && isApproved() && isAuthenticated) || noAuthPages.includes(router.route);
+  const accessDenied = router.route.includes('/admin/') && !isAdmin(userDetails);
+  const enablePage = ((isLoggedIn() && isApproved() && isAuthenticated) || noAuthPages.includes(router.route)) && !accessDenied;
 
   if (typeof window !== 'undefined') {
     if (enablePage) {

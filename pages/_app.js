@@ -2,6 +2,7 @@ import Header from 'components/Header';
 import LoaderContainer from 'components/LoaderContainer';
 import PageContent from 'components/PageContent';
 import * as gtag from 'helpers/analytics';
+import Head from 'next/head';
 import Router, { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import React, { useEffect } from 'react';
@@ -27,20 +28,25 @@ const MyApp = ({ Component, pageProps, store }) => {
   }, []);
 
   return (
-    <AuthProvider
-      navigate={router.push}
-      auth0_domain={process.env.AUTH0_DOMAIN}
-      auth0_client_id={process.env.AUTH0_CLIENT_ID}
-    >
-      <Provider store={store}>
-        <LoaderContainer>
-          {hasHeader ? <Header/> : null}
-          <PageContent>
-            <Component {...pageProps}/>
-          </PageContent>
-        </LoaderContainer>
-      </Provider>
-    </AuthProvider>
+    <>
+      <Head>
+        <title>Nutrimprove</title>
+      </Head>
+      <AuthProvider
+        navigate={router.push}
+        auth0_domain={process.env.AUTH0_DOMAIN}
+        auth0_client_id={process.env.AUTH0_CLIENT_ID}
+      >
+        <Provider store={store}>
+          <LoaderContainer>
+            {hasHeader ? <Header/> : null}
+            <PageContent>
+              <Component {...pageProps}/>
+            </PageContent>
+          </LoaderContainer>
+        </Provider>
+      </AuthProvider>
+    </>
   );
 };
 

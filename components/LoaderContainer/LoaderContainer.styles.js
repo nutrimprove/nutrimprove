@@ -1,6 +1,8 @@
+import { MIN_WIDTH } from 'helpers/constants';
+
 export default {
   container: {
     backgroundColor: 'white',
-    minWidth: 1060,
+    minWidth: MIN_WIDTH,
   },
 };

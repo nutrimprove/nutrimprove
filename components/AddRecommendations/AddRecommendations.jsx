@@ -137,6 +137,7 @@ const AddRecommendations = ({ classes }) => {
                             context='recommendation'
                             onFoodLoad={setRecommendedFood}
                             className={classes.card}
+                            searchLabel='Type recommendation'
         />
       </div>
       <ActionsPanel food={food} recommendedFood={recommendedFood} status={status}>

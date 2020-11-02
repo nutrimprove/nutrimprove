@@ -9,13 +9,14 @@ const LoadingSpinner = ({
                           context,
                           force = false,
                           delay = 0,
+                          size = 22,
                         }) => {
   const { promiseInProgress } = usePromiseTracker({ area: context, delay });
 
   return (
     (promiseInProgress || force) && (
       <div className={classes.spinner}>
-        <Loader type='Oval' color={colour} height={22} width={22}/>
+        <Loader type='Oval' color={colour} height={size} width={size}/>
       </div>
     )
   );
@@ -27,6 +28,7 @@ LoadingSpinner.propTypes = {
   context: PropTypes.string,
   force: PropTypes.bool,
   delay: PropTypes.number,
+  size: PropTypes.number,
 };
 
 export default LoadingSpinner;
