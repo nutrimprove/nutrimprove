@@ -31,6 +31,9 @@ export default {
     borderRadius: '0 0 7px 7px',
     marginLeft: 1,
     boxShadow: '2px 2px 8px 0px rgba(0,0,0,0.3)',
+    '& ul': {
+      outline: 'none',
+    },
   },
   divider: {
     border: '0 0 1px 0',
