@@ -10,8 +10,8 @@ import React from 'react';
 const RadioOptions = ({ label, initialValue, options, onChange, inline = true, className, classes }) => {
   return (
     <div className={clsx(classes.container, className)}>
-      <FormControl component='fieldset' className={inline && classes.inline}>
-        <FormLabel className={inline && classes.inlineLabel}>{label}</FormLabel>
+      <FormControl component='fieldset' className={inline ? classes.inline : null}>
+        <FormLabel className={inline ? classes.inlineLabel : null}>{label}</FormLabel>
         <RadioGroup
           className={classes.radioGroup}
           value={initialValue}
