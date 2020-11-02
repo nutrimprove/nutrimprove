@@ -51,7 +51,7 @@ const ResultsTable = ({ classes, className, data, onRowClick, title, titleIcon, 
 
   return (
     <div className={clsx(classes.table, scrollable ? classes.scrollable : null, className)}>
-      {title && <Typography variant='body1' align='center' className={classes.title}>
+      {!!title && <Typography variant='body1' align='center' className={classes.title}>
         {title}<span className={classes.titleIcon}>{titleIcon}</span>
       </Typography>}
       {columns && <Paper className={classes.results}>

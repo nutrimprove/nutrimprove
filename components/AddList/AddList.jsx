@@ -19,7 +19,7 @@ const AddList = ({ classes }) => {
   const [selectedFood, setSelectedFood] = useState();
   const [addButtonText, setAddButtonText] = useState('Select food');
   const [foodList, setFoodList] = useState();
-  const [listName, setListName] = useState();
+  const [listName, setListName] = useState('');
   const [quantity, setQuantity] = useState(100);
   const user = useSelector(({ globalState }) => globalState.userDetails.email);
 
