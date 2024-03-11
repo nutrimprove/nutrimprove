@@ -61,5 +61,3 @@ todo.md
 coverage
 lib-cov
 .nyc_output
-cypress/integration/examples
-cypress.env.json
