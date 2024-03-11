@@ -13,7 +13,7 @@ import { useSelector } from 'react-redux';
 
 
 const PageContent = ({ children, classes }) => {
-  // const userDetails = useSelector(({ globalState }) => globalState.userDetails);
+  const userDetails = useSelector(({ globalState }) => globalState.userDetails);
   const { promiseInProgress } = usePromiseTracker();
   const router = useRouter();
   // const { isAuthenticated } = useAuth();

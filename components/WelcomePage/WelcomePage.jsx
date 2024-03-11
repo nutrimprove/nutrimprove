@@ -8,6 +8,7 @@ import SectionHeader from '../SectionHeader';
 
 const WelcomePage = () => {
   // const { isAuthenticated } = useAuth();
+  const isAuthenticated = true;
 
   const content = {
     title: `Welcome to ${PROJECT_NAME}`,
@@ -15,17 +16,18 @@ const WelcomePage = () => {
   };
 
   // if (isAuthenticated()) {
-  //   if (!emailVerified()) {
-  //     content.subtitle = 'Please verify your email account';
-  //     content.messages = [
-  //       'Follow the link provided in the verification email we sent you',
-  //     ];
-  //   } else {
-  //     content.subtitle = '';
-  //   }
-  // } else {
-  //   content.subtitle = 'Please login to be able to use the website!';
-  // }
+  if (isAuthenticated) {
+    if (!emailVerified()) {
+      content.subtitle = 'Please verify your email account';
+      content.messages = [
+        'Follow the link provided in the verification email we sent you',
+      ];
+    } else {
+      content.subtitle = '';
+    }
+  } else {
+    content.subtitle = 'Please login to be able to use the website!';
+  }
 
   return (
     <>
