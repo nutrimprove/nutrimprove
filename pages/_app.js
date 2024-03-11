@@ -7,7 +7,7 @@ import Router, { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import React, { useEffect } from 'react';
 import { Provider } from 'react-redux';
-import { AuthProvider } from 'react-use-auth';
+// import { AuthProvider } from 'react-use-auth';
 import withReduxStore from 'store/withReduxStore';
 
 const noHeaderPages = ['/info'];
@@ -32,20 +32,20 @@ const MyApp = ({ Component, pageProps, store }) => {
       <Head>
         <title>Nutrimprove</title>
       </Head>
-      <AuthProvider
+      {/* <AuthProvider
         navigate={router.push}
         auth0_domain={process.env.AUTH0_DOMAIN}
         auth0_client_id={process.env.AUTH0_CLIENT_ID}
-      >
-        <Provider store={store}>
-          <LoaderContainer>
-            {hasHeader ? <Header/> : null}
-            <PageContent>
-              <Component {...pageProps}/>
-            </PageContent>
-          </LoaderContainer>
-        </Provider>
-      </AuthProvider>
+      > */}
+      <Provider store={store}>
+        <LoaderContainer>
+          {hasHeader ? <Header /> : null}
+          <PageContent>
+            <Component {...pageProps} />
+          </PageContent>
+        </LoaderContainer>
+      </Provider>
+      {/* </AuthProvider> */}
     </>
   );
 };
