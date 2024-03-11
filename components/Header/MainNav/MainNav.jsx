@@ -73,6 +73,8 @@ const MainNav = ({ classes }) => {
       <div className={classes.container}>
         {menus.map(menu => {
           if (!menu.restrict || isAdmin(userDetails)) {
+            console.log('isAdmin(userDetails)', isAdmin(userDetails));
+            console.log('disabled', disabled);
             return <MenuButton key={menu.name} menu={menu} disabled={disabled} />;
             // return <MenuButton key={menu.name} menu={menu} />;
           }

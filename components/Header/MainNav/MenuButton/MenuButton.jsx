@@ -10,9 +10,6 @@ const MenuButton = ({ menu, disabled, classes }) => {
   const anchorRef = useRef(null);
   const { name, options } = menu;
 
-  let optionsDisabled = false;
-  if (name === 'Admin') optionsDisabled = true;
-
   const handleToggle = (event, childElement = false) => {
     // Fix for clicking an child element of Button; overrides click with Button (parent) click
     if (childElement) {
@@ -105,7 +102,7 @@ const MenuButton = ({ menu, disabled, classes }) => {
                         onClick={() => handleMenuItemClick(item.link)}
                         button={true}
                         className={classes.link}
-                        disabled={optionsDisabled}
+                        disabled={item.disabled}
                       >
                         {item.label}
                       </MenuItem>
