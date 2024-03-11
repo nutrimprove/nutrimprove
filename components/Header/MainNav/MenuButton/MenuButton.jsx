@@ -10,10 +10,22 @@ const MenuButton = ({ menu, disabled, classes }) => {
   const anchorRef = useRef(null);
   const { name, options } = menu;
 
-  const handleToggle = () => {
+  let optionsDisabled = false;
+  if (name === 'Admin') optionsDisabled = true;
+
+  const handleToggle = (event, childElement = false) => {
+    // Fix for clicking an child element of Button; overrides click with Button (parent) click
+    if (childElement) {
+      event.preventDefault();
+      event.stopPropagation();
+      anchorRef.current.click();
+      return;
+    }
+    // If there are no options, just go to the link
     if (!options) {
       Router.push(menu.link);
     }
+    // Otherwise, open or close the menu
     setOpen((prevOpen) => !prevOpen);
   };
 
@@ -24,7 +36,7 @@ const MenuButton = ({ menu, disabled, classes }) => {
     setOpen(false);
   };
 
-  const handleListKeyDown = event => {
+  const handleListKeyDown = (event) => {
     if (event.key === 'Tab') {
       event.preventDefault();
       setOpen(false);
@@ -37,12 +49,12 @@ const MenuButton = ({ menu, disabled, classes }) => {
     }
   };
 
-  const handleClick = (page) => {
+  const handleMenuItemClick = (page) => {
     setOpen(false);
     Router.push(page);
   };
 
-  // return focus to the button when we transitioned from !open -> open
+  // return focus to the button when transitioned from !open -> open
   const prevOpen = useRef(open);
   useEffect(() => {
     if (prevOpen.current === true && open === false) {
@@ -62,14 +74,18 @@ const MenuButton = ({ menu, disabled, classes }) => {
         disabled={disabled}
       >
         {name}
-        {options && <span className={classes.icon}>{open ? <ExpandLessIcon/> : <ExpandMoreIcon/>}</span>}
+        {options && (
+          <span className={classes.icon} onClick={(e) => handleToggle(e, true)}>
+            {open ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+          </span>
+        )}
       </Button>
       {options && options.length > 0 && <Popper style={{ minWidth: getWidth() }}
-                                                open={open}
-                                                anchorEl={anchorRef.current}
-                                                role={undefined}
-                                                transition
-                                                disablePortal
+        open={open}
+        anchorEl={anchorRef.current}
+        role={undefined}
+        transition
+        disablePortal
       >
         {({ TransitionProps, placement }) => (
           <Grow
@@ -82,13 +98,14 @@ const MenuButton = ({ menu, disabled, classes }) => {
                 <MenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
                   {options.map((item, index) => {
                     if (item.divider) {
-                      return <hr key={index} className={classes.divider}/>;
+                      return <hr key={index} className={classes.divider} />;
                     }
                     return (
                       <MenuItem key={item.label}
-                                onClick={() => handleClick(item.link)}
-                                button={true}
-                                className={classes.link}
+                        onClick={() => handleMenuItemClick(item.link)}
+                        button={true}
+                        className={classes.link}
+                        disabled={optionsDisabled}
                       >
                         {item.label}
                       </MenuItem>
