@@ -48,9 +48,12 @@ const AddList = ({ classes }) => {
 
   useEffect(() => {
     if (selectedFood) {
-      !foodList.find(food => food.foodCode === selectedFood.foodCode)
-        ? setFood(selectedFood)
-        : setAddButtonText(ALREADY_IN_LIST_TEXT);
+      const hasFood = foodList.find(food => food.foodCode === selectedFood.foodCode);
+      if (!hasFood) {
+        setFood(selectedFood)
+      } else {
+        setAddButtonText(ALREADY_IN_LIST_TEXT);
+      }
     }
   }, [selectedFood]);
 
@@ -113,27 +116,27 @@ const AddList = ({ classes }) => {
 
   return (
     <>
-      <Filters/>
+      <Filters />
       {!foodList
-        ? <LoadingPanel/>
+        ? <LoadingPanel />
         : (
           <div className={classes.container}>
             <div className={classes.foodColumn}>
               <FoodCardWithSearch title='Food'
-                                  onFoodLoad={setSelectedFood}
-                                  buttonText='Select'
-                                  context='loadFood'
+                onFoodLoad={setSelectedFood}
+                buttonText='Select'
+                context='loadFood'
               />
               {food && <Paper className={classes.quantity}>
                 <Typography>Amount:&nbsp;</Typography>
                 <EditableText size='medium'
-                              value={quantity}
-                              min={0.1}
-                              max={9999}
-                              type='number'
-                              datakey={selectedFood.foodCode}
-                              onChange={handleQuantityChange}
-                              className={classes.quantityField}
+                  value={quantity}
+                  min={0.1}
+                  max={9999}
+                  type='number'
+                  datakey={selectedFood.foodCode}
+                  onChange={handleQuantityChange}
+                  className={classes.quantityField}
                 >
                   g
                 </EditableText>
@@ -144,19 +147,19 @@ const AddList = ({ classes }) => {
                   : (
                     <MainButton action={addToList} className={classes.addToListButton}>
                       <span className={classes.addToListText}>Add Food to List</span>
-                      <ArrowForwardIosRoundedIcon fontSize='small'/>
+                      <ArrowForwardIosRoundedIcon fontSize='small' />
                     </MainButton>
                   )
                 }
               </div>
             </div>
             <FoodListPanel className={classes.foodList}
-                           title={listName}
-                           foods={foodList}
-                           onListNameChange={saveListName}
-                           onDelete={removeFood}
-                           onEditQuantity={editFoodInListQuantity}
-                           onSaveButtonClick={handleSaveButtonClick}
+              title={listName}
+              foods={foodList}
+              onListNameChange={saveListName}
+              onDelete={removeFood}
+              onEditQuantity={editFoodInListQuantity}
+              onSaveButtonClick={handleSaveButtonClick}
             />
           </div>
         )}

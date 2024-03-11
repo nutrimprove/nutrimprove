@@ -16,17 +16,17 @@ import ScrollIntoView from '../ScrollIntoView';
 import ChangeNutrientModal from './ChangeNutrientModal';
 
 const FoodCard = ({
-                    food,
-                    onMouseOver,
-                    showTitle = true,
-                    title,
-                    subtitle = 'Nutritional values per 100g of food',
-                    highlightItem,
-                    header = true,
-                    actions = true,
-                    scrollIntoView = false,
-                    classes,
-                  }) => {
+  food,
+  onMouseOver,
+  showTitle = true,
+  title,
+  subtitle = 'Nutritional values per 100g of food',
+  highlightItem,
+  header = true,
+  actions = true,
+  scrollIntoView = false,
+  classes,
+}) => {
   const preferences = useSelector(({ globalState }) => globalState.preferences);
   const userDetails = useSelector(({ globalState }) => globalState.userDetails);
   const dispatch = useDispatch();
@@ -46,9 +46,11 @@ const FoodCard = ({
   };
 
   useEffect(() => {
-    preferences && preferences.cardNutrients
-      ? setNutrients(getCardNutrients(food, preferences.cardNutrients))
-      : setNutrients(getCardNutrients(food));
+    if (foodDetailspreferences && preferences.cardNutrients) {
+      setNutrients(getCardNutrients(food, preferences.cardNutrients))
+    } else {
+      setNutrients(getCardNutrients(food));
+    }
   }, [food, preferences]);
 
   const showFoodDetails = () => {
@@ -119,8 +121,8 @@ const FoodCard = ({
                 button key={uniqueId()}
                 data-name={name}
                 className={clsx([classes.item,
-                  highlightItem === name ? classes.highlight : '',
-                  changed ? classes.changedItem : '',
+                highlightItem === name ? classes.highlight : '',
+                changed ? classes.changedItem : '',
                 ])}
                 onMouseOver={onMouseOver}
                 onClick={handleClick}
@@ -136,19 +138,19 @@ const FoodCard = ({
           <div className={classes.cardLinks}>
             {preferences && preferences.cardNutrients && !isEqual(preferences.cardNutrients, DEFAULT_CARD_NUTRIENTS) && (
               <Link component='button'
-                    onClick={resetCardNutrients}
-                    className={classes.link}
-                    title='Reset to default nutrients'
+                onClick={resetCardNutrients}
+                className={classes.link}
+                title='Reset to default nutrients'
               >
                 Reset
               </Link>
             )}
             {undoHistory.current && undoHistory.current.length > 0 && (
               <Link component='button'
-                    key={undoHistory.current.length}
-                    onClick={undo}
-                    className={classes.link}
-                    title='Undo last change'
+                key={undoHistory.current.length}
+                onClick={undo}
+                className={classes.link}
+                title='Undo last change'
               >
                 Undo
               </Link>
@@ -157,7 +159,7 @@ const FoodCard = ({
         </CardContent>
         {actions && (
           <CardActions className={classes.actions}>
-            {scrollIntoView && <ScrollIntoView/>}
+            {scrollIntoView && <ScrollIntoView />}
             <Button variant='outlined' color='primary' className={classes.button} onClick={showFoodDetails}>
               Show More
             </Button>
@@ -166,21 +168,21 @@ const FoodCard = ({
       </Card>
       {detailsOpen && (
         <ModalPanel open={detailsOpen}
-                    onClose={handleCloseModal}
-                    title={cardTitle}
-                    subtitle={subtitle}
+          onClose={handleCloseModal}
+          title={cardTitle}
+          subtitle={subtitle}
         >
           {foodDetails && foodDetails.nutrients
-            ? <ResultsTable data={foodDetails.nutrients} scrollable={true} sortColumns={['nutrient']}/>
-            : <LoadingPanel/>
+            ? <ResultsTable data={foodDetails.nutrients} scrollable={true} sortColumns={['nutrient']} />
+            : <LoadingPanel />
           }
         </ModalPanel>)}
       {changeNutrientOpen && (
         <ChangeNutrientModal open={changeNutrientOpen}
-                             onClose={handleCloseModal}
-                             nutrientToChange={nutrientToChange}
-                             onNutrientChange={handleNutrientChange}
-                             cardNutrients={nutrients}
+          onClose={handleCloseModal}
+          nutrientToChange={nutrientToChange}
+          onNutrientChange={handleNutrientChange}
+          cardNutrients={nutrients}
         />)}
     </>
   );

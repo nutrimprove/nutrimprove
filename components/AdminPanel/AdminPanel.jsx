@@ -61,9 +61,11 @@ const AdminPanel = ({ classes }) => {
     return (
       <ButtonWithSpinner
         action={async () => {
-          action === 'approve'
-            ? await approveUser(user.email)
-            : await revokeUser(user.email);
+          if (useraction === 'approve') {
+            await approveUser(user.email);
+          } else {
+            await revokeUser(user.email);
+          }
           updateResults();
         }}
         context={`${action}User-${user.email}`}
@@ -180,7 +182,7 @@ const AdminPanel = ({ classes }) => {
           </ButtonWithSpinner>
         </>
       )}
-      {users ? <ResultsTable className={classes.results} data={users} title={`${users.length} ${userQuery}`}/> : <LoadingPanel/>}
+      {users ? <ResultsTable className={classes.results} data={users} title={`${users.length} ${userQuery}`} /> : <LoadingPanel />}
     </>
   );
 };
