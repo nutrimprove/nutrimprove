@@ -1,11 +1,11 @@
 import { AppBar } from '@material-ui/core';
 import MenuButton from 'components/Header/MainNav/MenuButton';
-import RightNavText from 'components/Header/MainNav/RightNavText';
-import { emailVerified, isAdmin, isApproved } from 'helpers/userUtils';
+// import RightNavText from 'components/Header/MainNav/RightNavText';
+// import { emailVerified, isAdmin, isApproved } from 'helpers/userUtils';
 import PropTypes from 'prop-types';
-import React, { useEffect, useState } from 'react';
-import { usePromiseTracker } from 'react-promise-tracker';
-import { useSelector } from 'react-redux';
+// import React, { useEffect, useState } from 'react';
+// import { usePromiseTracker } from 'react-promise-tracker';
+// import { useSelector } from 'react-redux';
 
 const menus = [
   {
@@ -46,36 +46,37 @@ const menus = [
 ];
 
 const MainNav = ({ classes }) => {
-  const userDetails = useSelector(({ globalState }) => globalState.userDetails);
-  const [disabled, setDisabled] = useState(true);
-  const { promiseInProgress: loadingUser } = usePromiseTracker({ area: 'getUser' });
+  // const userDetails = useSelector(({ globalState }) => globalState.userDetails);
+  // const [disabled, setDisabled] = useState(true);
+  // const { promiseInProgress: loadingUser } = usePromiseTracker({ area: 'getUser' });
 
-  useEffect(() => {
-    setDisabled(!userDetails || !userDetails.email || !emailVerified() || !isApproved());
-  }, [userDetails]);
+  // useEffect(() => {
+  //   setDisabled(!userDetails || !userDetails.email || !emailVerified() || !isApproved());
+  // }, [userDetails]);
 
-  const RightNavContent = () => {
-    if (userDetails && userDetails.email && emailVerified()) {
-      return isApproved()
-        ? <RightNavText>{userDetails.email}</RightNavText>
-        : <RightNavText important={true}>Waiting for an Admin Approval</RightNavText>;
-    } else if (disabled && loadingUser) {
-      return (
-        <RightNavText>Loading user data . . .</RightNavText>
-      );
-    }
-    return null;
-  };
+  // const RightNavContent = () => {
+  //   if (userDetails && userDetails.email && emailVerified()) {
+  //     return isApproved()
+  //       ? <RightNavText>{userDetails.email}</RightNavText>
+  //       : <RightNavText important={true}>Waiting for an Admin Approval</RightNavText>;
+  //   } else if (disabled && loadingUser) {
+  //     return (
+  //       <RightNavText>Loading user data . . .</RightNavText>
+  //     );
+  //   }
+  //   return null;
+  // };
 
   return (
     <AppBar position='static' classes={{ root: classes.menuBar }}>
       <div className={classes.container}>
         {menus.map(menu => {
-          if (!menu.restrict || isAdmin(userDetails)) {
-            return <MenuButton key={menu.name} menu={menu} disabled={disabled}/>;
-          }
+          // if (!menu.restrict || isAdmin(userDetails)) {
+          // return <MenuButton key={menu.name} menu={menu} disabled={disabled} />;
+          return <MenuButton key={menu.name} menu={menu} />;
+          // }
         })}
-        <RightNavContent/>
+        {/* <RightNavContent /> */}
       </div>
     </AppBar>
   );
