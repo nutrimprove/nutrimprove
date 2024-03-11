@@ -3,7 +3,6 @@ const Dotenv = require('dotenv-webpack');
 module.exports = {
   // target: 'serverless',
   webpack(config) {
-    config.node = false;
     config.plugins.push(new Dotenv({ silent: true }));
     return config;
   },

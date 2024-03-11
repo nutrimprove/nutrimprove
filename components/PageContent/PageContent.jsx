@@ -13,11 +13,11 @@ import { useSelector } from 'react-redux';
 
 
 const PageContent = ({ children, classes }) => {
-  const userDetails = useSelector(({ globalState }) => globalState.userDetails);
+  // const userDetails = useSelector(({ globalState }) => globalState.userDetails);
   const { promiseInProgress } = usePromiseTracker();
   const router = useRouter();
   // const { isAuthenticated } = useAuth();
-  const accessDenied = router.route.includes('/admin/') && !isAdmin(userDetails);
+  // const accessDenied = router.route.includes('/admin/') && !isAdmin(userDetails);
   // const enablePage = ((isLoggedIn() && isApproved() && isAuthenticated) || noAuthPages.includes(router.route)) && !accessDenied;
   const enablePage = true;
 
