@@ -3,7 +3,7 @@ import { PROJECT_NAME } from 'helpers/constants';
 import { emailVerified } from 'helpers/userUtils';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { useAuth } from 'react-use-auth';
+// import { useAuth } from 'react-use-auth';
 import SectionHeader from '../SectionHeader';
 
 const WelcomePage = () => {

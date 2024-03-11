@@ -16,6 +16,7 @@ const LoaderContainer = ({ classes, children }) => {
   // const { isAuthenticated, user } = useAuth();
 
   const user = { email: process.env.TEST_USER_EMAIL };
+  console.log(user);
 
   useEffect(() => {
     (async () => {
@@ -37,6 +38,7 @@ const LoaderContainer = ({ classes, children }) => {
       }
     })();
   }, [user]);
+  // }, []);
 
   useEffect(() => {
     (async () => {
