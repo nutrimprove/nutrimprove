@@ -51,17 +51,18 @@ const MainNav = ({ classes }) => {
   const { promiseInProgress: loadingUser } = usePromiseTracker({ area: 'getUser' });
 
   useEffect(() => {
-    setDisabled(!userDetails || !userDetails.email || !emailVerified() || !isApproved());
+    setDisabled(!userDetails || !userDetails.email);
   }, [userDetails]);
 
   const RightNavContent = () => {
-    if (userDetails && userDetails.email && emailVerified()) {
+    // if (userDetails && userDetails.email && emailVerified()) {
+    if (userDetails && userDetails.email) {
       return isApproved()
         ? <RightNavText>{userDetails.email}</RightNavText>
         : <RightNavText important={true}>Waiting for an Admin Approval</RightNavText>;
     } else if (disabled && loadingUser) {
       return (
-        <RightNavText>Loading user data . . .</RightNavText>
+        <RightNavText>Loading user data...</RightNavText>
       );
     }
     return null;
@@ -72,10 +73,13 @@ const MainNav = ({ classes }) => {
       <div className={classes.container}>
         {menus.map(menu => {
           if (!menu.restrict || isAdmin(userDetails)) {
-            return <MenuButton key={menu.name} menu={menu} disabled={disabled}/>;
+            console.log('isAdmin(userDetails)', isAdmin(userDetails));
+            console.log('disabled', disabled);
+            return <MenuButton key={menu.name} menu={menu} disabled={disabled} />;
+            // return <MenuButton key={menu.name} menu={menu} />;
           }
         })}
-        <RightNavContent/>
+        <RightNavContent />
       </div>
     </AppBar>
   );

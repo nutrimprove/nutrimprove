@@ -2,11 +2,11 @@ import { AppBar, Link, Toolbar, Typography } from '@material-ui/core';
 import MainNav from 'components/Header/MainNav';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { useAuth } from 'react-use-auth';
-import HeaderLink from './HeaderLink';
+// import { useAuth } from 'react-use-auth';
+// import HeaderLink from './HeaderLink';
 
 const Header = ({ classes }) => {
-  const { login, logout, isAuthenticated } = useAuth();
+  // const { login, logout, isAuthenticated } = useAuth();
 
   return (
     <div className={classes.header}>
@@ -24,15 +24,15 @@ const Header = ({ classes }) => {
             {/* {username() && <Link href='/help'>Help</Link>} */}
             <Link href='https://github.com/nutrimprove/nutrimprove/releases' target='_blank'>Release Notes</Link>
           </Typography>
-          <div id='user' className={classes.right}>
+          {/* <div id='user' className={classes.right}>
             {isAuthenticated()
               ? <HeaderLink action={logout}>Logout</HeaderLink>
               : <HeaderLink action={login}>Login</HeaderLink>
             }
-          </div>
+          </div> */}
         </Toolbar>
       </AppBar>
-      <MainNav/>
+      <MainNav />
     </div>
   );
 };

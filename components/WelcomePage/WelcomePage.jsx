@@ -3,18 +3,20 @@ import { PROJECT_NAME } from 'helpers/constants';
 import { emailVerified } from 'helpers/userUtils';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { useAuth } from 'react-use-auth';
+// import { useAuth } from 'react-use-auth';
 import SectionHeader from '../SectionHeader';
 
 const WelcomePage = () => {
-  const { isAuthenticated } = useAuth();
+  // const { isAuthenticated } = useAuth();
+  const isAuthenticated = true;
 
   const content = {
     title: `Welcome to ${PROJECT_NAME}`,
     subtitle: '',
   };
 
-  if (isAuthenticated()) {
+  // if (isAuthenticated()) {
+  if (isAuthenticated) {
     if (!emailVerified()) {
       content.subtitle = 'Please verify your email account';
       content.messages = [
@@ -29,8 +31,8 @@ const WelcomePage = () => {
 
   return (
     <>
-      <SectionHeader content={content}/>
-      <About header={false}/>
+      <SectionHeader content={content} />
+      <About header={false} />
     </>
   );
 };

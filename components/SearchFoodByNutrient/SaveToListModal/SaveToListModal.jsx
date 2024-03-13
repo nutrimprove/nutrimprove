@@ -34,9 +34,11 @@ const SaveToListModal = ({ open, onClose, nutrientName, onSubmit, classes }) => 
   const onListNameChange = event => {
     const fieldValue = event.target.value;
     const isMaxLength = MAX_LENGTH && fieldValue.length >= MAX_LENGTH;
-    isMaxLength
-      ? event.preventDefault()
-      : setListName(fieldValue);
+    if (isMaxLength) {
+      event.preventDefault()
+    } else {
+      setListName(fieldValue);
+    }
   };
 
   const TimedSavedMessage = () => {
@@ -53,19 +55,19 @@ const SaveToListModal = ({ open, onClose, nutrientName, onSubmit, classes }) => 
       onClose={onClose}
       title='Save List'
       subtitle={`Foods with the most ${nutrientName} per 100g of food`}
-      footer={<Buttons/>}
+      footer={<Buttons />}
       style={classes.modal}
     >
       {saved
-        ? <TimedSavedMessage/>
+        ? <TimedSavedMessage />
         : (
           <div className={classes.content}>
             <TextField label='Type list name'
-                       autoFocus={true}
-                       type='text'
-                       onChange={onListNameChange}
-                       className={classes.listName}
-                       value={listName}
+              autoFocus={true}
+              type='text'
+              onChange={onListNameChange}
+              className={classes.listName}
+              value={listName}
             />
             <div className={classes.quantitySelection}>
               <Typography variant='body1'>Quantity of foods to save to list:</Typography>

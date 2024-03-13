@@ -72,9 +72,11 @@ const AddBulkRecommendations = ({ classes }) => {
     const foodIndex = foods.findIndex(({ key }) => key === fieldKey);
     const updatedFoods = [...foods];
     updatedFoods.splice(foodIndex, 1, { ...foods[foodIndex], ...newFood });
-    isRecommendation
-      ? setRecommendedFoods(updatedFoods)
-      : setFoods(updatedFoods);
+    if (isRecommendation) {
+      setRecommendedFoods(updatedFoods)
+    } else {
+      setFoods(updatedFoods);
+    }
   };
 
   const removeFood = ({ currentTarget }) => {
@@ -166,25 +168,25 @@ const AddBulkRecommendations = ({ classes }) => {
 
   return (
     <>
-      <Filters/>
+      <Filters />
       <div className={classes.main}>
         <RepeatableFoodsPanel title='Choose food(s):'
-                              foods={foods}
-                              onSelection={updateFood}
-                              onRemove={removeFood}
-                              onAdd={addFood}
-                              maxFields={MAX_FIELDS}
-                              invalidFoods={invalidFoods}
-                              validation={validation}
+          foods={foods}
+          onSelection={updateFood}
+          onRemove={removeFood}
+          onAdd={addFood}
+          maxFields={MAX_FIELDS}
+          invalidFoods={invalidFoods}
+          validation={validation}
         />
         <RepeatableFoodsPanel title='Healthier alternative(s):'
-                              foods={recommendedFoods}
-                              onSelection={updateRecommendedFood}
-                              onRemove={removeRecommendedFood}
-                              onAdd={addRecommendedFood}
-                              maxFields={MAX_FIELDS}
-                              invalidFoods={invalidFoods}
-                              validation={validation}
+          foods={recommendedFoods}
+          onSelection={updateRecommendedFood}
+          onRemove={removeRecommendedFood}
+          onAdd={addRecommendedFood}
+          maxFields={MAX_FIELDS}
+          invalidFoods={invalidFoods}
+          validation={validation}
         />
       </div>
       <div className={classes.submit}>
@@ -196,7 +198,7 @@ const AddBulkRecommendations = ({ classes }) => {
           Add recommendation(s)
         </ButtonWithSpinner>
       </div>
-      {status.length > 0 ? <StatusMessage status={status}/> : null}
+      {status.length > 0 ? <StatusMessage status={status} /> : null}
     </>
   );
 };
