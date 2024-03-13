@@ -16,7 +16,7 @@
     "validate": "yarn lint && yarn prettier -- --list-different"
   },
   "engines": {
-    "node": "^20"
+    "node": "^18"
   },
   "author": "Joao Jesus",
   "license": "UNLICENSED",
